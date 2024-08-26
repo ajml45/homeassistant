@@ -12,7 +12,7 @@ Visual of how lights are set-up:![297496597-52af8497-7db8-49c9-a0ad-ab34c4bc2a5a
 
 ## Tablet Dashboard
 Home Page, dashboard uses sidecard card for the side menu.  
-![1](https://github.com/user-attachments/assets/187f8ae1-4801-4873-9c52-16e8f4454f5a)
+![1](https://github.com/user-attachments/assets/187f8ae1-4801-4873-9c52-16e8f4454f5a | width=600)
 
 Music/Sonos Card
 ![2](https://github.com/user-attachments/assets/9d28daec-29e7-4228-971e-2984e95f9653)
