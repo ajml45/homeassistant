@@ -7,9 +7,9 @@ Light scripting:
 - On Sat/Sun the lights come on an hour earlier.  On Fri/Sat they start turning off an hour later.
 - The code for this is set-up in Lightener for the lights and the scripts.yaml file for the logic. </br>
 
-Visual of how lights are set-up:
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/52af8497-7db8-49c9-a0ad-ab34c4bc2a5a)"
-![image](https://github.com/user-attachments/assets/c37c6616-3f11-460c-843b-5ec5b0bc6d03)
+Visual of how lights are set-up:![297496597-52af8497-7db8-49c9-a0ad-ab34c4bc2a5a](https://github.com/user-attachments/assets/f6054411-a9cc-4304-a088-4d1d0baf9a33)
+
+<img src="(https://github.com/user-attachments/assets/c37c6616-3f11-460c-843b-5ec5b0bc6d03)"
 width="200"> </br>
 
 
