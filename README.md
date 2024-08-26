@@ -7,8 +7,7 @@ Light scripting:
 - On Sat/Sun the lights come on an hour earlier.  On Fri/Sat they start turning off an hour later.
 - The code for this is set-up in Lightener for the lights and the scripts.yaml file for the logic. </br>
 
-Visual of how lights are set-up:<img src="(https://github.com/user-attachments/assets/f6054411-a9cc-4304-a088-4d1d0baf9a33)"
-width="200"> </br>
+Visual of how lights are set-up:![297496597-52af8497-7db8-49c9-a0ad-ab34c4bc2a5a](https://github.com/user-attachments/assets/2587f88d-cc35-48d5-a049-9b15a4c7c414) </br>
 
 
 ## Tablet Dashboard
