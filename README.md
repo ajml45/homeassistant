@@ -11,45 +11,36 @@ Visual of how lights are set-up:![297496597-52af8497-7db8-49c9-a0ad-ab34c4bc2a5a
 
 
 ## Tablet Dashboard
-</br>
 Home Page, dashboard uses sidecard card for the side menu.  
 ![1](https://github.com/user-attachments/assets/187f8ae1-4801-4873-9c52-16e8f4454f5a)
 
-</br>
 Music/Sonos Card
 ![2](https://github.com/user-attachments/assets/9d28daec-29e7-4228-971e-2984e95f9653)
 
-</br>
  Main room controls. Room cards have conditional icons that display when things are active (like HVAC, fans, lights/count, motion, etc.) Tapping a room card opens a pop-up via <a href="https://github.com/Clooos/Bubble-Card">Bubble Card</a> with all of the room controls (examples below.) Double tapping opens the main light contol for that room. Holding a room card shuts off all lights in that room.
 ![3](https://github.com/user-attachments/assets/3744086c-4b57-4a2e-ad4c-df54ef1095a1)
 
-</br>
 Camera card for Arlo, this doesnt really work....
 ![4](https://github.com/user-attachments/assets/93455f21-a02e-4d66-9073-87f0cdb1445c)
 
-</br>
 Mail card from Mail and Packages, acts as a pop-up via Bubble Card.
 ![5](https://github.com/user-attachments/assets/c6aa938f-ddeb-4da0-a8b5-5688f33ca013)
 
- </br>
 Weather info
 ![6](https://github.com/user-attachments/assets/c9d42f7e-dbc8-45df-bd98-d1f62dd0c27f)
 
- </br>
 To-Do Lists
 ![7](https://github.com/user-attachments/assets/e27007bc-9512-43ae-bb85-3712bb8fcbba)
 
-</br>
 Room Pop-Up Example: Great Room
 ![8](https://github.com/user-attachments/assets/98d21714-3c3f-46c4-93e5-e45c9ed91176)
 
- </br>
 Room Pop-Up Example: Solarium
 ![9](https://github.com/user-attachments/assets/6714fd23-2d5e-4a87-8b51-0b7ca3e6c274)
-</br>
+
 Room Pop-Up Example: Mudroom
 ![10](https://github.com/user-attachments/assets/973e7d17-c7a2-46f2-a461-572a66b80eb3)
-</br>
+
 Settings etc
 ![11](https://github.com/user-attachments/assets/b2b11670-cf3a-461c-91b4-7a163ce16c9e)
 
