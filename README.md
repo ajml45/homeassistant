@@ -11,51 +11,60 @@ Visual of how lights are set-up:![297496597-52af8497-7db8-49c9-a0ad-ab34c4bc2a5a
 
 
 ## Tablet Dashboard
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/577ee7d9-625c-437d-8507-37034901e044)" width="500"> </br>
+</br>
 Home Page, dashboard uses sidecard card for the side menu.  
+![1](https://github.com/user-attachments/assets/8ac475a9-8560-4626-9497-697a0ce5554c)
 
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/8cc29432-8e3c-47ff-bbdb-166d2cc39929" width="500"> </br>
+</br>
 Music/Sonos Card
+![2](https://github.com/user-attachments/assets/9d28daec-29e7-4228-971e-2984e95f9653)
 
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/fdba8359-945a-45d5-b7e7-e0b41675f634" width="500"> </br>
+</br>
  Main room controls. Room cards have conditional icons that display when things are active (like HVAC, fans, lights/count, motion, etc.) Tapping a room card opens a pop-up via <a href="https://github.com/Clooos/Bubble-Card">Bubble Card</a> with all of the room controls (examples below.) Double tapping opens the main light contol for that room. Holding a room card shuts off all lights in that room.
+![3](https://github.com/user-attachments/assets/3744086c-4b57-4a2e-ad4c-df54ef1095a1)
 
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/293c19e8-cdc1-485c-810d-587b5ffe3bbb" width="500"> </br>
+</br>
 Camera card for Arlo, this doesnt really work....
+![4](https://github.com/user-attachments/assets/93455f21-a02e-4d66-9073-87f0cdb1445c)
 
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/87130093-16dc-447c-8c87-c7c74b40f856" width="500"> </br>
+</br>
 Mail card from Mail and Packages, acts as a pop-up via Bubble Card.
+![5](https://github.com/user-attachments/assets/c6aa938f-ddeb-4da0-a8b5-5688f33ca013)
 
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/5c282444-dc7c-452f-ad23-653c420d9064" width="500"> </br>
+ </br>
 Weather info
+![6](https://github.com/user-attachments/assets/c9d42f7e-dbc8-45df-bd98-d1f62dd0c27f)
 
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/138484a6-f9b7-444a-a2e1-8b9807286a8d" width="500"> </br>
+ </br>
 To-Do Lists
+![7](https://github.com/user-attachments/assets/e27007bc-9512-43ae-bb85-3712bb8fcbba)
 
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/f899ef67-5bf8-4dda-82c2-6e8e8c995c6a" width="500"> </br>
+</br>
 Room Pop-Up Example: Great Room
+![8](https://github.com/user-attachments/assets/98d21714-3c3f-46c4-93e5-e45c9ed91176)
 
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/1ab8bb35-f44e-4872-9445-59046fd7cf03" width="500"> </br>
+ </br>
 Room Pop-Up Example: Solarium
-
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/61576f02-0cbc-40e9-95b1-608dc5b50dcc" width="500"> </br>
+![9](https://github.com/user-attachments/assets/6714fd23-2d5e-4a87-8b51-0b7ca3e6c274)
+</br>
 Room Pop-Up Example: Mudroom
-
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/6a5b588f-a437-4203-8851-3cacc3f50c73" width="500"> </br>
+![10](https://github.com/user-attachments/assets/973e7d17-c7a2-46f2-a461-572a66b80eb3)
+</br>
 Settings etc
+![11](https://github.com/user-attachments/assets/b2b11670-cf3a-461c-91b4-7a163ce16c9e)
 
 
 ## Mobile Dashboard
-Uses bubble card heavily - for the home page room controls as well as the individual room pop-up cards and bottom navigation.  The room buttons on the home page are a light slider that toggle the lights for that room.  Clicking the icon brings up the room pop-up with the individual controls.  Double clicking the icon brings up the main room light and holding the icon shuts all of the lights off in that room.
+Double clicking the icon brings up the main room light and holding the icon shuts all of the lights off in that room.
+![1](https://github.com/user-attachments/assets/19f89bf1-d0a1-4169-a776-d27efc63a3f2)
 
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/1ec24e7c-3f73-4170-963e-5eaeb134ff21" width="300" alt="Home Page">
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/d8c1aede-17fd-42d6-a204-04499e38bc3f" width="300" alt="Solarium">
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/4b234a66-b956-47bd-9c3d-d0e58170d58b" width="300" alt="Basement">
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/fbcca4e8-0fee-4ea2-8179-dfb592f3e13d" width="300" alt="Sonos">
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/dd4a7a4f-1d4e-424c-a773-a25f5c7e8c45" width="300" alt="Calendar">
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/362b40a5-c376-46f4-83e4-d8294d33ae42" width="300" alt="Weather">
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/9dcbb1de-ee69-4cb3-84a8-bf7998ea29dd" width="300" alt="Family">
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/476d5a2b-0a2f-473d-abb7-ea72f10baf7d" width="300" alt="IT">
+![2](https://github.com/user-attachments/assets/b9b41a69-c584-4262-bc85-74d1b4495456)
+
+![3](https://github.com/user-attachments/assets/63fca55f-1142-4eb1-b39e-0a374a124fd4)
+
+![4](https://github.com/user-attachments/assets/e0f9fb0e-7b8e-48e1-8f86-f6ce669d5e77)
+
+![5](https://github.com/user-attachments/assets/eb6ca876-689e-42cb-887d-ac01e8d2732d)
 
 
 ## HACS Integrations:
