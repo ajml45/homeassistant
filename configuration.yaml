@@ -1,0 +1,218 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  extra_module_url:
+  - /local/community/custom-brand-icons/custom-brand-icons.js
+  - /local/community/lovelace-card-mod/card-mod.js
+  themes: !include_dir_merge_named themes
+
+# Text to speech
+# tts:
+#   - platform: google_translate
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+input_boolean:
+  feed_fish_reminder:
+    name: Feed Fish Reminder
+    initial: off
+  feed_fish_reminder_color_change:
+    name: Feed Fish Reminder Color Change
+    initial: off
+
+
+#http:
+#  ssl_certificate: /ssl/fullchain.pem
+#  ssl_key: /ssl/privkey.pem
+
+
+#  - platform: command_line
+#    name: GPT_Response
+#    command: "curl -XPOST https://api.openai.com/v1/chat/completions -H 'Content-Type: application/json' -H 'Authorization: Bearer !secret OpenAL' -d '{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"Act as a personal assistant for Andrew. Christina is his wife.  Andrew and Christina have two kids.  Charlotte, 4, who is well behaved and Henry, 1, who is always in trouble.  You are witty and talk conversationally, making jokes. The current time is {{ now() }}, and the current day is {{ now().weekday() }}. Greet me and our family in a friendly but respectful way, commenting on the weather, and sometimes making a joke, in less than 250
+#    characters.\"}], \"top_p\": 1, \"temperature\": 0.7, \"max_tokens\": 320, \"presence_penalty\": 1}'"
+#    value_template: "{{ value_json.choices[0].message.content }}"
+#    scan_interval: 21600
+
+group:
+  household:
+    name: Household
+    all: false
+    entities:
+      - person.andrew
+      - person.christina
+      - person.charlotte
+      - person.henry
+      - person.guests
+
+      #total lights count still includes helpers and maybe hue rooms.  not sure how to handle hue and wiz bulbs
+template:
+  - sensor:
+    - name: "Total Lights Count Template"
+      state: >-
+        {% set exclude = ["light.basement","light.exterior","light.great_room","light.kitchen","light.mudroom","light.office","light.offices","light.solarium","light.white_room","light.first_floor_lights"] %}
+        {{ states.light
+          | rejectattr('entity_id','in', exclude )
+          | selectattr('attributes.is_hue_group','undefined')
+          | selectattr('attributes.entity_id', 'undefined')
+          | selectattr('state','eq','on')
+          | list
+          | count
+        }}
+    - name: "Kitchen Lights On"
+      unique_id: kitchen_lights_on
+      icon: mdi:lightbulb-on
+      state: >
+        {% set lights = [
+            states('light.kitchen_above_cabinet'),
+            states('light.kitchen_under_cabinet'),
+            states('light.kitchen_cans_fridge'),
+            states('light.kitchen_cans_sink'),
+            states('light.sink_pendants'),
+            states('light.stove_sconces'),
+            states('light.island_pendants'),
+            states('light.toe_kick')
+            ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+    - name: "Great Room Lights On"
+      unique_id: great_room_lights_on
+      icon: mdi:lightbulb-on
+      state: >
+        {% set lights = [
+            states('light.great_room_table_lamp'),
+            states('light.bar_lamp_left'),
+            states('light.bar_lamp_right'),
+            states('light.left_couch_lamp'),
+            states('light.right_couch_lamp'),
+            states('light.great_room_bar_cabinet_lights'),
+            states('light.great_room_fireplace_can'),
+            states('light.great_room_back_cans'),
+            states('light.great_room_front_cans'),
+            states('light.great_room_middle_cans')
+            ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+    - name: "Master Suite Lights On"
+      unique_id: master_suite_lights_on
+      icon: mdi:lightbulb-on
+      state: >
+        {% set lights = [
+            states('light.tub_light_left'),
+            states('light.tub_light_middle'),
+            states('light.tub_light_right'),
+            states('light.can_light'),
+            states('light.shower_light'),
+            states('light.master_bedroom_sconces')
+            ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+    - name: "Mudroom Lights On"
+      unique_id: mudroom_lights_on
+      icon: mdi:lightbulb-on
+      state: >
+        {% set lights = [
+            states('light.mudroom_can_lights'),
+            states('light.mudroom_pendants')
+            ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+    - name: "Foyer Offices Lights On"
+      unique_id: foyer_offices_lights_on
+      icon: mdi:lightbulb-on
+      state: >
+        {% set lights = [
+            states('light.front_foyer_chandelier'),
+            states('light.front_foyer'),
+            states('light.office_desk_lamp'),
+            states('light.office_ceiling_light'),
+            states('light.office_floor_lamp'),
+            states('light.white_room_main_lights'),
+            states('light.white_room_piano_light'),
+            states('light.white_room_table_lamps')
+            ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+    - name: "Upstairs Lights On"
+      unique_id: upstairs_lights_on
+      icon: mdi:lightbulb-on
+      state: >
+        {% set lights = [
+            states('light.front_foyer_upstairs_hallway_lights'),
+            states('light.charlotte_bedroom_table_lamp'),
+            states('light.henry_bedroom_table_lamp')
+            ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+    - name: "Basement Lights On"
+      unique_id: basement_lights_on
+      icon: mdi:lightbulb-on
+      state: >
+        {% set lights = [
+            states('light.basement_stairs_lights'),
+            states('light.basement_sitting_area_main_lights'),
+            states('light.basement_sitting_area_table_lamps'),
+            states('light.basement_sitting_area_spot_lights'),
+            states('light.solarium_sconces'),
+            states('light.wine_cellar_sconces'),
+            states('light.wine_cellar_spot_lights')
+            ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+    - name: "Solarium Lights On"
+      unique_id: solarium_lights_on
+      icon: mdi:lightbulb-on
+      state: >
+        {% set lights = [
+            states('light.pool_area'),
+            states('light.sitting_area'),
+            states('light.solarium_couch'),
+            states('light.solarium_path_lights'),
+            states('light.solarium_spot_lights'),
+            states('light.slider_path_lights'),
+            states('light.stair_path_lights'),
+            states('light.lion_fountain_light'),
+            states('light.solarium_rope_light')
+            ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+    - name: "Exterior Lights On"
+      unique_id: exterior_lights_on
+      icon: mdi:lightbulb-on
+      state: >
+        {% set lights = [
+            states('light.exterior_alcove'),
+            states('light.exterior_upper_garage'),
+            states('light.exterior_lower_garage'),
+            states('light.exterior_front_door'),
+            states('light.exterior_front_spotlights'),
+            states('light.exterior_back_porch_lights'),
+            states('light.exterior_lower_garage_area'),
+            states('light.exterior_dog_area')
+            ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+
+sensor:
+- platform: template
+  sensors:
+    washer_door_lock:
+    friendly_name: "Washer Door Lock"
+    value_template: "{{ state_attr('sensor.washer','door_lock') }}"
+
+    washer_time_display:
+    friendly_name: "Washer Time Display"
+    value_template: >
+      {% if is_state('sensor.washer_run_state', '-') %}
+      {% elif is_state('sensor.washer_run_state', 'unavailable') %}
+      {% elif is_state('sensor.washer_run_state', 'Standby') %}
+        -:--
+      {% else %}
+        {{ state_attr("sensor.washer","remain_time").split(":")[:-1] | join(':') }}   
+      {% endif %}
+
+    dryer_time_display:
+    friendly_name: "Dryer Time Display"
+    value_template: >
+      {% if is_state('sensor.dryer_run_state', '-') %}
+      {% elif is_state('sensor.dryer_run_state', 'unavailable') %}
+      {% elif is_state('sensor.dryer_run_state', 'Standby') %}
+        -:--
+      {% else %}
+        {{ state_attr("sensor.dryer","remain_time").split(":")[:-1] | join(':') }}
+      {% endif %}
+
