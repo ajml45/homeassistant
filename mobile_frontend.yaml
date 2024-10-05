@@ -71,13 +71,12 @@ views:
                       service_data:
                         entity_id: scene.good_morning
                     hold_action:
-                      action: call-service
-                      service: scene.turn_oon
-                      service_data:
-                        entity_id: scene.good_morning
+                      action: perform-action
+                      perform_action: scene.turn_on
+                      target: {}
                     icon: mdi:weather-sunset-up
                     name: Good Morning
-                    entity: scene.good_morning
+                    entity: scene.morning
                     card_mod:
                       style: |
                         ha-card {

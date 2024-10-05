@@ -167,8 +167,9 @@ sidebar:
                 opacity: 0;
         - type: custom:bubble-card
           card_type: select
+          entity: input_select.scenes
+          icon: mdi:palette
           name: Scenes
-          entity: select.dryer_course_selection
 views:
   - path: home
     title: Home
