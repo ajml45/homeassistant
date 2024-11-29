@@ -1905,7 +1905,7 @@
       friendly_name: Floor Fan
       state: 'off'
     cover.bedroom:
-      current_position: 100
+      current_position: 0
       current_tilt_position: 0
       room_name: Master
       device_class: curtain
@@ -2119,7 +2119,7 @@
       icon: mdi:light-recessed
       friendly_name: Kitchen Cans Fridge
       supported_features: 32
-      state: 'on'
+      state: 'off'
     light.kitchen_cans_sink:
       supported_color_modes:
       - brightness
@@ -2130,7 +2130,7 @@
       icon: mdi:light-recessed
       friendly_name: Kitchen Cans Sink
       supported_features: 32
-      state: 'on'
+      state: 'off'
     light.sink_pendants:
       min_color_temp_kelvin: 2702
       max_color_temp_kelvin: 5000
@@ -2167,7 +2167,7 @@
       icon: mdi:ceiling-light-multiple-outline
       friendly_name: Sink Pendants
       supported_features: 4
-      state: 'off'
+      state: 'on'
     light.island_pendants:
       min_color_temp_kelvin: 2702
       max_color_temp_kelvin: 5000
@@ -2204,7 +2204,7 @@
       icon: mdi:ceiling-light-multiple-outline
       friendly_name: Island Pendants
       supported_features: 4
-      state: 'off'
+      state: 'on'
     light.stove_sconces:
       min_color_temp_kelvin: 2702
       max_color_temp_kelvin: 5000
@@ -2241,7 +2241,7 @@
       icon: mdi:wall-sconce-outline
       friendly_name: Stove Sconces
       supported_features: 4
-      state: 'off'
+      state: 'on'
   icon: mdi:chef-hat
   metadata:
     light.great_room:
@@ -2273,7 +2273,911 @@
   metadata: {}
 - id: '1726769645294'
   name: Wind Down
-  entities: {}
+  entities:
+    light.great_room_bar_cabinet_lights:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:door-sliding
+      friendly_name: Bar Cabinet Lights
+      supported_features: 0
+      state: 'off'
+    light.bar_lamp_right:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect: None
+      color_mode: color_temp
+      brightness: 255
+      color_temp_kelvin: 2915
+      color_temp: 343
+      hs_color:
+      - 27.971
+      - 59.254
+      rgb_color:
+      - 255
+      - 174
+      - 103
+      xy_color:
+      - 0.505
+      - 0.385
+      mode: normal
+      dynamics: none
+      icon: mdi:lamp-outline
+      friendly_name: Bar Right
+      supported_features: 44
+      state: 'on'
+    light.bar_lamp_left:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect: None
+      color_mode: color_temp
+      brightness: 255
+      color_temp_kelvin: 2915
+      color_temp: 343
+      hs_color:
+      - 27.971
+      - 59.254
+      rgb_color:
+      - 255
+      - 174
+      - 103
+      xy_color:
+      - 0.505
+      - 0.385
+      mode: normal
+      dynamics: none
+      icon: mdi:lamp-outline
+      friendly_name: Bar Left
+      supported_features: 44
+      state: 'on'
+    light.great_room_fireplace_can:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      device_id: '87'
+      zone_id: '50'
+      icon: mdi:fireplace
+      friendly_name: Fireplace Spotlight
+      supported_features: 32
+      state: 'off'
+    light.back_can_left:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      rgbw_color:
+      icon: mdi:light-recessed
+      friendly_name: Back Can Left
+      supported_features: 4
+      state: 'off'
+    light.back_can_middle:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      rgbw_color:
+      icon: mdi:light-recessed
+      friendly_name: Back Can Middle
+      supported_features: 4
+      state: 'off'
+    light.back_can_right:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      rgbw_color:
+      icon: mdi:light-recessed
+      friendly_name: Back Can Right
+      supported_features: 4
+      state: 'off'
+    light.middle_can_left:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      rgbw_color:
+      icon: mdi:light-recessed
+      friendly_name: Middle Can Left
+      supported_features: 4
+      state: 'off'
+    light.middle_can_middle:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      rgbw_color:
+      icon: mdi:light-recessed
+      friendly_name: Middle Can Middle
+      supported_features: 4
+      state: 'off'
+    light.front_can_left:
+      restored: true
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      icon: mdi:light-recessed
+      supported_features: 4
+      state: unavailable
+    light.front_can_right:
+      restored: true
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      icon: mdi:light-recessed
+      supported_features: 4
+      state: unavailable
+    light.front_can_middle:
+      restored: true
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      icon: mdi:light-recessed
+      supported_features: 4
+      state: unavailable
+    light.great_room_table_lamp:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 255
+      device_id: '2'
+      zone_id: '1'
+      icon: mdi:lamp-outline
+      friendly_name: Back Lamp
+      supported_features: 32
+      state: 'on'
+    light.right_couch_lamp:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect: None
+      color_mode: color_temp
+      brightness: 128
+      color_temp_kelvin: 2915
+      color_temp: 343
+      hs_color:
+      - 27.971
+      - 59.254
+      rgb_color:
+      - 255
+      - 174
+      - 103
+      xy_color:
+      - 0.505
+      - 0.385
+      mode: normal
+      dynamics: none
+      icon: mdi:lamp-outline
+      friendly_name: Couch Right
+      supported_features: 44
+      state: 'on'
+    light.left_couch_lamp:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - None
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect: None
+      color_mode: color_temp
+      brightness: 255
+      color_temp_kelvin: 2915
+      color_temp: 343
+      hs_color:
+      - 27.971
+      - 59.254
+      rgb_color:
+      - 255
+      - 174
+      - 103
+      xy_color:
+      - 0.505
+      - 0.385
+      mode: normal
+      dynamics: none
+      icon: mdi:lamp-outline
+      friendly_name: Couch Left
+      supported_features: 44
+      state: 'on'
+    light.kitchen_under_cabinet:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 127
+      device_id: '55'
+      zone_id: '32'
+      icon: mdi:led-strip
+      friendly_name: Kitchen Under Cabinet
+      supported_features: 32
+      state: 'on'
+    light.kitchen_above_cabinet:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 255
+      device_id: '53'
+      zone_id: '31'
+      icon: mdi:led-strip
+      friendly_name: Kitchen Above Cabinet
+      supported_features: 32
+      state: 'on'
+    light.kitchen_cans_fridge:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      device_id: '36'
+      zone_id: '25'
+      icon: mdi:light-recessed
+      friendly_name: Kitchen Cans Fridge
+      supported_features: 32
+      state: 'off'
+    light.mudroom_can_lights:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      device_id: '85'
+      zone_id: '48'
+      icon: mdi:light-recessed
+      friendly_name: Mudroom Can Lights
+      supported_features: 32
+      state: 'off'
+    light.kitchen_cans_sink:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      device_id: '32'
+      zone_id: '21'
+      icon: mdi:light-recessed
+      friendly_name: Kitchen Cans Sink
+      supported_features: 32
+      state: 'off'
+    light.mudroom_pendants:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      device_id: '86'
+      zone_id: '49'
+      icon: mdi:chandelier
+      friendly_name: Pendant
+      supported_features: 32
+      state: 'off'
+    light.island_pendant_right:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 5000
+      min_mireds: 200
+      max_mireds: 370
+      effect_list:
+      - Cozy
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - TV time
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      supported_color_modes:
+      - color_temp
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      icon: mdi:globe-light-outline
+      friendly_name: Island Pendant Right
+      supported_features: 4
+      state: 'off'
+    light.island_pendant_left:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 5000
+      min_mireds: 200
+      max_mireds: 370
+      effect_list:
+      - Cozy
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - TV time
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      supported_color_modes:
+      - color_temp
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      icon: mdi:globe-light-outline
+      friendly_name: Island Pendant Left
+      supported_features: 4
+      state: 'off'
+    light.sink_sconce_left:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 5000
+      min_mireds: 200
+      max_mireds: 370
+      effect_list:
+      - Cozy
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - TV time
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      supported_color_modes:
+      - color_temp
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      icon: mdi:ceiling-light-outline
+      friendly_name: Sink Sconce Left
+      supported_features: 4
+      state: 'off'
+    light.sink_sconce_right:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 5000
+      min_mireds: 200
+      max_mireds: 370
+      effect_list:
+      - Cozy
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - TV time
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      supported_color_modes:
+      - color_temp
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      icon: mdi:ceiling-light-outline
+      friendly_name: Sink Sconce Right
+      supported_features: 4
+      state: 'off'
+    light.stove_sconce_right:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 5000
+      min_mireds: 200
+      max_mireds: 370
+      effect_list:
+      - Cozy
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - TV time
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      supported_color_modes:
+      - color_temp
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      icon: mdi:wall-sconce-outline
+      friendly_name: Stove Sconce Right
+      supported_features: 4
+      state: 'off'
+    light.front_foyer_chandelier:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      device_id: '22'
+      zone_id: '14'
+      icon: phu:chandelier
+      friendly_name: Front Foyer Chandelier
+      supported_features: 32
+      state: 'off'
+    light.white_room_piano_light:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 127
+      device_id: '63'
+      zone_id: '36'
+      icon: mdi:lamp-outline
+      friendly_name: White Room Piano Light
+      supported_features: 32
+      state: 'on'
+    light.white_room_main_lights:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      device_id: '61'
+      zone_id: '35'
+      icon: phu:chandelier
+      friendly_name: White Room Main Lights
+      supported_features: 32
+      state: 'off'
+    light.white_room_table_lamps:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 127
+      device_id: '65'
+      zone_id: '37'
+      icon: mdi:lamps-outline
+      friendly_name: White Room Table Lamps
+      supported_features: 32
+      state: 'on'
+    light.office_desk_lamp:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 140
+      device_id: '80'
+      zone_id: '47'
+      icon: phu:desk-lamp
+      friendly_name: Office Desk Lamp
+      supported_features: 32
+      state: 'on'
+    light.office_floor_lamp:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 38
+      device_id: '59'
+      zone_id: '34'
+      icon: mdi:floor-lamp-outline
+      friendly_name: Office Floor Lamp
+      supported_features: 32
+      state: 'on'
+    light.office_ceiling_light:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      device_id: '89'
+      zone_id: '52'
+      icon: mdi:ceiling-light-outline
+      friendly_name: Office Ceiling Light
+      supported_features: 32
+      state: 'off'
   icon: mdi:speedometer-slow
   metadata: {}
 - id: '1726769670875'
@@ -4459,3 +5363,369 @@
   entities: {}
   icon: mdi:bed
   metadata: {}
+- id: '1731265436235'
+  name: Master Bedtime
+  entities:
+    light.solarium:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 9009
+      min_mireds: 111
+      max_mireds: 500
+      effect_list:
+      - Bedtime
+      - Candlelight
+      - Cool white
+      - Cozy
+      - Daylight
+      - Focus
+      - Golden white
+      - Night light
+      - Pulse
+      - Relax
+      - Steampunk
+      - TV time
+      - Wake up
+      - Warm White
+      supported_color_modes:
+      - color_temp
+      - hs
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      entity_id:
+      - light.lion_fountain_light
+      - light.pool_area
+      - light.sitting_area
+      - light.slider_path_lights
+      - light.solarium_couch
+      - light.solarium_path_lights
+      - light.solarium_rope_light
+      - light.solarium_spot_lights
+      - light.stair_path_lights
+      icon: mdi:lightbulb-group
+      friendly_name: Solarium
+      supported_features: 4
+      state: 'off'
+    fan.master_bedroom_ceiling_fan:
+      preset_modes:
+      percentage: 100
+      percentage_step: 25
+      preset_mode:
+      device_id: '91'
+      zone_id: '53'
+      icon: phu:ceiling-fan
+      friendly_name: Master Bedroom Ceiling Fan
+      supported_features: 49
+      state: 'on'
+    cover.bedroom:
+      current_position: 0
+      current_tilt_position: 0
+      room_name: Master
+      device_class: curtain
+      friendly_name: Bedroom Blinds
+      supported_features: 255
+      state: closed
+    light.master_bedroom_sconces:
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      device_id: '4'
+      zone_id: '2'
+      icon: mdi:wall-sconce
+      friendly_name: Master Bedroom Sconces
+      supported_features: 32
+      state: 'off'
+    switch.master_bedroom_fan:
+      assumed_state: true
+      icon: phu:pedastal-fan
+      friendly_name: Floor Fan
+      state: 'on'
+    light.shower_light:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      icon: mdi:light-recessed
+      supported_features: 4
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      rgbw_color:
+      friendly_name: Shower Light
+      state: 'off'
+    light.can_light:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      icon: mdi:light-recessed
+      supported_features: 4
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      rgbw_color:
+      friendly_name: Can Light
+      state: 'off'
+    light.tub_light_left:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      icon: mdi:light-recessed
+      friendly_name: Tub Light Left
+      supported_features: 4
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      rgbw_color:
+      state: 'off'
+    light.tub_light_middle:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      icon: mdi:light-recessed
+      friendly_name: Tub Light Middle
+      supported_features: 4
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      rgbw_color:
+      state: 'off'
+    light.tub_light_right:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Ocean
+      - Romance
+      - Sunset
+      - Party
+      - Fireplace
+      - Cozy
+      - Forest
+      - Pastel Colors
+      - Wake up
+      - Bedtime
+      - Warm White
+      - Daylight
+      - Cool white
+      - Night light
+      - Focus
+      - Relax
+      - True colors
+      - TV time
+      - Plantgrowth
+      - Spring
+      - Summer
+      - Fall
+      - Deepdive
+      - Jungle
+      - Mojito
+      - Club
+      - Christmas
+      - Halloween
+      - Candlelight
+      - Golden white
+      - Pulse
+      - Steampunk
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      icon: mdi:light-recessed
+      friendly_name: Tub Light Right
+      supported_features: 4
+      effect:
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      rgbw_color:
+      state: 'off'
+  icon: mdi:bed-king-outline
+  metadata:
+    light.solarium:
+      entity_only: true
+    cover.bedroom:
+      entity_only: true
+    switch.master_bedroom_fan:
+      entity_only: true

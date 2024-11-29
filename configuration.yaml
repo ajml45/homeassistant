@@ -23,6 +23,33 @@ input_boolean:
   feed_fish_reminder_color_change:
     name: Feed Fish Reminder Color Change
     initial: off
+  charlotte_wakeup:
+    name: Wake-Up
+    initial: on
+  charlotte_breakfast:
+    name: Eat Breakfast
+    initial: on
+  charlotte_dressed:
+    name: Get Dressed
+    initial: on
+  charlotte_brush:
+    name: Brush Teeth
+    initial: on
+  charlotte_ballet:
+    name: Ballet Bag
+    initial: off
+  henry_wakeup:
+    name: Wake-Up
+    initial: on
+  henry_breakfast:
+    name: Eat Breakfast
+    initial: on
+  henry_dressed:
+    name: Get Dressed
+    initial: on
+  henry_brush:
+    name: Brush Teeth
+    initial: on
 
 
 #http:
@@ -38,8 +65,8 @@ input_boolean:
 #    scan_interval: 21600
 
 group:
-  household:
-    name: Household
+  family:
+    name: Family
     all: false
     entities:
       - person.andrew
@@ -232,3 +259,4 @@ input_select:
       # Add more scenes from your scenes.yaml
     initial: Wake Up
     icon: mdi:palette
+

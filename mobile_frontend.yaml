@@ -1654,6 +1654,48 @@ views:
                     :host {
                       --mdc-icon-size: 24px important!;
                       height: 80px;
+          - type: horizontal-stack
+            cards:
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: navigate
+                  navigation_path: '#kids_school'
+                icon: mdi:school-outline
+                hold_action:
+                  action: navigate
+                  navigation_path: ''
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: navigate
+                  navigation_path: /mobile-rooms/family
+                icon: mdi:human-male-female-child
+                hold_action:
+                  action: navigate
+                  navigation_path: /mobile-rooms/cameras
+                card_mod:
+                  style: |
+                    :host {
+                      --mdc-icon-size: 24px important!;
+                      height: 80px;
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: navigate
+                  navigation_path: /config
+                icon: mdi:cog-outline
+                hold_action:
+                  action: navigate
+                  navigation_path: ''
+                card_mod:
+                  style: |
+                    :host {
+                      --mdc-icon-size: 24px important!;
+                      height: 80px;
         view_layout:
           grid-area: rooms
       - type: vertical-stack
@@ -3121,6 +3163,357 @@ views:
                     secondary_info: last-triggered
                     name: Lights Off
                     icon: mdi:lightbulb-group-off-outline
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: '#kids_school'
+            name: Kids School
+            icon: mdi:school-outline
+            is_sidebar_hidden: false
+            margin: 8px
+            back_open: true
+            margin_top_mobile: '-56px'
+            auto_close: '120000'
+            bg_opacity: 100
+            bg_blur: 85
+            bg_color: '#242e42'
+            show_header: true
+          - type: horizontal-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: separator
+                name: Charlotte
+                styles: |
+                  h4 {
+                    text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                  }
+
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:looks
+              - type: custom:bubble-card
+                card_type: separator
+                name: Henry
+                styles: |
+                  h4 {
+                    text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                  }
+
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:police-badge-outline
+          - type: horizontal-stack
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.charlotte_wakeup
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Wake Up
+                      icon: mdi:alarm
+                      tap_action:
+                        action: call-service
+                        service: input_boolean.turn_off
+                        target:
+                          entity_id:
+                            - input_boolean.charlotte_wakeup
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #FDE2E6;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: rebeccapurple;
+                            --paper-item-icon-color: rebecaapurple;
+                            height: 90px!important;
+                          }      
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.charlotte_breakfast
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Eat Breakfast
+                      icon: mdi:silverware-fork-knife
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.charlotte_breakfast
+                        perform_action: input_boolean.turn_off
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #FDE2E6;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: rebeccapurple;
+                            --paper-item-icon-color: rebecaapurple;
+                            height: 90px!important;
+                          }      
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.charlotte_dressed
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Get Dressed
+                      icon: mdi:hanger
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.charlotte_dressed
+                        perform_action: input_boolean.turn_off
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #FDE2E6;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: rebeccapurple;
+                            --paper-item-icon-color: rebecaapurple;
+                            height: 90px!important;
+                          }                
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.charlotte_brush
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Brush Teeth
+                      icon: mdi:toothbrush
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.charlotte_brush
+                        perform_action: input_boolean.turn_off
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #FDE2E6;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: rebeccapurple;
+                            --paper-item-icon-color: rebecaapurple;
+                            height: 90px!important;
+                          }      
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.charlotte_ballet
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Ballet Bag
+                      icon: mdi:shoe-ballet
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.charlotte_ballet
+                        perform_action: input_boolean.turn_off
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #FDE2E6;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: rebeccapurple;
+                            --paper-item-icon-color: rebecaapurple;
+                            height: 90px!important;
+                          }      
+                  - type: custom:bubble-card
+                    card_type: separator
+                    name: Today's Schedule
+                    styles: |
+                      h4 {
+                        text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                      }
+
+                      ha-card div div div:nth-child(2) {
+                            height: 5px!important;
+                      }
+                    icon: mdi:calendar
+                  - type: custom:atomic-calendar-revive
+                    enableModeChange: true
+                    entities:
+                      - entity: calendar.charlotte_daily_schedule
+                        name: Charlotte daily schedule
+                        maxDaysToShow: 1
+                        startDaysAhead: 0
+                        showDate: false
+                        showMonth: false
+                        showWeekDay: false
+                        dateFormat: dddd, MMMM D
+                        hoursFormat: 12h
+                        showDescription: false
+                        showLocation: false
+                        showCurrentEventLine: true
+                        showProgressBar: false
+                        showNoEventsForToday: true
+                    showDeclined: false
+                    hideFinishedEvents: false
+                    showDate: false
+                    compactMode: false
+                    showAllDayEvents: false
+                    allDayBottom: false
+                    offsetHeaderDate: false
+                    showDescription: false
+                    showMonth: false
+                    showDatePerEvent: false
+                    showEventDate: false
+                  - type: custom:bubble-card
+                    card_type: separator
+                    name: Today's Lunch
+                    styles: |
+                      h4 {
+                        text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                      }
+
+                      ha-card div div div:nth-child(2) {
+                            height: 5px!important;
+                      }
+                    icon: mdi:silverware-fork-knife
+              - type: vertical-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.henry_wakeup
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Wake Up
+                      icon: mdi:alarm
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.henry_wakeup
+                        perform_action: input_boolean.turn_off
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #ced8df;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: #242e42;
+                            --paper-item-icon-color: #242e42;
+                            height: 90px!important;
+                          }  
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.henry_breakfast
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Eat Breakfast
+                      icon: mdi:silverware-fork-knife
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.henry_breakfast
+                        perform_action: input_boolean.turn_off
+                        data: {}
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #ced8df;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: #242e42;
+                            --paper-item-icon-color: #242e42;
+                            height: 90px!important;
+                          }  
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.henry_dressed
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Get Dressed
+                      icon: mdi:hanger
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.henry_dressed
+                        perform_action: input_boolean.turn_off
+                        data: {}
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #ced8df;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: #242e42;
+                            --paper-item-icon-color: #242e42;
+                            height: 90px!important;
+                          }  
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.henry_brush
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Brush Teeth
+                      icon: mdi:toothbrush
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.henry_brush
+                        perform_action: input_boolean.turn_off
+                        data: {}
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #ced8df;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: #242e42;
+                            --paper-item-icon-color: #242e42;
+                            height: 90px!important;
+                          }  
+                  - type: custom:bubble-card
+                    card_type: separator
+                    styles: |
+                      h4 {
+                        text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                      }
+
+                      ha-card div div div:nth-child(2) {
+                            height: 5px!important;
+                      }
+                    icon: ''
+                    name: Other Things?
+        title: Kids School
   - subview: true
     title: Family
     path: family
@@ -3776,115 +4169,6 @@ views:
                   - media_player.solarium_sonos
             mediaBrowserTitlesToIgnore:
               - My Media
-  - title: Vacuums
-    path: vacuums
-    subview: true
-    icon: mdi:robot-vacuum-variant
-    badges: []
-    cards:
-      - type: vertical-stack
-        cards:
-          - type: horizontal-stack
-            cards:
-              - type: custom:bubble-card
-                card_type: empty-column
-              - type: custom:bubble-card
-                card_type: empty-column
-              - type: custom:bubble-card
-                card_type: empty-column
-              - show_name: true
-                show_icon: false
-                name: Back
-                type: button
-                tap_action:
-                  action: navigate
-                  navigation_path: /mobile-rooms/
-                hold_action:
-                  action: navigate
-                  navigation_path: /mobile-rooms/
-                card_mod:
-                  style: |
-                    :host {
-                      --mdc-icon-size: 24px important!;
-                      height: 40px;
-                    }
-                    ha-card {
-                      font-size: 14px;
-                      font-weight: bold;
-                    }
-          - type: custom:bubble-card
-            card_type: separator
-            name: Main Floor
-            styles: |
-              h4 {
-                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-              }
-              .separator-container div:last-child {
-                  background-color: #424242 !important;
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            icon: mdi:sofa
-          - type: custom:mushroom-vacuum-card
-            entity: vacuum.dusty_jr
-            layout: vertical
-            icon_animation: true
-            fill_container: false
-            commands:
-              - start_pause
-              - stop
-              - locate
-              - return_home
-            card_mod:
-              style: |
-                ha-card {
-                    background-color: #242e42 !important; 
-                }
-          - type: custom:mushroom-vacuum-card
-            entity: vacuum.cleanopatra
-            layout: vertical
-            icon_animation: true
-            fill_container: false
-            commands:
-              - start_pause
-              - stop
-              - locate
-              - return_home
-            card_mod:
-              style: |
-                ha-card {
-                    background-color: #242e42 !important; 
-                }
-          - type: custom:bubble-card
-            card_type: separator
-            name: Upstairs
-            styles: |
-              h4 {
-                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-              }
-              .separator-container div:last-child {
-                  background-color: #424242 !important;
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            icon: mdi:bed
-          - type: custom:mushroom-vacuum-card
-            entity: vacuum.jar_jar
-            layout: vertical
-            icon_animation: true
-            fill_container: false
-            commands:
-              - start_pause
-              - stop
-              - locate
-              - return_home
-            icon: mdi:robot-vacuum-variant
-            card_mod:
-              style: |
-                ha-card {
-                    background-color: #242e42 !important; 
   - subview: true
     title: Blinds
     path: blinds
@@ -4032,10 +4316,10 @@ views:
                           transition: 0s;
                         }
                 alignment: center
-  - title: Climate
-    path: climate
-    icon: phu:thermostat
+  - title: Vacuums
+    path: vacuums
     subview: true
+    icon: mdi:robot-vacuum-variant
     badges: []
     cards:
       - type: vertical-stack
@@ -4068,81 +4352,79 @@ views:
                       font-size: 14px;
                       font-weight: bold;
                     }
-          - type: custom:mushroom-climate-card
-            entity: climate.kitchen
+          - type: custom:bubble-card
+            card_type: separator
+            name: Main Floor
+            styles: |
+              h4 {
+                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+              }
+              .separator-container div:last-child {
+                  background-color: #424242 !important;
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            icon: mdi:sofa
+          - type: custom:mushroom-vacuum-card
+            entity: vacuum.dusty_jr
+            layout: vertical
+            icon_animation: true
             fill_container: false
-            hvac_modes: []
-            show_temperature_control: true
-            layout: horizontal
-            tap_action:
-              action: more-info
-            hold_action:
-              action: more-info
-            double_tap_action:
-              action: more-info
-            icon_type: none
+            commands:
+              - start_pause
+              - stop
+              - locate
+              - return_home
             card_mod:
               style: |
                 ha-card {
-                    background:
-                      {% if state_attr('climate.kitchen', 'hvac_action') == 'cooling' %}
-                      linear-gradient(45deg, rgba(0,46,111,1), rgba(159,204,250,1))
-                      {% elif state_attr('climate.kitchen', 'hvac_action') == 'heating' %}
-                      linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1))
-                      {% elif state_attr('climate.kitchen', 'preset_mode') == 'eco' %}
-                      linear-gradient(45deg, rgba(34,139,34,1), rgba(50,205,50,1)) 
-                      {% endif %};
+                    background-color: #242e42 !important; 
                 }
-          - type: custom:mushroom-climate-card
-            entity: climate.upstairs
+          - type: custom:mushroom-vacuum-card
+            entity: vacuum.cleanopatra
+            layout: vertical
+            icon_animation: true
             fill_container: false
-            hvac_modes: []
-            show_temperature_control: true
-            layout: horizontal
-            tap_action:
-              action: more-info
-            hold_action:
-              action: more-info
-            double_tap_action:
-              action: more-info
-            icon_type: none
+            commands:
+              - start_pause
+              - stop
+              - locate
+              - return_home
             card_mod:
               style: |
                 ha-card {
-                    background:
-                      {% if state_attr('climate.upstairs', 'hvac_action') == 'cooling' %}
-                      linear-gradient(45deg, rgba(0,46,111,1), rgba(159,204,250,1))
-                      {% elif state_attr('climate.upstairs', 'hvac_action') == 'heating' %}
-                      linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1))
-                      {% elif state_attr('climate.upstairs', 'preset_mode') == 'eco' %}
-                      linear-gradient(45deg, rgba(32,64,42,1), rgba(50,205,50,1)) 
-                      {% endif %};
+                    background-color: #242e42 !important; 
                 }
-          - type: custom:mushroom-climate-card
-            entity: climate.solarium
+          - type: custom:bubble-card
+            card_type: separator
+            name: Upstairs
+            styles: |
+              h4 {
+                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+              }
+              .separator-container div:last-child {
+                  background-color: #424242 !important;
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            icon: mdi:bed
+          - type: custom:mushroom-vacuum-card
+            entity: vacuum.jar_jar
+            layout: vertical
+            icon_animation: true
             fill_container: false
-            hvac_modes: []
-            show_temperature_control: true
-            layout: horizontal
-            tap_action:
-              action: more-info
-            hold_action:
-              action: more-info
-            double_tap_action:
-              action: more-info
-            icon_type: none
+            commands:
+              - start_pause
+              - stop
+              - locate
+              - return_home
+            icon: mdi:robot-vacuum-variant
             card_mod:
               style: |
                 ha-card {
-                    background:
-                      {% if state_attr('climate.solarium', 'hvac_action') == 'cooling' %}
-                      linear-gradient(45deg, rgba(0,46,111,1), rgba(159,204,250,1))
-                      {% elif state_attr('climate.solarium', 'hvac_action') == 'heating' %}
-                      linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1))
-                      {% elif state_attr('climate.solarium', 'preset_mode') == 'eco' %}
-                      linear-gradient(45deg, rgba(34,64,42,1), rgba(50,205,50,.3)) 
-                      {% endif %};
-                }
+                    background-color: #242e42 !important; 
   - subview: true
     title: IT
     path: it
@@ -4593,9 +4875,9 @@ views:
                 name: HACS
                 secondary_info: last-updated
             title: Sensor
-  - title: Mail
-    path: mail
-    icon: mdi:mail
+  - title: Climate
+    path: climate
+    icon: phu:thermostat
     subview: true
     badges: []
     cards:
@@ -4629,54 +4911,81 @@ views:
                       font-size: 14px;
                       font-weight: bold;
                     }
-          - type: custom:bubble-card
-            card_type: separator
-            icon: mdi:mail
-            styles: |
-              h4 {
-                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-              }
-              .separator-container div:last-child {
-                  background-color: #424242 !important;
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Today's Mail
-          - type: custom:mail-and-packages-card
-            details: true
-            image: false
-            gif_sensor: gif
-            updated: sensor.mail_updated
-            usps_mail: sensor.mail_usps_mail
-            camera: true
-            camera_entity: camera.mail_usps_camera
-          - type: custom:bubble-card
-            card_type: separator
-            icon: mdi:truck-delivery
-            styles: |
-              h4 {
-                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-              }
-              .separator-container div:last-child {
-                  background-color: #424242 !important;
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Today's Packages
-          - type: custom:mail-and-packages-card
-            details: true
-            image: false
-            camera_entity: camera.mail_amazon_delivery_camera
-            amazon_packages: sensor.mail_amazon_packages
-            usps_packages: sensor.mail_usps_packages
-            ups_packages: sensor.mail_ups_packages
-            fedex_packages: sensor.mail_fedex_packages
-            updated: sensor.mail_updated
-            packages_in_transit: sensor.mail_usps_delivering
-            packages_delivered: sensor.mail_amazon_packages_delivered
-            deliveries_message: camera.mail_amazon_delivery_camera
+          - type: custom:mushroom-climate-card
+            entity: climate.kitchen
+            fill_container: false
+            hvac_modes: []
+            show_temperature_control: true
+            layout: horizontal
+            tap_action:
+              action: more-info
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+            icon_type: none
+            card_mod:
+              style: |
+                ha-card {
+                    background:
+                      {% if state_attr('climate.kitchen', 'hvac_action') == 'cooling' %}
+                      linear-gradient(45deg, rgba(0,46,111,1), rgba(159,204,250,1))
+                      {% elif state_attr('climate.kitchen', 'hvac_action') == 'heating' %}
+                      linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1))
+                      {% elif state_attr('climate.kitchen', 'preset_mode') == 'eco' %}
+                      linear-gradient(45deg, rgba(34,139,34,1), rgba(50,205,50,1)) 
+                      {% endif %};
+                }
+          - type: custom:mushroom-climate-card
+            entity: climate.upstairs
+            fill_container: false
+            hvac_modes: []
+            show_temperature_control: true
+            layout: horizontal
+            tap_action:
+              action: more-info
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+            icon_type: none
+            card_mod:
+              style: |
+                ha-card {
+                    background:
+                      {% if state_attr('climate.upstairs', 'hvac_action') == 'cooling' %}
+                      linear-gradient(45deg, rgba(0,46,111,1), rgba(159,204,250,1))
+                      {% elif state_attr('climate.upstairs', 'hvac_action') == 'heating' %}
+                      linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1))
+                      {% elif state_attr('climate.upstairs', 'preset_mode') == 'eco' %}
+                      linear-gradient(45deg, rgba(32,64,42,1), rgba(50,205,50,1)) 
+                      {% endif %};
+                }
+          - type: custom:mushroom-climate-card
+            entity: climate.solarium
+            fill_container: false
+            hvac_modes: []
+            show_temperature_control: true
+            layout: horizontal
+            tap_action:
+              action: more-info
+            hold_action:
+              action: more-info
+            double_tap_action:
+              action: more-info
+            icon_type: none
+            card_mod:
+              style: |
+                ha-card {
+                    background:
+                      {% if state_attr('climate.solarium', 'hvac_action') == 'cooling' %}
+                      linear-gradient(45deg, rgba(0,46,111,1), rgba(159,204,250,1))
+                      {% elif state_attr('climate.solarium', 'hvac_action') == 'heating' %}
+                      linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1))
+                      {% elif state_attr('climate.solarium', 'preset_mode') == 'eco' %}
+                      linear-gradient(45deg, rgba(34,64,42,1), rgba(50,205,50,.3)) 
+                      {% endif %};
+                }
   - title: Cameras
     path: cameras
     icon: phu:arlo-cam
@@ -5009,4 +5318,88 @@ views:
                 entity: alarm_control_panel.aarlo_isaac_lucas
                 view_layout:
                   grid-area: panel
+  - title: Mail
+    path: mail
+    icon: mdi:mail
+    subview: true
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: empty-column
+              - type: custom:bubble-card
+                card_type: empty-column
+              - type: custom:bubble-card
+                card_type: empty-column
+              - show_name: true
+                show_icon: false
+                name: Back
+                type: button
+                tap_action:
+                  action: navigate
+                  navigation_path: /mobile-rooms/
+                hold_action:
+                  action: navigate
+                  navigation_path: /mobile-rooms/
+                card_mod:
+                  style: |
+                    :host {
+                      --mdc-icon-size: 24px important!;
+                      height: 40px;
+                    }
+                    ha-card {
+                      font-size: 14px;
+                      font-weight: bold;
+                    }
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:mail
+            styles: |
+              h4 {
+                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+              }
+              .separator-container div:last-child {
+                  background-color: #424242 !important;
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            name: Today's Mail
+          - type: custom:mail-and-packages-card
+            details: true
+            image: false
+            gif_sensor: gif
+            updated: sensor.mail_updated
+            usps_mail: sensor.mail_usps_mail
+            camera: true
+            camera_entity: camera.mail_usps_camera
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:truck-delivery
+            styles: |
+              h4 {
+                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+              }
+              .separator-container div:last-child {
+                  background-color: #424242 !important;
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            name: Today's Packages
+          - type: custom:mail-and-packages-card
+            details: true
+            image: false
+            camera_entity: camera.mail_amazon_delivery_camera
+            amazon_packages: sensor.mail_amazon_packages
+            usps_packages: sensor.mail_usps_packages
+            ups_packages: sensor.mail_ups_packages
+            fedex_packages: sensor.mail_fedex_packages
+            updated: sensor.mail_updated
+            packages_in_transit: sensor.mail_usps_delivering
+            packages_delivered: sensor.mail_amazon_packages_delivered
+            deliveries_message: camera.mail_amazon_delivery_camera
 title: Mobile

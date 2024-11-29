@@ -4415,6 +4415,359 @@ views:
         cards:
           - type: custom:bubble-card
             card_type: pop-up
+            hash: '#kids_school'
+            name: Kids School
+            icon: mdi:school-outline
+            is_sidebar_hidden: false
+            margin_top_mobile: 0px
+            margin: 0px
+            back_open: true
+            margin_top_desktop: '-44px'
+            width_desktop: 900px
+            auto_close: '120000'
+            bg_opacity: 100
+            bg_blur: 85
+            bg_color: '#242e42'
+            show_header: true
+          - type: horizontal-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: separator
+                name: Charlotte
+                styles: |
+                  h4 {
+                    text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                  }
+
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:looks
+              - type: custom:bubble-card
+                card_type: separator
+                name: Henry
+                styles: |
+                  h4 {
+                    text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                  }
+
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:police-badge-outline
+          - type: horizontal-stack
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.charlotte_wakeup
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Wake Up
+                      icon: mdi:alarm
+                      tap_action:
+                        action: call-service
+                        service: input_boolean.turn_off
+                        target:
+                          entity_id:
+                            - input_boolean.charlotte_wakeup
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #FDE2E6;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: rebeccapurple;
+                            --paper-item-icon-color: rebecaapurple;
+                            height: 90px!important;
+                          }      
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.charlotte_breakfast
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Eat Breakfast
+                      icon: mdi:silverware-fork-knife
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.charlotte_breakfast
+                        perform_action: input_boolean.turn_off
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #FDE2E6;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: rebeccapurple;
+                            --paper-item-icon-color: rebecaapurple;
+                            height: 90px!important;
+                          }      
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.charlotte_dressed
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Get Dressed
+                      icon: mdi:hanger
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.charlotte_dressed
+                        perform_action: input_boolean.turn_off
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #FDE2E6;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: rebeccapurple;
+                            --paper-item-icon-color: rebecaapurple;
+                            height: 90px!important;
+                          }                
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.charlotte_brush
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Brush Teeth
+                      icon: mdi:toothbrush
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.charlotte_brush
+                        perform_action: input_boolean.turn_off
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #FDE2E6;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: rebeccapurple;
+                            --paper-item-icon-color: rebecaapurple;
+                            height: 90px!important;
+                          }      
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.charlotte_ballet
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Ballet Bag
+                      icon: mdi:shoe-ballet
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.charlotte_ballet
+                        perform_action: input_boolean.turn_off
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #FDE2E6;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: rebeccapurple;
+                            --paper-item-icon-color: rebecaapurple;
+                            height: 90px!important;
+                          }      
+                  - type: custom:bubble-card
+                    card_type: separator
+                    name: Today's Schedule
+                    styles: |
+                      h4 {
+                        text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                      }
+
+                      ha-card div div div:nth-child(2) {
+                            height: 5px!important;
+                      }
+                    icon: mdi:calendar
+                  - type: custom:atomic-calendar-revive
+                    enableModeChange: true
+                    entities:
+                      - entity: calendar.charlotte_daily_schedule
+                        name: Charlotte daily schedule
+                        maxDaysToShow: 1
+                        startDaysAhead: 0
+                        showDate: false
+                        showMonth: false
+                        showWeekDay: false
+                        dateFormat: dddd, MMMM D
+                        hoursFormat: 12h
+                        showDescription: false
+                        showLocation: false
+                        showCurrentEventLine: true
+                        showProgressBar: false
+                        showNoEventsForToday: true
+                    showDeclined: false
+                    hideFinishedEvents: false
+                    showDate: false
+                    compactMode: false
+                    showAllDayEvents: false
+                    allDayBottom: false
+                    offsetHeaderDate: false
+                    showDescription: false
+                    showMonth: false
+                    showDatePerEvent: false
+                    showEventDate: false
+                  - type: custom:bubble-card
+                    card_type: separator
+                    name: Today's Lunch
+                    styles: |
+                      h4 {
+                        text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                      }
+
+                      ha-card div div div:nth-child(2) {
+                            height: 5px!important;
+                      }
+                    icon: mdi:silverware-fork-knife
+              - type: vertical-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.henry_wakeup
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Wake Up
+                      icon: mdi:alarm
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.henry_wakeup
+                        perform_action: input_boolean.turn_off
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #ced8df;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: #242e42;
+                            --paper-item-icon-color: #242e42;
+                            height: 90px!important;
+                          }  
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.henry_breakfast
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Eat Breakfast
+                      icon: mdi:silverware-fork-knife
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.henry_breakfast
+                        perform_action: input_boolean.turn_off
+                        data: {}
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #ced8df;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: #242e42;
+                            --paper-item-icon-color: #242e42;
+                            height: 90px!important;
+                          }  
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.henry_dressed
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Get Dressed
+                      icon: mdi:hanger
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.henry_dressed
+                        perform_action: input_boolean.turn_off
+                        data: {}
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #ced8df;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: #242e42;
+                            --paper-item-icon-color: #242e42;
+                            height: 90px!important;
+                          }  
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.henry_brush
+                        state: 'on'
+                    card:
+                      show_name: true
+                      show_icon: true
+                      type: button
+                      name: Brush Teeth
+                      icon: mdi:toothbrush
+                      tap_action:
+                        action: perform-action
+                        target:
+                          entity_id: input_boolean.henry_brush
+                        perform_action: input_boolean.turn_off
+                        data: {}
+                      card_mod:
+                        style: |
+                          ha-card {
+                            background-color: #ced8df;
+                            border: 1px solid var(--primary-text-color);
+                            border-radius: 7px;
+                            color: #242e42;
+                            --paper-item-icon-color: #242e42;
+                            height: 90px!important;
+                          }  
+                  - type: custom:bubble-card
+                    card_type: separator
+                    styles: |
+                      h4 {
+                        text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                      }
+
+                      ha-card div div div:nth-child(2) {
+                            height: 5px!important;
+                      }
+                    icon: ''
+                    name: Other Things?
+        title: Kids School
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
             hash: '#upstairs'
             name: Upstairs
             icon: mdi:sleep
@@ -5224,7 +5577,6 @@ views:
                     card_layout: large
                   - type: custom:bubble-card
                     card_type: button
-                    button_type: custom
                     entity: scene.morning
                     name: Wake Up
                     tap_action:
@@ -5232,12 +5584,14 @@ views:
                       service: scene.turn_on
                       service_data:
                         entity_id: scene.morning
+                      target: {}
                     button_action:
                       tap_action:
                         action: call-service
                         service: scene.turn_on
                         service_data:
                           entity_id: scene.morning
+                        target: {}
                     card_layout: large
               - type: horizontal-stack
                 cards:
@@ -5284,52 +5638,50 @@ views:
                     tap_action:
                       action: call-service
                       service: scene.turn_on
-                      target:
-                        entity_id: scene.tv
+                      target: {}
                     button_action:
                       tap_action:
                         action: call-service
                         service: scene.turn_on
-                        target:
-                          entity_id: scene.tv
+                        target: {}
                     entity: scene.tv
                     card_layout: large
                   - type: custom:bubble-card
                     card_type: button
-                    button_type: switch
-                    name: Bedtime
+                    button_type: name
+                    name: Bed Time
+                    icon: mdi:bed
                     tap_action:
                       action: call-service
-                      service: scene.turn_on
+                      service: script.turn_on
                       target:
-                        entity_id: scene.bed_time
+                        entity_id: script.bedtime
                     button_action:
                       tap_action:
                         action: call-service
-                        service: scene.turn_on
+                        service: script.turn_on
                         target:
-                          entity_id: scene.bed_time
-                    entity: scene.bed_time
+                          entity_id: script.bedtime
+                    entity: script.bedtime
                     card_layout: large
               - type: horizontal-stack
                 cards:
                   - type: custom:bubble-card
                     card_type: button
-                    button_type: switch
+                    button_type: name
                     name: Wind Down
                     tap_action:
                       action: call-service
-                      service: scene.turn_on
-                      target:
-                        entity_id: scene.wind_down
+                      service: script.turn_on
+                      target: {}
                     button_action:
                       tap_action:
                         action: call-service
-                        service: scene.turn_on
-                        target:
-                          entity_id: scene.wind_down
-                    entity: scene.wind_down
+                        service: script.turn.on
+                        target: {}
+                    entity: script.bedtime
                     card_layout: large
+                    icon: mdi:gauge-empty
                   - type: custom:bubble-card
                     card_type: button
                     button_type: switch
@@ -5366,7 +5718,7 @@ views:
                         height: 5px!important;
                   }
                 icon: mdi:power-plug
-                card_layout: large
+                card_layout: normal
               - type: horizontal-stack
                 cards:
                   - type: custom:bubble-card
@@ -5374,11 +5726,13 @@ views:
                     entity: switch.charlotte_fan
                     show_state: false
                     card_layout: large
+                    name: Charlotte Room
                   - type: custom:bubble-card
                     card_type: button
                     entity: switch.henry_noise_table
                     show_state: false
                     card_layout: large
+                    name: Henry Room
               - type: horizontal-stack
                 cards:
                   - type: custom:bubble-card
@@ -5388,9 +5742,25 @@ views:
                     card_layout: large
                   - type: custom:bubble-card
                     card_type: button
-                    entity: switch.christmas_lights
                     show_state: false
                     card_layout: large
+                    name: Fish Lights
+                    entity: switch.fish_lights
+              - type: horizontal-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: button
+                    show_state: false
+                    card_layout: large
+                    name: Christmas Inside
+                    entity: switch.christmas_lights_inside
+                    icon: phu:christmas-tree
+                  - type: custom:bubble-card
+                    card_type: button
+                    show_state: false
+                    card_layout: large
+                    name: Christmas Outside
+                    entity: switch.christmas_lights_outside
           - type: vertical-stack
             cards:
               - type: custom:bubble-card
@@ -5410,7 +5780,7 @@ views:
                         height: 5px!important;
                   }
                 icon: phu:vert-blind-open
-                card_layout: large
+                card_layout: normal
               - type: custom:bubble-card
                 card_type: cover
                 entity: cover.back_sliders
@@ -5680,6 +6050,15 @@ views:
                         top: 74%
                         transform: translate(-100%,-50%)
                   image: /local/hass-dryer-card-bg.png
+          - show_name: true
+            show_icon: true
+            type: button
+            tap_action:
+              action: navigate
+              navigation_path: '#kids_school'
+            name: Kids School
+            icon: mdi:school-outline
+            icon_height: 100px
         view_layout:
           grid-area: info
   - title: IT
@@ -6412,3 +6791,12 @@ views:
           - type: custom:bubble-card
             card_type: select
             entity: select.dryer_course_selection
+      - type: entities
+        entities:
+          - entity: sensor.echo_show_next_alarm
+            name: Next Alarm
+          - entity: sensor.echo_show_next_reminder
+            name: Next Reminder
+          - entity: sensor.echo_show_next_timer
+            name: Next Timer
+        title: Echo Show Kitchen

@@ -18,21 +18,6 @@ first_floor_lights_down_5:
       entity_id: light.first_floor_lights
   mode: single
   icon: mdi:minus
-'1697051290158':
-  alias: bruins_home
-  sequence:
-  - service: media_player.select_source
-    data:
-      entity_id: media_player.spotify_mclaughlin_andrew
-      source: Echo Show 15
-  - service: media_player.play_media
-    data:
-      entity_id: media_player.spotify
-      media_content_id: spotify:music:lkay6wSIODb
-      media_content_type: music
-  - service: media_player.media_play
-    data:
-      entity_id: media_player.great_room_sonos
 light_fader:
   alias: Ashley’s Light Fader
   description: 'Fades a lamp over time. If you have any questions or comments about
@@ -1401,7 +1386,7 @@ light_fader:
     action: camera.snapshot
   - data:
       prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Don't describe
+        Your message needs to be short to fit in a phone notification. Dont describe
         stationary objects or buildings.
       image_filename: /media/snapshot.jpg
     response_variable: content
@@ -1433,7 +1418,7 @@ googleai_notify_arlo_driveway:
     action: camera.snapshot
   - data:
       prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Don't describe
+        Your message needs to be short to fit in a phone notification. Dont describe
         stationary objects or buildings.
       image_filename: /media/snapshot.jpg
     response_variable: content
@@ -1444,7 +1429,7 @@ googleai_notify_arlo_driveway:
     domain: mobile_app
     type: notify
     message: '{{ content }}'
-    title: Arlo Driveway Motion
+    title: 'Arlo Driveway Motion'
   - stop: end
     response_variable: content
   fields:
@@ -1476,7 +1461,7 @@ googleai_notify_arlo_street:
     action: camera.snapshot
   - data:
       prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Don't describe
+        Your message needs to be short to fit in a phone notification. Dont describe
         stationary objects or buildings.
       image_filename: /media/snapshot.jpg
     response_variable: content
@@ -1519,7 +1504,7 @@ spoken_googleai_arlo_street:
     action: camera.snapshot
   - data:
       prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Don't describe
+        Your message needs to be short to fit in a phone notification. Dont describe
         stationary objects or buildings.
       image_filename: /media/snapshot.jpg
     response_variable: content
@@ -1569,7 +1554,7 @@ googleai_notify_arlo_backyard:
       entity_id: camera.aarlo_backyard
   - data:
       prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Don't describe
+        Your message needs to be short to fit in a phone notification. Dont describe
         stationary objects or buildings.
       image_filename: /media/snapshot.jpg
     response_variable: content
@@ -1614,7 +1599,7 @@ googleai_notify_arlo_basement:
       entity_id: camera.aarlo_basement
   - data:
       prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Don't describe
+        Your message needs to be short to fit in a phone notification. Dont describe
         stationary objects or buildings.
       image_filename: /media/snapshot.jpg
     response_variable: content
@@ -1659,7 +1644,7 @@ googleai_notify_arlo_fish:
       entity_id: camera.aarlo_fish
   - data:
       prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Don't describe
+        Your message needs to be short to fit in a phone notification. Dont describe
         stationary objects or buildings.
       image_filename: /media/snapshot.jpg
     response_variable: content
@@ -1704,7 +1689,7 @@ googleai_notify_arlo_front_door:
       entity_id: camera.aarlo_front_door
   - data:
       prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Don't describe
+        Your message needs to be short to fit in a phone notification. Dont describe
         stationary objects or buildings.
       image_filename: /media/snapshot.jpg
     response_variable: content
@@ -1746,3 +1731,68 @@ find_phone_alert_andrew:
       devicename: ed3d20fadf75198c8be9e0f1740037a8
       command: find
     action: device_tracker.icloud3_update
+bedtime:
+  alias: Bed Time
+  sequence:
+    - condition: state
+      entity_id: light.kitchen
+      state: 'on'
+    - service: light.turn_on
+      target:
+        entity_id: light.kitchen
+      data:
+        brightness_pct: 10
+    - condition: state
+      entity_id: light.great_room
+      state: 'on'
+    - service: light.turn_on
+      target:
+        entity_id: light.great_room
+      data:
+        brightness_pct: 15
+    - condition: state
+      entity_id: light.mudroom
+      state: 'on'
+    - service: light.turn_off
+      target:
+        entity_id: light.mudroom
+    - condition: state
+      entity_id: light.offices
+      state: 'on'
+    - service: light.turn_on
+      target:
+        entity_id: light.offices
+      data:
+        brightness_pct: 15
+    - action: automation.trigger
+      metadata: {}
+      data:
+        skip_condition: false
+      target:
+        entity_id:
+          - automation.charlotte_bedtime_weekday
+          - automation.henry_bedtime_weekday
+charlotte_bedtime_on:
+  alias: Charlotte Bedtime On
+  sequence:
+    - service: light.turn_off
+      target:
+        entity_id: light.charlotte_bedroom_table_lamp
+    - service: switch.turn_on
+      target:
+        entity_id:
+          - switch.charlotte_noise
+          - switch.charlotte_night_light
+          - switch.charlotte_fan
+charlotte_bedtime_off:
+    alias: Charlotte Bedtime Off
+    sequence:
+      - service: switch.turn_off
+        target:
+          entity_id:
+            - switch.charlotte_noise
+            - switch.charlotte_night_light
+            - switch.charlotte_fan
+      - service: light.turn_off
+        target:
+          entity_id: light.charlotte_bedroom_table_lamp
