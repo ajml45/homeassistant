@@ -50,7 +50,66 @@ input_boolean:
   henry_brush:
     name: Brush Teeth
     initial: on
+  charlotte_room_status:
+    name: Charlotte Room Status 
+    initial: off
+  henry_room_status:
+    name: Henry Room Status
+    initial: off
+  guests_present:
+    name: Guests
+    initial: off
+  vacation:
+    name: Vacation
+    initial: off
 
+switch:
+  - platform: template
+    switches:
+      charlotte_bedtime:
+        friendly_name: "Charlotte Bedtime"
+        value_template: "{{ is_state('input_boolean.charlotte_room_status', 'on') }}"
+        turn_on:
+          - service: switch.turn_on
+            entity_id:
+              - switch.charlotte_noise_machine
+              - switch.charlotte_fan
+          - service: light.turn_off
+            entity_id: light.charlotte_bedroom_light
+          - service: input_boolean.turn_on
+            entity_id: input_boolean.charlotte_room_status
+        turn_off:
+          - service: switch.turn_off
+            entity_id:
+              - switch.charlotte_noise_machine
+              - switch.charlotte_fan
+          - service: light.turn_off
+            entity_id: light.charlotte_bedroom_light
+          - service: input_boolean.turn_off
+            entity_id: input_boolean.charlotte_room_status
+  - platform: template
+    switches:
+      henry_bedtime:
+        friendly_name: "Henry Bedtime"
+        value_template: "{{ is_state('input_boolean.henry_room_status', 'on') }}"
+        turn_on:
+          - service: switch.turn_on
+            entity_id:
+              - switch.henry_noise_floor
+              - switch.henry_noise_table
+          - service: light.turn_off
+            entity_id: light.henry_bedroom_table_lamp
+          - service: input_boolean.turn_on
+            entity_id: input_boolean.henry_room_status
+        turn_off:
+          - service: switch.turn_off
+            entity_id:
+              - switch.henry_noise_floor
+              - switch.henry_noise_table
+          - service: light.turn_off
+            entity_id: light.henry_bedroom_table_lamp
+          - service: input_boolean.turn_off
+            entity_id: input_boolean.henry_room_status
 
 #http:
 #  ssl_certificate: /ssl/fullchain.pem
@@ -165,7 +224,8 @@ template:
         {% set lights = [
             states('light.front_foyer_upstairs_hallway_lights'),
             states('light.charlotte_bedroom_table_lamp'),
-            states('light.henry_bedroom_table_lamp')
+            states('light.henry_bedroom_table_lamp'),
+            states('light.upstairs_bathroom_light')
             ] %}
         {{ lights | select('eq', 'on') | list | count }}
     - name: "Basement Lights On"
@@ -259,4 +319,6 @@ input_select:
       # Add more scenes from your scenes.yaml
     initial: Wake Up
     icon: mdi:palette
+
+
 

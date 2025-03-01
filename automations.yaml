@@ -15,20 +15,21 @@
 - id: '1675798534763'
   alias: Close All Blinds
   description: '30 min after sunset closes all blinds '
-  trigger:
-  - platform: sun
-    event: sunset
-    offset: 00:30:00
-  condition: []
-  action:
-  - service: scene.turn_on
-    target:
+  triggers:
+  - trigger: time
+    at: '19:30:00'
+  conditions: []
+  actions:
+  - target:
       entity_id: scene.close_blinds
     metadata: {}
-  - service: scene.turn_on
-    target:
+    action: scene.turn_on
+    data: {}
+  - target:
       entity_id: scene.close_blinds_bedroom
     metadata: {}
+    action: scene.turn_on
+    data: {}
   mode: single
 - id: '1683820642231'
   alias: Blinds - Great Room Open
@@ -73,15 +74,19 @@
 - id: '1684067381055'
   alias: Blinds - Bedroom Partial
   description: 7am
-  trigger:
-  - platform: time
-    at: 07:00:00
-  condition: []
-  action:
-  - service: scene.turn_on
-    target:
+  triggers:
+  - at: 07:00:00
+    trigger: time
+  conditions:
+  - condition: state
+    entity_id: cover.bedroom
+    state: closed
+  actions:
+  - target:
       entity_id: scene.blinds_bedroom_partial
     metadata: {}
+    action: scene.turn_on
+    data: {}
   mode: single
 - id: '1704823288280'
   alias: Kitchen Light Fade
@@ -1413,12 +1418,13 @@
   mode: single
 - id: '1732739136261'
   alias: Christmas Lights Inside Off Away
-  description: Turns off the inside Christmas lights when 0 people are home for more than 3 minutes.
+  description: Turns off the inside Christmas lights when 0 people are home for more
+    than 3 minutes.
   trigger:
   - platform: state
     entity_id: group.family
-    from: "home"
-    to: "not_home"
+    from: home
+    to: not_home
     for:
       minutes: 3
   condition: []
@@ -1433,14 +1439,14 @@
   trigger:
   - platform: state
     entity_id: group.family
-    from: "not_home"
-    to: "home"
+    from: not_home
+    to: home
     for:
       minutes: 2
   condition:
   - condition: time
     before: '20:45:00'
-    after: '06:30:00'
+    after: 06:30:00
   action:
   - service: switch.turn_on
     target:

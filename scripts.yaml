@@ -1409,6 +1409,7 @@ light_fader:
     response_variable: content
   mode: single
   icon: mdi:message-image
+
 googleai_notify_arlo_driveway:
   alias: GoogleAI Notify Arlo Driveway
   sequence:
@@ -1429,7 +1430,7 @@ googleai_notify_arlo_driveway:
     domain: mobile_app
     type: notify
     message: '{{ content }}'
-    title: 'Arlo Driveway Motion'
+    title: Arlo Driveway Motion
   - stop: end
     response_variable: content
   fields:
@@ -1452,6 +1453,7 @@ googleai_notify_arlo_driveway:
       name: camera
   mode: single
   icon: mdi:message-image
+
 googleai_notify_arlo_street:
   alias: GoogleAI Notify Arlo Street
   sequence:
@@ -1734,65 +1736,107 @@ find_phone_alert_andrew:
 bedtime:
   alias: Bed Time
   sequence:
-    - condition: state
+  - condition: state
+    entity_id: light.kitchen
+    state: 'on'
+  - target:
       entity_id: light.kitchen
-      state: 'on'
-    - service: light.turn_on
-      target:
-        entity_id: light.kitchen
-      data:
-        brightness_pct: 10
-    - condition: state
+    data:
+      brightness_pct: 10
+    action: light.turn_on
+  - condition: state
+    entity_id: light.great_room
+    state: 'on'
+  - target:
       entity_id: light.great_room
-      state: 'on'
-    - service: light.turn_on
-      target:
-        entity_id: light.great_room
-      data:
-        brightness_pct: 15
-    - condition: state
+    data:
+      brightness_pct: 15
+    action: light.turn_on
+  - condition: state
+    entity_id: light.mudroom
+    state: 'on'
+  - target:
       entity_id: light.mudroom
-      state: 'on'
-    - service: light.turn_off
-      target:
-        entity_id: light.mudroom
-    - condition: state
+    action: light.turn_off
+    data: {}
+  - condition: state
+    entity_id: light.offices
+    state: 'on'
+  - target:
       entity_id: light.offices
-      state: 'on'
-    - service: light.turn_on
-      target:
-        entity_id: light.offices
-      data:
-        brightness_pct: 15
-    - action: automation.trigger
-      metadata: {}
-      data:
-        skip_condition: false
-      target:
-        entity_id:
-          - automation.charlotte_bedtime_weekday
-          - automation.henry_bedtime_weekday
+    data:
+      brightness_pct: 15
+    action: light.turn_on
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - script.charlotte_bedtime_on
+      - script.henry_bedtime_on
 charlotte_bedtime_on:
   alias: Charlotte Bedtime On
   sequence:
-    - service: light.turn_off
-      target:
-        entity_id: light.charlotte_bedroom_table_lamp
-    - service: switch.turn_on
-      target:
-        entity_id:
-          - switch.charlotte_noise
-          - switch.charlotte_night_light
-          - switch.charlotte_fan
+  - service: light.turn_off
+    target:
+      entity_id: light.charlotte_bedroom_table_lamp
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.charlotte_noise
+      - switch.charlotte_night_light
+      - switch.charlotte_fan
 charlotte_bedtime_off:
-    alias: Charlotte Bedtime Off
-    sequence:
-      - service: switch.turn_off
-        target:
-          entity_id:
-            - switch.charlotte_noise
-            - switch.charlotte_night_light
-            - switch.charlotte_fan
-      - service: light.turn_off
-        target:
-          entity_id: light.charlotte_bedroom_table_lamp
+  alias: Charlotte Bedtime Off
+  sequence:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.charlotte_noise
+      - switch.charlotte_night_light
+      - switch.charlotte_fan
+  - service: light.turn_off
+    target:
+      entity_id: light.charlotte_bedroom_table_lamp
+henry_bedtime_off:
+  alias: Henry Bedtime Off
+  sequence:
+  - target:
+      entity_id:
+      - switch.henry_noise_floor
+      - switch.henry_noise_table
+    action: switch.turn_off
+  - target:
+      entity_id: light.henry_bedroom_table_lamp
+    action: light.turn_off
+  description: ''
+  icon: mdi:hockey-sticks
+henry_bedtime_on:
+  alias: Henry Bedtime On
+  sequence:
+  - target:
+      entity_id: light.henry_bedroom_table_lamp
+    action: light.turn_off
+  - target:
+      entity_id:
+      - switch.henry_noise_floor
+      - switch.henry_noise_table
+    action: switch.turn_on
+  description: ''
+  icon: mdi:hockey-sticks
+morning:
+  alias: Morning
+  sequence:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.morning
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.open_blinds_bedroom
+  description: Calls morning scene and blind open scene (to get around Hunter blind
+    tilt/position issues)
+  icon: mdi:weather-sunset-up
