@@ -41,7 +41,7 @@ This repository contains a custom Home Assistant configuration, including automa
 │   └── ...
 └── README.md                # Documentation for the repository
 
-Description of Key Directories
+**Description of Key Directories**
 automations.yaml – Defines rules for automated actions like adjusting blinds and lights based on time or sun position.
 configuration.yaml – The main configuration file that integrates automations, scripts, scenes, and UI elements.
 mobile.yaml – Defines mobile-friendly UI styles, including typography and colors.
