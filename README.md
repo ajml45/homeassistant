@@ -20,6 +20,7 @@ This repository contains a custom Home Assistant configuration, including automa
 - **[Ashley's Light Fader](https://community.home-assistant.io/t/ashley-s-light-fader-2-0-fade-lights-and-or-color-temperature-with-your-choice-of-easing-curves-including-ease-in-ease-out-and-ease-in-out/584077)** - Gradually fades lights from current level
 
 ## Project Structure
+```plaintext
 .
 ├── automations.yaml         # Automations for blinds, lighting, and routines
 ├── configuration.yaml       # Core Home Assistant configuration, linking automations, scenes, and scripts
