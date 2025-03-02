@@ -41,6 +41,7 @@ This repository contains a custom Home Assistant configuration, including automa
 │   ├── lovelace-card-mod/   # JavaScript for Lovelace UI modifications
 │   └── ...
 └── README.md                # Documentation for the repository
+```
 
 **Description of Key Directories**
 automations.yaml – Defines rules for automated actions like adjusting blinds and lights based on time or sun position.
