@@ -8,7 +8,10 @@ This repository contains a custom Home Assistant configuration, including automa
 - **Templating with Jinja2**: Dynamic values in scripts and automations utilize [Jinja2](https://jinja.palletsprojects.com/en/3.0.x/) for flexible logic ([configuration.yaml](./configuration.yaml)).
 - **Asynchronous Execution**: Home Assistant's support for [async Python integrations](https://docs.python.org/3/library/asyncio.html) is leveraged in scripts for non-blocking execution.
 - **Custom Lovelace UI Enhancements**: Implements [Bubble Card](https://github.com/Clooos/Bubble-Card) for interactive UI elements, including lighting and scene controls ([mobile_frontend.yaml](./mobile_frontend.yaml), [tablet_frontend.yaml](./tablet_frontend.yaml)).
-- **Custom Themes and UI Styling**: Defines and overrides UI styles using YAML, including card backgrounds, typography, and animations ([mobile.yaml](./mobile.yaml), [isaaclucas_kitchen.yaml](./isaaclucas_kitchen.yaml)).
+- **Custom Themes and UI Styling**: Defines and overrides UI styles to match surroundings using YAML, including card backgrounds, typography, and animations ([mobile.yaml](./mobile.yaml), [isaaclucas_kitchen.yaml](./isaaclucas_kitchen.yaml)).
+- **Automations with Sun Triggers**: Uses [Sun Triggers](https://www.home-assistant.io/docs/automation/trigger/#sun-trigger) to adjust blinds and lighting based on sunrise and sunset ([automations.yaml](./automations.yaml)).
+- **Scene Management**: Uses predefined [scenes](https://www.home-assistant.io/integrations/scene/) to set up lighting, climate control, and ambiance ([scenes.yaml](./scenes.yaml)).
+- **Custom Theming**: Defines and overrides UI styles, including card backgrounds, typography, and animations ([themes](./themes)).
 
 ## Noteworthy Libraries and Scripts
 
@@ -24,36 +27,16 @@ This repository contains a custom Home Assistant configuration, including automa
 .
 ├── automations.yaml         # Automations for blinds, lighting, and routines
 ├── configuration.yaml       # Core Home Assistant configuration, linking automations, scenes, and scripts
-├── mobile.yaml              # Theme settings for mobile UI
-├── mobile_frontend.yaml     # Lovelace UI layout for mobile devices
-├── tablet_frontend.yaml     # Lovelace UI layout for tablets
-├── isaaclucas_kitchen.yaml  # Custom theme for kitchen dashboards
 ├── scenes.yaml              # Scene presets for lighting and climate control
 ├── scripts.yaml             # Custom scripts for automation, including light fading
-├── themes/                  # Directory for additional themes
-│   ├── dark_theme.yaml      # Example theme for dark mode
-│   ├── light_theme.yaml     # Example theme for light mode
-│   └── ...
-├── www/                     # Web assets (images, icons, and frontend scripts)
-│   ├── images/              # Custom images for dashboards
-│   ├── icons/               # Additional UI icons
-│   ├── custom-brand-icons/  # External brand icons for UI
-│   ├── lovelace-card-mod/   # JavaScript for Lovelace UI modifications
-│   └── ...
-└── README.md                # Documentation for the repository
+├── themes/                  # Directory for custom UI themes
+│   ├── mobile.yaml          # Theme settings for mobile UI
+│   ├── isaaclucas_kitchen.yaml  # Custom theme for kitchen dashboard
+│   └── mudroom.yaml         # Custom theme for mobile dashboard
+├── frontends/                # UI Configurations for Home Assistant Dashboard
+│   ├── mobile_frontend.yaml # Lovelace UI layout for mobile devices
+│   ├── tablet_frontend.yaml # Lovelace UI layout for tablets
 ```
-
-**Description of Key Directories**
-automations.yaml – Defines rules for automated actions like adjusting blinds and lights based on time or sun position.
-configuration.yaml – The main configuration file that integrates automations, scripts, scenes, and UI elements.
-mobile.yaml – Defines mobile-friendly UI styles, including typography and colors.
-mobile_frontend.yaml – Custom Lovelace layout for mobile dashboards.
-tablet_frontend.yaml – Dashboard layout optimized for tablet screens.
-isaaclucas_kitchen.yaml – A separate theme for kitchen-specific UI elements.
-scenes.yaml – Stores predefined home automation scenes, such as setting lighting moods.
-scripts.yaml – Contains reusable automation scripts, including complex lighting transitions.
-themes/ – Houses additional theme files for the Home Assistant UI.
-www/ – A public directory for images, custom icons, and JavaScript enhancements.
 
 ## Light Control Info
 The "Main Light" controls most of the lights in the house by creating a single light with <a href="https://github.com/fredck/lightener">Lightener</a>.  Each room of the house has its own light in Lightner that controls all lights in the room.  The main light control is made of up each of those room lights. Need to convert some integrations to MQTT in order to have better control.
