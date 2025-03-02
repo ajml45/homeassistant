@@ -1,6 +1,6 @@
 # Home Assistant Configuration
 
-This repository contains a custom Home Assistant configuration, including automation rules, frontend themes, and custom scripts. It leverages YAML automation, advanced templating, and Home Assistant's extensibility to create an integrated and responsive environment.
+This repository contains a custom [Home Assistant](https://www.home-assistant.io/) configuration, including automation rules, frontend themes, and custom scripts. It leverages YAML automation, advanced templating, and Home Assistant's extensibility to create an integrated and responsive environment.
 
 ## Features Used
 
