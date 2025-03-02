@@ -18,20 +18,40 @@ This repository contains a custom Home Assistant configuration, including automa
 - **[Bubble Card](https://github.com/Clooos/Bubble-Card)** – A Lovelace UI component for interactive elements.
 - **[Roboto](https://fonts.google.com/specimen/Roboto) & [Raleway](https://fonts.google.com/specimen/Raleway)** – Custom fonts applied in mobile and tablet views.
 - **[Ashley's Light Fader](https://community.home-assistant.io/t/ashley-s-light-fader-2-0-fade-lights-and-or-color-temperature-with-your-choice-of-easing-curves-including-ease-in-ease-out-and-ease-in-out/584077)** - Gradually fades lights from current level
+
 ## Project Structure
-
-```plaintext
 .
-├── automations.yaml         # Defines automations for blinds, lighting, and daily routines
-├── configuration.yaml       # Main Home Assistant configuration, linking automations and scripts
-├── mobile.yaml              # Theme and UI settings for mobile interfaces
-├── mobile_frontend.yaml     # Lovelace UI configuration for mobile devices
-├── tablet_frontend.yaml     # Lovelace UI configuration for tablets
+├── automations.yaml         # Automations for blinds, lighting, and routines
+├── configuration.yaml       # Core Home Assistant configuration, linking automations, scenes, and scripts
+├── mobile.yaml              # Theme settings for mobile UI
+├── mobile_frontend.yaml     # Lovelace UI layout for mobile devices
+├── tablet_frontend.yaml     # Lovelace UI layout for tablets
 ├── isaaclucas_kitchen.yaml  # Custom theme for kitchen dashboards
-├── scenes.yaml              # Preset lighting and environment scenes
-├── scripts.yaml             # Reusable automation scripts
+├── scenes.yaml              # Scene presets for lighting and climate control
+├── scripts.yaml             # Custom scripts for automation, including light fading
+├── themes/                  # Directory for additional themes
+│   ├── dark_theme.yaml      # Example theme for dark mode
+│   ├── light_theme.yaml     # Example theme for light mode
+│   └── ...
+├── www/                     # Web assets (images, icons, and frontend scripts)
+│   ├── images/              # Custom images for dashboards
+│   ├── icons/               # Additional UI icons
+│   ├── custom-brand-icons/  # External brand icons for UI
+│   ├── lovelace-card-mod/   # JavaScript for Lovelace UI modifications
+│   └── ...
+└── README.md                # Documentation for the repository
 
-
+Description of Key Directories
+automations.yaml – Defines rules for automated actions like adjusting blinds and lights based on time or sun position.
+configuration.yaml – The main configuration file that integrates automations, scripts, scenes, and UI elements.
+mobile.yaml – Defines mobile-friendly UI styles, including typography and colors.
+mobile_frontend.yaml – Custom Lovelace layout for mobile dashboards.
+tablet_frontend.yaml – Dashboard layout optimized for tablet screens.
+isaaclucas_kitchen.yaml – A separate theme for kitchen-specific UI elements.
+scenes.yaml – Stores predefined home automation scenes, such as setting lighting moods.
+scripts.yaml – Contains reusable automation scripts, including complex lighting transitions.
+themes/ – Houses additional theme files for the Home Assistant UI.
+www/ – A public directory for images, custom icons, and JavaScript enhancements.
 
 ## Light Control Info
 The "Main Light" controls most of the lights in the house by creating a single light with <a href="https://github.com/fredck/lightener">Lightener</a>.  Each room of the house has its own light in Lightner that controls all lights in the room.  The main light control is made of up each of those room lights. Need to convert some integrations to MQTT in order to have better control.
