@@ -1,14 +1,40 @@
+# Home Assistant Configuration
+
+This repository contains a custom Home Assistant configuration, including automation rules, frontend themes, and custom scripts. It leverages YAML automation, advanced templating, and Home Assistant's extensibility to create an integrated and responsive environment.
+
+## Features Used
+
+- **YAML Automations**: Uses YAML-based automation with [Sun Triggers](https://www.home-assistant.io/docs/automation/trigger/#sun-trigger) to adjust blinds and lighting based on sunrise and sunset ([automations.yaml](./automations.yaml)).
+- **Templating with Jinja2**: Dynamic values in scripts and automations utilize [Jinja2](https://jinja.palletsprojects.com/en/3.0.x/) for flexible logic ([configuration.yaml](./configuration.yaml)).
+- **Asynchronous Execution**: Home Assistant's support for [async Python integrations](https://docs.python.org/3/library/asyncio.html) is leveraged in scripts for non-blocking execution.
+- **Custom Lovelace UI Enhancements**: Implements [Bubble Card](https://github.com/Clooos/Bubble-Card) for interactive UI elements, including lighting and scene controls ([mobile_frontend.yaml](./mobile_frontend.yaml), [tablet_frontend.yaml](./tablet_frontend.yaml)).
+- **Custom Themes and UI Styling**: Defines and overrides UI styles using YAML, including card backgrounds, typography, and animations ([mobile.yaml](./mobile.yaml), [isaaclucas_kitchen.yaml](./isaaclucas_kitchen.yaml)).
+
+## Noteworthy Libraries and Scripts
+
+- **[Jinja2](https://jinja.palletsprojects.com/en/3.0.x/)** – Used for templating dynamic values in automations.
+- **[PyYAML](https://pyyaml.org/)** – Processes YAML configurations for Home Assistant.
+- **[Voluptuous](https://github.com/alecthomas/voluptuous)** – Schema validation for configurations.
+- **[Bubble Card](https://github.com/Clooos/Bubble-Card)** – A Lovelace UI component for interactive elements.
+- **[Roboto](https://fonts.google.com/specimen/Roboto) & [Raleway](https://fonts.google.com/specimen/Raleway)** – Custom fonts applied in mobile and tablet views.
+- **[Ashley's Light Fader](https://community.home-assistant.io/t/ashley-s-light-fader-2-0-fade-lights-and-or-color-temperature-with-your-choice-of-easing-curves-including-ease-in-ease-out-and-ease-in-out/584077)** - Gradually fades lights from current level
+## Project Structure
+
+```plaintext
+.
+├── automations.yaml         # Defines automations for blinds, lighting, and daily routines
+├── configuration.yaml       # Main Home Assistant configuration, linking automations and scripts
+├── mobile.yaml              # Theme and UI settings for mobile interfaces
+├── mobile_frontend.yaml     # Lovelace UI configuration for mobile devices
+├── tablet_frontend.yaml     # Lovelace UI configuration for tablets
+├── isaaclucas_kitchen.yaml  # Custom theme for kitchen dashboards
+├── scenes.yaml              # Preset lighting and environment scenes
+├── scripts.yaml             # Reusable automation scripts
+
+
+
 ## Light Control Info
-The "Main Light" controls most of the lights in the house by creating a single light with <a href="https://github.com/fredck/lightener">Lightener</a>.  Each room of the house has its own light in Lightner that controls all lights in the room.  The main light control is made of up each of those room lights.
-
-Light scripting: 
-- An hour before sunset the lights in the majority of the rooms transition to 45% (if they are off) over a 5 minute period.  This uses the built in Home Assistant service calls, <a href="https://everythingsmarthome.co.uk/creating-wake-up-sunrise-lights-with-home-assistant/">more details here.</a>
-- Beginning at 6:30pm for the majority of rooms (some are later for example the Solarium doesnt start until 830pm), the lights gradually fade from their current brightness down to dim levels (generally 15-0% based on the room.)  This is done via <a href="https://community.home-assistant.io/t/ashley-s-light-fader-2-0-fade-lights-and-or-color-temperature-with-your-choice-of-easing-curves-including-ease-in-ease-out-and-ease-in-out/584077">Ashley's fader script."
-- On Sat/Sun the lights come on an hour earlier.  On Fri/Sat they start turning off an hour later.
-- The code for this is set-up in Lightener for the lights and the scripts.yaml file for the logic. </br>
-
-Visual of how lights are set-up:![297496597-52af8497-7db8-49c9-a0ad-ab34c4bc2a5a](https://github.com/user-attachments/assets/2587f88d-cc35-48d5-a049-9b15a4c7c414) </br>
-
+The "Main Light" controls most of the lights in the house by creating a single light with <a href="https://github.com/fredck/lightener">Lightener</a>.  Each room of the house has its own light in Lightner that controls all lights in the room.  The main light control is made of up each of those room lights. Need to convert some integrations to MQTT in order to have better control.
 
 ## Tablet Dashboard
 Home Page, dashboard uses sidecard card for the side menu.  
@@ -66,10 +92,7 @@ Double clicking the icon brings up the main room light and holding the icon shut
 - Frigate (camera playback)
 - Alexa Media Player (alexa integration)
 - WebRTC Camera (camera playback)
-- HACS
 - Arlo Camera Support (cameras)
-- Govee (light brand integration)
-- Rollease Acmeda Autom Pulse Hub v2 (shade integration)
 
 
 ## HACS Frontend
@@ -100,9 +123,3 @@ Double clicking the icon brings up the main room light and holding the icon shut
 - Battery Entity Row
 - apexcharts-card
 
-
-## Integrations
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/8323707a-0f49-44c6-b1f5-4daaf6bbd619" width="800">
-
-## Add-Ons
-<img src="https://github.com/ajml45/homeassistant_configs/assets/122765092/a9e52e9a-e266-4cf4-81f0-df3efe80aa87" width="800">
