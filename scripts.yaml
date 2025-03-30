@@ -1409,7 +1409,6 @@ light_fader:
     response_variable: content
   mode: single
   icon: mdi:message-image
-
 googleai_notify_arlo_driveway:
   alias: GoogleAI Notify Arlo Driveway
   sequence:
@@ -1453,7 +1452,6 @@ googleai_notify_arlo_driveway:
       name: camera
   mode: single
   icon: mdi:message-image
-
 googleai_notify_arlo_street:
   alias: GoogleAI Notify Arlo Street
   sequence:
@@ -1726,13 +1724,6 @@ googleai_notify_arlo_front_door:
   mode: single
   icon: mdi:message-image
   description: ''
-find_phone_alert_andrew:
-  alias: Find My iPhone Alert Andrew
-  sequence:
-  - data:
-      devicename: ed3d20fadf75198c8be9e0f1740037a8
-      command: find
-    action: device_tracker.icloud3_update
 bedtime:
   alias: Bed Time
   sequence:
@@ -1783,7 +1774,7 @@ charlotte_bedtime_on:
   - service: switch.turn_on
     target:
       entity_id:
-      - switch.charlotte_noise
+      - switch.charlotte_noise_machine
       - switch.charlotte_night_light
       - switch.charlotte_fan
 charlotte_bedtime_off:
@@ -1792,7 +1783,7 @@ charlotte_bedtime_off:
   - service: switch.turn_off
     target:
       entity_id:
-      - switch.charlotte_noise
+      - switch.charlotte_noise_machine
       - switch.charlotte_night_light
       - switch.charlotte_fan
   - service: light.turn_off
@@ -1803,8 +1794,8 @@ henry_bedtime_off:
   sequence:
   - target:
       entity_id:
-      - switch.henry_noise_floor
-      - switch.henry_noise_table
+      - switch.henry_noise_machine
+      - switch.henry_night_light
     action: switch.turn_off
   - target:
       entity_id: light.henry_bedroom_table_lamp
@@ -1819,8 +1810,8 @@ henry_bedtime_on:
     action: light.turn_off
   - target:
       entity_id:
-      - switch.henry_noise_floor
-      - switch.henry_noise_table
+      - switch.henry_noise_machine
+      - switch.henry_night_light
     action: switch.turn_on
   description: ''
   icon: mdi:hockey-sticks
@@ -1840,3 +1831,29 @@ morning:
   description: Calls morning scene and blind open scene (to get around Hunter blind
     tilt/position issues)
   icon: mdi:weather-sunset-up
+find_iphone_alert_christina:
+  sequence:
+  - data:
+      device_name: christina_iphone
+    action: icloud3.find_iphone_alert
+  - data:
+      title: Find iPhone Alert
+      message: Find iPhone Alert was triggered for Christina (Home Assistant/Christinas
+        iPhone)
+    action: notify.mobile_app_christina_iphone
+  alias: Find iPhone Alert Christina
+  mode: single
+  description: ''
+find_phone_alert_andrew:
+  alias: Find iPhone Alert - Andrew
+  sequence:
+  - data:
+      device_name: andrew_iphone_16
+    action: icloud3.find_iphone_alert
+  - data:
+      title: Find iPhone Alert
+      message: Find iPhone Alert was triggered for Andrew (Home Assistant/Andrew iPhone
+        16)
+    action: notify.mobile_app_andrews_phone
+  mode: single
+  description: ''

@@ -1120,31 +1120,23 @@
       state: 'off'
     switch.charlotte_night_light:
       assumed_state: true
-      icon: phu:scene-nightlight
-      friendly_name: Charlotte Night Light
       state: 'off'
-    switch.charlotte_noise:
+    switch.charlotte_noise_machine:
       assumed_state: true
-      icon: mdi:boombox
-      friendly_name: Charlotte Noise Machine
       state: 'off'
     light.henry_bedroom_table_lamp:
       state: 'off'
-    switch.henry_noise_floor:
+    switch.henry_noise_machine:
       assumed_state: true
-      icon: mdi:boombox
-      friendly_name: Henry Noise Floor
       state: 'off'
-    switch.henry_noise_table:
+    switch.henry_night_light:
       assumed_state: true
-      icon: mdi:boombox
-      friendly_name: Henry Noise Table
       state: 'off'
     fan.master_bedroom_ceiling_fan:
       percentage: 0
       percentage_step: 25
       state: 'off'
-    switch.master_bedroom_fan:
+    switch.master_bedroom_noise_machine:
       assumed_state: true
       icon: phu:pedastal-fan
       friendly_name: Floor Fan
@@ -1157,17 +1149,17 @@
       entity_only: true
     switch.charlotte_night_light:
       entity_only: true
-    switch.charlotte_noise:
+    switch.charlotte_noise_machine:
       entity_only: true
     light.henry_bedroom_table_lamp:
       entity_only: true
-    switch.henry_noise_floor:
+    switch.henry_noise_machine:
       entity_only: true
-    switch.henry_noise_table:
+    switch.henry_night_light:
       entity_only: true
     fan.master_bedroom_ceiling_fan:
       entity_only: true
-    switch.master_bedroom_fan:
+    switch.master_bedroom_noise_machine:
       entity_only: true
 - id: '1726769565015'
   name: Cooking
@@ -1226,7 +1218,7 @@
       color_temp: 345
       state: 'on'
     light.stove_sconces:
-      brightness: 255
+      brightness: 130
       color_temp: 345
       state: 'on'
     light.mudroom:
@@ -1276,7 +1268,9 @@
       color_temp: 345
       state: 'on'
     light.back_can_middle:
-      state: 'off'
+      brightness: 120
+      color_temp: 345
+      state: 'on'
     light.middle_can_middle:
       state: 'off'
   icon: mdi:silverware-fork-knife
@@ -1284,18 +1278,6 @@
 - id: '1731265436235'
   name: Master Bedtime
   entities:
-    light.solarium:
-      entity_id:
-      - light.lion_fountain_light
-      - light.pool_area
-      - light.sitting_area
-      - light.slider_path_lights
-      - light.solarium_couch
-      - light.solarium_path_lights
-      - light.solarium_rope_light
-      - light.solarium_spot_lights
-      - light.stair_path_lights
-      state: 'off'
     fan.master_bedroom_ceiling_fan:
       percentage: 100
       percentage_step: 25
@@ -1308,7 +1290,9 @@
       state: closed
     light.master_bedroom_sconces:
       state: 'off'
-    switch.master_bedroom_fan:
+    switch.air_purifier:
+      state: 'on'
+    switch.master_bedroom_noise_machine:
       assumed_state: true
       icon: phu:pedastal-fan
       friendly_name: Floor Fan
@@ -1329,9 +1313,39 @@
       entity_only: true
     cover.bedroom:
       entity_only: true
-    switch.master_bedroom_fan:
+    switch.master_bedroom_noise_machine:
       entity_only: true
-- id: '1734371106649'
+- id: '1740927860088'
+  name: Relax
+  entities:
+    light.great_room:
+      brightness: 50
+      color_temp: 345
+      state: 'on'
+    light.kitchen:
+      brightness: 50
+      color_temp: 345
+      state: 'on'
+    light.mudroom:
+      state: 'off'
+    light.office:
+      brightness: 65
+      color_temp: 345
+      state: 'on'
+    light.front_foyer:
+      brightness: 100
+      color_temp: 345
+      state: 'on'
+    light.white_room:
+      state: 'off'
+  metadata: {}
+  icon: phu:scene-relax
+- id: '1740927909975'
+  name: Party
+  entities: {}
+  metadata: {}
+  icon: mdi:party-popper
+- id: '1740948206075'
   name: Normal
   entities:
     light.great_room:
@@ -1343,7 +1357,7 @@
       color_temp: 345
       state: 'on'
     light.kitchen:
-      brightness: 115
+      brightness: 155
       color_temp: 345
       state: 'on'
     light.mudroom:
@@ -1364,5 +1378,6 @@
       state: 'on'
     light.master_bedroom_sconces:
       brightness: 128
-      color_temp: 345
       state: 'on'
+  metadata: {}
+  icon: mdi:home-account

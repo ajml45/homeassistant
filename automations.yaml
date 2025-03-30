@@ -1017,7 +1017,7 @@
     data: {}
     target:
       entity_id:
-      - switch.charlotte_noise
+      - switch.charlotte_noise_machine
       - switch.charlotte_night_light
       - switch.charlotte_fan
     action: switch.turn_on
@@ -1045,7 +1045,7 @@
     data: {}
     target:
       entity_id:
-      - switch.charlotte_noise
+      - switch.charlotte_noise_machine
       - switch.charlotte_night_light
       - switch.charlotte_fan
   - service: light.turn_on
@@ -1075,8 +1075,8 @@
     data: {}
     target:
       entity_id:
-      - switch.henry_noise_floor
-      - switch.henry_noise_table
+      - switch.henry_noise_machine
+      - switch.henry_night_light
   - service: light.turn_on
     metadata: {}
     data:
@@ -1101,8 +1101,8 @@
     data: {}
     target:
       entity_id:
-      - switch.henry_noise_floor
-      - switch.henry_noise_table
+      - switch.henry_noise_machine
+      - switch.henry_night_light
   - service: light.turn_on
     metadata: {}
     data:
@@ -1452,3 +1452,373 @@
     target:
       entity_id: switch.christmas_lights_inside
   mode: single
+- id: '1740949398217'
+  alias: Handle Scenes and Scripts Selection
+  description: ''
+  triggers:
+  - entity_id: input_select.scenes
+    trigger: state
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: All Off
+      sequence:
+      - target:
+          entity_id: scene.off
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: All Off
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Wake Up
+      sequence:
+      - target:
+          entity_id: script.morning
+        action: script.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Wake Up
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Normal
+      sequence:
+      - target:
+          entity_id: scene.normal
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Normal
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Cooking
+      sequence:
+      - target:
+          entity_id: scene.cooking
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Cooking
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Dinner
+      sequence:
+      - target:
+          entity_id: scene.dinner
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Dinner
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Relax
+      sequence:
+      - target:
+          entity_id: scene.relax
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Relax
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Bedtime
+      sequence:
+      - target:
+          entity_id: script.bedtime_2
+        action: script.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Bedtime
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Master Bedtime
+      sequence:
+      - target:
+          entity_id: scene.master_bedtime
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Master Bedtime
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Party
+      sequence:
+      - target:
+          entity_id: script.party
+        action: script.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Party
+        action: input_text.set_value
+# Basic Training Badge
+- id: bob_basic_training_complete
+  alias: 'BoB Squad - Basic Training Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_basic_training
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/cheer.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/basic_training.png"
+        large: true
+
+# PT Warrior Badge
+- id: bob_pt_warrior_complete
+  alias: 'BoB Squad - PT Warrior Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_pt_warrior
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/cheer.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/pt_warrior.png"
+        large: true
+
+# Stealth Operative Badge
+- id: bob_stealth_operative_complete
+  alias: 'BoB Squad - Stealth Operative Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_stealth_operative
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/cheer.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/stealth_operative.png"
+        large: true
+
+# SEAL Splash Badge
+- id: bob_seal_splash_complete
+  alias: 'BoB Squad - SEAL Splash Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_seal_splash
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/bugle.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/seal_splash.png"
+        large: true
+
+# Weapons Specialist Badge
+- id: bob_weapons_specialist_complete
+  alias: 'BoB Squad - Weapons Specialist Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_weapons_specialist
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/lightsaber.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/weapons_specialist.png"
+        large: true
+
+# Medical Expert Badge
+- id: bob_medical_expert_complete
+  alias: 'BoB Squad - Medical Expert Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_medical_expert
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/cheer.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/medical_expert.png"
+        large: true
+
+# Squad Leader Badge
+- id: bob_squad_leader_complete
+  alias: 'BoB Squad - Squad Leader Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_squad_leader
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/bugle.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/squad_leader.png"
+        large: true
+
+# Drill Master Badge
+- id: bob_drill_master_complete
+  alias: 'BoB Squad - Drill Master Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_drill_master
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/bugle.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/drill_master.png"
+        large: true
+- id: bob_bonus_mission_selected
+  alias: 'BoB Squad - Bonus Mission Selected'
+  trigger:
+    - platform: state
+      entity_id: input_select.bob_bonus_mission
+  condition:
+    - condition: template
+      value_template: "{{ trigger.to_state.state != '' }}"
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/bugle.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Bonus Mission!"
+        content:
+          type: markdown
+          content: >
+            **Today's Bonus Mission:**
+
+            🎯 *{{ states('input_select.bob_bonus_mission') }}* 🎯
+        large: true
