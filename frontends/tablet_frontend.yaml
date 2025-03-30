@@ -20,7 +20,6 @@ sidebar:
     h2.date {
        font-size: 18px !important;
      }
-
     h1.digitalClock {
        font-size: 48px !important;
        line-height: 48px !important;
@@ -50,7 +49,7 @@ sidebar:
       active: true
       icon: mdi:lamps-outline
     - action: navigate
-      navigation_path: /isaac-lucas/cameras
+      navigation_path: /isaac-lucas/bob-squad-hq
       name: Cameras
       active: true
       icon: mdi:cctv
@@ -74,6 +73,9 @@ sidebar:
           styles: |-
             .bubble-select-background {
                 opacity: 1 !important;
+            }
+            .bubble-select-card-container {
+                border: 1px solid '#b9bbb1' !important;
             }
         - type: custom:bubble-card
           card_type: separator
@@ -523,7 +525,8 @@ views:
             entities:
               - entity: person.andrew
                 tap_action:
-                  action: none
+                  action: navigate
+                  navigation_path: '#phone_locator'
               - entity: sensor.andrews_phone_battery_level_2
               - entity: sensor.andrews_phone_distance_2
               - entity: sensor.andrews_phone_steps_2
@@ -569,7 +572,8 @@ views:
             entities:
               - entity: person.christina
                 tap_action:
-                  action: none
+                  action: navigate
+                  navigation_path: '#phone_locator'
               - entity: sensor.christina_s_iphone_battery_level
               - entity: sensor.christina_s_iphone_distance
               - entity: sensor.christina_s_iphone_steps
@@ -850,6 +854,68 @@ views:
                         cards:
                           - type: todo-list
                             entity: todo.ha_setup
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: '#phone_locator'
+            name: Phone Locator
+            icon: mdi:format-list-checks
+            is_sidebar_hidden: false
+            margin_top_mobile: 0px
+            margin: 0px
+            back_open: true
+            margin_top_desktop: '-44px'
+            width_desktop: 1000px
+            auto_close: '120000'
+            bg_opacity: 85
+            bg_blur: 100
+            styles: |
+              bubble-card::after {
+                display: none !important;
+                }
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: separator
+                name: Andrew
+                styles: |
+                  h4 {
+                    text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                  }
+
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:hockey-sticks
+              - type: custom:bubble-card
+                card_type: button
+                entity: script.find_phone_alert_andrew
+                icon: phu:apple-iphone
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: separator
+                name: Christina
+                styles: |
+                  h4 {
+                    text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                  }
+
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:horse
+              - type: custom:bubble-card
+                card_type: button
+                entity: script.find_iphone_alert_christina
+                icon: phu:apple-iphone
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
   - title: Music
     path: music
     icon: mdi:music-note-outline
@@ -954,557 +1020,6 @@ views:
         widthPercentage: 100
         view_layout:
           grid-area: main2
-  - title: Cameras
-    path: cameras
-    icon: mdi:cctv
-    badges: []
-    type: custom:grid-layout
-    layout:
-      grid-template-columns: 40% 40% 20%
-      grid-template-rows: 35% 25% 20% 20%
-      grid-template-areas: |
-        "main main panel"
-        "main main status"
-        "tile1 tile1 status"
-        "tile2 tile2 status"
-    cards:
-      - type: horizontal-stack
-        view_layout:
-          grid-area: tile1
-        cards:
-          - type: picture-glance
-            entities: []
-            camera_image: camera.aarlo_driveway
-            tap_action:
-              action: call-service
-              service: input_select.select_option
-              service_data:
-                option: driveway
-              target:
-                entity_id: input_select.camera_view
-          - type: picture-glance
-            entities: []
-            camera_image: camera.aarlo_street
-            tap_action:
-              action: call-service
-              service: input_select.select_option
-              service_data:
-                option: street
-              target:
-                entity_id: input_select.camera_view
-          - type: picture-glance
-            entities: []
-            camera_image: camera.aarlo_front_door
-            tap_action:
-              action: call-service
-              service: input_select.select_option
-              service_data:
-                option: front_door
-              target:
-                entity_id: input_select.camera_view
-      - type: horizontal-stack
-        cards:
-          - type: picture-glance
-            entities: []
-            camera_image: camera.aarlo_basement
-            tap_action:
-              action: call-service
-              service: input_select.select_option
-              service_data:
-                option: basement
-              target:
-                entity_id: input_select.camera_view
-          - type: picture-glance
-            entities: []
-            camera_image: camera.aarlo_backyard
-            tap_action:
-              action: call-service
-              service: input_select.select_option
-              service_data:
-                option: backyard
-              target:
-                entity_id: input_select.camera_view
-          - type: picture-glance
-            entities: []
-            camera_image: camera.aarlo_fish
-            tap_action:
-              action: call-service
-              service: input_select.select_option
-              service_data:
-                option: fish
-              target:
-                entity_id: input_select.camera_view
-        view_layout:
-          grid-area: tile2
-      - type: vertical-stack
-        view_layout:
-          grid-area: main
-        cards:
-          - type: conditional
-            conditions:
-              - entity: input_select.camera_view
-                state: driveway
-            view_layout:
-              grid-area: main
-            card:
-              type: custom:aarlo-glance
-              entity: camera.aarlo_driveway
-              image_click: play
-              name: Driveway
-              show:
-                - motion
-                - sound
-                - snapshot
-                - battery_level
-                - signal_strength
-                - captured_today
-                - image_date
-              top_date: true
-              top_status: false
-              top_title: true
-          - type: conditional
-            conditions:
-              - entity: input_select.camera_view
-                state: street
-            card:
-              type: custom:aarlo-glance
-              entity: camera.aarlo_street
-              image_click: play
-              name: Street
-              show:
-                - motion
-                - sound
-                - snapshot
-                - battery_level
-                - signal_strength
-                - captured_today
-                - image_date
-              top_date: true
-              top_status: false
-              top_title: true
-          - type: conditional
-            conditions:
-              - entity: input_select.camera_view
-                state: front_door
-            card:
-              type: custom:aarlo-glance
-              entity: camera.aarlo_front_door
-              image_click: play
-              name: Front Door
-              show:
-                - motion
-                - sound
-                - snapshot
-                - battery_level
-                - signal_strength
-                - captured_today
-                - image_date
-              top_date: true
-              top_status: false
-              top_title: true
-          - type: conditional
-            conditions:
-              - entity: input_select.camera_view
-                state: basement
-            card:
-              type: custom:aarlo-glance
-              entity: camera.aarlo_basement
-              image_click: play
-              name: Basement
-              show:
-                - motion
-                - sound
-                - snapshot
-                - battery_level
-                - signal_strength
-                - captured_today
-                - image_date
-              top_date: true
-              top_status: false
-              top_title: true
-          - type: conditional
-            conditions:
-              - entity: input_select.camera_view
-                state: backyard
-            card:
-              type: custom:aarlo-glance
-              entity: camera.aarlo_backyard
-              image_click: play
-              name: Backyard
-              show:
-                - motion
-                - sound
-                - snapshot
-                - battery_level
-                - signal_strength
-                - captured_today
-                - image_date
-              top_date: true
-              top_status: false
-              top_title: true
-          - type: conditional
-            conditions:
-              - entity: input_select.camera_view
-                state: baby
-            card:
-              type: custom:aarlo-glance
-              entity: camera.aarlo_fish
-              image_click: play
-              name: Fish
-              show:
-                - motion
-                - sound
-                - snapshot
-                - battery_level
-                - signal_strength
-                - captured_today
-                - image_date
-              top_date: true
-              top_status: false
-              top_title: true
-            view_layout:
-              grid-area: main
-      - type: vertical-stack
-        cards:
-          - type: custom:mushroom-title-card
-            title: Motion
-            subtitle: ''
-            alignment: center
-          - type: custom:mushroom-entity-card
-            entity: binary_sensor.aarlo_motion_driveway
-            name: Driveway
-          - type: custom:mushroom-entity-card
-            entity: binary_sensor.aarlo_motion_street
-            name: Street
-          - type: custom:mushroom-entity-card
-            entity: binary_sensor.aarlo_motion_front_door
-            name: Front Door
-          - type: custom:mushroom-entity-card
-            entity: binary_sensor.aarlo_motion_basement
-            name: Basement
-          - type: custom:mushroom-entity-card
-            entity: binary_sensor.aarlo_motion_backyard
-            name: Backyard
-          - type: custom:mushroom-entity-card
-            entity: binary_sensor.aarlo_motion_fish
-            name: Fish
-        view_layout:
-          grid-area: status
-      - type: vertical-stack
-        cards:
-          - type: custom:mushroom-title-card
-            title: Cameras
-            alignment: center
-          - type: custom:mushroom-alarm-control-panel-card
-            view_layout:
-              grid-area: panel
-            entity: alarm_control_panel.aarlo_isaac_lucas
-            states:
-              - armed_home
-              - armed_away
-              - armed_night
-            layout: vertical
-            fill_container: false
-  - path: weather
-    title: Weather
-    type: custom:grid-layout
-    layout:
-      grid-template-columns: 35% 30% 35%
-      grid-template-rows: auto
-      grid-template-areas: |
-        "forecast air_quality radar"
-        "horizon horizon radar"
-        "horizon horizon ."
-    cards:
-      - type: custom:weather-radar-card
-        view_layout:
-          grid-area: radar
-        card_title: Last 45 Minutes
-        map_style: Satellite
-        zoom_level: 9
-        show_scale: false
-        show_marker: false
-        static_map: false
-        show_playback: false
-        show_zoom: false
-        show_range: false
-        show_recenter: false
-        square_map: false
-        extra_labels: false
-        style: |
-          ha-card {
-            background: #242e42;
-          }
-      - type: entities
-        view_layout:
-          grid-area: air_quality
-        entities:
-          - entity: sensor.u_s_air_pollution_level
-          - entity: sensor.u_s_air_quality_index
-          - entity: sensor.u_s_main_pollutant
-        title: Air Quality
-        footer:
-          type: graph
-          entity: sensor.u_s_air_quality_index
-          detail: 2
-          hours_to_show: 24
-        style: |
-          ha-card {
-            background: #242e42;
-          }
-      - type: custom:horizon-card
-        moon: true
-        refresh_period: 60
-        fields:
-          sunrise: true
-          sunset: true
-          dawn: true
-          noon: true
-          dusk: true
-          azimuth: false
-          sun_azimuth: false
-          moon_azimuth: false
-          elevation: false
-          sun_elevation: false
-          moon_elevation: false
-          moonrise: true
-          moonset: true
-          moon_phase: true
-        southern_flip: false
-        language: en
-        time_format: language
-        number_format: language
-        view_layout:
-          grid-area: horizon
-        style: |
-          ha-card {
-            background: #242e42;
-          }
-      - type: custom:clock-weather-card
-        entity: weather.openweathermap
-        sun_entity: sun.sun
-        temperature_sensor: sensor.outdoor_temp
-        weather_icon_type: line
-        animated_icon: true
-        forecast_rows: 5
-        locale: en-US
-        time_format: 12
-        date_pattern: DDDD
-        hide_today_section: false
-        hide_forecast_section: false
-        hide_clock: true
-        hide_date: true
-        hourly_forecast: false
-        view_layout:
-          grid_area: forecast
-        style: |
-          ha-card {
-            border: solid 2px var(--secondary-color);
-            border-radius: 20px;
-            color: #EFEEE5 !important;
-            background: #242e42;
-            --accent-color: #EFEEE5;
-            --secondary-text-color: #B9BBB1;
-            --secondary-background-color: #4351555;
-          } 
-  - path: simple
-    title: Simple
-    type: custom:grid-layout
-    layout:
-      grid-template-columns: 25% 25% 25% 25%
-      grid-template-rows: auto
-      grid-template-areas: |
-        "lights lights lights lights"
-        "media . shades shades"
-    icon: mdi:human-white-cane
-    badges: []
-    cards:
-      - type: vertical-stack
-        cards:
-          - type: custom:gap-card
-            height: 20
-          - type: custom:bubble-card
-            card_type: separator
-            icon: mdi:lamps-outline
-            styles: |
-              ha-card { 
-                  color: #242e42 !important;
-              }
-              .separator-container div:last-child {
-                  background-color: #4C5857 !important;
-              }
-              h4 {
-                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-                  font-size: 24px !important;
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Lights
-          - type: horizontal-stack
-            cards:
-              - type: custom:bubble-card
-                card_type: empty-column
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.1st_floor_lights_off
-                name: Turn Off All Lights
-                icon_height: 100xpx
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-              - type: custom:bubble-card
-                card_type: empty-column
-          - type: horizontal-stack
-            cards:
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.1st_floor_lights_10
-                name: Dim Lighting
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.1st_floor_lights_25
-                name: Low Lighting
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.1st_floor_lights_50
-                name: Medium Lighting
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.1st_floor_lights_65
-                name: Bright Lighting
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-          - type: custom:gap-card
-            height: 20
-        view_layout:
-          grid-area: lights
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
-            card_type: separator
-            styles: |
-              ha-card { 
-                  color: #242e42 !important;
-              }
-              .separator-container div:last-child {
-                  background-color: #4C5857 !important;
-              }
-              h4 {
-                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-                  font-size: 24px !important;
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Media
-            icon: mdi:remote-tv-off
-          - show_name: true
-            show_icon: true
-            type: button
-            tap_action:
-              action: toggle
-            entity: scene.all_media_off
-            name: Turn Off TVs and Music
-            icon: ''
-            card_mod:
-              style: |
-                ha-card {
-                  background: #242e42;
-                  font-size: 24px !important;
-                }
-        view_layout:
-          grid-area: media
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
-            card_type: separator
-            styles: |
-              ha-card { 
-                  color: #242e42 !important;
-              }
-              .separator-container div:last-child {
-                  background-color: #4C5857 !important;
-              }
-              h4 {
-                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-                  font-size: 24px !important;
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Shades
-            icon: mdi:curtains
-          - type: horizontal-stack
-            cards:
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.close_blinds
-                name: Close Great Room Blinds
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.open_blinds_great_room
-                name: Open Great Room Blinds
-                card_mod:
-                  style: |
-                    ha-card {
-                     background: #242e42;
-                     font-size: 24px !important;
-                    }
-        view_layout:
-          grid-area: shades
   - title: Living Areas
     path: main-floor
     icon: mdi:lamps
@@ -1513,9 +1028,8 @@ views:
       grid-template-columns: 30% 20% 30% 20%
       grid-template-rows: auto
       grid-template-areas: |
-        "scenes rooms rooms rooms"
-        "scenes climate cleaning info"
-        "scenes climate cleaning info"
+        "rooms rooms rooms things"
+        "blinds cleaning climate things"
       mediaquery:
         '(max-width: 1200px)':
           grid-template-columns: 100%
@@ -2014,12 +1528,20 @@ views:
                               }
                       - type: conditional
                         conditions:
-                          - entity: switch.master_bedroom_fan
+                          - entity: switch.master_bedroom_noise_machine
                             state: 'on'
                         chip:
                           type: template
                           icon_color: light-blue
                           icon: mdi:sleep
+                      - type: conditional
+                        conditions:
+                          - entity: switch.air_purifier
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon_color: light-blue
+                          icon: mdi:air-filter
                       - type: conditional
                         conditions:
                           - entity: climate.kitchen
@@ -2445,7 +1967,7 @@ views:
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: pink
+                          icon_color: '#FDE2E6'
                           icon: mdi:fan
                           card_mod:
                             style: |
@@ -2462,13 +1984,12 @@ views:
                                 animation-duration: 5s;
                               }
                       - type: conditional
-                      - type: conditional
                         conditions:
-                          - entity: switch.charlotte_noise
+                          - entity: switch.charlotte_noise_machine
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: pink
+                          icon_color: '#FDE2E6'
                           icon: mdi:sleep
                       - type: conditional
                         conditions:
@@ -2476,7 +1997,23 @@ views:
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: pink
+                          icon_color: '#FDE2E6'
+                          icon: mdi:weather-night
+                      - type: conditional
+                        conditions:
+                          - entity: switch.henry_noise_machine
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon_color: '#CED8DF'
+                          icon: mdi:sleep
+                      - type: conditional
+                        conditions:
+                          - entity: switch.henry_night_light
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon_color: '#CED8DF'
                           icon: mdi:weather-night
                       - type: conditional
                         conditions:
@@ -2866,11 +2403,6 @@ views:
                           left: -20px;
                           top: -8px;
                         }
-                        ha-card {
-                          {% if is_state('binary_sensor.hue_motion_sensor_2_motion', 'on') %}
-                            background: linear-gradient(45deg, rgba(153,25,35,.5), rgba(253,172,90,.5)) !important;
-                          {% endif %}
-                        }
                   - type: custom:mushroom-chips-card
                     chips:
                       - type: conditional
@@ -2928,9 +2460,9 @@ views:
                           {% else %}
                             {% set temp_num = temp | int(default=-1) %}
                             {% if temp_num < 70 %}
-                              blue
+                              navy
                             {% elif temp_num < 80 %}
-                              light-blue
+                              blue
                             {% elif temp_num < 89 %}
                               yellow
                             {% elif temp_num < 93 %}
@@ -2943,12 +2475,12 @@ views:
                           {% endif %}
                       - type: conditional
                         conditions:
-                          - entity: media_player.solarium_sonos
-                            state: playing
+                          - entity: switch.pool_heater
+                            state: 'on'
                         chip:
                           type: template
-                          icon_color: disabled
-                          icon: mdi:music
+                          icon_color: red
+                          icon: mdi:heat-wave
                       - type: conditional
                         conditions:
                           - entity: switch.lion_fountain
@@ -2970,6 +2502,22 @@ views:
                                   70% { clip-path: polygon(0 100%, 100% 100%, 100% 36%, 79% 36%, 71% 22%, 81% 1%, 24% 0, 31% 21%, 20% 36%, 0 36%); }
                                   80% { clip-path: polygon(0 100%, 100% 100%, 100% 36%, 79% 36%, 76% 28%, 100% 0, 0 0, 23% 28%, 20% 36%, 0 36%); }
                                 }
+                      - type: conditional
+                        conditions:
+                          - entity: switch.fish_lights
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon_color: orange
+                          icon: mdi:fish
+                      - type: conditional
+                        conditions:
+                          - entity: media_player.solarium_sonos
+                            state: playing
+                        chip:
+                          type: template
+                          icon_color: disabled
+                          icon: mdi:music
                       - type: conditional
                         conditions:
                           - entity: climate.solarium
@@ -3060,34 +2608,16 @@ views:
                     height: 5px!important;
               }
             name: Cleaning
-          - type: custom:mushroom-vacuum-card
-            entity: vacuum.dusty_jr
-            icon_animation: true
-            commands:
-              - start_pause
-              - stop
-              - locate
-              - return_home
-            layout: horizontal
-          - type: custom:mushroom-vacuum-card
-            entity: vacuum.cleanopatra
-            icon_animation: true
-            fill_container: false
-            commands:
-              - start_pause
-              - stop
-              - locate
-              - return_home
-            layout: horizontal
-          - type: custom:mushroom-vacuum-card
-            entity: vacuum.jar_jar
-            icon_animation: true
-            layout: horizontal
-            commands:
-              - start_pause
-              - stop
-              - locate
-              - return_home
+          - show_name: true
+            show_icon: true
+            name: Robots
+            type: button
+            tap_action:
+              action: navigate
+              navigation_path: '#robots'
+            icon: mdi:broom
+            hold_action:
+              action: more-info
         view_layout:
           grid-area: cleaning
       - type: vertical-stack
@@ -3545,7 +3075,7 @@ views:
                       - type: divider
                       - entity: switch.lion_fountain
                       - entity: switch.fish_air_light
-                      - entity: switch.kitchen_tree
+                      - entity: switch.fish_mini_light
                   - type: glance
                     entities:
                       - entity: sensor.solarium_temperature
@@ -3769,7 +3299,7 @@ views:
                         entity: fan.master_bedroom_ceiling_fan
                         name: Ceiling Fan
                         toggle: true
-                      - entity: switch.master_bedroom_fan
+                      - entity: switch.master_bedroom_noise_machine
                       - entity: cover.bedroom
                         type: simple-entity
                       - type: buttons
@@ -4612,7 +4142,7 @@ views:
                         toggle: true
                       - entity: switch.charlotte_fan
                         name: Dresser Fan
-                      - entity: switch.charlotte_noise
+                      - entity: switch.charlotte_noise_machine
                         name: Noise Machine
                       - entity: switch.charlotte_night_light
                         name: Night Light
@@ -4638,10 +4168,10 @@ views:
                         entity: light.henry_bedroom_table_lamp
                         name: Desk Lamp
                         toggle: true
-                      - entity: switch.henry_noise_floor
-                        name: Floor Noise Machine
-                      - entity: switch.henry_noise_table
-                        name: Table Noise Machine
+                      - entity: switch.henry_noise_machine
+                        name: Noise Machine
+                      - entity: switch.henry_night_light
+                        name: Night Light
                     state_color: true
                   - type: custom:bubble-card
                     card_type: separator
@@ -5267,356 +4797,6 @@ views:
           grid-area: climate
       - type: vertical-stack
         cards:
-          - type: vertical-stack
-            cards:
-              - type: custom:bubble-card
-                card_type: separator
-                name: Scenes
-                styles: |
-                  ha-card { 
-                      color: #242e42 !important;
-                  }
-                  .separator-container div:last-child {
-                      background-color: #4C5857 !important;
-                  }
-                  h4 {
-                      text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-                  }
-                  ha-card div div div:nth-child(2) {
-                        height: 5px!important;
-                  }
-                icon: phu:scene-bright
-                card_layout: large
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    button_type: switch
-                    name: Lights Off
-                    tap_action:
-                      action: call-service
-                      service: scene.turn_on
-                      target:
-                        entity_id: scene.off
-                    button_action:
-                      tap_action:
-                        action: call-service
-                        service: scene.turn_on
-                        target:
-                          entity_id: scene.off
-                    entity: scene.off
-                    card_layout: large
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: script.morning
-                    name: Wake Up
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      target:
-                        entity_id: script.morning
-                    button_action:
-                      tap_action:
-                        action: call-service
-                        service: script.turn_on
-                        target:
-                          entity_id: script.morning
-                    card_layout: large
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    button_type: switch
-                    name: Cooking
-                    tap_action:
-                      action: call-service
-                      service: scene.turn_on
-                      target:
-                        entity_id: scene.cooking
-                    button_action:
-                      tap_action:
-                        action: call-service
-                        service: scene.turn_on
-                        target:
-                          entity_id: scene.cooking
-                    entity: scene.cooking
-                    card_layout: large
-                  - type: custom:bubble-card
-                    card_type: button
-                    button_type: switch
-                    name: Dinner
-                    tap_action:
-                      action: call-service
-                      service: scene.turn_on
-                      target:
-                        entity_id: scene.dinner
-                    button_action:
-                      tap_action:
-                        action: call-service
-                        service: scene.turn_on
-                        target:
-                          entity_id: scene.dinner
-                    entity: scene.dinner
-                    card_layout: large
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    button_type: switch
-                    name: TV
-                    tap_action:
-                      action: call-service
-                      service: scene.turn_on
-                      target:
-                        entity_id: scene.tv
-                    button_action:
-                      tap_action:
-                        action: call-service
-                        service: scene.turn_on
-                        target:
-                          entity_id: scene.tv
-                    entity: scene.tv
-                    card_layout: large
-                  - type: custom:bubble-card
-                    card_type: button
-                    button_type: name
-                    name: Bed Time
-                    icon: mdi:bed
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      target:
-                        entity_id: script.bedtime
-                    button_action:
-                      tap_action:
-                        action: call-service
-                        service: script.turn_on
-                        target:
-                          entity_id: script.bedtime
-                    entity: script.bedtime
-                    card_layout: large
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    button_type: name
-                    name: Wind Down
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      target: {}
-                    button_action:
-                      tap_action:
-                        action: call-service
-                        service: script.turn.on
-                        target: {}
-                    entity: script.bedtime
-                    card_layout: large
-                    icon: mdi:gauge-empty
-                  - type: custom:bubble-card
-                    card_type: button
-                    button_type: switch
-                    name: Party
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      target:
-                        entity_id: script.bedtime
-                    button_action:
-                      tap_action:
-                        action: call-service
-                        service: script.turn_on
-                        target:
-                          entity_id: script.bedtime
-                    entity: script.bedtime
-                    card_layout: large
-          - type: vertical-stack
-            cards:
-              - type: custom:bubble-card
-                card_type: separator
-                name: Things
-                styles: |
-                  ha-card { 
-                      color: #242e42 !important;
-                  }
-                  .separator-container div:last-child {
-                      background-color: #4C5857 !important;
-                  }
-                  h4 {
-                      text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-                  }
-                  ha-card div div div:nth-child(2) {
-                        height: 5px!important;
-                  }
-                icon: mdi:power-plug
-                card_layout: normal
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: switch.charlotte_bedtime
-                    show_state: false
-                    card_layout: large
-                    name: Charlotte Room
-                    tap_action:
-                      action: toggle
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: switch.henry_bedtime
-                    show_state: false
-                    card_layout: large
-                    name: Henry Room
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: switch.lion_fountain
-                    show_state: false
-                    card_layout: large
-                  - type: custom:bubble-card
-                    card_type: button
-                    show_state: false
-                    card_layout: large
-                    name: Fish Lights
-                    entity: switch.fish_lights
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    show_state: false
-                    card_layout: large
-                    name: Christmas Inside
-                    entity: switch.christmas_lights_inside
-                    icon: phu:christmas-tree
-                  - type: custom:bubble-card
-                    card_type: button
-                    show_state: false
-                    card_layout: large
-                    name: Christmas Outside
-                    entity: switch.christmas_lights_outside
-          - type: vertical-stack
-            cards:
-              - type: custom:bubble-card
-                card_type: separator
-                name: Blind Controls
-                styles: |
-                  ha-card { 
-                      color: #242e42 !important;
-                  }
-                  .separator-container div:last-child {
-                      background-color: #4C5857 !important;
-                  }
-                  h4 {
-                      text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-                  }
-                  ha-card div div div:nth-child(2) {
-                        height: 5px!important;
-                  }
-                icon: phu:vert-blind-open
-                card_layout: normal
-              - type: custom:bubble-card
-                card_type: cover
-                entity: cover.back_sliders
-                name: Back Slider
-                icon_open: mdi:curtains
-                icon_close: mdi:curtains-closed
-                show_state: true
-                card_layout: large
-              - type: custom:bubble-card
-                card_type: cover
-                entity: cover.side_slider
-                name: Side Slider
-                icon_open: mdi:curtains
-                icon_close: mdi:curtains-closed
-                show_state: true
-                card_layout: large
-              - type: horizontal-stack
-                cards:
-                  - type: custom:mushroom-cover-card
-                    entity: cover.bedroom
-                    show_position_control: false
-                    show_tilt_position_control: false
-                    show_buttons_control: false
-                    name: Bedroom
-                    layout: horizontal
-                  - square: false
-                    type: grid
-                    cards:
-                      - type: custom:mushroom-chips-card
-                        chips:
-                          - type: entity
-                            entity: scene.open_blinds_bedroom
-                            tap_action:
-                              action: toggle
-                            content_info: icon
-                            icon: mdi:arrow-expand-horizontal
-                            card_mod:
-                              style: |
-                                ha-card {
-                                  --chip-height: 56px;
-                                  --chip-font-size: 14px;
-                                }
-                                ha-card:active {
-                                  transform: scale(0.975);
-                                  transition: 0s;
-                                }
-                        alignment: center
-                      - type: custom:mushroom-chips-card
-                        chips:
-                          - type: entity
-                            entity: scene.close_blinds_bedroom
-                            tap_action:
-                              action: toggle
-                            content_info: icon
-                            icon: mdi:arrow-collapse-horizontal
-                            card_mod:
-                              style: |
-                                ha-card {
-                                  --chip-height: 56px;
-                                  --chip-font-size: 14px;
-                                }
-                                ha-card:active {
-                                  transform: scale(0.975);
-                                  transition: 0s;
-                                }
-                        alignment: right
-                    columns: 2
-        view_layout:
-          grid-area: scenes
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
-            card_type: separator
-            name: Things
-            styles: |
-              ha-card { 
-                  color: #242e42 !important;
-              }
-              .separator-container div:last-child {
-                  background-color: #4C5857 !important;
-              }
-              h4 {
-                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            icon: mdi:power-plug
-            card_layout: large
-          - type: custom:bubble-card
-            card_type: button
-            entity: switch.lion_fountain
-            show_state: true
-            card_layout: large
-          - type: custom:bubble-card
-            card_type: button
-            entity: switch.christmas_lights
-            show_state: true
-            card_layout: large
-        view_layout:
-          grid-area: things
-      - type: vertical-stack
-        cards:
           - type: custom:bubble-card
             card_type: separator
             icon: mdi:exclamation
@@ -5794,6 +4974,969 @@ views:
             icon_height: 100px
         view_layout:
           grid-area: info
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            name: Blind Controls
+            styles: |
+              ha-card { 
+                  color: #242e42 !important;
+              }
+              .separator-container div:last-child {
+                  background-color: #4C5857 !important;
+              }
+              h4 {
+                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            icon: phu:vert-blind-open
+            card_layout: normal
+          - type: custom:bubble-card
+            card_type: cover
+            entity: cover.back_sliders
+            name: Back Slider
+            icon_open: mdi:curtains
+            icon_close: mdi:curtains-closed
+            show_state: true
+            card_layout: large
+          - type: custom:bubble-card
+            card_type: cover
+            entity: cover.side_slider
+            name: Side Slider
+            icon_open: mdi:curtains
+            icon_close: mdi:curtains-closed
+            show_state: true
+            card_layout: large
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-cover-card
+                entity: cover.bedroom
+                show_position_control: false
+                show_tilt_position_control: false
+                show_buttons_control: false
+                name: Bedroom
+                layout: horizontal
+              - square: false
+                type: grid
+                cards:
+                  - type: custom:mushroom-chips-card
+                    chips:
+                      - type: entity
+                        entity: scene.open_blinds_bedroom
+                        tap_action:
+                          action: toggle
+                        content_info: icon
+                        icon: mdi:arrow-expand-horizontal
+                        card_mod:
+                          style: |
+                            ha-card {
+                              --chip-height: 56px;
+                              --chip-font-size: 14px;
+                            }
+                            ha-card:active {
+                              transform: scale(0.975);
+                              transition: 0s;
+                            }
+                    alignment: center
+                  - type: custom:mushroom-chips-card
+                    chips:
+                      - type: entity
+                        entity: scene.close_blinds_bedroom
+                        tap_action:
+                          action: toggle
+                        content_info: icon
+                        icon: mdi:arrow-collapse-horizontal
+                        card_mod:
+                          style: |
+                            ha-card {
+                              --chip-height: 56px;
+                              --chip-font-size: 14px;
+                            }
+                            ha-card:active {
+                              transform: scale(0.975);
+                              transition: 0s;
+                            }
+                    alignment: right
+                columns: 2
+        view_layout:
+          grid-area: blinds
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            name: Things
+            styles: |
+              ha-card { 
+                  color: #242e42 !important;
+              }
+              .separator-container div:last-child {
+                  background-color: #4C5857 !important;
+              }
+              h4 {
+                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            icon: mdi:power-plug
+            card_layout: large
+          - type: custom:bubble-card
+            card_type: button
+            entity: scene.master_bedtime
+            show_state: false
+            card_layout: large
+            icon: mdi:sleep
+            name: Master Bedtime
+            tap_action:
+              action: perform-action
+              perform_action: scene.turn_on
+              target:
+                entity_id: scene.master_bedtime
+            scrolling_effect: false
+            show_icon: true
+          - type: custom:bubble-card
+            card_type: button
+            entity: switch.air_purifier
+            show_state: false
+            card_layout: large
+            name: Air Purifier
+            icon: mdi:air-purifier
+            show_icon: true
+          - type: custom:bubble-card
+            card_type: button
+            entity: switch.charlotte_bedtime
+            show_state: false
+            card_layout: large
+            icon: mdi:sleep
+            name: Charlotte Bedtime
+            tap_action:
+              action: toggle
+            scrolling_effect: false
+            show_icon: true
+          - type: custom:bubble-card
+            card_type: button
+            entity: switch.henry_bedtime
+            show_state: false
+            card_layout: large
+            name: Henry Bedtime
+            icon: mdi:sleep
+            show_icon: true
+          - type: custom:bubble-card
+            card_type: button
+            entity: switch.lion_fountain
+            show_state: false
+            card_layout: large
+            name: Lion Fountain
+          - type: custom:bubble-card
+            card_type: button
+            show_state: false
+            card_layout: large
+            name: Fish Lights
+            entity: switch.fish_lights
+          - type: custom:bubble-card
+            card_type: button
+            entity: switch.pool_lights
+            show_state: false
+            card_layout: large
+            icon: mdi:pool
+            name: Pool Lights
+            tap_action:
+              action: toggle
+            scrolling_effect: false
+            show_icon: true
+          - type: custom:bubble-card
+            card_type: button
+            entity: switch.pool_heater
+            show_state: false
+            card_layout: large
+            name: Pool Heater
+            icon: mdi:pool-thermometer
+            show_icon: true
+          - type: vertical-stack
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: sensor.washer_run_state
+                    state_not: '-'
+                card:
+                  type: picture-elements
+                  elements:
+                    - type: image
+                      entity: sensor.washer_run_state
+                      image: /local/lg-icons/sensing.png
+                      state_image:
+                        Detecting: /local/lg-icons/sensing-on.png
+                      style:
+                        top: 33%
+                        left: 33%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.washer_run_state
+                      image: /local/lg-icons/wash.png
+                      state_image:
+                        Washing: /local/lg-icons/wash-on.png
+                      style:
+                        top: 33%
+                        left: 51%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.washer_run_state
+                      image: /local/lg-icons/rinse.png
+                      state_image:
+                        Rinsing: /local/lg-icons/rinse-on.png
+                      style:
+                        top: 33%
+                        left: 69%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.washer_run_state
+                      image: /local/lg-icons/spin.png
+                      state_image:
+                        Spinning: /local/lg-icons/spin-on.png
+                      style:
+                        top: 33%
+                        left: 87%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.washer
+                      image: /local/lg-icons/wifi.png
+                      state_image:
+                        'on': /local/lg-icons/wifi-on.png
+                      style:
+                        top: 73%
+                        left: 32%
+                        width: 10%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.washer_door_lock
+                      image: /local/lg-icons/lock.png
+                      state_image:
+                        'on': /local/lg-icons/lock-on.png
+                      style:
+                        top: 73%
+                        left: 45%
+                        width: 10%
+                        image-rendering: crisp
+                    - type: state-label
+                      entity: sensor.washer_time_display
+                      style:
+                        color: '#8df427'
+                        font-family: segment7
+                        font-size: 50px
+                        left: 95%
+                        top: 74%
+                        transform: translate(-100%,-50%)
+                  image: /local/hass-washer-card-bg.png
+              - type: conditional
+                conditions:
+                  - entity: sensor.dryer_run_state
+                    state_not: '-'
+                card:
+                  type: picture-elements
+                  elements:
+                    - type: image
+                      entity: sensor.dryer_run_state
+                      image: /local/lg-icons/dry.png
+                      state_image:
+                        Drying: /local/lg-icons/dry-on.png
+                      style:
+                        top: 33%
+                        left: 69%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.dryer_run_state
+                      image: /local/lg-icons/cool.png
+                      state_image:
+                        Cooling: /local/lg-icons/cool-on.png
+                      style:
+                        top: 33%
+                        left: 87%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.dryer
+                      image: /local/lg-icons/wifi.png
+                      state_image:
+                        'on': /local/lg-icons/wifi-on.png
+                      style:
+                        top: 73%
+                        left: 32%
+                        width: 10%
+                        image-rendering: crisp
+                    - type: state-label
+                      entity: sensor.dryer_time_display
+                      style:
+                        color: '#8df427'
+                        font-family: segment7
+                        font-size: 50px
+                        left: 95%
+                        top: 74%
+                        transform: translate(-100%,-50%)
+                  image: /local/hass-dryer-card-bg.png
+        view_layout:
+          grid-area: things
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: '#robots'
+            name: Robots
+            icon: mdi:broom
+            state: light.master_bedroom_sconces
+            state_unit: '%'
+            is_sidebar_hidden: false
+            margin_top_mobile: 0px
+            margin: 0px
+            back_open: true
+            margin_top_desktop: '-44px'
+            width_desktop: 1000px
+            auto_close: '120000'
+            bg_opacity: 85
+            bg_blur: 100
+            entity: light.master_bedroom_sconces
+          - type: custom:bubble-card
+            card_type: separator
+            name: Main Floor
+            styles: |
+              h4 {
+                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+              }
+              .separator-container div:last-child {
+                  background-color: #424242 !important;
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            icon: mdi:sofa
+          - type: custom:mushroom-vacuum-card
+            entity: vacuum.dusty_jr
+            layout: vertical
+            icon_animation: true
+            fill_container: false
+            commands:
+              - start_pause
+              - stop
+              - locate
+              - return_home
+            card_mod:
+              style: |
+                ha-card {
+                    background-color: #242e42 !important; 
+                }
+          - type: custom:mushroom-vacuum-card
+            entity: vacuum.cleanopatra
+            layout: vertical
+            icon_animation: true
+            fill_container: false
+            commands:
+              - start_pause
+              - stop
+              - locate
+              - return_home
+            card_mod:
+              style: |
+                ha-card {
+                    background-color: #242e42 !important; 
+                }
+          - type: custom:bubble-card
+            card_type: separator
+            name: Upstairs
+            styles: |
+              h4 {
+                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+              }
+              .separator-container div:last-child {
+                  background-color: #424242 !important;
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            icon: mdi:bed
+          - type: custom:mushroom-vacuum-card
+            entity: vacuum.jar_jar
+            layout: vertical
+            icon_animation: true
+            fill_container: false
+            commands:
+              - start_pause
+              - stop
+              - locate
+              - return_home
+            icon: mdi:robot-vacuum-variant
+            card_mod:
+              style: |
+                ha-card {
+                    background-color: #242e42 !important;
+  - title: Cameras
+    path: cameras
+    icon: mdi:cctv
+    badges: []
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 40% 40% 20%
+      grid-template-rows: 35% 25% 20% 20%
+      grid-template-areas: |
+        "main main panel"
+        "main main status"
+        "tile1 tile1 status"
+        "tile2 tile2 status"
+    cards:
+      - type: horizontal-stack
+        view_layout:
+          grid-area: tile1
+        cards:
+          - type: picture-glance
+            entities: []
+            camera_image: camera.aarlo_driveway
+            tap_action:
+              action: call-service
+              service: input_select.select_option
+              service_data:
+                option: driveway
+              target:
+                entity_id: input_select.camera_view
+          - type: picture-glance
+            entities: []
+            camera_image: camera.aarlo_street
+            tap_action:
+              action: call-service
+              service: input_select.select_option
+              service_data:
+                option: street
+              target:
+                entity_id: input_select.camera_view
+          - type: picture-glance
+            entities: []
+            camera_image: camera.aarlo_front_door
+            tap_action:
+              action: call-service
+              service: input_select.select_option
+              service_data:
+                option: front_door
+              target:
+                entity_id: input_select.camera_view
+      - type: horizontal-stack
+        cards:
+          - type: picture-glance
+            entities: []
+            camera_image: camera.aarlo_basement
+            tap_action:
+              action: call-service
+              service: input_select.select_option
+              service_data:
+                option: basement
+              target:
+                entity_id: input_select.camera_view
+          - type: picture-glance
+            entities: []
+            camera_image: camera.aarlo_backyard
+            tap_action:
+              action: call-service
+              service: input_select.select_option
+              service_data:
+                option: backyard
+              target:
+                entity_id: input_select.camera_view
+          - type: picture-glance
+            entities: []
+            camera_image: camera.aarlo_fish
+            tap_action:
+              action: call-service
+              service: input_select.select_option
+              service_data:
+                option: fish
+              target:
+                entity_id: input_select.camera_view
+        view_layout:
+          grid-area: tile2
+      - type: vertical-stack
+        view_layout:
+          grid-area: main
+        cards:
+          - type: conditional
+            conditions:
+              - entity: input_select.camera_view
+                state: driveway
+            view_layout:
+              grid-area: main
+            card:
+              type: custom:aarlo-glance
+              entity: camera.aarlo_driveway
+              image_click: play
+              name: Driveway
+              show:
+                - motion
+                - sound
+                - snapshot
+                - battery_level
+                - signal_strength
+                - captured_today
+                - image_date
+              top_date: true
+              top_status: false
+              top_title: true
+          - type: conditional
+            conditions:
+              - entity: input_select.camera_view
+                state: street
+            card:
+              type: custom:aarlo-glance
+              entity: camera.aarlo_street
+              image_click: play
+              name: Street
+              show:
+                - motion
+                - sound
+                - snapshot
+                - battery_level
+                - signal_strength
+                - captured_today
+                - image_date
+              top_date: true
+              top_status: false
+              top_title: true
+          - type: conditional
+            conditions:
+              - entity: input_select.camera_view
+                state: front_door
+            card:
+              type: custom:aarlo-glance
+              entity: camera.aarlo_front_door
+              image_click: play
+              name: Front Door
+              show:
+                - motion
+                - sound
+                - snapshot
+                - battery_level
+                - signal_strength
+                - captured_today
+                - image_date
+              top_date: true
+              top_status: false
+              top_title: true
+          - type: conditional
+            conditions:
+              - entity: input_select.camera_view
+                state: basement
+            card:
+              type: custom:aarlo-glance
+              entity: camera.aarlo_basement
+              image_click: play
+              name: Basement
+              show:
+                - motion
+                - sound
+                - snapshot
+                - battery_level
+                - signal_strength
+                - captured_today
+                - image_date
+              top_date: true
+              top_status: false
+              top_title: true
+          - type: conditional
+            conditions:
+              - entity: input_select.camera_view
+                state: backyard
+            card:
+              type: custom:aarlo-glance
+              entity: camera.aarlo_backyard
+              image_click: play
+              name: Backyard
+              show:
+                - motion
+                - sound
+                - snapshot
+                - battery_level
+                - signal_strength
+                - captured_today
+                - image_date
+              top_date: true
+              top_status: false
+              top_title: true
+          - type: conditional
+            conditions:
+              - entity: input_select.camera_view
+                state: baby
+            card:
+              type: custom:aarlo-glance
+              entity: camera.aarlo_fish
+              image_click: play
+              name: Fish
+              show:
+                - motion
+                - sound
+                - snapshot
+                - battery_level
+                - signal_strength
+                - captured_today
+                - image_date
+              top_date: true
+              top_status: false
+              top_title: true
+            view_layout:
+              grid-area: main
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-title-card
+            title: Motion
+            subtitle: ''
+            alignment: center
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.aarlo_motion_driveway
+            name: Driveway
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.aarlo_motion_street
+            name: Street
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.aarlo_motion_front_door
+            name: Front Door
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.aarlo_motion_basement
+            name: Basement
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.aarlo_motion_backyard
+            name: Backyard
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.aarlo_motion_fish
+            name: Fish
+        view_layout:
+          grid-area: status
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-title-card
+            title: Cameras
+            alignment: center
+          - type: custom:mushroom-alarm-control-panel-card
+            view_layout:
+              grid-area: panel
+            entity: alarm_control_panel.aarlo_isaac_lucas
+            states:
+              - armed_home
+              - armed_away
+              - armed_night
+            layout: vertical
+            fill_container: false
+  - path: weather
+    title: Weather
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 35% 30% 35%
+      grid-template-rows: auto
+      grid-template-areas: |
+        "left right right"
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:horizon-card
+            moon: true
+            refresh_period: 60
+            fields:
+              sunrise: true
+              sunset: true
+              dawn: true
+              noon: true
+              dusk: true
+              azimuth: false
+              sun_azimuth: false
+              moon_azimuth: false
+              elevation: false
+              sun_elevation: false
+              moon_elevation: false
+              moonrise: true
+              moonset: true
+              moon_phase: true
+            southern_flip: false
+            language: en
+            time_format: language
+            number_format: language
+            style: |
+              ha-card {
+                background: #242e42;
+              }
+          - type: custom:weather-radar-card
+            card_title: Last 45 Minutes
+            map_style: Satellite
+            zoom_level: 9
+            show_scale: false
+            show_marker: false
+            static_map: false
+            show_playback: false
+            show_zoom: false
+            show_range: false
+            show_recenter: false
+            square_map: false
+            extra_labels: false
+            style: |
+              ha-card {
+                background: #242e42;
+              }
+        view_layout:
+          grid-area: right
+      - type: vertical-stack
+        cards:
+          - type: custom:clock-weather-card
+            entity: weather.openweathermap
+            sun_entity: sun.sun
+            temperature_sensor: sensor.outdoor_temp
+            weather_icon_type: line
+            animated_icon: true
+            forecast_rows: 5
+            locale: en-US
+            time_format: 12
+            date_pattern: DDDD
+            hide_today_section: false
+            hide_forecast_section: false
+            hide_clock: true
+            hide_date: true
+            hourly_forecast: false
+            style: |
+              ha-card {
+                border: solid 2px var(--secondary-color);
+                border-radius: 20px;
+                color: #EFEEE5 !important;
+                background: #242e42;
+                --accent-color: #EFEEE5;
+                --secondary-text-color: #B9BBB1;
+                --secondary-background-color: #4351555;
+              } 
+          - type: custom:hourly-weather
+            entity: weather.openweathermap
+            label_spacing: '2'
+            icons: true
+            show_wind: 'true'
+            show_precipitation_amounts: true
+            show_precipitation_probability: false
+            num_segments: '10'
+            offset: '0'
+            show_date: boundary
+            name: null
+          - type: entities
+            view_layout:
+              grid-area: air_quality
+            entities:
+              - entity: sensor.u_s_air_pollution_level
+              - entity: sensor.u_s_air_quality_index
+              - entity: sensor.u_s_main_pollutant
+            title: Air Quality
+            footer:
+              type: graph
+              entity: sensor.u_s_air_quality_index
+              detail: 2
+              hours_to_show: 24
+            style: |
+              ha-card {
+                background: #242e42;
+              }
+        view_layout:
+          grid_area: left
+  - path: simple
+    title: Simple
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 25% 25% 25% 25%
+      grid-template-rows: auto
+      grid-template-areas: |
+        "lights lights lights lights"
+        "media . shades shades"
+    icon: mdi:human-white-cane
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:gap-card
+            height: 20
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:lamps-outline
+            styles: |
+              ha-card { 
+                  color: #242e42 !important;
+              }
+              .separator-container div:last-child {
+                  background-color: #4C5857 !important;
+              }
+              h4 {
+                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                  font-size: 24px !important;
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            name: Lights
+          - type: horizontal-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: empty-column
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: scene.1st_floor_lights_off
+                name: Turn Off All Lights
+                icon_height: 100xpx
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: #242e42;
+                      font-size: 24px !important;
+                    }
+              - type: custom:bubble-card
+                card_type: empty-column
+          - type: horizontal-stack
+            cards:
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: scene.1st_floor_lights_10
+                name: Dim Lighting
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: #242e42;
+                      font-size: 24px !important;
+                    }
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: scene.1st_floor_lights_25
+                name: Low Lighting
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: #242e42;
+                      font-size: 24px !important;
+                    }
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: scene.1st_floor_lights_50
+                name: Medium Lighting
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: #242e42;
+                      font-size: 24px !important;
+                    }
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: scene.1st_floor_lights_65
+                name: Bright Lighting
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: #242e42;
+                      font-size: 24px !important;
+                    }
+          - type: custom:gap-card
+            height: 20
+        view_layout:
+          grid-area: lights
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            styles: |
+              ha-card { 
+                  color: #242e42 !important;
+              }
+              .separator-container div:last-child {
+                  background-color: #4C5857 !important;
+              }
+              h4 {
+                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                  font-size: 24px !important;
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            name: Media
+            icon: mdi:remote-tv-off
+          - show_name: true
+            show_icon: true
+            type: button
+            tap_action:
+              action: toggle
+            entity: scene.all_media_off
+            name: Turn Off TVs and Music
+            icon: ''
+            card_mod:
+              style: |
+                ha-card {
+                  background: #242e42;
+                  font-size: 24px !important;
+                }
+        view_layout:
+          grid-area: media
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            styles: |
+              ha-card { 
+                  color: #242e42 !important;
+              }
+              .separator-container div:last-child {
+                  background-color: #4C5857 !important;
+              }
+              h4 {
+                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                  font-size: 24px !important;
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            name: Shades
+            icon: mdi:curtains
+          - type: horizontal-stack
+            cards:
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: scene.close_blinds
+                name: Close Great Room Blinds
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: #242e42;
+                      font-size: 24px !important;
+                    }
+              - show_name: true
+                show_icon: true
+                type: button
+                tap_action:
+                  action: toggle
+                entity: scene.open_blinds_great_room
+                name: Open Great Room Blinds
+                card_mod:
+                  style: |
+                    ha-card {
+                     background: #242e42;
+                     font-size: 24px !important;
+                    }
+        view_layout:
+          grid-area: shades
   - title: IT
     path: it
     icon: mdi:desktop-classic
@@ -6205,101 +6348,6 @@ views:
         entities:
           - sensor.hacs
         title: Sensor
-  - title: Exterior
-    path: exterior
-    icon: mdi:white-balance-sunny
-    badges: []
-    cards:
-      - type: custom:clock-weather-card
-        entity: weather.openweathermap
-        title: Weather
-        sun_entity: sun.sun
-        temperature_sensor: sensor.outdoor_temp
-        weather_icon_type: line
-        animated_icon: true
-        forecast_days: 6
-        locale: en-US
-        time_format: 12
-        date_pattern: P
-        hide_today_section: false
-        hide_forecast_section: false
-        hide_clock: false
-        hide_date: false
-        hourly_forecast: false
-      - type: custom:hourly-weather
-        entity: weather.openweathermap
-        name: Next 48 Hours
-        label_spacing: '2'
-        icons: true
-        show_wind: 'true'
-        show_precipitation_amounts: true
-        show_precipitation_probability: false
-        num_segments: '16'
-      - type: entities
-        entities:
-          - entity: sensor.dover_water_temp
-            name: Water Temperature
-          - entity: sensor.dover_tides
-            name: Next Tide
-          - entity: sensor.sun_next_dusk
-          - entity: sensor.sun_next_rising
-          - entity: sensor.sun_next_setting
-        title: Dover, NH Tides and Sun
-      - type: entities
-        entities:
-          - entity: sensor.u_s_air_pollution_level
-          - entity: sensor.u_s_air_quality_index
-          - entity: sensor.u_s_main_pollutant
-        title: Air Quality
-      - type: vertical-stack
-        cards:
-          - type: custom:mail-and-packages-card
-            name: Today's Packages
-            details: true
-            image: false
-            camera_entity: camera.mail_amazon_delivery_camera
-            amazon_packages: sensor.mail_amazon_packages
-            usps_packages: sensor.mail_usps_packages
-            ups_packages: sensor.mail_ups_packages
-            fedex_packages: sensor.mail_fedex_packages
-            packages_in_transit: sensor.mail_usps_delivering
-            packages_delivered: sensor.mail_amazon_packages_delivered
-            deliveries_message: camera.mail_amazon_delivery_camera
-            updated: sensor.mail_updated
-          - type: custom:mail-and-packages-card
-            name: Today's Mail
-            details: true
-            image: false
-            gif_sensor: gif
-            updated: sensor.mail_updated
-            usps_mail: sensor.mail_usps_mail
-            camera: true
-            camera_entity: camera.mail_usps_camera
-      - type: entities
-        entities:
-          - entity: switch.exterior_front_door
-            name: Front Door
-          - entity: switch.exterior_front_spotlights
-            name: Front Spotlights
-          - entity: switch.exterior_alcove
-            name: Alcove
-          - entity: switch.exterior_upper_garage
-            name: Upper Garage
-          - entity: switch.exterior_lower_garage
-            name: Lower Garage
-          - entity: switch.exterior_dog_area
-            name: Dog Area
-          - entity: switch.exterior_back_porch_lights
-            name: Back Porch Lights
-          - entity: switch.exterior_lower_garage_area
-            name: Lower Garage Area
-        title: Exterior Lights
-        state_color: true
-      - type: history-graph
-        entities:
-          - entity: sensor.u_s_air_quality_index
-        hours_to_show: 72
-        title: Dover Air Quality History
   - title: Save
     path: save
     icon: mdi:content-save
@@ -6520,10 +6568,276 @@ views:
       - type: vertical-stack
         cards:
           - type: custom:bubble-card
-            card_type: select
-            entity: input_select.scenes
-            icon: mdi:palette
-            name: Scenes
-            show_state: true
-            show_attribute: true
-            card_layout: large
+            card_type: separator
+            icon: mdi:exclamation
+            styles: |
+              ha-card { 
+                  color: #242e42 !important;
+              }
+              .separator-container div:last-child {
+                  background-color: #4C5857 !important;
+              }
+              h4 {
+                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            name: Info
+          - type: conditional
+            conditions:
+              - entity: input_boolean.feed_fish_reminder
+                state: 'on'
+            card:
+              type: button
+              name: Feed the Fish
+              icon: mdi:fish
+              tap_action:
+                action: call-service
+                service: input_boolean.turn_off
+                target:
+                  entity_id:
+                    - input_boolean.feed_fish_reminder
+                    - input_boolean.feed_fish_reminder_color_change
+              styles:
+                card:
+                  - background-color: |
+                      [[[
+                        return states['input_boolean.feed_fish_reminder_color_change'].state === 'on' ? '#C2A03D' : 'default';
+                      ]]]
+                icon:
+                  - color: '#242e42'
+          - type: vertical-stack
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: sensor.washer_run_state
+                    state_not: '-'
+                card:
+                  type: picture-elements
+                  elements:
+                    - type: image
+                      entity: sensor.washer_run_state
+                      image: /local/lg-icons/sensing.png
+                      state_image:
+                        Detecting: /local/lg-icons/sensing-on.png
+                      style:
+                        top: 33%
+                        left: 33%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.washer_run_state
+                      image: /local/lg-icons/wash.png
+                      state_image:
+                        Washing: /local/lg-icons/wash-on.png
+                      style:
+                        top: 33%
+                        left: 51%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.washer_run_state
+                      image: /local/lg-icons/rinse.png
+                      state_image:
+                        Rinsing: /local/lg-icons/rinse-on.png
+                      style:
+                        top: 33%
+                        left: 69%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.washer_run_state
+                      image: /local/lg-icons/spin.png
+                      state_image:
+                        Spinning: /local/lg-icons/spin-on.png
+                      style:
+                        top: 33%
+                        left: 87%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.washer
+                      image: /local/lg-icons/wifi.png
+                      state_image:
+                        'on': /local/lg-icons/wifi-on.png
+                      style:
+                        top: 73%
+                        left: 32%
+                        width: 10%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.washer_door_lock
+                      image: /local/lg-icons/lock.png
+                      state_image:
+                        'on': /local/lg-icons/lock-on.png
+                      style:
+                        top: 73%
+                        left: 45%
+                        width: 10%
+                        image-rendering: crisp
+                    - type: state-label
+                      entity: sensor.washer_time_display
+                      style:
+                        color: '#8df427'
+                        font-family: segment7
+                        font-size: 50px
+                        left: 95%
+                        top: 74%
+                        transform: translate(-100%,-50%)
+                  image: /local/hass-washer-card-bg.png
+              - type: conditional
+                conditions:
+                  - entity: sensor.dryer_run_state
+                    state_not: '-'
+                card:
+                  type: picture-elements
+                  elements:
+                    - type: image
+                      entity: sensor.dryer_run_state
+                      image: /local/lg-icons/dry.png
+                      state_image:
+                        Drying: /local/lg-icons/dry-on.png
+                      style:
+                        top: 33%
+                        left: 69%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.dryer_run_state
+                      image: /local/lg-icons/cool.png
+                      state_image:
+                        Cooling: /local/lg-icons/cool-on.png
+                      style:
+                        top: 33%
+                        left: 87%
+                        width: 20%
+                        image-rendering: crisp
+                    - type: image
+                      entity: sensor.dryer
+                      image: /local/lg-icons/wifi.png
+                      state_image:
+                        'on': /local/lg-icons/wifi-on.png
+                      style:
+                        top: 73%
+                        left: 32%
+                        width: 10%
+                        image-rendering: crisp
+                    - type: state-label
+                      entity: sensor.dryer_time_display
+                      style:
+                        color: '#8df427'
+                        font-family: segment7
+                        font-size: 50px
+                        left: 95%
+                        top: 74%
+                        transform: translate(-100%,-50%)
+                  image: /local/hass-dryer-card-bg.png
+          - show_name: true
+            show_icon: true
+            type: button
+            tap_action:
+              action: navigate
+              navigation_path: '#kids_school'
+            name: Kids School
+            icon: mdi:school-outline
+            icon_height: 100px
+        view_layout:
+          grid-area: info
+  - type: masonry
+    path: bob-squad-hq
+    layout: {}
+    title: BoB Squad HQ
+    cards:
+      - type: custom:swipe-card
+        cards:
+          - type: custom:bubble-card
+            name: BoB Squad HQ
+            card_type: separator
+          - type: gauge
+            entity: sensor.bob_squad_progress
+            min: 0
+            max: 8
+            severity:
+              green: 7
+              yellow: 4
+              red: 0
+            name: Mission Progress
+          - type: grid
+            columns: 3
+            cards:
+              - type: picture-entity
+                entity: input_boolean.bob_basic_training
+                name: Basic Training
+                image: /local/badges/basic_training.png
+                state_image:
+                  'on': /local/badges/basic_training.png
+                  'off': /local/badges/badge_locked.png
+              - type: picture-entity
+                entity: input_boolean.bob_pt_warrior
+                name: PT Warrior
+                image: /local/badges/pt_warrior.png
+                state_image:
+                  'on': /local/badges/pt_warrior.png
+                  'off': /local/badges/badge_locked.png
+              - type: picture-entity
+                entity: input_boolean.bob_stealth_operative
+                name: Stealth Operative
+                image: /local/badges/stealth_operative.png
+                state_image:
+                  'on': /local/badges/stealth_operative.png
+                  'off': /local/badges/badge_locked.png
+              - type: picture-entity
+                entity: input_boolean.bob_seal_splash
+                name: SEAL Splash
+                image: /local/badges/seal_splash.png
+                state_image:
+                  'on': /local/badges/seal_splash.png
+                  'off': /local/badges/badge_locked.png
+              - type: picture-entity
+                entity: input_boolean.bob_weapons_specialist
+                name: Weapons Specialist
+                image: /local/badges/weapons_specialist.png
+                state_image:
+                  'on': /local/badges/weapons_specialist.png
+                  'off': /local/badges/badge_locked.png
+              - type: picture-entity
+                entity: input_boolean.bob_medical_expert
+                name: Medical Expert
+                image: /local/badges/medical_expert.png
+                state_image:
+                  'on': /local/badges/medical_expert.png
+                  'off': /local/badges/badge_locked.png
+              - type: picture-entity
+                entity: input_boolean.bob_squad_leader
+                name: Squad Leader
+                image: /local/badges/squad_leader.png
+                state_image:
+                  'on': /local/badges/squad_leader.png
+                  'off': /local/badges/badge_locked.png
+              - type: picture-entity
+                entity: input_boolean.bob_drill_master
+                name: Drill Master
+                image: /local/badges/drill_master.png
+                state_image:
+                  'on': /local/badges/drill_master.png
+                  'off': /local/badges/badge_locked.png
+          - type: custom:mushroom-template-card
+            primary: 'Today''s Mission: {{ states(''sensor.bob_squad_current_mission'') }}'
+            icon: mdi:target
+            tap_action:
+              action: none
+          - type: custom:mushroom-select-card
+            entity: input_select.bob_bonus_mission
+            name: Bonus Mission Spinner
+          - type: button
+            name: HQ Salute
+            icon: mdi:hand-wave
+            tap_action:
+              action: call-service
+              service: media_player.play_media
+              target:
+                entity_id: media_player.your_tablet_or_speaker
+              data:
+                media_content_id: /local/sounds/bugle.mp3
+                media_content_type: music

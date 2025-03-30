@@ -16,114 +16,88 @@ views:
               ha-card div div div:nth-child(2) {
                     height: 5px!important;
               }
-            name: Main Light Control
+            name: Scenes
           - type: horizontal-stack
             cards:
-              - show_name: false
-                show_icon: true
+              - name: All Off
                 type: button
-                tap_action:
-                  action: call-service
-                  service: light.turn_off
-                  target:
-                    entity_id: light.all_lights
+                entity: scene.off
+                show_name: false
+                show_icon: true
                 icon: mdi:lightbulb-group-off
-                hold_action:
-                  action: call-service
-                  service: light.turn_off
+                tap_action:
+                  action: perform-action
+                  perform_action: scene.turn_on
                   target:
-                    entity_id: light.all_lights
-                name: All Off
+                    entity_id: scene.off
                 card_mod:
                   style: |
                     ha-card {
                         height: 60px !important;
                         width: 60px;
                     }
-              - show_name: false
-                show_icon: true
+              - name: Wake-Up
                 type: button
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  target:
-                    entity_id: script.morning
-                hold_action:
-                  action: call-service
-                  service: script.turn_on
-                  target:
-                    entity_id: script.morning
                 entity: script.morning
+                show_name: false
+                show_icon: true
                 icon: mdi:weather-sunset-up
-                name: Good Morning
-                show_state: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.turn_on
+                  target:
+                    entity_id: script.morning
                 card_mod:
                   style: |
                     ha-card {
                         height: 60px !important;
                         width: 60px;
                     }
-              - show_name: false
-                show_icon: true
+              - name: Normal
                 type: button
+                entity: scene.normal
+                show_name: false
+                show_icon: true
+                icon: mdi:lightbulb-on-50
                 tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  target:
-                    entity_id: scene.cooking
-                hold_action:
                   action: perform-action
                   perform_action: scene.turn_on
                   target:
-                    entity_id: scene.cooking
-                name: Cooking
-                entity: scene.cooking
-                icon: mdi:chef-hat
+                    entity_id: scene.normal
                 card_mod:
                   style: |
                     ha-card {
                         height: 60px !important;
                         width: 60px;
                     }
-              - show_name: false
-                show_icon: true
+              - name: Relax
                 type: button
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  target:
-                    entity_id: scene.tv
-                hold_action:
-                  action: perform-action
-                  perform_action: scene.turn_on
-                  target:
-                    entity_id: scene.tv
-                name: TV
-                entity: scene.tv
+                entity: scene.relax
+                show_name: false
+                show_icon: true
                 icon: mdi:sofa
+                tap_action:
+                  action: perform-action
+                  perform_action: scene.turn_on
+                  target:
+                    entity_id: scene.relax
                 card_mod:
                   style: |
                     ha-card {
                         height: 60px !important;
                         width: 60px;
                     }
-              - show_name: false
-                show_icon: true
+              - name: Bed Time
                 type: button
+                entity: script.bedtime_2
+                show_name: false
+                show_icon: true
+                icon: mdi:bed-clock
                 tap_action:
                   action: perform-action
+                  perform_action: script.turn_on
                   target:
                     entity_id: script.bedtime_2
-                  perform_action: script.turn_on
-                hold_action:
-                  action: perform-action
-                  target:
-                    entity_id: script.bedtime_2
-                  perform_action: script.turn_on
-                entity: script.bedtime_2
-                icon: mdi:bed-clock
-                name: Bed Time
-                show_state: false
                 card_mod:
                   style: |
                     ha-card {
@@ -132,8 +106,9 @@ views:
                     }
               - type: custom:bubble-card
                 card_type: select
-                entity: input_select.camera_view
+                entity: input_select.scenes
                 show_icon: false
+                card_layout: large
           - type: custom:bubble-card
             card_type: separator
             name: Individual Room Controls
@@ -183,25 +158,25 @@ views:
                         }
                   - type: custom:mushroom-chips-card
                     chips:
-                      - type: template
-                        icon: mdi:lightbulb
-                        content: '{{ states("sensor.great_room_lights_on") }}'
-                        tap_action:
-                          action: more-info
-                        entity: sensor.great_room_lights_on
-                        card_mod:
-                          style: |
-                            ha-card {
-                              {% if states("sensor.great_room_lights_on") == '0' %}
-                                --text-color: var(--ha-card-background);
-                                --icon-primary-color: var(--ha-card-background);
-                              {% else %}
-                                --text-color: #DEB06B;
-                                --icon-primary-color: #DEB06B;
-                              {% endif %}
-                              position: absolute;
-                              left: 0px;
-                            }
+                      - type: conditional
+                        conditions:
+                          - entity: sensor.great_room_lights_on
+                            state_not: '0'
+                        chip:
+                          type: template
+                          icon: mdi:lightbulb
+                          content: '{{ states("sensor.great_room_lights_on") }}'
+                          tap_action:
+                            action: more-info
+                          entity: sensor.great_room_lights_on
+                          icon_color: '#C2A03D'
+                          card_mod:
+                            style: |
+                              ha-card {
+                                --text-color: #C2A03D;
+                                position: absolute;
+                                left: 0px;
+                              } 
                       - type: conditional
                         conditions:
                           - entity: media_player.great_room_sonos
@@ -781,25 +756,25 @@ views:
                         }
                   - type: custom:mushroom-chips-card
                     chips:
-                      - type: template
-                        icon: mdi:lightbulb
-                        content: '{{ states("sensor.master_suite_lights_on") }}'
-                        tap_action:
-                          action: more-info
-                        entity: sensor.master_suite_lights_on
-                        card_mod:
-                          style: |
-                            ha-card {
-                              {% if states("sensor.master_suite_lights_on") == '0' %}
-                                --text-color: var(--ha-card-background);
-                                --icon-primary-color: var(--ha-card-background);
-                              {% else %}
-                                --text-color: #DEB06B;
-                                --icon-primary-color: #DEB06B;
-                              {% endif %}
-                              position: absolute;
-                              left: 0px;
-                            }
+                      - type: conditional
+                        conditions:
+                          - entity: sensor.master_suite_lights_on
+                            state_not: '0'
+                        chip:
+                          type: template
+                          icon: mdi:lightbulb
+                          content: '{{ states("sensor.master_suite_lights_on") }}'
+                          tap_action:
+                            action: more-info
+                          entity: sensor.master_suite_lights_on
+                          icon_color: '#C2A03D'
+                          card_mod:
+                            style: |
+                              ha-card {
+                                --text-color: #C2A03D;
+                                position: absolute;
+                                left: 0px;
+                              } 
                       - type: conditional
                         conditions:
                           - entity: media_player.tv_samsung_led46
@@ -832,12 +807,20 @@ views:
                               }
                       - type: conditional
                         conditions:
-                          - entity: switch.master_bedroom_fan
+                          - entity: switch.master_bedroom_noise_machine
                             state: 'on'
                         chip:
                           type: template
                           icon_color: light-blue
                           icon: mdi:sleep
+                      - type: conditional
+                        conditions:
+                          - entity: switch.air_purifier
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon_color: light-blue
+                          icon: mdi:air-filter
                       - type: conditional
                         conditions:
                           - entity: climate.kitchen
@@ -940,25 +923,25 @@ views:
                         }
                   - type: custom:mushroom-chips-card
                     chips:
-                      - type: template
-                        icon: mdi:lightbulb
-                        content: '{{ states("sensor.upstairs_lights_on") }}'
-                        tap_action:
-                          action: more-info
-                        entity: sensor.upstairs_lights_on
-                        card_mod:
-                          style: |
-                            ha-card {
-                              {% if states("sensor.upstairs_lights_on") == '0' %}
-                                --text-color: var(--ha-card-background);
-                                --icon-primary-color: var(--ha-card-background);
-                              {% else %}
-                                --text-color: #DEB06B;
-                                --icon-primary-color: #DEB06B;
-                              {% endif %}
-                              position: absolute;
-                              left: 0px;
-                            }
+                      - type: conditional
+                        conditions:
+                          - entity: sensor.upstairs_lights_on
+                            state_not: '0'
+                        chip:
+                          type: template
+                          icon: mdi:lightbulb
+                          content: '{{ states("sensor.upstairs_lights_on") }}'
+                          tap_action:
+                            action: more-info
+                          entity: sensor.upstairs_lights_on
+                          icon_color: '#C2A03D'
+                          card_mod:
+                            style: |
+                              ha-card {
+                                --text-color: #C2A03D;
+                                position: absolute;
+                                left: 0px;
+                              } 
                       - type: conditional
                         conditions:
                           - entity: media_player.guest_room_tv
@@ -973,7 +956,7 @@ views:
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: pink
+                          icon_color: '#FDE2E6'
                           icon: mdi:fan
                           card_mod:
                             style: |
@@ -990,13 +973,12 @@ views:
                                 animation-duration: 5s;
                               }
                       - type: conditional
-                      - type: conditional
                         conditions:
-                          - entity: switch.charlotte_noise
+                          - entity: switch.charlotte_noise_machine
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: pink
+                          icon_color: '#FDE2E6'
                           icon: mdi:sleep
                       - type: conditional
                         conditions:
@@ -1004,7 +986,23 @@ views:
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: pink
+                          icon_color: '#FDE2E6'
+                          icon: mdi:weather-night
+                      - type: conditional
+                        conditions:
+                          - entity: switch.henry_noise_machine
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon_color: '#CED8DF'
+                          icon: mdi:sleep
+                      - type: conditional
+                        conditions:
+                          - entity: switch.henry_night_light
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon_color: '#CED8DF'
                           icon: mdi:weather-night
                       - type: conditional
                         conditions:
@@ -1109,25 +1107,25 @@ views:
                         }
                   - type: custom:mushroom-chips-card
                     chips:
-                      - type: template
-                        icon: mdi:lightbulb
-                        content: '{{ states("sensor.basement_lights_on") }}'
-                        tap_action:
-                          action: more-info
-                        entity: sensor.basement_lights_on
-                        card_mod:
-                          style: |
-                            ha-card {
-                              {% if states("sensor.basement_lights_on") == '0' %}
-                                --text-color: var(--ha-card-background);
-                                --icon-primary-color: var(--ha-card-background);
-                              {% else %}
-                                --text-color: #DEB06B;
-                                --icon-primary-color: #DEB06B;
-                              {% endif %}
-                              position: absolute;
-                              left: 0px;
-                            }
+                      - type: conditional
+                        conditions:
+                          - entity: sensor.basement_lights_on
+                            state_not: '0'
+                        chip:
+                          type: template
+                          icon: mdi:lightbulb
+                          content: '{{ states("sensor.basement_lights_on") }}'
+                          tap_action:
+                            action: more-info
+                          entity: sensor.basement_lights_on
+                          icon_color: '#C2A03D'
+                          card_mod:
+                            style: |
+                              ha-card {
+                                --text-color: #C2A03D;
+                                position: absolute;
+                                left: 0px;
+                              } 
                       - type: conditional
                         conditions:
                           - entity: binary_sensor.hue_motion_sensor_3_motion
@@ -1275,25 +1273,25 @@ views:
                         }
                   - type: custom:mushroom-chips-card
                     chips:
-                      - type: template
-                        icon: mdi:lightbulb
-                        content: '{{ states("sensor.solarium_lights_on") }}'
-                        tap_action:
-                          action: more-info
-                        entity: sensor.solarium_lights_on
-                        card_mod:
-                          style: |
-                            ha-card {
-                              {% if states("sensor.solarium_lights_on") == '0' %}
-                                --text-color: var(--ha-card-background);
-                                --icon-primary-color: var(--ha-card-background);
-                              {% else %}
-                                --text-color: #DEB06B;
-                                --icon-primary-color: #DEB06B;
-                              {% endif %}
-                              position: absolute;
-                              left: 0px;
-                            }
+                      - type: conditional
+                        conditions:
+                          - entity: sensor.solarium_lights_on
+                            state_not: '0'
+                        chip:
+                          type: template
+                          icon: mdi:lightbulb
+                          content: '{{ states("sensor.solarium_lights_on") }}'
+                          tap_action:
+                            action: more-info
+                          entity: sensor.solarium_lights_on
+                          icon_color: '#C2A03D'
+                          card_mod:
+                            style: |
+                              ha-card {
+                                --text-color: #C2A03D;
+                                position: absolute;
+                                left: 0px;
+                              } 
                       - type: conditional
                         conditions:
                           - entity: binary_sensor.hue_motion_sensor_2_motion
@@ -1330,9 +1328,9 @@ views:
                           {% else %}
                             {% set temp_num = temp | int(default=-1) %}
                             {% if temp_num < 70 %}
-                              blue
+                              navy
                             {% elif temp_num < 80 %}
-                              light-blue
+                              blue
                             {% elif temp_num < 89 %}
                               yellow
                             {% elif temp_num < 93 %}
@@ -1345,12 +1343,12 @@ views:
                           {% endif %}
                       - type: conditional
                         conditions:
-                          - entity: media_player.solarium_sonos
-                            state: playing
+                          - entity: switch.pool_heater
+                            state: 'on'
                         chip:
                           type: template
-                          icon_color: disabled
-                          icon: mdi:music
+                          icon_color: red
+                          icon: mdi:heat-wave
                       - type: conditional
                         conditions:
                           - entity: switch.lion_fountain
@@ -1372,6 +1370,22 @@ views:
                                   70% { clip-path: polygon(0 100%, 100% 100%, 100% 36%, 79% 36%, 71% 22%, 81% 1%, 24% 0, 31% 21%, 20% 36%, 0 36%); }
                                   80% { clip-path: polygon(0 100%, 100% 100%, 100% 36%, 79% 36%, 76% 28%, 100% 0, 0 0, 23% 28%, 20% 36%, 0 36%); }
                                 }
+                      - type: conditional
+                        conditions:
+                          - entity: switch.fish_lights
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon_color: orange
+                          icon: mdi:fish
+                      - type: conditional
+                        conditions:
+                          - entity: media_player.solarium_sonos
+                            state: playing
+                        chip:
+                          type: template
+                          icon_color: disabled
+                          icon: mdi:music
                       - type: conditional
                         conditions:
                           - entity: climate.solarium
@@ -2446,7 +2460,7 @@ views:
                     entity: fan.master_bedroom_ceiling_fan
                     name: Ceiling Fan
                     toggle: true
-                  - entity: switch.master_bedroom_fan
+                  - entity: switch.master_bedroom_noise_machine
                   - entity: cover.bedroom
                     type: simple-entity
                   - type: buttons
@@ -2568,7 +2582,7 @@ views:
                     toggle: true
                   - entity: switch.charlotte_fan
                     name: Dresser Fan
-                  - entity: switch.charlotte_noise
+                  - entity: switch.charlotte_noise_machine
                     name: Noise Machine
                   - entity: switch.charlotte_night_light
                     name: Night Light
@@ -2596,10 +2610,10 @@ views:
                     entity: light.henry_bedroom_table_lamp
                     name: Desk Lamp
                     toggle: true
-                  - entity: switch.henry_noise_floor
-                    name: Floor Noise Machine
-                  - entity: switch.henry_noise_table
-                    name: Table Noise Machine
+                  - entity: switch.henry_noise_machine
+                    name: Noise Machine
+                  - entity: switch.henry_night_light
+                    name: Night Light
                 state_color: true
               - type: custom:bubble-card
                 card_type: separator
@@ -2985,7 +2999,7 @@ views:
                   - type: divider
                   - entity: switch.lion_fountain
                   - entity: switch.fish_air_light
-                  - entity: switch.kitchen_tree
+                  - entity: switch.fish_mini_light
               - type: glance
                 entities:
                   - entity: sensor.solarium_temperature
@@ -3072,7 +3086,6 @@ views:
             auto_close: '120000'
             bg_opacity: 85
             bg_blur: 100
-            bg_color: '#282828'
             shadow_opacity: '20'
             icon: mdi:grass
             entity: light.exterior
@@ -3872,6 +3885,7 @@ views:
             cards:
               - type: custom:bubble-card
                 card_type: empty-column
+                card_layout: normal
               - type: custom:bubble-card
                 card_type: empty-column
               - type: custom:bubble-card
@@ -3971,55 +3985,62 @@ views:
                       linear-gradient(45deg, rgba(34,64,42,1), rgba(50,205,50,.3)) 
                       {% endif %};
                 }
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
-            card_type: climate
-            entity: climate.kitchen
-            sub_button:
-              - name: HVAC modes menu
-                select_attribute: hvac_modes
-                state_background: false
-                show_arrow: false
-                show_name: false
-              - entity: climate.kitchen
-                select_attribute: fan_modes
-            state_color: false
-            card_layout: large-2-rows
-            show_attribute: true
-            attribute: current_temperature
-            show_icon: false
-          - type: custom:bubble-card
-            card_type: climate
-            entity: climate.upstairs
-            sub_button:
-              - name: HVAC modes menu
-                select_attribute: hvac_modes
-                state_background: false
-                show_arrow: false
-                show_name: false
-              - select_attribute: fan_modes
-            state_color: false
-            card_layout: large-2-rows
-            show_attribute: true
-            attribute: current_temperature
-            show_icon: false
-          - type: custom:bubble-card
-            card_type: climate
-            entity: climate.solarium
-            sub_button:
-              - name: HVAC modes menu
-                select_attribute: hvac_modes
-                state_background: false
-                show_arrow: false
-                show_name: false
-              - entity: climate.solarium
-                select_attribute: fan_modes
-            state_color: false
-            card_layout: large-2-rows
-            show_attribute: true
-            attribute: current_temperature
-            show_icon: false
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: climate
+                entity: climate.kitchen
+                sub_button:
+                  - name: Mode
+                    select_attribute: hvac_modes
+                    state_background: false
+                    show_arrow: false
+                    show_name: false
+                  - entity: climate.kitchen
+                    select_attribute: fan_modes
+                    show_name: false
+                    name: Fan
+                card_layout: large-2-rows
+                show_attribute: true
+                attribute: current_temperature
+                show_icon: false
+                show_state: true
+                show_last_changed: false
+                styles: |
+                  ha-card {
+                    --bubble-state-climate-heat-color: linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1));
+                  }
+              - type: custom:bubble-card
+                card_type: climate
+                entity: climate.upstairs
+                sub_button:
+                  - name: HVAC modes menu
+                    select_attribute: hvac_modes
+                    state_background: false
+                    show_arrow: false
+                    show_name: false
+                  - select_attribute: fan_modes
+                state_color: true
+                card_layout: large-2-rows
+                show_attribute: true
+                attribute: current_temperature
+                show_icon: false
+              - type: custom:bubble-card
+                card_type: climate
+                entity: climate.solarium
+                sub_button:
+                  - name: HVAC modes menu
+                    select_attribute: hvac_modes
+                    state_background: false
+                    show_arrow: false
+                    show_name: false
+                  - entity: climate.solarium
+                    select_attribute: fan_modes
+                state_color: false
+                card_layout: large-2-rows
+                show_attribute: true
+                attribute: current_temperature
+                show_icon: false
     type: masonry
   - title: Plugs
     path: plugs
@@ -5207,7 +5228,7 @@ views:
                 type: button
                 tap_action:
                   action: navigate
-                  navigation_path: ''
+                  navigation_path: /a0d7b954_glances
                 hold_action:
                   action: navigate
                   navigation_path: ''
