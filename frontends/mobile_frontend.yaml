@@ -3069,8 +3069,8 @@ views:
                         secondary_info: last-triggered
                         name: Fountaints Off Night
                         icon: mdi:fountain
-                      - entity: automation.fish_air_light_on
-                      - entity: automation.fish_air_light_off
+                      - entity: automation.fish_lights_on
+                      - entity: automation.fish_lights_off
       - type: vertical-stack
         cards:
           - type: custom:bubble-card
@@ -3910,137 +3910,354 @@ views:
                       font-size: 14px;
                       font-weight: bold;
                     }
-          - type: custom:mushroom-climate-card
-            entity: climate.kitchen
-            fill_container: false
-            hvac_modes: []
-            show_temperature_control: true
-            layout: horizontal
-            tap_action:
-              action: more-info
-            hold_action:
-              action: more-info
-            double_tap_action:
-              action: more-info
-            icon_type: none
-            card_mod:
-              style: |
-                ha-card {
-                    background:
-                      {% if state_attr('climate.kitchen', 'hvac_action') == 'cooling' %}
-                      linear-gradient(45deg, rgba(0,46,111,1), rgba(159,204,250,1))
-                      {% elif state_attr('climate.kitchen', 'hvac_action') == 'heating' %}
-                      linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1))
-                      {% elif state_attr('climate.kitchen', 'preset_mode') == 'eco' %}
-                      linear-gradient(45deg, rgba(34,139,34,1), rgba(50,205,50,1)) 
-                      {% endif %};
-                }
-          - type: custom:mushroom-climate-card
-            entity: climate.upstairs
-            fill_container: false
-            hvac_modes: []
-            show_temperature_control: true
-            layout: horizontal
-            tap_action:
-              action: more-info
-            hold_action:
-              action: more-info
-            double_tap_action:
-              action: more-info
-            icon_type: none
-            card_mod:
-              style: |
-                ha-card {
-                    background:
-                      {% if state_attr('climate.upstairs', 'hvac_action') == 'cooling' %}
-                      linear-gradient(45deg, rgba(0,46,111,1), rgba(159,204,250,1))
-                      {% elif state_attr('climate.upstairs', 'hvac_action') == 'heating' %}
-                      linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1))
-                      {% elif state_attr('climate.upstairs', 'preset_mode') == 'eco' %}
-                      linear-gradient(45deg, rgba(32,64,42,1), rgba(50,205,50,1)) 
-                      {% endif %};
-                }
-          - type: custom:mushroom-climate-card
-            entity: climate.solarium
-            fill_container: false
-            hvac_modes: []
-            show_temperature_control: true
-            layout: horizontal
-            tap_action:
-              action: more-info
-            hold_action:
-              action: more-info
-            double_tap_action:
-              action: more-info
-            icon_type: none
-            card_mod:
-              style: |
-                ha-card {
-                    background:
-                      {% if state_attr('climate.solarium', 'hvac_action') == 'cooling' %}
-                      linear-gradient(45deg, rgba(0,46,111,1), rgba(159,204,250,1))
-                      {% elif state_attr('climate.solarium', 'hvac_action') == 'heating' %}
-                      linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1))
-                      {% elif state_attr('climate.solarium', 'preset_mode') == 'eco' %}
-                      linear-gradient(45deg, rgba(34,64,42,1), rgba(50,205,50,.3)) 
-                      {% endif %};
-                }
-          - type: vertical-stack
+          - type: custom:vertical-stack-in-card
             cards:
-              - type: custom:bubble-card
-                card_type: climate
+              - type: custom:mushroom-climate-card
                 entity: climate.kitchen
-                sub_button:
-                  - name: Mode
-                    select_attribute: hvac_modes
-                    state_background: false
-                    show_arrow: false
-                    show_name: false
-                  - entity: climate.kitchen
-                    select_attribute: fan_modes
-                    show_name: false
-                    name: Fan
-                card_layout: large-2-rows
-                show_attribute: true
-                attribute: current_temperature
-                show_icon: false
-                show_state: true
-                show_last_changed: false
-                styles: |
-                  ha-card {
-                    --bubble-state-climate-heat-color: linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1));
-                  }
-              - type: custom:bubble-card
-                card_type: climate
+                fill_container: false
+                icon: mdi:thermometer
+                show_temperature_control: true
+                collapsible_controls: false
+                icon_type: none
+                hvac_modes: []
+                layout: horizontal
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.kitchen_temperature
+                  - entity: sensor.kitchen_set_temperature_line
+                    color: '#b9bbb1'
+                    name: Set Temp
+                  - entity: binary_sensor.hvac_kitchen_heating_on
+                    color: orangered
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    y_axis: secondary
+                    smoothing: false
+                  - entity: binary_sensor.hvac_kitchen_ac_on
+                    color: blue
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    y_axis: secondary
+                    smoothing: false
+                  - entity: binary_sensor.hvac_kitchen_fan_on
+                    color: gray
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    y_axis: secondary
+                    smoothing: false
+                state_map:
+                  - value: 'off'
+                  - value: 'on'
+                show:
+                  name: false
+                  state: false
+                  icon: false
+                  legend: false
+                animate: true
+                hour24: true
+                hours_to_show: 12
+                line_width: 2
+                points_per_hour: 30
+                smooth: true
+              - type: horizontal-stack
+                cards:
+                  - type: vertical-stack
+                    cards:
+                      - type: custom:mushroom-title-card
+                        subtitle: Yesterday
+                        title: ''
+                      - type: custom:mushroom-chips-card
+                        chips:
+                          - type: template
+                            icon: mdi:fire
+                            icon_color: orange
+                            content: >
+                              {% set val =
+                              states('sensor.kitchen_heat_runtime_yesterday') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:snowflake
+                            icon_color: blue
+                            content: >
+                              {% set val =
+                              states('sensor.kitchen_ac_runtime_yesterday') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:fan
+                            icon_color: grey
+                            content: >
+                              {% set val =
+                              states('sensor.kitchen_fan_runtime_yesterday') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                  - type: vertical-stack
+                    cards:
+                      - type: custom:mushroom-title-card
+                        subtitle: Today
+                        title: ''
+                      - type: custom:mushroom-chips-card
+                        chips:
+                          - type: template
+                            icon: mdi:fire
+                            icon_color: orange
+                            content: >
+                              {% set val =
+                              states('sensor.kitchen_heat_runtime_today') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:snowflake
+                            icon_color: blue
+                            content: >
+                              {% set val =
+                              states('sensor.kitchen_ac_runtime_today') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:fan
+                            icon_color: grey
+                            content: >
+                              {% set val =
+                              states('sensor.kitchen_fan_runtime_today') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+          - type: custom:vertical-stack-in-card
+            cards:
+              - type: custom:mushroom-climate-card
                 entity: climate.upstairs
-                sub_button:
-                  - name: HVAC modes menu
-                    select_attribute: hvac_modes
-                    state_background: false
-                    show_arrow: false
-                    show_name: false
-                  - select_attribute: fan_modes
-                state_color: true
-                card_layout: large-2-rows
-                show_attribute: true
-                attribute: current_temperature
-                show_icon: false
-              - type: custom:bubble-card
-                card_type: climate
+                fill_container: false
+                icon: mdi:thermometer
+                show_temperature_control: true
+                collapsible_controls: false
+                layout: horizontal
+                icon_type: none
+                hvac_modes: []
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.upstairs_temperature
+                  - entity: sensor.upstairs_set_temperature_line
+                    color: '#b9bbb1'
+                    name: Set Temp
+                  - entity: binary_sensor.hvac_upstairs_heating_on
+                    color: orangered
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    y_axis: secondary
+                    smoothing: false
+                  - entity: binary_sensor.hvac_upstairs_ac_on
+                    color: blue
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    y_axis: secondary
+                    smoothing: false
+                  - entity: binary_sensor.hvac_upstairs_fan_on
+                    color: gray
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    y_axis: secondary
+                    smoothing: false
+                state_map:
+                  - value: 'off'
+                  - value: 'on'
+                show:
+                  name: false
+                  state: false
+                  icon: false
+                  legend: false
+                animate: true
+                hour24: true
+                hours_to_show: 12
+                line_width: 2
+                points_per_hour: 30
+                smooth: true
+              - type: horizontal-stack
+                cards:
+                  - type: vertical-stack
+                    cards:
+                      - type: custom:mushroom-title-card
+                        subtitle: Yesterday
+                        title: ''
+                      - type: custom:mushroom-chips-card
+                        chips:
+                          - type: template
+                            icon: mdi:fire
+                            icon_color: orange
+                            content: >
+                              {% set val =
+                              states('sensor.upstairs_heat_runtime_yesterday') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:snowflake
+                            icon_color: blue
+                            content: >
+                              {% set val =
+                              states('sensor.upstairs_ac_runtime_yesterday') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:fan
+                            icon_color: grey
+                            content: >
+                              {% set val =
+                              states('sensor.upstairs_fan_runtime_yesterday') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                  - type: vertical-stack
+                    cards:
+                      - type: custom:mushroom-title-card
+                        subtitle: Today
+                        title: ''
+                      - type: custom:mushroom-chips-card
+                        chips:
+                          - type: template
+                            icon: mdi:fire
+                            icon_color: orange
+                            content: >
+                              {% set val =
+                              states('sensor.upstairs_heat_runtime_today') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:snowflake
+                            icon_color: blue
+                            content: >
+                              {% set val =
+                              states('sensor.upstairs_ac_runtime_today') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:fan
+                            icon_color: grey
+                            content: >
+                              {% set val =
+                              states('sensor.upstairs_fan_runtime_today') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+          - type: custom:vertical-stack-in-card
+            cards:
+              - type: custom:mushroom-climate-card
                 entity: climate.solarium
-                sub_button:
-                  - name: HVAC modes menu
-                    select_attribute: hvac_modes
-                    state_background: false
-                    show_arrow: false
-                    show_name: false
-                  - entity: climate.solarium
-                    select_attribute: fan_modes
-                state_color: false
-                card_layout: large-2-rows
-                show_attribute: true
-                attribute: current_temperature
-                show_icon: false
+                fill_container: false
+                icon: mdi:thermometer
+                show_temperature_control: true
+                collapsible_controls: false
+                layout: horizontal
+                icon_type: none
+                hvac_modes: []
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.solarium_temperature
+                  - entity: sensor.solarium_set_temperature_line
+                    color: '#b9bbb1'
+                    name: Set Temp
+                  - entity: binary_sensor.hvac_solarium_heating_on
+                    color: orangered
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    y_axis: secondary
+                    smoothing: false
+                  - entity: binary_sensor.hvac_solarium_ac_on
+                    color: blue
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    y_axis: secondary
+                    smoothing: false
+                  - entity: binary_sensor.hvac_solarium_fan_on
+                    color: gray
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    y_axis: secondary
+                    smoothing: false
+                state_map:
+                  - value: 'off'
+                  - value: 'on'
+                show:
+                  name: false
+                  state: false
+                  icon: false
+                  legend: false
+                animate: true
+                hour24: true
+                hours_to_show: 12
+                line_width: 2
+                points_per_hour: 30
+                smooth: true
+              - type: horizontal-stack
+                cards:
+                  - type: vertical-stack
+                    cards:
+                      - type: custom:mushroom-title-card
+                        subtitle: Yesterday
+                        title: ''
+                      - type: custom:mushroom-chips-card
+                        card_mod:
+                          style: |
+                            ha-card {
+                              font-style: italic;
+                              font-weight: normal;
+                            }
+                            .chip-container {
+                              --chip-spacing: 1px;
+                            }
+                        chips:
+                          - type: template
+                            icon: mdi:fire
+                            icon_color: orange
+                            content: >
+                              {% set val =
+                              states('sensor.solarium_heat_runtime_yesterday') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:snowflake
+                            icon_color: blue
+                            content: >
+                              {% set val =
+                              states('sensor.solarium_ac_runtime_yesterday') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:fan
+                            icon_color: grey
+                            content: >
+                              {% set val =
+                              states('sensor.solarium_fan_runtime_yesterday') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                  - type: vertical-stack
+                    cards:
+                      - type: custom:mushroom-title-card
+                        subtitle: Today
+                        title: ''
+                      - type: custom:mushroom-chips-card
+                        card_mod:
+                          style: |
+                            ha-card {
+                              font-style: italic;
+                              font-weight: normal;
+                            }
+                            .chip-container {
+                              --chip-spacing: 1px;
+                            }
+                        chips:
+                          - type: template
+                            icon: mdi:fire
+                            icon_color: orange
+                            content: >
+                              {% set val =
+                              states('sensor.solarium_heat_runtime_today') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:snowflake
+                            icon_color: blue
+                            content: >
+                              {% set val =
+                              states('sensor.solarium_ac_runtime_today') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                          - type: template
+                            icon: mdi:fan
+                            icon_color: grey
+                            content: >
+                              {% set val =
+                              states('sensor.solarium_fan_runtime_today') |
+                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
     type: masonry
   - title: Plugs
     path: plugs
