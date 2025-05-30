@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 isaaclucas_mudroom:
 
   # Fonts
@@ -275,3 +276,281 @@ isaaclucas_mudroom:
       :host {
         --ha-card-box-shadow: none;
       }
+=======
+isaaclucas_mudroom:
+
+  # Fonts
+  primary-font-family: 'Roboto, Noto, sans-serif'
+  paper-font-common-base_-_font-family: "var(--primary-font-family)"
+  paper-font-common-code_-_font-family: "var(--primary-font-family)"
+  paper-font-body1_-_font-family: "var(--primary-font-family)"
+  paper-font-subhead_-_font-family: "var(--primary-font-family)"
+  paper-font-headline_-_font-family: "var(--primary-font-family)"
+  paper-font-caption_-_font-family: "var(--primary-font-family)"
+  paper-font-title_-_font-family: "var(--primary-font-family)"
+  ha-card-header-font-family: "var(--primary-font-family)"
+
+  # Core Palette
+  background-color: "#F8F8F8"          # Light background to match white beadboard
+  ha-card-background: "#5A7690"        # White card surface
+  text-color: "#efeee5"               # Medium-dark gray for legibility
+  primary-text-color: "#decaab"
+  secondary-text-color: "#efeee5"      # Slightly lighter gray for secondary text
+  disabled-text-color: "#A5A5A5"
+
+  
+  # The accent color is a soft, dusty blue inspired by the wallpaper
+  accent-color: "#C2A03D"
+  accent-medium-color: "var(--accent-color)"
+
+  # Header / App Bar
+  app-header-background-color: "var(--accent-color)"
+  header-height: 48px
+  
+  # Inputs, Text Fields, & Dropdowns
+  mdc-text-field-fill-color: "#ECECEC"
+  mdc-text-field-ink-color: "var(--text-color)"
+  mdc-select-fill-color: "#ECECEC"
+  mdc-text-field-label-ink-color: "var(--secondary-text-color)"
+  input-fill-color: "#ECECEC"
+  input-ink-color: "var(--text-color)"
+  input-label-ink-color: "var(--secondary-text-color)"
+  input-disabled-fill-color: "#F0F0F0"
+  input-disabled-ink-color: "var(--disabled-text-color)"
+  input-disabled-label-ink-color: "var(--disabled-text-color)"
+  input-idle-line-color: "#ECECEC"
+  input-dropdown-icon-color: "var(--secondary-text-color)"
+  input-hover-line-color: "var(--accent-color)"
+  code-editor-background-color: "#212830"
+  codemirror-property: "var(--accent-color)"
+
+  # Cards
+  card-background-color: "var(--ha-card-background)"
+  ha-card-border-color: "rgba(0,0,0,0)"
+  ha-card-border-width: "0"
+  border-radius: "5px"
+
+  # Dialogs
+  ha-dialog-border-radius: "5px"
+
+  # Icons
+  paper-item-icon-color: "var(--text-color)"
+  paper-item-icon-active-color: "var(--accent-color)"
+
+  # Sidebar
+  sidebar-background-color: "#3C5675"
+  sidebar-text-color: "#efeee5"
+  sidebar-icon-color: "#efeee5"
+  sidebar-selected-icon-color: "#decaab"
+  sidebar-selected-text-color: "#decaab"
+  paper-listbox-background-color: "var(--sidebar-background-color)"
+  divider-color: "#EAEAEA"
+
+  # Sliders
+  paper-slider-knob-color: "var(--accent-color)"
+  paper-slider-pin-color: "#D9D9D9"
+  paper-slider-active-color: "var(--accent-color)"
+  paper-slider-container-color: "#E0E0E0"
+
+  # Toggles / Switches
+  paper-toggle-button-checked-bar-color: "var(--accent-color)"
+  mdc-theme-primary: "var(--accent-color)"
+  switch-unchecked-color: "#AAAAAA"
+  switch-checked-button-color: "var(--accent-color)"
+  switch-unchecked-track-color: "#E0E0E0"
+  switch-checked-track-color: "#E0E0E0"
+
+  # Radio Buttons
+  paper-radio-button-checked-color: "var(--accent-color)"
+
+  # Popups
+  more-info-header-background: "var(--accent-color)"
+  paper-dialog-background-color: "#F8F8F8"
+  popup-border-radius: "5px"
+  mdc-theme-surface: "var(--ha-card-background)"
+
+  # Tables
+  table-row-background-color: "var(--ha-card-background)"
+  table-row-alternative-background-color: "#FAFAFA"
+
+  # Badges
+  label-badge-background-color: "#FAFAFA"
+  label-badge-text-color: "var(--text-color)"
+  label-badge-red: "#E45E65"
+  label-badge-blue: "#5A7690"
+  label-badge-green: "#00CA8B"
+  label-badge-yellow: "#DEC07C"
+
+  # State Colors (you can keep or adjust these as needed)
+  state-active-color: "#5A7690"
+  state-red-color: "#FC937E"
+  state-green-color: "#00CA8B"
+  state-orange-color: "#F7D88B"
+
+  # Custom Header (if in use)
+  ch-background: "var(--background-color)"
+  ch-active-tab-color: "var(--accent-color)"
+  ch-notification-dot-color: "var(--accent-color)"
+  ch-all-tabs-color: "var(--text-color)"
+  ch-tab-indicator-color: "var(--accent-color)"
+
+  # Mini Mediaplayer (if in use)
+  mini-media-player-base-color: "var(--text-color)"
+  mini-media-player-accent-color: "var(--accent-color)"
+  mini-media-player-button-color: "var(--ha-card-background)"
+
+ #### Mushroom Variables###
+  ha-card-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.16)
+  ha-card-border-radius: 12px
+  ha-badge-border-radius: 18px
+  # Mushroom layout
+  mush-spacing: 10px
+  # Title
+  mush-title-padding: 24px 12px 8px
+  mush-title-spacing: 8px
+  mush-title-font-size: 24px
+  mush-title-font-weight: normal
+  mush-title-line-height: 32px
+  mush-title-color: var(--primary-text-color)
+  mush-title-letter-spacing: -0.288px
+  # Subtitle
+  mush-subtitle-font-size: 16px
+  mush-subtitle-font-weight: normal
+  mush-subtitle-line-height: 24px
+  mush-subtitle-color: var(--secondary-text-color);
+  mush-subtitle-letter-spacing: 0px
+
+  # Card
+  mush-card-primary-font-size: 14px
+  mush-card-secondary-font-size: 12px
+  mush-card-primary-font-weight: 500
+  mush-card-secondary-font-weight: 400
+  mush-card-primary-line-height: 20px
+  mush-card-secondary-line-height: 16px
+  mush-card-primary-color: var(--primary-text-color)
+  mush-card-secondary-color: var(--primary-text-color)
+  mush-card-primary-letter-spacing: 0.1px
+  mush-card-secondary-letter-spacing: 0.4px
+
+  # Chip
+  mush-chip-spacing: 8px
+  mush-chip-padding: 0 0.25em
+  mush-chip-height: 36px
+  mush-chip-border-radius: 19px
+  mush-chip-border-width: var(--ha-card-border-width, 1px)
+  mush-chip-border-color: var(--ha-card-border-color, var(--divider-color))
+  mush-chip-box-shadow: var(--ha-card-box-shadow, none)
+  mush-chip-font-size: 0.3em
+  mush-chip-font-weight: bold
+  mush-chip-icon-size: 0.5em
+  mush-chip-avatar-padding: 0.1em
+  mush-chip-avatar-border-radius: 50%
+  mush-chip-background: var(--ha-card-background, white)
+  # Control
+  mush-control-border-radius: 12px
+  mush-control-height: 42px
+  mush-control-button-ratio: 1
+  mush-control-icon-size: 0.5em
+  mush-control-spacing: 12px
+  # Slider
+  mush-slider-threshold: 10
+  # Badge
+  mush-badge-size: 16px
+  mush-badge-icon-size: 0.75em
+  mush-badge-border-radius: 50%
+  # Icon
+  mush-icon-border-radius: 50%
+  mush-icon-size: 36px
+  mush-icon-symbol-size: 0.6em
+  # Colors
+  mush-rgb-red: 244, 67, 54
+  mush-rgb-pink: 233, 30, 99
+  mush-rgb-purple: 106, 107, 201
+  mush-rgb-deep-purple: 111, 66, 193
+  mush-rgb-indigo: 63, 81, 181
+  mush-rgb-blue: 33, 150, 243
+  mush-rgb-light-blue: 3, 169, 244
+  mush-rgb-cyan: 0, 188, 212
+  mush-rgb-teal: 0, 150, 136
+  mush-rgb-green: 76, 175, 80
+  mush-rgb-light-green: 139, 195, 74
+  mush-rgb-lime: 205, 220, 57
+  mush-rgb-yellow: 255, 235, 59
+  mush-rgb-amber: 255, 193, 7
+  mush-rgb-orange: 255, 152, 0
+  mush-rgb-deep-orange: 255, 111, 0
+  mush-rgb-brown: 121, 85, 72
+  mush-rgb-light-grey: 189, 189, 189;
+  mush-rgb-grey: 158, 158, 158
+  mush-rgb-dark-grey: 96, 96, 96;
+  mush-rgb-blue-grey: 96, 125, 139
+  mush-rgb-black: 0, 0, 0
+  mush-rgb-white: 255, 255, 255
+
+  mush-rgb-info: var(--mush-rgb-blue)
+  mush-rgb-success: var(--mush-rgb-green)
+  mush-rgb-warning: var(--mush-rgb-orange)
+  mush-rgb-danger: var(--mush-rgb-red)
+
+  mush-rgb-state-fan: var(--mush-rgb-green)
+  mush-rgb-state-light: var(--mush-rgb-orange)
+  mush-rgb-state-entity: var(--mush-rgb-blue)
+  mush-rgb-state-switch: var(--mush-rgb-blue)
+
+  mush-rgb-state-alarm-disarmed: var(--mush-rgb-info)
+  mush-rgb-state-alarm-armed: var(--mush-rgb-success)
+  mush-rgb-state-alarm-triggered: var(--mush-rgb-danger)
+
+  mush-rgb-state-person-home: var(--mush-rgb-success)
+  mush-rgb-state-person-not-home: var(--mush-rgb-danger)
+  mush-rgb-state-person-zone: var(--mush-rgb-info)
+  mush-rgb-state-person-unknown: var(--mush-rgb-grey)
+
+  mush-rgb-state-cover-open: var(--mush-rgb-blue)
+  mush-rgb-state-cover-closed: var(--mush-rgb-disabled)
+
+  mush-rgb-state-climate-auto: var(--mush-rgb-green);
+  mush-rgb-state-climate-cool: var(--mush-rgb-blue);
+  mush-rgb-state-climate-dry: var(--mush-rgb-orange);
+  mush-rgb-state-climate-fan-only: var(--mush-rgb-blue-grey);
+  mush-rgb-state-climate-heat: var(--mush-rgb-deep-orange);
+  mush-rgb-state-climate-heat-cool: var(--mush-rgb-green);
+  mush-rgb-state-climate-idle: var(--mush-rgb-grey);
+  mush-rgb-state-climate-off: var(--mush-rgb-disabled);
+
+
+  
+  # You must keep this to support light/dark theme
+  modes:
+      light:
+          mush-rgb-disabled: 189, 189, 189
+      dark:
+          mush-rgb-disabled: 111, 111, 111
+
+#### Bubble Card Variables ####
+  bubble-select-list-border-radius: 12px
+  bubble-select-button-border-radius: 12px
+  bubble-select-border-radius: 12px
+  bubble-border-radius: 12px
+  bubble-button-background-color: "#3C3F3C"
+  bubble-select-background-color: "#3C3F3C"
+  bubble-select-background-opacity: 1
+  
+  # Card-Mod (optional blur)
+  card-mod-theme: mudroom
+  card-mod-more-info-yaml: |
+    $: |
+      .mdc-dialog .mdc-dialog__scrim {
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        background: rgba(0,0,0,.6);
+      } 
+      .mdc-dialog .mdc-dialog__container .mdc-dialog__surface {
+        box-shadow: none !important;
+        border-radius: var(--ha-card-border-radius);
+      }
+    .: |
+      :host {
+        --ha-card-box-shadow: none;
+      }
+>>>>>>> c9aa5eb (Test commit)

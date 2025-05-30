@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - id: '1675797444753'
   alias: Great Room Side Shade Closed
   description: ''
@@ -1822,3 +1823,1829 @@
 
             🎯 *{{ states('input_select.bob_bonus_mission') }}* 🎯
         large: true
+=======
+- id: '1675797444753'
+  alias: Great Room Side Shade Closed
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: '-1:00'
+  condition: []
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.closed_2
+    metadata: {}
+  mode: single
+- id: '1675798534763'
+  alias: Close All Blinds
+  description: '30 min after sunset closes all blinds '
+  triggers:
+  - trigger: time
+    at: '19:30:00'
+  conditions: []
+  actions:
+  - target:
+      entity_id: scene.close_blinds
+    metadata: {}
+    action: scene.turn_on
+    data: {}
+  - target:
+      entity_id: scene.close_blinds_bedroom
+    metadata: {}
+    action: scene.turn_on
+    data: {}
+  mode: single
+- id: '1683820642231'
+  alias: Blinds - Great Room Open
+  description: Opens great room blinds 30 min after sunrise
+  trigger:
+  - platform: sun
+    event: sunrise
+  condition: []
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.open_blinds_great_room
+    metadata: {}
+  mode: single
+- id: '1683820819229'
+  alias: Open Back Blinds Partial
+  description: Opens back blinds slightly an hour before sunrise
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: '-1800'
+  condition: []
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.open_back_blinds_partial
+    metadata: {}
+  mode: single
+- id: '1684062099631'
+  alias: Blinds - Bedroom Open
+  description: 9am
+  trigger:
+  - platform: time
+    at: 07:30:00
+  condition: []
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.open_blinds_bedroom
+    metadata: {}
+  mode: single
+- id: '1684067381055'
+  alias: Blinds - Bedroom Partial
+  description: 7am
+  triggers:
+  - at: 07:00:00
+    trigger: time
+  conditions:
+  - condition: state
+    entity_id: cover.bedroom
+    state: closed
+  actions:
+  - target:
+      entity_id: scene.blinds_bedroom_partial
+    metadata: {}
+    action: scene.turn_on
+    data: {}
+  mode: single
+- id: '1704823288280'
+  alias: Kitchen Light Fade
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  condition:
+  - condition: time
+    weekday:
+    - fri
+    - sat
+  action:
+  - service: script.light_fader
+    data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessPercent: 10
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 100
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.kitchen
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+  mode: single
+- id: '1704824306232'
+  alias: Great Room Light Fade
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  condition:
+  - condition: time
+    weekday:
+    - fri
+    - sat
+  action:
+  - service: script.light_fader
+    data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessPercent: 15
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 100
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.great_room
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+  mode: single
+- id: '1704824348868'
+  alias: Mudroom Light Fade
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  condition:
+  - condition: time
+    weekday:
+    - fri
+    - sat
+  action:
+  - service: script.light_fader
+    data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessPercent: 0
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 100
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.mudroom
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+  mode: single
+- id: '1704824381231'
+  alias: Foyer Offices Light Fade
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:30:00'
+  condition:
+  - condition: time
+    weekday:
+    - fri
+    - sat
+  action:
+  - service: script.light_fader
+    data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessPercent: 15
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 100
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.offices
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+  mode: single
+- id: '1704824454444'
+  alias: Solarium Light Fade
+  description: ''
+  triggers:
+  - at: '20:00:00'
+    trigger: time
+  conditions:
+  - condition: time
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+  - condition: state
+    entity_id: light.solarium
+    state: 'on'
+  actions:
+  - data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessPercent: 0
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 60000
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.solarium
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+    action: script.light_fader
+  mode: single
+- id: '1704824493298'
+  alias: Basement Light Fade
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:00:00'
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - sun
+  action:
+  - service: script.light_fader
+    data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessPercent: 0
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 100
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.basement
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+  mode: single
+- id: '1704827475326'
+  alias: Dusk Kitchen Lights On
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -02:00:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: state
+    entity_id: light.kitchen
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 2
+    target:
+      entity_id:
+      - light.kitchen
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 45
+      transition: 300
+    target:
+      entity_id: light.kitchen
+  mode: single
+- id: '1704828190029'
+  alias: Dusk Great Room Lights On
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -03:00
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - sat
+  - condition: state
+    entity_id: light.great_room
+    state: 'off'
+  action:
+  - data:
+      brightness_pct: 1
+    target:
+      entity_id:
+      - light.great_room
+    action: light.turn_on
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - metadata: {}
+    data:
+      brightness_pct: 45
+      transition: 300
+    target:
+      entity_id: light.great_room
+    action: light.turn_on
+  mode: single
+- id: '1704828220306'
+  alias: Dusk Mudroom Lights On
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -01:30:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: state
+    entity_id: light.mudroom
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      entity_id:
+      - light.mudroom
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 45
+      transition: 300
+    target:
+      entity_id: light.mudroom
+  mode: single
+- id: '1704828256062'
+  alias: Dusk Foyer Offices Lights On
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -01:30:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: state
+    entity_id: light.offices
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      entity_id:
+      - light.offices
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 45
+      transition: 300
+    target:
+      entity_id: light.offices
+  mode: single
+- id: '1704828323384'
+  alias: Dusk Solarium Lights On
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -01:00:00
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+  - condition: state
+    entity_id: light.solarium
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 70
+    target:
+      entity_id:
+      - light.solarium
+  mode: single
+- id: '1704828349964'
+  alias: Dusk Basement Lights On
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -01:30:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: state
+    entity_id: light.basement
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      entity_id:
+      - light.basement
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 45
+      transition: 300
+    target:
+      entity_id: light.basement
+  mode: single
+- id: '1705431664644'
+  alias: Basement Lights On Weekend
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -02:00:00
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - sat
+  - condition: state
+    entity_id: light.basement
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      entity_id:
+      - light.basement
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 45
+      transition: 300
+    target:
+      entity_id: light.basement
+  mode: single
+- id: '1705432014008'
+  alias: Basement Light Fade Weekend
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:00:00'
+  condition:
+  - condition: time
+    weekday:
+    - fri
+    - sat
+  action:
+  - service: script.light_fader
+    data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessPercent: 0
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 100
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.basement
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+  mode: single
+- id: '1705438242743'
+  alias: Exterior Lights On
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: 0
+  condition: []
+  action:
+  - service: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.exterior_alcove
+      - light.exterior_front_door
+      - light.exterior_lower_garage
+      - light.exterior_upper_garage
+  mode: single
+- id: '1705438359061'
+  alias: Exterior Lights Off
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:00:00'
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.exterior_alcove
+      - light.exterior_front_door
+      - light.exterior_lower_garage
+      - light.exterior_upper_garage
+    data: {}
+  mode: single
+- id: '1705439390606'
+  alias: Foyer Offices Light On Weekends
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -02:00:00
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - sat
+  - condition: state
+    entity_id: light.offices
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      entity_id:
+      - light.offices
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 45
+      transition: 300
+    target:
+      entity_id: light.offices
+  mode: single
+- id: '1705439744495'
+  alias: Foyer Offices Light Fade Weekday
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:00:00'
+  condition:
+  - condition: time
+    weekday:
+    - thu
+    - wed
+    - tue
+    - mon
+    - sun
+  action:
+  - service: script.light_fader
+    data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessPercent: 15
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 100
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.offices
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+  mode: single
+- id: '1705440201298'
+  alias: Great Room Dusk Lights On Weekday
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -02:30
+  condition:
+  - condition: time
+    weekday:
+    - fri
+    - thu
+    - wed
+    - tue
+    - mon
+  - condition: state
+    entity_id: light.great_room
+    state: 'off'
+  action:
+  - data:
+      brightness_pct: 1
+    target:
+      entity_id:
+      - light.great_room
+    action: light.turn_on
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - metadata: {}
+    data:
+      brightness_pct: 45
+      transition: 300
+    target:
+      entity_id: light.great_room
+    action: light.turn_on
+  mode: single
+- id: '1705440540254'
+  alias: Great Room Light Fade Weekday
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:45:00'
+  condition:
+  - condition: time
+    weekday:
+    - thu
+    - wed
+    - tue
+    - mon
+    - sun
+  action:
+  - service: script.light_fader
+    data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 100
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.great_room
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+      endBrightnessPercent: 15
+  mode: single
+- id: '1705460550857'
+  alias: Kitchen Lights On Weekend
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -02:00:00
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - sat
+  - condition: state
+    entity_id: light.kitchen
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 2
+    target:
+      entity_id:
+      - light.kitchen
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 45
+      transition: 300
+    target:
+      entity_id: light.kitchen
+  mode: single
+- id: '1705460783142'
+  alias: Kitchen Light Fade Weekday
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:45:00'
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - mon
+    - wed
+    - tue
+    - thu
+  action:
+  - service: script.light_fader
+    data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessPercent: 10
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 100
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.kitchen
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+  mode: single
+- id: '1705460938055'
+  alias: Mudroom Dusk Lights On Weekend
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -02:00:00
+  condition:
+  - condition: time
+    weekday:
+    - sat
+    - sun
+  - condition: state
+    entity_id: light.mudroom
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      entity_id:
+      - light.mudroom
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 45
+      transition: 300
+    target:
+      entity_id: light.mudroom
+  mode: single
+- id: '1705461073498'
+  alias: Mudroom Light Fade Weekday
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:45:00'
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+  action:
+  - service: script.light_fader
+    data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessPercent: 0
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 100
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.mudroom
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+  mode: single
+- id: '1705508847254'
+  alias: Christmas Lights Inside On
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:15:00
+  condition: []
+  action:
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.christmas_lights_inside
+  mode: single
+- id: '1705508930785'
+  alias: Christmas Lights Inside Off
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:00:00'
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.christmas_lights_inside
+    data: {}
+  mode: single
+- id: '1705509185881'
+  alias: Christmas Lights On Outside
+  description: ''
+  triggers:
+  - at: '16:00:00'
+    trigger: time
+  conditions: []
+  actions:
+  - metadata: {}
+    data: {}
+    action: switch.turn_on
+    target:
+      entity_id: switch.christmas_lights_outside
+  mode: single
+- id: '1705509270624'
+  alias: Christmas Lights Off Outside
+  description: ''
+  triggers:
+  - at: '22:00:00'
+    trigger: time
+  conditions: []
+  actions:
+  - data: {}
+    action: switch.turn_off
+    target:
+      entity_id: switch.christmas_lights_outside
+  mode: single
+- id: '1705511054263'
+  alias: Fountains On Morning
+  description: ''
+  trigger:
+  - platform: time
+    at: 08:00:00
+  condition: []
+  action:
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.lion_fountain
+      - switch.big_fountain
+  mode: single
+- id: '1705511124743'
+  alias: Fountains On Night
+  description: ''
+  trigger:
+  - platform: time
+    at: '18:00:00'
+  condition: []
+  action:
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.lion_fountain
+      - switch.big_fountain
+  mode: single
+- id: '1705511201828'
+  alias: Fountains Off Night
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:00:00'
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.lion_fountain
+      - switch.big_fountain
+    data: {}
+  mode: single
+- id: '1705511305708'
+  alias: Fountains Off Morning
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:00:00
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.lion_fountain
+      - switch.big_fountain
+    data: {}
+  mode: single
+- id: '1705512854907'
+  alias: Charlotte Bedtime Weekday
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:21:00'
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+  action:
+  - metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.charlotte_noise_machine
+      - switch.charlotte_night_light
+      - switch.charlotte_fan
+    action: switch.turn_on
+  - metadata: {}
+    data:
+      brightness_pct: 20
+    target:
+      entity_id: light.charlotte_bedroom_table_lamp
+    action: light.turn_on
+  mode: single
+- id: '1705512914359'
+  alias: Charlotte Bedtime Weekend
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:45:00'
+  condition:
+  - condition: time
+    weekday:
+    - fri
+    - sat
+  action:
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.charlotte_noise_machine
+      - switch.charlotte_night_light
+      - switch.charlotte_fan
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 20
+    target:
+      entity_id: light.charlotte_bedroom_table_lamp
+  mode: single
+- id: '1705513057222'
+  alias: Henry Bedtime Weekday
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:30:00'
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+  action:
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.henry_noise_machine
+      - switch.henry_night_light
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 20
+    target:
+      entity_id: light.henry_bedroom_table_lamp
+  mode: single
+- id: '1705513100013'
+  alias: Henry Bedtime Weekend
+  description: ''
+  trigger:
+  - platform: time
+    at: '19:45:00'
+  condition:
+  - condition: time
+    weekday:
+    - fri
+    - sat
+  action:
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.henry_noise_machine
+      - switch.henry_night_light
+  - service: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 20
+    target:
+      entity_id: light.henry_bedroom_table_lamp
+  mode: single
+- id: '1707417343122'
+  alias: Weekday Office Noise On
+  description: Turn on the switch weekdays at 8:30 AM if I am home.
+  trigger:
+  - platform: time
+    at: 08:30:00
+  condition:
+  - condition: state
+    entity_id: person.andrew
+    state: home
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - service: switch.turn_on
+    entity_id: switch.office_noise_machine
+  mode: single
+- id: '1707420533584'
+  alias: Office Switch Off Weekdays
+  description: Turn off the switch weekdays at 4:30 PM.
+  trigger:
+  - platform: time
+    at: '16:30:00'
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - service: switch.turn_off
+    entity_id: switch.office_noise_machine
+  mode: single
+- id: '1707420840314'
+  alias: Office Noise Off Away
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - person.andrew
+    from: home
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    before: '16:30:00'
+    after: 08:30:00
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.office_noise_machine
+    data: {}
+  mode: single
+- id: '1707420980718'
+  alias: Office Noise On Home
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - person.andrew
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    to: home
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    before: '16:30:00'
+    after: 08:30:00
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.office_noise_machine
+    data: {}
+  mode: single
+- id: '1707766272388'
+  alias: All Lights Fade
+  description: All main lights fade to 0 from 9:30pm - 10:00pm
+  trigger:
+  - platform: time
+    at: '21:30:00'
+  condition: []
+  action:
+  - service: script.light_fader
+    data:
+      lampBrightnessScale: zeroToTwoFiftyFive
+      easingTypeInput: easeInOutCubic
+      endBrightnessPercent: 0
+      endBrightnessEntityScale: zeroToOneHundred
+      autoCancelThreshold: 10
+      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+      shouldResetTheStopEntityToOffAtStart: false
+      shouldInvertTheValueOfTheStopEntity: false
+      minimumStepDelayInMilliseconds: 100
+      shouldTryToUseNativeLampTransitionsToo: false
+      isDebugMode: false
+      light: light.all_lights
+      transitionTime:
+        hours: 0
+        minutes: 30
+        seconds: 0
+  mode: single
+- id: '1707839154324'
+  alias: Driveway Motion Notification
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.aarlo_motion_driveway
+    to: 'on'
+  condition: []
+  action:
+  - action: script.googleai_notify_arlo_driveway
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1707858054576'
+  alias: Motion Street Notify
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.aarlo_motion_street
+    to: 'on'
+  condition: []
+  action:
+  - service: script.googleai_notify_arlo_street
+    metadata: {}
+    data: {}
+  mode: single
+- id: '1717961799961'
+  alias: Lutron Pico - Kitchen Light
+  description: All Kitchen Lights
+  use_blueprint:
+    path: smartqasa/lutron_pico_5_light.yaml
+    input:
+      pico_1: 2a70b77a4179dbd72536c20c740dd43b
+      entity:
+      - light.kitchen
+      step: 5
+      speed: 250
+- id: '1717961915849'
+  alias: Lutron Pico - Great Room Light
+  description: 'All Great Room Lights
+
+    '
+  use_blueprint:
+    path: smartqasa/lutron_pico_5_light.yaml
+    input:
+      pico_1: 756884075c62612431a1f9d63885056b
+      entity:
+      - light.great_room
+      step: 5
+      speed: 250
+- id: '1717962019863'
+  alias: Lutron Pico - Solarium Light
+  description: All Solarium Lights
+  use_blueprint:
+    path: smartqasa/lutron_pico_5_light.yaml
+    input:
+      pico_1: ae2cfeda57affa50c0e00e2e8320396e
+      entity:
+      - light.solarium
+      step: 5
+      speed: 250
+      transition_off: 2
+- id: '1724702037211'
+  alias: Fish Lights On
+  description: ''
+  triggers:
+  - at: 07:00:00
+    trigger: time
+  conditions: []
+  actions:
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.fish_lights
+  mode: single
+- id: '1724702174998'
+  alias: Fish Lights Off
+  description: ''
+  triggers:
+  - at: '20:00:00'
+    trigger: time
+  conditions: []
+  actions:
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.fish_lights
+  mode: single
+- alias: Feed Fish Reminder at 6 AM and 4 PM
+  trigger:
+  - platform: time
+    at: 06:00:00
+  - platform: time
+    at: '16:00:00'
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.feed_fish_reminder
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.feed_fish_reminder_color_change
+  id: 496a93ed9dc8414ab1aced2aed222369
+- alias: Change Button Color if Fish Overdue
+  trigger:
+  - platform: time
+    at: 09:00:00
+  - platform: time
+    at: '19:30:00'
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.feed_fish_reminder_color_change
+  id: af97df70547b45b083ee4a198500fa33
+- id: '1729704944600'
+  alias: Kids Morning Reset
+  description: Resets to-do booleans at 5am
+  triggers:
+  - trigger: time
+    at: 05:00:00
+  conditions: []
+  actions:
+  - action: input_boolean.turn_on
+    target:
+      entity_id:
+      - input_boolean.charlotte_brush
+      - input_boolean.henry_brush
+      - input_boolean.charlotte_breakfast
+      - input_boolean.henry_breakfast
+      - input_boolean.charlotte_dressed
+      - input_boolean.charlotte_wakeup
+      - input_boolean.henry_wakeup
+      - input_boolean.henry_dressed
+    data: {}
+  mode: single
+- id: '1729705430069'
+  alias: Charlotte Ballet Reset
+  description: Reset Ballet boolean on Tuesdays
+  triggers:
+  - trigger: time
+    at: 05:00:00
+  conditions:
+  - condition: time
+    weekday:
+    - tue
+  actions:
+  - action: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.charlotte_ballet
+    data: {}
+  mode: single
+- id: '1731265709255'
+  alias: NFC - Activate Master Bedtime
+  description: ''
+  triggers:
+  - trigger: tag
+    tag_id: d49ea682-5ec0-4743-8cec-d10aa41f6fba
+  conditions: []
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    target:
+      entity_id: scene.master_bedtime
+  mode: single
+- id: '1731265901637'
+  alias: NFC Webhook Activate Master Bedroom
+  description: ''
+  triggers:
+  - trigger: webhook
+    allowed_methods:
+    - POST
+    - PUT
+    local_only: true
+    webhook_id: nfc_activate_master_bedtime
+  conditions: []
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    target:
+      entity_id: scene.master_bedtime
+  mode: single
+- id: '1732739136261'
+  alias: Christmas Lights Inside Off Away
+  description: Turns off the inside Christmas lights when 0 people are home for more
+    than 3 minutes.
+  trigger:
+  - platform: state
+    entity_id: group.family
+    from: home
+    to: not_home
+    for:
+      minutes: 3
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.christmas_lights_inside
+  mode: single
+- id: '1732739341525'
+  alias: Christmas Lights Inside On Home
+  description: Turns the inside Christmas lights on when someone is home for 2 minutes.
+  trigger:
+  - platform: state
+    entity_id: group.family
+    from: not_home
+    to: home
+    for:
+      minutes: 2
+  condition:
+  - condition: time
+    before: '20:45:00'
+    after: 06:30:00
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.christmas_lights_inside
+  mode: single
+- id: '1740949398217'
+  alias: Handle Scenes and Scripts Selection
+  description: ''
+  triggers:
+  - entity_id: input_select.scenes
+    trigger: state
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: All Off
+      sequence:
+      - target:
+          entity_id: scene.off
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: All Off
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Wake Up
+      sequence:
+      - target:
+          entity_id: script.morning
+        action: script.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Wake Up
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Normal
+      sequence:
+      - target:
+          entity_id: scene.normal
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Normal
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Cooking
+      sequence:
+      - target:
+          entity_id: scene.cooking
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Cooking
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Dinner
+      sequence:
+      - target:
+          entity_id: scene.dinner
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Dinner
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Relax
+      sequence:
+      - target:
+          entity_id: scene.relax
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Relax
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Bedtime
+      sequence:
+      - target:
+          entity_id: script.bedtime_2
+        action: script.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Bedtime
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Master Bedtime
+      sequence:
+      - target:
+          entity_id: scene.master_bedtime
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Master Bedtime
+        action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Party
+      sequence:
+      - target:
+          entity_id: script.party
+        action: script.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Party
+        action: input_text.set_value
+# Basic Training Badge
+- id: bob_basic_training_complete
+  alias: 'BoB Squad - Basic Training Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_basic_training
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/cheer.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/basic_training.png"
+        large: true
+
+# PT Warrior Badge
+- id: bob_pt_warrior_complete
+  alias: 'BoB Squad - PT Warrior Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_pt_warrior
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/cheer.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/pt_warrior.png"
+        large: true
+
+# Stealth Operative Badge
+- id: bob_stealth_operative_complete
+  alias: 'BoB Squad - Stealth Operative Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_stealth_operative
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/cheer.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/stealth_operative.png"
+        large: true
+
+# SEAL Splash Badge
+- id: bob_seal_splash_complete
+  alias: 'BoB Squad - SEAL Splash Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_seal_splash
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/bugle.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/seal_splash.png"
+        large: true
+
+# Weapons Specialist Badge
+- id: bob_weapons_specialist_complete
+  alias: 'BoB Squad - Weapons Specialist Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_weapons_specialist
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/lightsaber.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/weapons_specialist.png"
+        large: true
+
+# Medical Expert Badge
+- id: bob_medical_expert_complete
+  alias: 'BoB Squad - Medical Expert Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_medical_expert
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/cheer.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/medical_expert.png"
+        large: true
+
+# Squad Leader Badge
+- id: bob_squad_leader_complete
+  alias: 'BoB Squad - Squad Leader Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_squad_leader
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/bugle.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/squad_leader.png"
+        large: true
+
+# Drill Master Badge
+- id: bob_drill_master_complete
+  alias: 'BoB Squad - Drill Master Badge Earned'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.bob_drill_master
+      to: 'on'
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/bugle.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Mission Complete!"
+        content:
+          type: picture
+          image: "/local/badges/drill_master.png"
+        large: true
+- id: bob_bonus_mission_selected
+  alias: 'BoB Squad - Bonus Mission Selected'
+  trigger:
+    - platform: state
+      entity_id: input_select.bob_bonus_mission
+  condition:
+    - condition: template
+      value_template: "{{ trigger.to_state.state != '' }}"
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.all_lights
+      data:
+        flash: short
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_sonos
+      data:
+        media_content_id: "/local/sounds/bugle.mp3"
+        media_content_type: music
+    - service: browser_mod.popup
+      data:
+        title: "Bonus Mission!"
+        content:
+          type: markdown
+          content: >
+            **Today's Bonus Mission:**
+
+            🎯 *{{ states('input_select.bob_bonus_mission') }}* 🎯
+        large: true
+>>>>>>> c9aa5eb (Test commit)

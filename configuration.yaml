@@ -199,6 +199,23 @@ template:
             All Missions Complete!
           {% endif %}
   - sensor:
+<<<<<<< HEAD
+=======
+      - name: "Kitchen Set Temperature Line"
+        unit_of_measurement: "°F"
+        state: "{{ state_attr('climate.kitchen', 'temperature') }}"
+  - sensor:
+      - name: "Solarium Set Temperature Line"
+        unit_of_measurement: "°F"
+        state: "{{ state_attr('climate.solarium', 'temperature') }}"
+  - sensor:
+      - name: "Upstairs Set Temperature Line"
+        unit_of_measurement: "°F"
+        state: "{{ state_attr('climate.upstairs', 'temperature') }}"
+  
+  
+  - sensor:
+>>>>>>> c9aa5eb (Test commit)
     - name: "Total Lights Count Template"
       state: >-
         {% set exclude = ["light.basement","light.exterior","light.great_room","light.kitchen","light.mudroom","light.office","light.offices","light.solarium","light.white_room","light.first_floor_lights"] %}
@@ -365,6 +382,233 @@ sensor:
           {{ state_attr("sensor.dryer","remain_time").split(":")[:-1] | join(':') }}
         {% endif %}
 
+<<<<<<< HEAD
+=======
+# --- KITCHEN ---
+- platform: history_stats
+  name: Kitchen Heat Runtime Today
+  entity_id: binary_sensor.hvac_kitchen_heating_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now() }}'
+
+- platform: history_stats
+  name: Kitchen AC Runtime Today
+  entity_id: binary_sensor.hvac_kitchen_ac_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now() }}'
+
+- platform: history_stats
+  name: Kitchen Fan Runtime Today
+  entity_id: binary_sensor.hvac_kitchen_fan_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now() }}'
+
+- platform: history_stats
+  name: Kitchen Heat Runtime Yesterday
+  entity_id: binary_sensor.hvac_kitchen_heating_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Kitchen AC Runtime Yesterday
+  entity_id: binary_sensor.hvac_kitchen_ac_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Kitchen Fan Runtime Yesterday
+  entity_id: binary_sensor.hvac_kitchen_fan_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+# --- SOLARIUM ---
+- platform: history_stats
+  name: Solarium Heat Runtime Today
+  entity_id: binary_sensor.hvac_solarium_heating_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now() }}'
+
+- platform: history_stats
+  name: Solarium AC Runtime Today
+  entity_id: binary_sensor.hvac_solarium_ac_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now() }}'
+
+- platform: history_stats
+  name: Solarium Fan Runtime Today
+  entity_id: binary_sensor.hvac_solarium_fan_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now() }}'
+
+- platform: history_stats
+  name: Solarium Heat Runtime Yesterday
+  entity_id: binary_sensor.hvac_solarium_heating_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Solarium AC Runtime Yesterday
+  entity_id: binary_sensor.hvac_solarium_ac_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Solarium Fan Runtime Yesterday
+  entity_id: binary_sensor.hvac_solarium_fan_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+# --- UPSTAIRS ---
+- platform: history_stats
+  name: Upstairs Heat Runtime Today
+  entity_id: binary_sensor.hvac_upstairs_heating_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now() }}'
+
+- platform: history_stats
+  name: Upstairs AC Runtime Today
+  entity_id: binary_sensor.hvac_upstairs_ac_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now() }}'
+
+- platform: history_stats
+  name: Upstairs Fan Runtime Today
+  entity_id: binary_sensor.hvac_upstairs_fan_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now() }}'
+
+- platform: history_stats
+  name: Upstairs Heat Runtime Yesterday
+  entity_id: binary_sensor.hvac_upstairs_heating_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Upstairs AC Runtime Yesterday
+  entity_id: binary_sensor.hvac_upstairs_ac_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Upstairs Fan Runtime Yesterday
+  entity_id: binary_sensor.hvac_upstairs_fan_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end: '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+
+
+binary_sensor:
+  - platform: template
+    sensors:
+      # --- Kitchen ---
+      hvac_kitchen_heating_on:
+        friendly_name: Kitchen Heat On
+        value_template: >-
+          {{ is_state_attr('climate.kitchen', 'hvac_action', 'heating') }}
+
+      hvac_kitchen_ac_on:
+        friendly_name: Kitchen AC On
+        value_template: >-
+          {{ is_state_attr('climate.kitchen', 'hvac_action', 'cooling') }}
+
+      hvac_kitchen_fan_on:
+        friendly_name: Kitchen Fan On
+        value_template: >-
+          {{ is_state_attr('climate.kitchen', 'fan_mode', 'on') and
+             not is_state_attr('climate.kitchen', 'hvac_action', 'heating') and
+             not is_state_attr('climate.kitchen', 'hvac_action', 'cooling') }}
+
+      hvac_kitchen_eco_mode:
+        friendly_name: Kitchen Eco Mode
+        value_template: >-
+          {{ is_state_attr('climate.kitchen', 'preset_mode', 'eco') and 
+             is_state_attr('climate.kitchen', 'hvac_action', 'idle') }}
+
+      # --- Solarium ---
+      hvac_solarium_heating_on:
+        friendly_name: Solarium Heat On
+        value_template: >-
+          {{ is_state_attr('climate.solarium', 'hvac_action', 'heating') }}
+
+      hvac_solarium_ac_on:
+        friendly_name: Solarium AC On
+        value_template: >-
+          {{ is_state_attr('climate.solarium', 'hvac_action', 'cooling') }}
+
+      hvac_solarium_fan_on:
+        friendly_name: Solarium Fan On
+        value_template: >-
+          {{ is_state_attr('climate.solarium', 'fan_mode', 'on') and
+             not is_state_attr('climate.solarium', 'hvac_action', 'heating') and
+             not is_state_attr('climate.solarium', 'hvac_action', 'cooling') }}
+
+      hvac_solarium_eco_mode:
+        friendly_name: Solarium Eco Mode
+        value_template: >-
+          {{ is_state_attr('climate.solarium', 'preset_mode', 'eco') and 
+             is_state_attr('climate.solarium', 'hvac_action', 'idle') }}
+
+      # --- Upstairs ---
+      hvac_upstairs_heating_on:
+        friendly_name: Upstairs Heat On
+        value_template: >-
+          {{ is_state_attr('climate.upstairs', 'hvac_action', 'heating') }}
+
+      hvac_upstairs_ac_on:
+        friendly_name: Upstairs AC On
+        value_template: >-
+          {{ is_state_attr('climate.upstairs', 'hvac_action', 'cooling') }}
+
+      hvac_upstairs_fan_on:
+        friendly_name: Upstairs Fan On
+        value_template: >-
+          {{ is_state_attr('climate.upstairs', 'fan_mode', 'on') and
+             not is_state_attr('climate.upstairs', 'hvac_action', 'heating') and
+             not is_state_attr('climate.upstairs', 'hvac_action', 'cooling') }}
+
+      hvac_upstairs_eco_mode:
+        friendly_name: Upstairs Eco Mode
+        value_template: >-
+          {{ is_state_attr('climate.upstairs', 'preset_mode', 'eco') and 
+             is_state_attr('climate.upstairs', 'hvac_action', 'idle') }}
+
+>>>>>>> c9aa5eb (Test commit)
 input_select:
   scenes:
     name: Scenes
