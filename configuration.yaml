@@ -8,6 +8,9 @@ frontend:
   - /local/community/lovelace-card-mod/card-mod.js
   themes: !include_dir_merge_named themes
 
+shell_command:
+  git_backup: bash /config/git-backup.sh
+
 # Text to speech
 # tts:
 #   - platform: google_translate
@@ -199,8 +202,6 @@ template:
             All Missions Complete!
           {% endif %}
   - sensor:
-<<<<<<< HEAD
-=======
       - name: "Kitchen Set Temperature Line"
         unit_of_measurement: "°F"
         state: "{{ state_attr('climate.kitchen', 'temperature') }}"
@@ -212,10 +213,7 @@ template:
       - name: "Upstairs Set Temperature Line"
         unit_of_measurement: "°F"
         state: "{{ state_attr('climate.upstairs', 'temperature') }}"
-  
-  
   - sensor:
->>>>>>> c9aa5eb (Test commit)
     - name: "Total Lights Count Template"
       state: >-
         {% set exclude = ["light.basement","light.exterior","light.great_room","light.kitchen","light.mudroom","light.office","light.offices","light.solarium","light.white_room","light.first_floor_lights"] %}
@@ -382,8 +380,6 @@ sensor:
           {{ state_attr("sensor.dryer","remain_time").split(":")[:-1] | join(':') }}
         {% endif %}
 
-<<<<<<< HEAD
-=======
 # --- KITCHEN ---
 - platform: history_stats
   name: Kitchen Heat Runtime Today
@@ -608,7 +604,6 @@ binary_sensor:
           {{ is_state_attr('climate.upstairs', 'preset_mode', 'eco') and 
              is_state_attr('climate.upstairs', 'hvac_action', 'idle') }}
 
->>>>>>> c9aa5eb (Test commit)
 input_select:
   scenes:
     name: Scenes
@@ -640,6 +635,3 @@ input_text:
   active_scene:
     name: Active Scene
     initial: "Normal"
-
-
-
