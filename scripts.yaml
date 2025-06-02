@@ -8,6 +8,7 @@ first_floor_lights_up_5:
       entity_id: light.first_floor_lights
   mode: single
   icon: mdi:plus
+
 first_floor_lights_down_5:
   alias: First Floor Lights Down 5
   sequence:
@@ -18,6 +19,7 @@ first_floor_lights_down_5:
       entity_id: light.first_floor_lights
   mode: single
   icon: mdi:minus
+
 light_fader:
   alias: Ashley’s Light Fader
   description: 'Fades a lamp over time. If you have any questions or comments about
@@ -1359,6 +1361,7 @@ light_fader:
   mode: parallel
   max: 15
   icon: mdi:lightbulb-on-50
+
 '1707529040498':
   alias: Spoken GoogleAI Arlo Driveway
   fields:
@@ -1409,6 +1412,7 @@ light_fader:
     response_variable: content
   mode: single
   icon: mdi:message-image
+
 googleai_notify_arlo_driveway:
   alias: GoogleAI Notify Arlo Driveway
   sequence:
@@ -1452,6 +1456,7 @@ googleai_notify_arlo_driveway:
       name: camera
   mode: single
   icon: mdi:message-image
+
 googleai_notify_arlo_street:
   alias: GoogleAI Notify Arlo Street
   sequence:
@@ -1495,6 +1500,7 @@ googleai_notify_arlo_street:
       name: camera
   mode: single
   icon: mdi:message-image
+
 spoken_googleai_arlo_street:
   alias: Spoken GoogleAI Arlo Street
   sequence:
@@ -1544,6 +1550,7 @@ spoken_googleai_arlo_street:
       name: camera
   mode: single
   icon: mdi:message-image
+
 googleai_notify_arlo_backyard:
   alias: GoogleAI Notify Arlo Backyard
   sequence:
@@ -1589,6 +1596,7 @@ googleai_notify_arlo_backyard:
   mode: single
   icon: mdi:message-image
   description: ''
+
 googleai_notify_arlo_basement:
   alias: GoogleAI Notify Arlo Basement
   sequence:
@@ -1634,6 +1642,7 @@ googleai_notify_arlo_basement:
   mode: single
   icon: mdi:message-image
   description: ''
+
 googleai_notify_arlo_fish:
   alias: GoogleAI Notify Arlo Fish
   sequence:
@@ -1679,6 +1688,7 @@ googleai_notify_arlo_fish:
   mode: single
   icon: mdi:message-image
   description: ''
+
 googleai_notify_arlo_front_door:
   alias: GoogleAI Notify Arlo Front Door
   sequence:
@@ -1724,6 +1734,7 @@ googleai_notify_arlo_front_door:
   mode: single
   icon: mdi:message-image
   description: ''
+
 bedtime:
   alias: Bed Time
   sequence:
@@ -1765,6 +1776,7 @@ bedtime:
       entity_id:
       - script.charlotte_bedtime_on
       - script.henry_bedtime_on
+
 charlotte_bedtime_on:
   alias: Charlotte Bedtime On
   sequence:
@@ -1777,6 +1789,7 @@ charlotte_bedtime_on:
       - switch.charlotte_noise_machine
       - switch.charlotte_night_light
       - switch.charlotte_fan
+
 charlotte_bedtime_off:
   alias: Charlotte Bedtime Off
   sequence:
@@ -1789,6 +1802,7 @@ charlotte_bedtime_off:
   - service: light.turn_off
     target:
       entity_id: light.charlotte_bedroom_table_lamp
+
 henry_bedtime_off:
   alias: Henry Bedtime Off
   sequence:
@@ -1802,6 +1816,7 @@ henry_bedtime_off:
     action: light.turn_off
   description: ''
   icon: mdi:hockey-sticks
+
 henry_bedtime_on:
   alias: Henry Bedtime On
   sequence:
@@ -1815,6 +1830,7 @@ henry_bedtime_on:
     action: switch.turn_on
   description: ''
   icon: mdi:hockey-sticks
+
 morning:
   alias: Morning
   sequence:
@@ -1831,6 +1847,7 @@ morning:
   description: Calls morning scene and blind open scene (to get around Hunter blind
     tilt/position issues)
   icon: mdi:weather-sunset-up
+
 find_iphone_alert_christina:
   sequence:
   - data:
@@ -1844,6 +1861,7 @@ find_iphone_alert_christina:
   alias: Find iPhone Alert Christina
   mode: single
   description: ''
+  
 find_phone_alert_andrew:
   alias: Find iPhone Alert - Andrew
   sequence:

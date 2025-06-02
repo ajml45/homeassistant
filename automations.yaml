@@ -1386,36 +1386,6 @@
       entity_id: input_boolean.charlotte_ballet
     data: {}
   mode: single
-- id: '1731265709255'
-  alias: NFC - Activate Master Bedtime
-  description: ''
-  triggers:
-  - trigger: tag
-    tag_id: d49ea682-5ec0-4743-8cec-d10aa41f6fba
-  conditions: []
-  actions:
-  - action: scene.turn_on
-    metadata: {}
-    target:
-      entity_id: scene.master_bedtime
-  mode: single
-- id: '1731265901637'
-  alias: NFC Webhook Activate Master Bedroom
-  description: ''
-  triggers:
-  - trigger: webhook
-    allowed_methods:
-    - POST
-    - PUT
-    local_only: true
-    webhook_id: nfc_activate_master_bedtime
-  conditions: []
-  actions:
-  - action: scene.turn_on
-    metadata: {}
-    target:
-      entity_id: scene.master_bedtime
-  mode: single
 - id: '1732739136261'
   alias: Christmas Lights Inside Off Away
   description: Turns off the inside Christmas lights when 0 people are home for more
