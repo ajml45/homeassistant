@@ -1,0 +1,61 @@
+# Template switches for kid-bedtime routines
+- platform: template
+  switches:
+
+    charlotte_bedtime:
+      friendly_name: "Charlotte Bedtime"
+      value_template: "{{ is_state('input_boolean.charlotte_room_status', 'on') }}"
+      turn_on:
+        - service: switch.turn_on
+          target:
+            entity_id:
+              - switch.charlotte_noise_machine
+              - switch.charlotte_fan
+              - switch.charlotte_night_light
+        - service: light.turn_off
+          target:
+            entity_id: light.charlotte_bedroom_light
+        - service: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.charlotte_room_status
+      turn_off:
+        - service: switch.turn_off
+          target:
+            entity_id:
+              - switch.charlotte_noise_machine
+              - switch.charlotte_fan
+              - switch.charlotte_night_light
+        - service: light.turn_off
+          target:
+            entity_id: light.charlotte_bedroom_light
+        - service: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.charlotte_room_status
+
+    henry_bedtime:
+      friendly_name: "Henry Bedtime"
+      value_template: "{{ is_state('input_boolean.henry_room_status', 'on') }}"
+      turn_on:
+        - service: switch.turn_on
+          target:
+            entity_id:
+              - switch.henry_noise_machine
+              - switch.henry_night_light
+        - service: light.turn_off
+          target:
+            entity_id: light.henry_bedroom_table_lamp
+        - service: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.henry_room_status
+      turn_off:
+        - service: switch.turn_off
+          target:
+            entity_id:
+              - switch.henry_noise_machine
+              - switch.henry_night_light
+        - service: light.turn_off
+          target:
+            entity_id: light.henry_bedroom_table_lamp
+        - service: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.henry_room_status

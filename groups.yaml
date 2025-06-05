@@ -1,0 +1,8 @@
+family:
+  name: Family
+  entities:
+    - person.andrew
+    - person.christina
+    - person.charlotte
+    - person.henry
+    - person.guests

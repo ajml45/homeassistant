@@ -1,0 +1,18 @@
+# templates/hvac_setpoints.yaml
+# -----------------------------------------------------------
+# Current set-temperature lines for mini-graph cards
+# -----------------------------------------------------------
+
+- sensor:
+
+    - name: "Kitchen Set Temperature Line"
+      unit_of_measurement: "°F"
+      state: "{{ state_attr('climate.kitchen',  'temperature') }}"
+
+    - name: "Solarium Set Temperature Line"
+      unit_of_measurement: "°F"
+      state: "{{ state_attr('climate.solarium', 'temperature') }}"
+
+    - name: "Upstairs Set Temperature Line"
+      unit_of_measurement: "°F"
+      state: "{{ state_attr('climate.upstairs', 'temperature') }}"

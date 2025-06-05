@@ -1,0 +1,43 @@
+# templates/bob_squad.yaml
+# -----------------------------------------------------------
+# BoB-Squad helper sensors
+# -----------------------------------------------------------
+
+- sensor:
+
+    - name: "BoB Squad Progress"
+      unit_of_measurement: "badges"
+      state: >
+        {{
+          [
+            states('input_boolean.bob_basic_training'),
+            states('input_boolean.bob_pt_warrior'),
+            states('input_boolean.bob_stealth_operative'),
+            states('input_boolean.bob_seal_splash'),
+            states('input_boolean.bob_weapons_specialist'),
+            states('input_boolean.bob_medical_expert'),
+            states('input_boolean.bob_squad_leader'),
+            states('input_boolean.bob_drill_master')
+          ].count('on')
+        }}
+
+    - name: "BoB Squad Current Mission"
+      state: >
+        {% set missions = [
+            ('input_boolean.bob_basic_training',   'Basic Training'),
+            ('input_boolean.bob_pt_warrior',       'PT Warrior'),
+            ('input_boolean.bob_stealth_operative','Stealth Operative'),
+            ('input_boolean.bob_seal_splash',      'SEAL Splash'),
+            ('input_boolean.bob_weapons_specialist','Weapons Specialist'),
+            ('input_boolean.bob_medical_expert',   'Medical Expert'),
+            ('input_boolean.bob_squad_leader',     'Squad Leader'),
+            ('input_boolean.bob_drill_master',     'Drill Master')
+        ] %}
+        {% for id, label in missions %}
+          {% if is_state(id, 'off') %}
+            {{ label }}
+            {% break %}
+          {% endif %}
+        {% else %}
+          All Missions Complete!
+        {% endfor %}

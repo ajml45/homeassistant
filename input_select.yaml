@@ -1,0 +1,26 @@
+scenes:
+  name: Scenes
+  options:
+    - All Off
+    - Wake Up
+    - Normal
+    - Cooking
+    - Dinner
+    - Relax
+    - Bedtime
+    - Master Bedtime
+    - Party
+  initial: Normal
+  icon: mdi:palette
+
+bob_bonus_mission:
+  name: Bonus Mission Spinner
+  options:
+    - Obstacle Course Challenge
+    - 5-Minute Dance-Off
+    - Hide & Seek Rescue
+    - Jedi Training
+    - Princess Parade
+    - Scooter Race
+    - Magic Makeup Mission
+  initial: Obstacle Course Challenge

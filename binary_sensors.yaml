@@ -1,0 +1,83 @@
+###############################################################################
+# binary_sensors.yaml
+# Template binary-sensors for HVAC state monitoring
+###############################################################################
+
+- platform: template
+  sensors:
+
+    # ------------------------------------------------------------------------
+    # KITCHEN
+    # ------------------------------------------------------------------------
+    hvac_kitchen_heating_on:
+      friendly_name: Kitchen Heat On
+      value_template: "{{ is_state_attr('climate.kitchen', 'hvac_action', 'heating') }}"
+
+    hvac_kitchen_ac_on:
+      friendly_name: Kitchen AC On
+      value_template: "{{ is_state_attr('climate.kitchen', 'hvac_action', 'cooling') }}"
+
+    hvac_kitchen_fan_on:
+      friendly_name: Kitchen Fan On
+      value_template: >
+        {{ is_state_attr('climate.kitchen', 'fan_mode', 'on')
+           and not is_state_attr('climate.kitchen', 'hvac_action', 'heating')
+           and not is_state_attr('climate.kitchen', 'hvac_action', 'cooling') }}
+
+    hvac_kitchen_eco_mode:
+      friendly_name: Kitchen Eco Mode
+      value_template: >
+        {{ is_state_attr('climate.kitchen', 'preset_mode', 'eco')
+           and is_state_attr('climate.kitchen', 'hvac_action', 'idle') }}
+
+
+
+    # ------------------------------------------------------------------------
+    # SOLARIUM
+    # ------------------------------------------------------------------------
+    hvac_solarium_heating_on:
+      friendly_name: Solarium Heat On
+      value_template: "{{ is_state_attr('climate.solarium', 'hvac_action', 'heating') }}"
+
+    hvac_solarium_ac_on:
+      friendly_name: Solarium AC On
+      value_template: "{{ is_state_attr('climate.solarium', 'hvac_action', 'cooling') }}"
+
+    hvac_solarium_fan_on:
+      friendly_name: Solarium Fan On
+      value_template: >
+        {{ is_state_attr('climate.solarium', 'fan_mode', 'on')
+           and not is_state_attr('climate.solarium', 'hvac_action', 'heating')
+           and not is_state_attr('climate.solarium', 'hvac_action', 'cooling') }}
+
+    hvac_solarium_eco_mode:
+      friendly_name: Solarium Eco Mode
+      value_template: >
+        {{ is_state_attr('climate.solarium', 'preset_mode', 'eco')
+           and is_state_attr('climate.solarium', 'hvac_action', 'idle') }}
+
+
+
+    # ------------------------------------------------------------------------
+    # UPSTAIRS
+    # ------------------------------------------------------------------------
+    hvac_upstairs_heating_on:
+      friendly_name: Upstairs Heat On
+      value_template: "{{ is_state_attr('climate.upstairs', 'hvac_action', 'heating') }}"
+
+    hvac_upstairs_ac_on:
+      friendly_name: Upstairs AC On
+      value_template: "{{ is_state_attr('climate.upstairs', 'hvac_action', 'cooling') }}"
+
+    hvac_upstairs_fan_on:
+      friendly_name: Upstairs Fan On
+      value_template: >
+        {{ is_state_attr('climate.upstairs', 'fan_mode', 'on')
+           and not is_state_attr('climate.upstairs', 'hvac_action', 'heating')
+           and not is_state_attr('climate.upstairs', 'hvac_action', 'cooling') }}
+
+    hvac_upstairs_eco_mode:
+      friendly_name: Upstairs Eco Mode
+      value_template: >
+        {{ is_state_attr('climate.upstairs', 'preset_mode', 'eco')
+           and is_state_attr('climate.upstairs', 'hvac_action', 'idle') }}
