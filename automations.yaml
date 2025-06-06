@@ -1549,29 +1549,23 @@
         action: input_text.set_value
 - id: bob_basic_training_complete
   alias: BoB Squad - Basic Training Badge Earned
-  trigger:
-  - platform: state
-    entity_id: input_boolean.bob_basic_training
+  description: ''
+  triggers:
+  - entity_id: input_boolean.bob_basic_training
     to: 'on'
-  action:
-  - service: light.turn_on
-    target:
+    trigger: state
+  actions:
+  - target:
       entity_id: light.all_lights
     data:
       flash: short
-  - service: media_player.play_media
-    target:
+    action: light.turn_on
+  - target:
       entity_id: media_player.kitchen_sonos
     data:
       media_content_id: /local/sounds/cheer.mp3
       media_content_type: music
-  - service: browser_mod.popup
-    data:
-      title: Mission Complete!
-      content:
-        type: picture
-        image: /local/badges/basic_training.png
-      large: true
+    action: media_player.play_media
 - id: bob_pt_warrior_complete
   alias: BoB Squad - PT Warrior Badge Earned
   trigger:
@@ -1749,32 +1743,25 @@
       large: true
 - id: bob_bonus_mission_selected
   alias: BoB Squad - Bonus Mission Selected
-  trigger:
-  - platform: state
-    entity_id: input_select.bob_bonus_mission
-  condition:
+  description: ''
+  triggers:
+  - entity_id: input_select.bob_bonus_mission
+    trigger: state
+  conditions:
   - condition: template
     value_template: '{{ trigger.to_state.state != '''' }}'
-  action:
-  - service: light.turn_on
-    target:
+  actions:
+  - target:
       entity_id: light.all_lights
     data:
       flash: short
-  - service: media_player.play_media
-    target:
+    action: light.turn_on
+  - target:
       entity_id: media_player.kitchen_sonos
     data:
       media_content_id: /local/sounds/bugle.mp3
       media_content_type: music
-  - service: browser_mod.popup
-    data:
-      title: Bonus Mission!
-      content:
-        type: markdown
-        content: "**Today's Bonus Mission:**\n\U0001F3AF *{{ states('input_select.bob_bonus_mission')
-          }}* \U0001F3AF\n"
-      large: true
+    action: media_player.play_media
 - id: '1748640799685'
   alias: GitHub Daily Backup
   description: ''
