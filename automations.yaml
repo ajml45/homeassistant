@@ -1,23 +1,25 @@
 - id: '1675797444753'
   alias: Great Room Side Shade Closed
   description: ''
-  trigger:
-  - platform: sun
-    event: sunset
-    offset: '-1:00'
-  condition: []
-  action:
-  - service: scene.turn_on
-    target:
+  triggers:
+  - event: sunset
+    trigger: sun
+    offset: -00:30:00
+  conditions: []
+  actions:
+  - target:
       entity_id: scene.closed_2
     metadata: {}
+    action: scene.turn_on
+    data: {}
   mode: single
 - id: '1675798534763'
   alias: Close All Blinds
   description: '30 min after sunset closes all blinds '
   triggers:
-  - trigger: time
-    at: '19:30:00'
+  - trigger: sun
+    event: sunset
+    offset: 0
   conditions: []
   actions:
   - target:
