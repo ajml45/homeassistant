@@ -1,3 +1,11 @@
+house_mode:
+  name: House Mode
+  options:
+    - Home
+    - Away
+    - Vacation
+  icon: mdi:home-switch
+
 scenes:
   name: Scenes
   options:
@@ -12,7 +20,7 @@ scenes:
     - Party
   initial: Normal
   icon: mdi:palette
-
+  
 bob_bonus_mission:
   name: Bonus Mission Spinner
   options:

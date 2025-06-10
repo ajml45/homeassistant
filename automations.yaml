@@ -439,11 +439,11 @@
 - id: '1704828323384'
   alias: Dusk Solarium Lights On
   description: ''
-  trigger:
-  - platform: sun
-    event: sunset
-    offset: -01:00:00
-  condition:
+  triggers:
+  - event: sunset
+    offset: -02:00:00
+    trigger: sun
+  conditions:
   - condition: time
     weekday:
     - sun
@@ -456,13 +456,13 @@
   - condition: state
     entity_id: light.solarium
     state: 'off'
-  action:
-  - service: light.turn_on
-    data:
+  actions:
+  - data:
       brightness_pct: 70
     target:
       entity_id:
       - light.solarium
+    action: light.turn_on
   mode: single
 - id: '1704828349964'
   alias: Dusk Basement Lights On
@@ -1775,4 +1775,15 @@
   - action: shell_command.git_backup
     metadata: {}
     data: {}
+  mode: single
+- id: '1749499718232'
+  alias: House Mode - Enter Vacation
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.house_mode
+    to: Vacation
+  conditions: []
+  actions: []
   mode: single
