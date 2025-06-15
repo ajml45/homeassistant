@@ -1785,5 +1785,127 @@
     - input_select.house_mode
     to: Vacation
   conditions: []
-  actions: []
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - scene.off
+      - scene.close_blinds_bedroom
+      - scene.close_blinds
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.air_purifier
+      - switch.charlotte_fan
+      - switch.charlotte_night_light
+      - switch.charlotte_noise_machine
+      - switch.henry_night_light
+      - switch.henry_noise_machine
+      - switch.office_fan
+      - switch.master_bedroom_noise_machine
+      - switch.pool_heater
+      - switch.christmas_lights_inside
+      - switch.pool_lights
+  - action: climate.set_preset_mode
+    metadata: {}
+    data:
+      preset_mode: eco
+    target:
+      entity_id:
+      - climate.kitchen
+      - climate.solarium
+      - climate.upstairs
+  - action: automation.turn_off
+    metadata: {}
+    data:
+      stop_actions: true
+    target:
+      entity_id:
+      - automation.dusk_basement_lights_on
+      - automation.basement_dusk_lights_on_weekend
+      - automation.open_back_blinds_partial
+      - automation.open_blinds_bedroom
+      - automation.bedroom_blinds_partial
+      - automation.open_great_room_blinds
+      - automation.charlotte_bedtime_weekday
+      - automation.charlotte_bedtime_weekend
+      - automation.christmas_lights_inside_on
+      - automation.dusk_foyer_offices_lights_on
+      - automation.foyer_offices_dusk_lights_on_weekend
+      - automation.great_room_dusk_lights_on_weekday
+      - automation.dusk_great_room_lights_on_weekend
+      - automation.henry_bedtime_weekday
+      - automation.henry_bedtime_weekend
+      - automation.dusk_kitchen_on
+      - automation.kitchen_dusk_lights_on_weekend
+      - automation.dusk_mudroom_lights_on
+      - automation.mudroom_dusk_lights_on_weekend
+  mode: single
+- id: '1749927353071'
+  alias: House Mode - Home from Vacation
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.house_mode
+    to: Home
+    from: Vacation
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - scene.open_blinds_bedroom
+      - scene.open_blinds_great_room
+      - scene.relax
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.air_purifier
+  - action: climate.set_preset_mode
+    metadata: {}
+    data:
+      preset_mode: none
+    target:
+      entity_id:
+      - climate.kitchen
+      - climate.solarium
+      - climate.upstairs
+  - action: automation.turn_on
+    metadata: {}
+    data:
+      stop_actions: true
+    target:
+      entity_id:
+      - automation.dusk_basement_lights_on
+      - automation.basement_dusk_lights_on_weekend
+      - automation.open_back_blinds_partial
+      - automation.open_blinds_bedroom
+      - automation.bedroom_blinds_partial
+      - automation.open_great_room_blinds
+      - automation.charlotte_bedtime_weekday
+      - automation.charlotte_bedtime_weekend
+      - automation.christmas_lights_inside_on
+      - automation.dusk_foyer_offices_lights_on
+      - automation.foyer_offices_dusk_lights_on_weekend
+      - automation.great_room_dusk_lights_on_weekday
+      - automation.dusk_great_room_lights_on_weekend
+      - automation.henry_bedtime_weekday
+      - automation.henry_bedtime_weekend
+      - automation.dusk_kitchen_on
+      - automation.kitchen_dusk_lights_on_weekend
+      - automation.dusk_mudroom_lights_on
+      - automation.mudroom_dusk_lights_on_weekend
   mode: single
