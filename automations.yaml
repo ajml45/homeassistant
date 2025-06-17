@@ -1821,8 +1821,6 @@
       - climate.upstairs
   - action: automation.turn_off
     metadata: {}
-    data:
-      stop_actions: true
     target:
       entity_id:
       - automation.dusk_basement_lights_on
@@ -1885,8 +1883,6 @@
       - climate.upstairs
   - action: automation.turn_on
     metadata: {}
-    data:
-      stop_actions: true
     target:
       entity_id:
       - automation.dusk_basement_lights_on
