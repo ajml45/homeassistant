@@ -1875,3 +1875,47 @@ find_phone_alert_andrew:
     action: notify.mobile_app_andrews_phone
   mode: single
   description: ''
+
+away_adjust_climate:
+  alias: Adjust Thermostats for Away Mode
+  mode: single
+  sequence:
+    - repeat:
+        for_each:
+          - climate.kitchen
+          - climate.upstairs
+        sequence:
+          - variables:
+              current_temp: "{{ state_attr(repeat.item, 'temperature') }}"
+              hvac_mode: "{{ states(repeat.item) }}"
+          - choose:
+              - conditions:
+                  - condition: template
+                    value_template: "{{ hvac_mode == 'cool' }}"
+                sequence:
+                  - service: climate.set_temperature
+                    target:
+                      entity_id: "{{ repeat.item }}"
+                    data:
+                      temperature: "{{ current_temp + 5 }}"
+              - conditions:
+                  - condition: template
+                    value_template: "{{ hvac_mode == 'heat' }}"
+                sequence:
+                  - service: climate.set_temperature
+                    target:
+                      entity_id: "{{ repeat.item }}"
+                    data:
+                      temperature: "{{ current_temp - 5 }}"
+
+return_restore_climate:
+  alias: Restore Thermostats to Normal Preset
+  mode: single
+  sequence:
+    - service: climate.set_preset_mode
+      target:
+        entity_id:
+          - climate.kitchen
+          - climate.upstairs
+      data:
+        preset_mode: none

@@ -52,3 +52,9 @@ input_text:
   active_scene:
     name: Active Scene
     initial: "Normal"
+
+input_datetime:
+  last_left_home:
+    name: Last Left Home
+    has_date: true
+    has_time: true

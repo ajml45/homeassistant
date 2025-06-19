@@ -1842,6 +1842,15 @@
       - automation.kitchen_dusk_lights_on_weekend
       - automation.dusk_mudroom_lights_on
       - automation.mudroom_dusk_lights_on_weekend
+    data:
+      stop_actions: true
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.front_foyer_diffuser_away_mode
+      - switch.great_room_diffuser_away_mode
   mode: single
 - id: '1749927353071'
   alias: House Mode - Home from Vacation
@@ -1904,4 +1913,157 @@
       - automation.kitchen_dusk_lights_on_weekend
       - automation.dusk_mudroom_lights_on
       - automation.mudroom_dusk_lights_on_weekend
+    data: {}
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.front_foyer_diffuser_away_mode
+      - switch.great_room_diffuser_away_mode
+  mode: single
+- id: '1750265611762'
+  alias: House Mode - Enter Away
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_select.house_mode
+    from: Home
+    to: Away
+  conditions: []
+  actions:
+  - action: scene.create
+    metadata: {}
+    data:
+      scene_id: pre_away_lights
+      snapshot_entities:
+      - light.basement_sitting_area_main_lights
+      - light.basement_sitting_area_table_lamps
+      - light.basement_sitting_area_spot_lights
+      - light.basement_stairs_lights
+      - light.charlotte_bedroom_table_lamp
+      - light.front_foyer_chandelier
+      - light.front_foyer_upstairs_hallway_lights
+      - light.front_foyer
+      - light.great_room_table_lamp
+      - light.right_couch_lamp
+      - light.bar_lamp_right
+      - light.bar_lamp_left
+      - light.left_couch_lamp
+      - light.great_room_fireplace_can
+      - light.great_room_bar_cabinet_lights
+      - light.bar_under_cabinet
+      - light.middle_can_right
+      - light.back_can_left
+      - light.front_can_middle
+      - light.middle_can_left
+      - light.back_can_right
+      - light.front_can_left
+      - light.front_can_right
+      - light.back_can_middle
+      - light.middle_can_middle
+      - light.henry_bedroom_table_lamp
+      - light.kitchen_cans_sink
+      - light.kitchen_cans_fridge
+      - light.kitchen_above_cabinet
+      - light.kitchen_under_cabinet
+      - light.sink_sconce_left
+      - light.sink_sconce_right
+      - light.island_pendant_right
+      - light.island_pendant_left
+      - light.stove_sconce_right
+      - light.stove_sconce_left
+      - light.toe_kick
+      - light.tub_light_left
+      - light.can_light
+      - light.tub_light_middle
+      - light.shower_light
+      - light.tub_light_right
+      - light.master_bedroom_sconces
+      - light.mudroom_can_lights
+      - light.mudroom_pendants
+      - light.office_floor_lamp
+      - light.office_desk_lamp
+      - light.office_ceiling_light
+      - light.white_room_main_lights
+      - light.white_room_piano_light
+      - light.white_room_table_lamps
+      - light.wine_cellar_sconces
+      - light.stove_scone_left
+  - action: input_datetime.set_datetime
+    metadata: {}
+    data:
+      datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+    target:
+      entity_id: input_datetime.last_left_home
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.off
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: script.away_adjust_climate
+  mode: single
+- id: '1750281710051'
+  alias: House Mode - Return from Away
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - group.family
+    from: not_home
+    to: home
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: script.return_restore_climate
+  - if:
+    - condition: template
+      value_template: '{{ (as_timestamp(now()) - as_timestamp(states(''input_datetime.last_left_home'')))
+        < 5400 }}
+
+        '
+    then:
+    - target:
+        entity_id: scene.pre_away_lights
+      action: scene.turn_on
+      data: {}
+  - action: input_select.select_option
+    metadata: {}
+    data:
+      option: Home
+    target:
+      entity_id: input_select.house_mode
+- id: '1750288517616'
+  alias: House Mode - Geo Locate To Away
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - group.family
+    to: not_home
+    from: home
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  conditions: []
+  actions:
+  - action: input_select.select_option
+    metadata: {}
+    data:
+      option: Away
+    target:
+      entity_id: input_select.house_mode
   mode: single
