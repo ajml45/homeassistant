@@ -48,6 +48,11 @@ group:
       - person.henry
       - person.guests
 
+  guests:
+    name: Guests
+    entities:
+      - person.guests
+
 input_text:
   active_scene:
     name: Active Scene

@@ -1853,18 +1853,13 @@
       - switch.great_room_diffuser_away_mode
   mode: single
 - id: '1749927353071'
-  alias: House Mode - Home from Vacation
+  alias: House Mode - Leave Vacation
   description: ''
   triggers:
   - trigger: state
     entity_id:
     - input_select.house_mode
-    to: Home
     from: Vacation
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
   conditions: []
   actions:
   - action: scene.turn_on
@@ -1991,6 +1986,7 @@
       - light.white_room_table_lamps
       - light.wine_cellar_sconces
       - light.stove_scone_left
+      - light.solarium_sconces
   - action: input_datetime.set_datetime
     metadata: {}
     data:
@@ -2002,32 +1998,17 @@
     data: {}
     target:
       entity_id: scene.off
-  - action: script.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: script.away_adjust_climate
   mode: single
 - id: '1750281710051'
-  alias: House Mode - Return from Away
+  alias: House Mode - Enter Home
   description: ''
   triggers:
   - trigger: state
     entity_id:
-    - group.family
-    from: not_home
-    to: home
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
+    - input_select.house_mode
+    to: Home
   conditions: []
   actions:
-  - action: script.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: script.return_restore_climate
   - if:
     - condition: template
       value_template: '{{ (as_timestamp(now()) - as_timestamp(states(''input_datetime.last_left_home'')))
@@ -2039,12 +2020,6 @@
         entity_id: scene.pre_away_lights
       action: scene.turn_on
       data: {}
-  - action: input_select.select_option
-    metadata: {}
-    data:
-      option: Home
-    target:
-      entity_id: input_select.house_mode
 - id: '1750288517616'
   alias: House Mode - Geo Locate To Away
   description: ''
@@ -2067,3 +2042,75 @@
     target:
       entity_id: input_select.house_mode
   mode: single
+- id: '1750357316186'
+  alias: House Mode - Geo Locate to Home
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - group.family
+    from: not_home
+    to: home
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - action: input_select.select_option
+    metadata: {}
+    data:
+      option: Home
+    target:
+      entity_id: input_select.house_mode
+  mode: single
+- id: '1750358248563'
+  alias: House Mode - Geo Locate To Vacation
+  description: ''
+  triggers:
+  - entity_id:
+    - person.andrew
+    - person.christina
+    trigger: state
+  conditions:
+  - condition: template
+    value_template: '{% set zones = [''Cliff island'', ''Peterborough''] %} {{ states(''person.andrew'')
+      in zones and states(''person.christina'') in zones }}
+
+      '
+  actions:
+  - target:
+      entity_id: input_select.house_mode
+    data:
+      option: Vacation
+    action: input_select.select_option
+- id: '1750358388423'
+  alias: House Mode - Geo Locate From Vacation
+  description: ''
+  triggers:
+  - trigger: zone
+    entity_id: person.andrew
+    zone: zone.cliff_island
+    event: leave
+  - trigger: zone
+    entity_id: person.christina
+    zone: zone.cliff_island
+    event: leave
+  - trigger: zone
+    entity_id: person.andrew
+    zone: zone.peterborough
+    event: leave
+  - trigger: zone
+    entity_id: person.christina
+    zone: zone.peterborough
+    event: leave
+  conditions:
+  - condition: state
+    entity_id: group.family
+    state: not_home
+  actions:
+  - target:
+      entity_id: input_select.house_mode
+    data:
+      option: Away
+    action: input_select.select_option
