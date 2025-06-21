@@ -1,0 +1,16 @@
+- sensor:
+    - name: "Forecasted High Temperature"
+      unit_of_measurement: "°F"
+      state: >
+        {% set forecast = state_attr('weather.openweathermap', 'forecast') %}
+        {% if forecast %}
+          {% set today = now().date().isoformat() %}
+          {% set highs = forecast | selectattr('datetime', 'search', today) | map(attribute='temperature') | list %}
+          {% if highs %}
+            {{ highs | max }}
+          {% else %}
+            unknown
+          {% endif %}
+        {% else %}
+          unknown
+        {% endif %}

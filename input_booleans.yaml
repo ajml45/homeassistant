@@ -53,6 +53,7 @@ henry_room_status:
 guests_present:
   name: Guests
   initial: off
+  icon: mdi:account-group
 
 vacation:
   name: Vacation

@@ -2114,3 +2114,39 @@
     data:
       option: Away
     action: input_select.select_option
+- id: '1750438492811'
+  alias: House Mode - Update Guest MQTT Tracker
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.guests_present
+  conditions: []
+  actions:
+  - data:
+      topic: homeassistant/guests/presence
+      payload: '{{ ''home'' if is_state(''input_boolean.guests_present'', ''on'')
+        else ''not_home'' }}
+
+        '
+      retain: true
+    action: mqtt.publish
+  mode: single
+- id: '1750454401501'
+  alias: Restart Automate Pulse Integration on Restart
+  description: ''
+  triggers:
+  - trigger: homeassistant
+    event: start
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - action: homeassistant.reload_config_entry
+    metadata: {}
+    data:
+      entry_id: 9035945b1b95433a92a9688144ad2bcb
+  mode: single

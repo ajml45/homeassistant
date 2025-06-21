@@ -63,3 +63,11 @@ input_datetime:
     name: Last Left Home
     has_date: true
     has_time: true
+
+mqtt:
+  - device_tracker:
+      name: "guest_tracker"
+      state_topic: "homeassistant/guests/presence"
+      payload_home: "home"
+      payload_not_home: "not_home"
+
