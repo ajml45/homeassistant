@@ -2074,7 +2074,7 @@
     trigger: state
   conditions:
   - condition: template
-    value_template: '{% set zones = [''Cliff island'', ''Peterborough''] %} {{ states(''person.andrew'')
+    value_template: '{% set zones = [''Cliff Island'', ''Peterborough''] %} {{ states(''person.andrew'')
       in zones and states(''person.christina'') in zones }}
 
       '
