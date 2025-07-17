@@ -2150,3 +2150,29 @@
     data:
       entry_id: 9035945b1b95433a92a9688144ad2bcb
   mode: single
+- id: '1752718600381'
+  alias: Temp - Filter
+  description: ''
+  triggers:
+  - trigger: time
+    at: 08:00:00
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 9ecf20ea9ac1e4e07a58b1eca24e64f2
+    entity_id: 06bccbaecaac7de8e593436853f4764a
+    domain: switch
+  mode: single
+- id: '1752718658309'
+  alias: 'Temp - filter off '
+  description: ''
+  triggers:
+  - trigger: time
+    at: '19:00:00'
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 9ecf20ea9ac1e4e07a58b1eca24e64f2
+    entity_id: 06bccbaecaac7de8e593436853f4764a
+    domain: switch
+  mode: single
