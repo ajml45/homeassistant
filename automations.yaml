@@ -2176,3 +2176,17 @@
     entity_id: 06bccbaecaac7de8e593436853f4764a
     domain: switch
   mode: single
+- id: '1753878101803'
+  alias: Upstairs Wake Up
+  description: ''
+  triggers:
+  - trigger: time
+    at: 08:15:00
+  conditions: []
+  actions:
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: script.morning
+  mode: single
