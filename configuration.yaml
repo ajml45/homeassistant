@@ -12,10 +12,11 @@ binary_sensor: !include binary_sensors.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 switch: !include switches.yaml
+group: !include groups.yaml
 input_boolean: !include input_booleans.yaml
 input_select: !include input_select.yaml
 template: !include_dir_merge_list templates/
-sensor:   !include_dir_merge_list sensors/
+sensor: !include_dir_merge_list sensors/
 
 #shell script to push to git
 shell_command:
@@ -36,22 +37,6 @@ shell_command:
 #    characters.\"}], \"top_p\": 1, \"temperature\": 0.7, \"max_tokens\": 320, \"presence_penalty\": 1}'"
 #    value_template: "{{ value_json.choices[0].message.content }}"
 #    scan_interval: 21600
-
-group:
-  family:
-    name: Family
-    all: false
-    entities:
-      - person.andrew
-      - person.christina
-      - person.charlotte
-      - person.henry
-      - person.guests
-
-  guests:
-    name: Guests
-    entities:
-      - person.guests
 
 input_text:
   active_scene:

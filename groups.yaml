@@ -6,3 +6,8 @@ family:
     - person.charlotte
     - person.henry
     - person.guests
+
+guests:
+  name: Guests
+  entities:
+    - person.guests

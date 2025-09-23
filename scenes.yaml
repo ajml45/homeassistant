@@ -1058,7 +1058,6 @@
       - light.stair_path_lights
       - light.solarium_spot_lights
       - light.solarium_rope_light
-      - light.lion_fountain_light
       state: 'off'
     light.white_room:
       entity_id:

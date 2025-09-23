@@ -159,7 +159,6 @@
             states('light.solarium_spot_lights'),
             states('light.slider_path_lights'),
             states('light.stair_path_lights'),
-            states('light.lion_fountain_light'),
             states('light.solarium_rope_light')
         ] %}
         {{ lights | select('eq','on') | list | count }}
