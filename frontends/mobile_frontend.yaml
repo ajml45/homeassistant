@@ -127,7 +127,7 @@ views:
             cards:
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Great Room
                     secondary: >-
                       {{ states('sensor.kitchen_temperature') | round(0) }}°F |
@@ -278,7 +278,7 @@ views:
                     }
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Kitchen
                     secondary: >-
                       {{ states('sensor.kitchen_temperature') | round(0) }}°F |
@@ -441,7 +441,7 @@ views:
                     cards:
                       - type: custom:stack-in-card
                         cards:
-                          - type: custom:mushroom-template-card
+                          - type: custom:mushroom-legacy-template-card
                             primary: Mudroom
                             secondary: >-
                               {{ states('sensor.kitchen_temperature') | round(0)
@@ -582,7 +582,7 @@ views:
                             }
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Front Foyer Offices
                     secondary: >-
                       {{ states('sensor.kitchen_temperature') | round(0) }}°F |
@@ -648,6 +648,14 @@ views:
                           type: template
                           icon_color: disabled
                           icon: mdi:headphones
+                      - type: conditional
+                        conditions:
+                          - entity: switch.office_fan
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon_color: disabled
+                          icon: phu:pedastal-fan
                       - type: conditional
                         conditions:
                           - entity: climate.kitchen
@@ -725,7 +733,7 @@ views:
             cards:
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Master Suite
                     secondary: >-
                       {{ states('sensor.kitchen_temperature') | round(0) }}°F |
@@ -892,7 +900,7 @@ views:
                     }
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Upstairs
                     secondary: >-
                       {{ states('sensor.upstairs_temperature') | round(0) }}°F |
@@ -1077,7 +1085,7 @@ views:
             cards:
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Basement
                     secondary: >-
                       {{ states('sensor.hue_motion_sensor_3_temperature') |
@@ -1237,7 +1245,7 @@ views:
                     }
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Solarium
                     secondary: >-
                       {{ states('sensor.solarium_temperature') | round(0) }}°F |
@@ -1459,7 +1467,7 @@ views:
             cards:
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Exterior
                     secondary: >-
                       {{ states('sensor.openweathermap_temperature') | round(0)
@@ -2340,6 +2348,8 @@ views:
                   - entity: switch.office_noise_machine
                     name: Bookshelf Noise Machine
                     icon: mdi:bookshelf
+                  - entity: switch.office_fan
+                    name: Desk Fan
                 state_color: truetical-stack
                 cards:
                   - type: custom:bubble-card
@@ -2838,6 +2848,7 @@ views:
           - type: vertical-stack
             cards:
               - type: custom:bubble-card
+                card_type: separator
                 name: Solarium
                 styles: |
                   h4 {
@@ -2855,11 +2866,6 @@ views:
                   - type: custom:slider-entity-row
                     entity: light.solarium_couch
                     name: Under Couch
-                    toggle: true
-                    colorize: true
-                  - type: custom:slider-entity-row
-                    entity: light.lion_fountain_light
-                    name: Lion Fountain Light
                     toggle: true
                     colorize: true
                   - type: custom:slider-entity-row
@@ -4299,7 +4305,7 @@ views:
             cards:
               - type: custom:bubble-card
                 card_type: separator
-                name: Plug Scenes/Groups
+                name: Things
                 styles: |
                   ha-card { 
                       color: #242e42 !important;
@@ -4314,7 +4320,30 @@ views:
                         height: 5px!important;
                   }
                 icon: mdi:power-plug
-                card_layout: normal
+              - type: horizontal-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: button
+                    entity: scene.master_bedtime
+                    show_state: false
+                    card_layout: large
+                    icon: mdi:sleep
+                    name: Master Bedtime
+                    tap_action:
+                      action: perform-action
+                      perform_action: scene.turn_on
+                      target:
+                        entity_id: scene.master_bedtime
+                    scrolling_effect: false
+                    show_icon: true
+                  - type: custom:bubble-card
+                    card_type: button
+                    entity: switch.air_purifier
+                    show_state: false
+                    card_layout: large
+                    name: Air Purifier
+                    icon: mdi:air-purifier
+                    show_icon: true
               - type: horizontal-stack
                 cards:
                   - type: custom:bubble-card
@@ -4322,15 +4351,20 @@ views:
                     entity: switch.charlotte_bedtime
                     show_state: false
                     card_layout: large
-                    name: Charlotte Room
+                    icon: mdi:sleep
+                    name: Charlotte Bedtime
                     tap_action:
                       action: toggle
+                    scrolling_effect: false
+                    show_icon: true
                   - type: custom:bubble-card
                     card_type: button
                     entity: switch.henry_bedtime
                     show_state: false
                     card_layout: large
-                    name: Henry Room
+                    name: Henry Bedtime
+                    icon: mdi:sleep
+                    show_icon: true
               - type: horizontal-stack
                 cards:
                   - type: custom:bubble-card
@@ -4338,6 +4372,7 @@ views:
                     entity: switch.lion_fountain
                     show_state: false
                     card_layout: large
+                    name: Lion Fountain
                   - type: custom:bubble-card
                     card_type: button
                     show_state: false
@@ -4348,65 +4383,25 @@ views:
                 cards:
                   - type: custom:bubble-card
                     card_type: button
+                    entity: switch.pool_lights
                     show_state: false
                     card_layout: large
-                    name: Christmas Inside
-                    entity: switch.christmas_lights_inside
-                    icon: phu:christmas-tree
+                    icon: mdi:pool
+                    name: Pool Lights
+                    tap_action:
+                      action: toggle
+                    scrolling_effect: false
+                    show_icon: true
                   - type: custom:bubble-card
                     card_type: button
+                    entity: switch.pool_heater
                     show_state: false
                     card_layout: large
-                    name: Christmas Outside
-                    entity: switch.christmas_lights_outside
-          - type: vertical-stack
-            cards:
-              - type: custom:bubble-card
-                card_type: separator
-                name: Individual Plugs
-                styles: |
-                  ha-card { 
-                      color: #242e42 !important;
-                  }
-                  .separator-container div:last-child {
-                      background-color: #4C5857 !important;
-                  }
-                  h4 {
-                      text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-                  }
-                  ha-card div div div:nth-child(2) {
-                        height: 5px!important;
-                  }
-                icon: mdi:power-plug
-                card_layout: normal
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: switch.lion_fountain
-                    show_state: false
-                    card_layout: large
-                  - type: custom:bubble-card
-                    card_type: button
-                    show_state: false
-                    card_layout: large
-                    name: Fish Lights
-                    entity: switch.fish_lights
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    show_state: false
-                    card_layout: large
-                    name: Christmas Inside
-                    entity: switch.christmas_lights_inside
-                    icon: phu:christmas-tree
-                  - type: custom:bubble-card
-                    card_type: button
-                    show_state: false
-                    card_layout: large
-                    name: Christmas Outside
-                    entity: switch.christmas_lights_outside
+                    name: Pool Heater
+                    icon: mdi:pool-thermometer
+                    show_icon: true
+            view_layout:
+              grid-area: things
     type: masonry
   - subview: true
     title: Blinds
@@ -5121,7 +5116,7 @@ views:
                             background-color: #242e42 !important; 
                         }
                     cards:
-                      - type: custom:mushroom-template-card
+                      - type: custom:mushroom-legacy-template-card
                         primary: Cleaning
                         secondary: '{{states(''todo.cleaning'') | int }} Open Items'
                         icon: mdi:broom
@@ -5138,7 +5133,7 @@ views:
                         entities:
                           - type: custom:fold-entity-row
                             head:
-                              type: custom:mushroom-template-card
+                              type: custom:mushroom-legacy-template-card
                               label: padding
                               tap_action: null
                               multiline_secondary: true
@@ -5177,7 +5172,7 @@ views:
                             background-color: #242e42 !important; 
                         }
                     cards:
-                      - type: custom:mushroom-template-card
+                      - type: custom:mushroom-legacy-template-card
                         primary: Grocery List
                         secondary: '{{states(''todo.shopping_list'') | int }} Open Items'
                         icon: mdi:cart-outline
@@ -5194,7 +5189,7 @@ views:
                         entities:
                           - type: custom:fold-entity-row
                             head:
-                              type: custom:mushroom-template-card
+                              type: custom:mushroom-legacy-template-card
                               label: padding
                               tap_action: null
                               multiline_secondary: true
@@ -5217,7 +5212,7 @@ views:
                             background-color: #242e42 !important; 
                         }
                     cards:
-                      - type: custom:mushroom-template-card
+                      - type: custom:mushroom-legacy-template-card
                         primary: Non-Grocery List
                         secondary: '{{states(''todo.other_shopping'') | int }} Open Items'
                         icon: mdi:clipboard-list-outline
@@ -5234,7 +5229,7 @@ views:
                         entities:
                           - type: custom:fold-entity-row
                             head:
-                              type: custom:mushroom-template-card
+                              type: custom:mushroom-legacy-template-card
                               label: padding
                               tap_action: null
                               multiline_secondary: true
@@ -5273,7 +5268,7 @@ views:
                             background-color: #242e42 !important; 
                         }
                     cards:
-                      - type: custom:mushroom-template-card
+                      - type: custom:mushroom-legacy-template-card
                         primary: Mobile Dashboard
                         secondary: '{{states(''todo.ha_mobile'') | int }} Open Items'
                         icon: mdi:cellphone
@@ -5290,7 +5285,7 @@ views:
                         entities:
                           - type: custom:fold-entity-row
                             head:
-                              type: custom:mushroom-template-card
+                              type: custom:mushroom-legacy-template-card
                               label: padding
                               tap_action: null
                               multiline_secondary: true
@@ -5313,7 +5308,7 @@ views:
                             background-color: #242e42 !important; 
                         }
                     cards:
-                      - type: custom:mushroom-template-card
+                      - type: custom:mushroom-legacy-template-card
                         primary: Tablet Dashboard
                         icon: mdi:tablet
                         secondary: '{{states(''todo.ha_tablet'') | int }} Open Items'
@@ -5330,7 +5325,7 @@ views:
                         entities:
                           - type: custom:fold-entity-row
                             head:
-                              type: custom:mushroom-template-card
+                              type: custom:mushroom-legacy-template-card
                               label: padding
                               tap_action: null
                               multiline_secondary: true
@@ -5353,7 +5348,7 @@ views:
                             background-color: #242e42 !important; 
                         }
                     cards:
-                      - type: custom:mushroom-template-card
+                      - type: custom:mushroom-legacy-template-card
                         primary: Set-Up and New Features
                         secondary: '{{states(''todo.ha_setup'') | int }} Open Items'
                         icon: mdi:wrench-outline
@@ -5370,7 +5365,7 @@ views:
                         entities:
                           - type: custom:fold-entity-row
                             head:
-                              type: custom:mushroom-template-card
+                              type: custom:mushroom-legacy-template-card
                               label: padding
                               tap_action: null
                               multiline_secondary: true
@@ -5423,6 +5418,14 @@ views:
                       font-size: 14px;
                       font-weight: bold;
                     }
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-select-card
+                entity: input_select.house_mode
+                secondary_info: none
+              - type: entities
+                entities:
+                  - entity: input_boolean.guests_present
           - type: custom:bubble-card
             card_type: separator
             icon: mdi:star
@@ -5598,7 +5601,7 @@ views:
                             ha-card {
                                 background-color: #242e42 !important; 
                             }
-                      - type: custom:mushroom-template-card
+                      - type: custom:mushroom-legacy-template-card
                         entity: sensor.speedtest_download
                         primary: |
                           {{states('sensor.speedtest_download')|round(1)}} Mbps
@@ -5715,7 +5718,7 @@ views:
                             ha-card {
                               background-color: #242e42 !important;
                             }
-                      - type: custom:mushroom-template-card
+                      - type: custom:mushroom-legacy-template-card
                         entity: sensor.speedtest_upload
                         primary: |
                           {{states('sensor.speedtest_upload')|round(1)}} Mbps
@@ -5761,7 +5764,7 @@ views:
                 entities:
                   - type: custom:fold-entity-row
                     head:
-                      type: custom:mushroom-template-card
+                      type: custom:mushroom-legacy-template-card
                       label: padding
                       tap_action: null
                       multiline_secondary: true
