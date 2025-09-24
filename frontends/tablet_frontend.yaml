@@ -63,21 +63,6 @@ sidebar:
     cardOptions:
       cards:
         - type: custom:bubble-card
-          card_type: select
-          entity: input_select.scenes
-          icon: mdi:palette
-          name: Scenes
-          show_state: true
-          show_attribute: true
-          card_layout: large
-          styles: |-
-            .bubble-select-background {
-                opacity: 1 !important;
-            }
-            .bubble-select-card-container {
-                border: 1px solid '#b9bbb1' !important;
-            }
-        - type: custom:bubble-card
           card_type: separator
           card_layout: large
           styles: |-
@@ -85,7 +70,7 @@ sidebar:
                 background: var(--primary-text-color);
                 opacity: 0 !important;
             }
-        - type: custom:mushroom-template-card
+        - type: custom:mushroom-legacy-template-card
           primary: >
             {% set exclude =
             ["light.great_room","light.kitchen","light.mudroom","light.office","light.white_room","light.first_floor_lights"]
@@ -279,7 +264,7 @@ views:
         cards:
           - type: custom:bubble-card
             card_type: separator
-            icon: mdi:lamps-outline
+            icon: mdi:palette-outline
             styles: |
               ha-card { 
                   color: #242e42 !important;
@@ -293,151 +278,115 @@ views:
               ha-card div div div:nth-child(2) {
                     height: 5px!important;
               }
-            name: Main Light Control
-          - type: horizontal-stack
-            cards:
-              - type: vertical-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    button_type: switch
-                    entity: script.first_floor_lights_down_5
-                    name: Dim
-                    styles: |
-                      ha-card { 
-                        font-size: 14px;
-                        opacity: .7
-                      }
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      service_data:
-                        entity_id: script.first_floor_lights_down_5
-                    show_state: false
-              - type: custom:mushroom-template-card
-                primary: >
-                  {% set brightness = state_attr('light.first_floor_lights',
-                  'brightness') %} {% if brightness != None %}
-                    {{ (brightness / 255 * 100) | round(0) }}%
-                  {% else %}
-                    Off
-                  {% endif %}
-                secondary: >-
-                  {% set exclude =
-                  ["light.great_room","light.kitchen","light.mudroom","light.office","light.white_room","light.first_floor_lights"]
-                  %}
-                            {{ states.light
-                              | rejectattr('entity_id','in', exclude )
-                              | selectattr('attributes.is_hue_group','undefined')
-                              | selectattr('attributes.entity_id', 'undefined')
-                              | selectattr('state','eq','on')
-                              | list
-                              | count
-                            }} Lights On
-                icon: ''
-                entity: light.first_floor_lights
-                layout: vertical
-                tap_action:
-                  action: more-info
-                hold_action:
-                  action: more-info
-                icon_color: ''
-                card_mod:
-                  style: |
-                    ha-card {
-                      --card-primary-font-size: 18px;
-                      --card-secondary-font-size: 14px;
-                    }
-                              
-              - type: vertical-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    button_type: switch
-                    entity: script.first_floor_lights_up_5
-                    styles: |
-                      ha-card { 
-                        font-size: 14px;
-                        opacity: .7;
-                      }
-                    tap_action:
-                      action: call-service
-                      service: script.turn_on
-                      service_data:
-                        entity_id: script.first_floor_lights_up_5
-                    show_state: false
-                    name: Brighten
+            name: Scenes
           - type: horizontal-stack
             cards:
               - type: custom:bubble-card
                 card_type: button
                 button_type: custom
-                entity: scene.1st_floor_lights_off
-                name: 'Off'
-                styles: |
-                  ha-icon.icon {
-                    fill: #C2A03D !important;
-                  }
+                entity: script.morning
+                name: Wake Up
+                icon: mdi:weather-sunset-up
+                button_tap_action: false
                 tap_action:
                   action: call-service
-                  service: scene.turn_on
+                  service: script.turn_on
                   service_data:
-                    entity_id: scene.1st_floor_lights_off
+                    entity_id: script.morning
                 show_state: false
               - type: custom:bubble-card
                 card_type: button
                 button_type: custom
-                entity: scene.1st_floor_lights_10
-                name: 10%
-                styles: |
-                  :host {
-                    fill: #C2A03D !important;
-                  }
+                entity: scene.normal
+                name: Normal
+                icon: mdi:home-outline
+                button_tap_action: false
                 tap_action:
                   action: call-service
                   service: scene.turn_on
                   service_data:
-                    entity_id: scene.1st_floor_lights_10
+                    entity_id: scene.normal
+                show_state: false
               - type: custom:bubble-card
                 card_type: button
                 button_type: custom
-                entity: scene.1st_floor_lights_25
-                name: 25%
+                entity: scene.cooking
+                name: Cooking
+                icon: mdi:chef-hat
+                button_tap_action: false
                 tap_action:
                   action: call-service
                   service: scene.turn_on
                   service_data:
-                    entity_id: scene.1st_floor_lights_25
+                    entity_id: scene.cooking
+                show_state: false
               - type: custom:bubble-card
                 card_type: button
                 button_type: custom
-                entity: scene.1st_floor_lights_50
-                name: 50%
+                entity: scene.dinner
+                name: Dinner
+                icon: mdi:food
+                button_tap_action: false
                 tap_action:
                   action: call-service
                   service: scene.turn_on
                   service_data:
-                    entity_id: scene.1st_floor_lights_50
+                    entity_id: scene.dinner
+                show_state: false
+          - type: horizontal-stack
+            cards:
               - type: custom:bubble-card
                 card_type: button
                 button_type: custom
-                entity: scene.1st_floor_lights_65
-                name: 65%
+                entity: scene.relax
+                name: Relax
+                icon: mdi:sofa
+                button_tap_action: false
                 tap_action:
                   action: call-service
                   service: scene.turn_on
                   service_data:
-                    entity_id: scene.1st_floor_lights_65
+                    entity_id: scene.relax
+                show_state: false
               - type: custom:bubble-card
                 card_type: button
                 button_type: custom
-                entity: scene.1st_floor_lights_80
-                name: 80%
+                entity: script.bedtime
+                name: Bedtime
+                icon: mdi:bed
+                button_tap_action: false
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  service_data:
+                    entity_id: script.bedtime
+                show_state: false
+              - type: custom:bubble-card
+                card_type: button
+                button_type: custom
+                entity: scene.master_bedtime
+                name: Master Bedtime
+                icon: mdi:bed-king
+                button_tap_action: false
                 tap_action:
                   action: call-service
                   service: scene.turn_on
                   service_data:
-                    entity_id: scene.1st_floor_lights_80
+                    entity_id: scene.master_bedtime
+                show_state: false
+              - type: custom:bubble-card
+                card_type: button
+                button_type: custom
+                entity: scene.party
+                name: Party
+                icon: mdi:party-popper
+                button_tap_action: false
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.party
+                show_state: false
         view_layout:
           grid-area: lights
       - type: vertical-stack
@@ -676,7 +625,7 @@ views:
                 icon: mdi:broom
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Cleaning
                     secondary: '{{states(''todo.cleaning'') | int }} Open Items'
                     icon: mdi:broom
@@ -686,7 +635,7 @@ views:
                     layout: horizontal
                   - type: custom:fold-entity-row
                     head:
-                      type: custom:mushroom-template-card
+                      type: custom:mushroom-legacy-template-card
                       label: padding
                       tap_action: null
                       multiline_secondary: true
@@ -712,7 +661,7 @@ views:
                 icon: mdi:cart
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Grocery List
                     secondary: '{{states(''todo.shopping_list'') | int }} Open Items'
                     icon: mdi:cart-outline
@@ -722,7 +671,7 @@ views:
                     layout: horizontal
                   - type: custom:fold-entity-row
                     head:
-                      type: custom:mushroom-template-card
+                      type: custom:mushroom-legacy-template-card
                       label: padding
                       tap_action: null
                       multiline_secondary: true
@@ -739,7 +688,7 @@ views:
                             entity: todo.shopping_list
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Non-Grocery List
                     secondary: '{{states(''todo.other_shopping'') | int }} Open Items'
                     icon: mdi:clipboard-list-outline
@@ -749,7 +698,7 @@ views:
                     layout: horizontal
                   - type: custom:fold-entity-row
                     head:
-                      type: custom:mushroom-template-card
+                      type: custom:mushroom-legacy-template-card
                       label: padding
                       tap_action: null
                       multiline_secondary: true
@@ -775,7 +724,7 @@ views:
                 icon: mdi:home-automation
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Mobile Dashboard
                     secondary: '{{states(''todo.ha_mobile'') | int }} Open Items'
                     icon: mdi:cellphone
@@ -785,7 +734,7 @@ views:
                     layout: horizontal
                   - type: custom:fold-entity-row
                     head:
-                      type: custom:mushroom-template-card
+                      type: custom:mushroom-legacy-template-card
                       label: padding
                       tap_action: null
                       multiline_secondary: true
@@ -802,7 +751,7 @@ views:
                             entity: todo.ha_mobile
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Tablet Dashboard
                     icon: mdi:tablet
                     secondary: '{{states(''todo.ha_tablet'') | int }} Open Items'
@@ -812,7 +761,7 @@ views:
                     layout: horizontal
                   - type: custom:fold-entity-row
                     head:
-                      type: custom:mushroom-template-card
+                      type: custom:mushroom-legacy-template-card
                       label: padding
                       tap_action: null
                       multiline_secondary: true
@@ -829,7 +778,7 @@ views:
                             entity: todo.ha_tablet
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Set-Up and New Features
                     secondary: '{{states(''todo.ha_setup'') | int }} Open Items'
                     icon: mdi:wrench-outline
@@ -839,7 +788,7 @@ views:
                     layout: horizontal
                   - type: custom:fold-entity-row
                     head:
-                      type: custom:mushroom-template-card
+                      type: custom:mushroom-legacy-template-card
                       label: padding
                       tap_action: null
                       multiline_secondary: true
@@ -1068,7 +1017,7 @@ views:
             cards:
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Great Room
                     secondary: >-
                       {{ states('sensor.kitchen_temperature') | round(0) }}°F |
@@ -1223,7 +1172,7 @@ views:
                     }
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Kitchen
                     secondary: >-
                       {{ states('sensor.kitchen_temperature') | round(0) }}°F |
@@ -1380,7 +1329,7 @@ views:
                     }
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Master Suite
                     secondary: >-
                       {{ states('sensor.kitchen_temperature') | round(0) }}°F |
@@ -1560,6 +1509,18 @@ views:
                     icon_type: none
                     hvac_modes: []
                     layout: horizontal
+                    card_mod:
+                      style: |
+                        ha-card {
+                            background:
+                              {% if state_attr('climate.kitchen', 'hvac_action') == 'cooling' %}
+                              linear-gradient(45deg, rgba(0,46,111,1), rgba(159,204,250,1))
+                              {% elif state_attr('climate.kitchen', 'hvac_action') == 'heating' %}
+                              linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1))
+                              {% elif state_attr('climate.kitchen', 'preset_mode') == 'eco' %}
+                              linear-gradient(45deg, rgba(32,64,42,1), rgba(50,205,50,1)) 
+                              {% endif %};
+                        }
                   - type: custom:mini-graph-card
                     entities:
                       - entity: sensor.kitchen_temperature
@@ -1605,7 +1566,7 @@ views:
             cards:
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Mudroom
                     secondary: >-
                       {{ states('sensor.kitchen_temperature') | round(0) }}°F |
@@ -1744,7 +1705,7 @@ views:
                     }
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Front Foyer Offices
                     secondary: >-
                       {{ states('sensor.kitchen_temperature') | round(0) }}°F |
@@ -1814,6 +1775,14 @@ views:
                           type: template
                           icon_color: disabled
                           icon: mdi:headphones
+                      - type: conditional
+                        conditions:
+                          - entity: switch.office_fan
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon_color: disabled
+                          icon: phu:pedastal-fan
                       - type: conditional
                         conditions:
                           - entity: climate.kitchen
@@ -1889,7 +1858,7 @@ views:
                       }
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Upstairs
                     secondary: >-
                       {{ states('sensor.upstairs_temperature') | round(0) }}°F |
@@ -2142,7 +2111,7 @@ views:
             cards:
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Exterior
                     secondary: >-
                       {{ states('sensor.openweathermap_temperature') | round(0)
@@ -2260,7 +2229,7 @@ views:
                     }
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Basement
                     secondary: >-
                       {{ states('sensor.hue_motion_sensor_3_temperature') |
@@ -2424,7 +2393,7 @@ views:
                     }
               - type: custom:stack-in-card
                 cards:
-                  - type: custom:mushroom-template-card
+                  - type: custom:mushroom-legacy-template-card
                     primary: Solarium
                     secondary: >-
                       {{ states('sensor.solarium_temperature') | round(0) }}°F |
@@ -2658,6 +2627,18 @@ views:
                     layout: horizontal
                     icon_type: none
                     hvac_modes: []
+                    card_mod:
+                      style: |
+                        ha-card {
+                            background:
+                              {% if state_attr('climate.solarium', 'hvac_action') == 'cooling' %}
+                              linear-gradient(45deg, rgba(0,46,111,1), rgba(159,204,250,1))
+                              {% elif state_attr('climate.solarium', 'hvac_action') == 'heating' %}
+                              linear-gradient(45deg, rgba(153,25,35,1), rgba(253,172,90,1))
+                              {% elif state_attr('climate.solarium', 'preset_mode') == 'eco' %}
+                              linear-gradient(45deg, rgba(32,64,42,1), rgba(50,205,50,1)) 
+                              {% endif %};
+                        }
                   - type: custom:mini-graph-card
                     entities:
                       - entity: sensor.solarium_temperature
@@ -2721,16 +2702,24 @@ views:
               }
             name: Cleaning
             card_layout: large
-          - show_name: true
-            show_icon: true
-            name: Robots
-            type: button
-            tap_action:
-              action: navigate
-              navigation_path: '#robots'
-            icon: mdi:broom
-            hold_action:
-              action: more-info
+          - type: horizontal-stack
+            cards:
+              - show_name: true
+                show_icon: true
+                name: Robots
+                type: button
+                tap_action:
+                  action: navigate
+                  navigation_path: '#robots'
+                icon: mdi:broom
+              - show_name: true
+                show_icon: true
+                name: Diffusers
+                type: button
+                tap_action:
+                  action: navigate
+                  navigation_path: '#diffusers'
+                icon: mdi:scent
           - type: vertical-stack
             cards:
               - type: conditional
@@ -2857,6 +2846,14 @@ views:
                         top: 74%
                         transform: translate(-100%,-50%)
                   image: /local/hass-dryer-card-bg.png
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-select-card
+                entity: input_select.house_mode
+                secondary_info: none
+              - type: entities
+                entities:
+                  - entity: input_boolean.guests_present
         view_layout:
           grid-area: cleaning
       - type: vertical-stack
@@ -3170,11 +3167,6 @@ views:
                       - type: custom:slider-entity-row
                         entity: light.solarium_couch
                         name: Under Couch
-                        toggle: true
-                        colorize: true
-                      - type: custom:slider-entity-row
-                        entity: light.lion_fountain_light
-                        name: Lion Fountain
                         toggle: true
                         colorize: true
                       - type: custom:slider-entity-row
@@ -3662,11 +3654,6 @@ views:
                         entity: light.front_foyer_chandelier
                         name: Chandelier
                         toggle: true
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: #242e42;
-                          }
               - type: vertical-stack
                 cards:
                   - type: entities
@@ -3684,11 +3671,6 @@ views:
                         entity: light.white_room_main_lights
                         name: Main Lights
                         toggle: true
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: #242e42;
-                          }
                   - type: custom:bubble-card
                     card_type: separator
                     name: Andrew's Office
@@ -3719,12 +3701,9 @@ views:
                       - entity: switch.office_noise_machine
                         name: Bookshelf Noise Machine
                         icon: mdi:bookshelf
+                      - entity: switch.office_fan
+                        name: Desk Fan
                     state_color: true
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: #242e42;
-                        }
       - type: vertical-stack
         cards:
           - type: custom:bubble-card
@@ -4328,7 +4307,6 @@ views:
                   h4 {
                     text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
                   }
-
                   ha-card div div div:nth-child(2) {
                         height: 5px!important;
                   }
@@ -4522,11 +4500,6 @@ views:
                         name: Lower Garage Area
                     state_color: true
                     show_header_toggle: false
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: #242e42;
-                          }
                   - type: vertical-stack
                     cards:
                       - type: custom:bubble-card
@@ -4560,11 +4533,6 @@ views:
                           ha-card {
                             border: solid 2px var(--secondary-color);
                             border-radius: 20px;
-                            color: #EFEEE5 !important;
-                            background: #242e42;
-                            --accent-color: #EFEEE5;
-                            --secondary-text-color: #B9BBB1;
-                            --secondary-background-color: #4351555;
                           } 
                     view_layout:
                       grid-area: weather
@@ -4573,11 +4541,6 @@ views:
                       moonrise: true
                       moonset: true
                       moon_phase: true
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: #242e42;
-                          }
               - type: entities
                 entities:
                   - entity: binary_sensor.rachio
@@ -4599,11 +4562,6 @@ views:
                   - entity: switch.right_side_along_driveway_and_path
                   - entity: switch.right_side_by_dog_tie_up
                   - entity: switch.right_side_front_door
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      }
                 show_header_toggle: false
       - type: vertical-stack
         cards:
@@ -5333,9 +5291,6 @@ views:
               h4 {
                 text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
               }
-              .separator-container div:last-child {
-                  background-color: #424242 !important;
-              }
               ha-card div div div:nth-child(2) {
                     height: 5px!important;
               }
@@ -5350,11 +5305,6 @@ views:
               - stop
               - locate
               - return_home
-            card_mod:
-              style: |
-                ha-card {
-                    background-color: #242e42 !important; 
-                }
           - type: custom:mushroom-vacuum-card
             entity: vacuum.cleanopatra
             layout: vertical
@@ -5365,20 +5315,12 @@ views:
               - stop
               - locate
               - return_home
-            card_mod:
-              style: |
-                ha-card {
-                    background-color: #242e42 !important; 
-                }
           - type: custom:bubble-card
             card_type: separator
             name: Upstairs
             styles: |
               h4 {
                 text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-              }
-              .separator-container div:last-child {
-                  background-color: #424242 !important;
               }
               ha-card div div div:nth-child(2) {
                     height: 5px!important;
@@ -5395,10 +5337,193 @@ views:
               - locate
               - return_home
             icon: mdi:robot-vacuum-variant
-            card_mod:
-              style: |
-                ha-card {
-                    background-color: #242e42 !important;
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: '#diffusers'
+            name: Diffusers
+            icon: mdi:scent
+            is_sidebar_hidden: false
+            margin_top_mobile: 0px
+            margin: 0px
+            back_open: true
+            margin_top_desktop: '-44px'
+            width_desktop: 1000px
+            auto_close: '120000'
+            bg_opacity: 85
+            bg_blur: 100
+          - type: horizontal-stack
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: separator
+                    name: Great Room
+                    styles: |
+                      h4 {
+                        text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                      }
+                      ha-card div div div:nth-child(2) {
+                            height: 5px!important;
+                      }
+                    icon: mdi:sofa
+                  - type: custom:mushroom-chips-card
+                    chips:
+                      - type: entity
+                        entity: sensor.great_room_diffuser_active_fragrance
+                      - type: entity
+                        entity: sensor.great_room_diffuser_controller
+                      - type: conditional
+                        conditions:
+                          - condition: state
+                            entity: binary_sensor.great_room_diffuser_connected
+                            state_not: 'on'
+                        chip:
+                          type: entity
+                          entity: binary_sensor.great_room_diffuser_connected
+                  - type: entities
+                    entities:
+                      - entity: select.great_room_diffuser_fragrance
+                        name: Fragrance
+                      - entity: select.great_room_diffuser_intensity
+                        name: Intensity
+                      - entity: switch.great_room_diffuser_away_mode
+                        name: Away mode
+                  - type: custom:mushroom-light-card
+                    entity: light.great_room_diffuser_nightlight
+                    name: Nightlight
+                    fill_container: false
+                    use_light_color: true
+                    show_brightness_control: true
+                    show_color_temp_control: false
+                    show_color_control: true
+                    collapsible_controls: false
+                  - type: entities
+                    entities:
+                      - entity: switch.great_room_diffuser_ambient_mode
+                        name: Ambient mode
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:bubble-card
+                        card_type: separator
+                        name: ''
+                        styles: >
+                          h4 {
+                            text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                          } ha-card div div div:nth-child(2) {
+                                height: 5px!important;
+                          } ${card.querySelector('.bubble-name').innerText =
+                          hass.formatEntityState(hass.states['sensor.great_room_diffuser_slot_1_fragrance'])}
+                        icon: mdi:weather-sunset-up
+                      - type: custom:bubble-card
+                        card_type: separator
+                        name: ''
+                        styles: >
+                          h4 {
+                            text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                          }
+
+                          ha-card div div div:nth-child(2) {
+                                height: 5px!important;
+                          }
+
+                          } ${card.querySelector('.bubble-name').innerText =
+
+                          hass.formatEntityState(hass.states['sensor.great_room_diffuser_slot_2_fragrance'])}
+                        icon: mdi:sleep
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:entity-progress-card
+                        entity: sensor.great_room_diffuser_slot_1_fragrance_remaining
+                        theme: optimal_when_high
+                        name: Slot 1 Remaining
+                      - type: custom:entity-progress-card
+                        entity: sensor.great_room_diffuser_slot_2_fragrance_remaining
+                        theme: optimal_when_high
+                        name: Slot 2 Remaining
+              - type: vertical-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: separator
+                    name: Front Foyer
+                    styles: |
+                      h4 {
+                        text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                      }
+                      ha-card div div div:nth-child(2) {
+                            height: 5px!important;
+                      }
+                    icon: mdi:sofa
+                  - type: custom:mushroom-chips-card
+                    chips:
+                      - type: entity
+                        entity: sensor.front_foyer_diffuser_active_fragrance
+                      - type: entity
+                        entity: sensor.front_foyer_diffuser_controller
+                      - type: conditional
+                        conditions:
+                          - condition: state
+                            entity: binary_sensor.front_foyer_diffuser_connected
+                            state_not: 'on'
+                        chip:
+                          type: entity
+                          entity: binary_sensor.front_foyer_diffuser_connected
+                  - type: entities
+                    entities:
+                      - entity: select.front_foyer_diffuser_fragrance
+                        name: Fragrance
+                      - entity: select.front_foyer_diffuser_intensity
+                        name: Intensity
+                      - entity: switch.front_foyer_diffuser_away_mode
+                        name: Away mode
+                  - type: custom:mushroom-light-card
+                    entity: light.front_foyer_diffuser_nightlight
+                    name: Nightlight
+                    fill_container: false
+                    use_light_color: true
+                    show_brightness_control: true
+                    show_color_temp_control: false
+                    show_color_control: true
+                    collapsible_controls: false
+                  - type: entities
+                    entities:
+                      - entity: switch.front_foyer_diffuser_ambient_mode
+                        name: Ambient mode
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:bubble-card
+                        card_type: separator
+                        name: ''
+                        styles: >
+                          h4 {
+                            text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                          } ha-card div div div:nth-child(2) {
+                                height: 5px!important;
+                          } ${card.querySelector('.bubble-name').innerText =
+                          hass.formatEntityState(hass.states['sensor.front_foyer_diffuser_slot_1_fragrance'])}
+                        icon: mdi:weather-sunset-up
+                      - type: custom:bubble-card
+                        card_type: separator
+                        name: ''
+                        styles: >
+                          h4 {
+                            text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                          } ha-card div div div:nth-child(2) {
+                                height: 5px!important;
+                          } ${card.querySelector('.bubble-name').innerText =
+                          hass.formatEntityState(hass.states['sensor.front_foyer_diffuser_slot_2_fragrance'])}
+                        icon: mdi:sleep
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:entity-progress-card
+                        entity: sensor.front_foyer_diffuser_slot_1_fragrance_remaining
+                        theme: optimal_when_high
+                        name: Slot 1 Remaining
+                      - type: custom:entity-progress-card
+                        entity: sensor.front_foyer_diffuser_slot_2_fragrance_remaining
+                        theme: optimal_when_high
+                        name: Slot 2 Remaining
   - title: Cameras
     path: cameras
     icon: mdi:cctv
@@ -5762,204 +5887,6 @@ views:
               }
         view_layout:
           grid_area: left
-  - path: simple
-    title: Simple
-    type: custom:grid-layout
-    layout:
-      grid-template-columns: 25% 25% 25% 25%
-      grid-template-rows: auto
-      grid-template-areas: |
-        "lights lights lights lights"
-        "media . shades shades"
-    icon: mdi:human-white-cane
-    badges: []
-    cards:
-      - type: vertical-stack
-        cards:
-          - type: custom:gap-card
-            height: 20
-          - type: custom:bubble-card
-            card_type: separator
-            icon: mdi:lamps-outline
-            styles: |
-              ha-card { 
-                  color: #242e42 !important;
-              }
-              .separator-container div:last-child {
-                  background-color: #4C5857 !important;
-              }
-              h4 {
-                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-                  font-size: 24px !important;
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Lights
-          - type: horizontal-stack
-            cards:
-              - type: custom:bubble-card
-                card_type: empty-column
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.1st_floor_lights_off
-                name: Turn Off All Lights
-                icon_height: 100xpx
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-              - type: custom:bubble-card
-                card_type: empty-column
-          - type: horizontal-stack
-            cards:
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.1st_floor_lights_10
-                name: Dim Lighting
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.1st_floor_lights_25
-                name: Low Lighting
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.1st_floor_lights_50
-                name: Medium Lighting
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.1st_floor_lights_65
-                name: Bright Lighting
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-          - type: custom:gap-card
-            height: 20
-        view_layout:
-          grid-area: lights
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
-            card_type: separator
-            styles: |
-              ha-card { 
-                  color: #242e42 !important;
-              }
-              .separator-container div:last-child {
-                  background-color: #4C5857 !important;
-              }
-              h4 {
-                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-                  font-size: 24px !important;
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Media
-            icon: mdi:remote-tv-off
-          - show_name: true
-            show_icon: true
-            type: button
-            tap_action:
-              action: toggle
-            entity: scene.all_media_off
-            name: Turn Off TVs and Music
-            icon: ''
-            card_mod:
-              style: |
-                ha-card {
-                  background: #242e42;
-                  font-size: 24px !important;
-                }
-        view_layout:
-          grid-area: media
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
-            card_type: separator
-            styles: |
-              ha-card { 
-                  color: #242e42 !important;
-              }
-              .separator-container div:last-child {
-                  background-color: #4C5857 !important;
-              }
-              h4 {
-                  text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-                  font-size: 24px !important;
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Shades
-            icon: mdi:curtains
-          - type: horizontal-stack
-            cards:
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.close_blinds
-                name: Close Great Room Blinds
-                card_mod:
-                  style: |
-                    ha-card {
-                      background: #242e42;
-                      font-size: 24px !important;
-                    }
-              - show_name: true
-                show_icon: true
-                type: button
-                tap_action:
-                  action: toggle
-                entity: scene.open_blinds_great_room
-                name: Open Great Room Blinds
-                card_mod:
-                  style: |
-                    ha-card {
-                     background: #242e42;
-                     font-size: 24px !important;
-                    }
-        view_layout:
-          grid-area: shades
   - title: IT
     path: it
     icon: mdi:desktop-classic
@@ -6091,7 +6018,7 @@ views:
                             ha-card {
                                 background-color: #242e42 !important; 
                             }
-                      - type: custom:mushroom-template-card
+                      - type: custom:mushroom-legacy-template-card
                         entity: sensor.speedtest_download
                         primary: |
                           {{states('sensor.speedtest_download')|round(1)}} Mbps
@@ -6208,7 +6135,7 @@ views:
                             ha-card {
                               background-color: #242e42 !important;
                             }
-                      - type: custom:mushroom-template-card
+                      - type: custom:mushroom-legacy-template-card
                         entity: sensor.speedtest_upload
                         primary: |
                           {{states('sensor.speedtest_upload')|round(1)}} Mbps
@@ -6252,7 +6179,7 @@ views:
                             }
               - type: custom:fold-entity-row
                 head:
-                  type: custom:mushroom-template-card
+                  type: custom:mushroom-legacy-template-card
                   label: padding
                   tap_action: null
                   multiline_secondary: true
@@ -6367,10 +6294,6 @@ views:
                 ha-card {
                     background-color: #242e42 !important; 
                 }
-      - type: entities
-        entities:
-          - sensor.hacs
-        title: Sensor
   - title: Save
     path: save
     icon: mdi:content-save
@@ -6497,97 +6420,6 @@ views:
                         ha-card {
                           background: #242e42;
                         }
-      - type: vertical-stack
-        cards:
-          - type: custom:mushroom-template-card
-            primary: >
-              {% set exclude =
-              ["light.great_room","light.kitchen","light.mudroom","light.office","light.white_room","light.first_floor_lights"]
-              %}
-                        {{ states.light
-                          | rejectattr('entity_id','in', exclude )
-                          | selectattr('attributes.is_hue_group','undefined')
-                          | selectattr('attributes.entity_id', 'undefined')
-                          | selectattr('state','eq','on')
-                          | list
-                          | count
-                        }} Lights On
-            icon: ''
-            entity: light.first_floor_lights
-            layout: vertical
-            tap_action:
-              action: more-info
-            hold_action:
-              action: more-info
-            icon_color: ''
-          - type: horizontal-stack
-            cards:
-              - show_name: false
-                show_icon: true
-                type: button
-                entity: script.first_floor_lights_down_5
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  service_data:
-                    entity_id: script.first_floor_lights_down_5
-                card_mod:
-                  style: |
-                    ha-card {
-                      background-color: #435155;
-                      border: 1px solid var(--primary-text-color);
-                      border-radius: 7px;
-                      color: var(--primary-text-color);
-                    }
-              - show_name: false
-                show_icon: true
-                type: button
-                entity: script.first_floor_lights_up_5
-                tap_action:
-                  action: call-service
-                  service: script.turn_on
-                  service_data:
-                    entity_id: script.first_floor_lights_up_5
-                card_mod:
-                  style: |
-                    ha-card {
-                      background-color: #435155;
-                      border: 1px solid var(--primary-text-color);
-                      border-radius: 7px;
-                      color: var(--primary-text-color);
-                    }
-          - type: custom:bubble-card
-            card_type: separator
-            card_layout: large
-          - show_name: false
-            show_icon: true
-            type: button
-            entity: scene.off
-            tap_action:
-              action: call-service
-              service: scene.turn_on
-              service_data:
-                entity_id: scene.off
-            card_mod:
-              style: |
-                ha-card {
-                  background-color: #435155;
-                  border: 1px solid var(--primary-text-color);
-                  border-radius: 7px;
-                  color: var(--primary-text-color);
-                }
-          - type: custom:bubble-card
-            card_type: separator
-            card_layout: large
-      - type: entities
-        entities:
-          - entity: sensor.echo_show_next_alarm
-            name: Next Alarm
-          - entity: sensor.echo_show_next_reminder
-            name: Next Reminder
-          - entity: sensor.echo_show_next_timer
-            name: Next Timer
-        title: Echo Show Kitchen
       - type: vertical-stack
         cards:
           - type: custom:bubble-card
@@ -6767,56 +6599,36 @@ views:
             icon_height: 100px
         view_layout:
           grid-area: info
-      - type: vertical-stack
-        cards:
-          - type: custom:vertical-stack-in-card
-            cards:
-              - type: custom:mushroom-climate-card
-                entity: climate.kitchen
-                fill_container: false
-                icon: mdi:thermometer
-                show_temperature_control: true
-                collapsible_controls: false
-                layout: horizontal
-                icon_type: none
-                hvac_modes: []
-              - type: custom:mini-graph-card
-                entities:
-                  - entity: sensor.kitchen_temperature
-                  - entity: binary_sensor.hvac_kitchen_heating_on
-                    color: red
-                    show_line: false
-                    show_points: false
-                    show_legend: false
-                    y_axis: secondary
-                    smoothing: false
-                  - entity: binary_sensor.hvac_kitchen_ac_on
-                    color: blue
-                    show_line: false
-                    show_points: false
-                    show_legend: false
-                    y_axis: secondary
-                    smoothing: false
-                  - entity: binary_sensor.hvac_kitchen_fan_on
-                    color: gray
-                    show_line: false
-                    show_points: false
-                    show_legend: false
-                    y_axis: secondary
-                    smoothing: false
-                state_map:
-                  - value: 'off'
-                  - value: 'on'
-                show:
-                  name: false
-                  state: false
-                  icon: false
-                animate: true
-                hour24: true
-                hours_to_show: 24
-                line_width: 2
-                points_per_hour: 60
-                smooth: true
+      - type: custom:bubble-card
+        card_type: select
+        entity: input_select.scenes
+        icon: mdi:palette
+        name: Scenes
+        show_state: true
+        show_attribute: true
+        card_layout: large
+        styles: |-
+          .bubble-select-background {
+              opacity: 1 !important;
+          }
+          .bubble-select-card-container {
+              border: 1px solid '#b9bbb1' !important;
+          }
+      - type: custom:bubble-card
+        card_type: select
+        entity: input_select.house_mode
+        icon: mdi:home-switch
+        name: House Mode
+        show_state: true
+        show_attribute: true
+        card_layout: large
+        styles: |-
+          .bubble-select-background {
+              opacity: 1 !important;
+          }
+          .bubble-select-card-container {
+              border: 1px solid '#b9bbb1' !important;
+          }
   - type: masonry
     path: bob-squad-hq
     layout: {}
@@ -6895,7 +6707,7 @@ views:
                 state_image:
                   'on': /local/badges/drill_master.png
                   'off': /local/badges/badge_locked.png
-          - type: custom:mushroom-template-card
+          - type: custom:mushroom-legacy-template-card
             primary: 'Today''s Mission: {{ states(''sensor.bob_squad_current_mission'') }}'
             icon: mdi:target
             tap_action:
