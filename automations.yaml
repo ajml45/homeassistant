@@ -1549,6 +1549,19 @@
           entity_id: input_text.active_scene
           value: Party
         action: input_text.set_value
+    - conditions:
+      - condition: state
+        entity_id: input_select.scenes
+        state: Red Sox
+      sequence:
+      - target:
+          entity_id: scene.red_sox
+        action: scene.turn_on
+        data: {}
+      - data:
+          entity_id: input_text.active_scene
+          value: Red Sox
+        action: input_text.set_value
 - id: bob_basic_training_complete
   alias: BoB Squad - Basic Training Badge Earned
   description: ''

@@ -18,6 +18,7 @@ scenes:
     - Bedtime
     - Master Bedtime
     - Party
+    - Red Sox
   initial: Normal
   icon: mdi:palette
   

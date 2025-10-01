@@ -1380,3 +1380,900 @@
       state: 'on'
   metadata: {}
   icon: mdi:home-account
+- id: '1759255871191'
+  name: Red Sox
+  entities:
+    light.back_can_left:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 240
+      - 100
+      rgb_color:
+      - 0
+      - 0
+      - 255
+      xy_color:
+      - 0.136
+      - 0.04
+      rgbw_color:
+      - 0
+      - 0
+      - 255
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Back Can Left
+      supported_features: 4
+      state: 'on'
+    light.back_can_middle:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 0.941
+      - 100
+      rgb_color:
+      - 255
+      - 4
+      - 0
+      xy_color:
+      - 0.7
+      - 0.3
+      rgbw_color:
+      - 255
+      - 4
+      - 0
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Back Can Middle
+      supported_features: 4
+      state: 'on'
+    light.back_can_right:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 246.118
+      - 100
+      rgb_color:
+      - 26
+      - 0
+      - 255
+      xy_color:
+      - 0.14
+      - 0.042
+      rgbw_color:
+      - 26
+      - 0
+      - 255
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Back Can Right
+      supported_features: 4
+      state: 'on'
+    light.middle_can_left:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 0
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      xy_color:
+      - 0.701
+      - 0.299
+      rgbw_color:
+      - 255
+      - 0
+      - 0
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Middle Can Left
+      supported_features: 4
+      state: 'on'
+    light.middle_can_middle:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 0
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      xy_color:
+      - 0.701
+      - 0.299
+      rgbw_color:
+      - 255
+      - 0
+      - 0
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Middle Can Middle
+      supported_features: 4
+      state: 'on'
+    light.middle_can_right:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 0
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      xy_color:
+      - 0.701
+      - 0.299
+      rgbw_color:
+      - 255
+      - 0
+      - 0
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Middle Can Right
+      supported_features: 4
+      state: 'on'
+    light.front_can_left:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 241.647
+      - 100
+      rgb_color:
+      - 7
+      - 0
+      - 255
+      xy_color:
+      - 0.136
+      - 0.04
+      rgbw_color:
+      - 7
+      - 0
+      - 255
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Front Can Left
+      supported_features: 4
+      state: 'on'
+    light.front_can_middle:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 0
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      xy_color:
+      - 0.701
+      - 0.299
+      rgbw_color:
+      - 255
+      - 0
+      - 0
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Front Can Middle
+      supported_features: 4
+      state: 'on'
+    light.front_can_right:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 240
+      - 100
+      rgb_color:
+      - 0
+      - 0
+      - 255
+      xy_color:
+      - 0.136
+      - 0.04
+      rgbw_color:
+      - 0
+      - 0
+      - 255
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Front Can Right
+      supported_features: 4
+      state: 'on'
+    light.left_couch_lamp:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - 'off'
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect: 'off'
+      color_mode: xy
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 255.059
+      - 100
+      rgb_color:
+      - 64
+      - 0
+      - 255
+      xy_color:
+      - 0.1532
+      - 0.0475
+      mode: normal
+      dynamics: none
+      icon: mdi:lamp-outline
+      friendly_name: Couch Left
+      supported_features: 44
+      state: 'on'
+    light.right_couch_lamp:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - 'off'
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect: 'off'
+      color_mode: xy
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 255.059
+      - 100
+      rgb_color:
+      - 64
+      - 0
+      - 255
+      xy_color:
+      - 0.1532
+      - 0.0475
+      mode: normal
+      dynamics: none
+      icon: mdi:lamp-outline
+      friendly_name: Couch Right
+      supported_features: 44
+      state: 'on'
+    light.bar_lamp_left:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - 'off'
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect: 'off'
+      color_mode: xy
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 10.118
+      - 100
+      rgb_color:
+      - 255
+      - 43
+      - 0
+      xy_color:
+      - 0.6915
+      - 0.3083
+      mode: normal
+      dynamics: none
+      icon: mdi:lamp-outline
+      friendly_name: Bar Left
+      supported_features: 44
+      state: 'on'
+    light.bar_lamp_right:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - 'off'
+      - candle
+      - fire
+      - prism
+      - sparkle
+      - opal
+      - glisten
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect: 'off'
+      color_mode: xy
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 10.118
+      - 100
+      rgb_color:
+      - 255
+      - 43
+      - 0
+      xy_color:
+      - 0.6915
+      - 0.3083
+      mode: normal
+      dynamics: none
+      icon: mdi:lamp-outline
+      friendly_name: Bar Right
+      supported_features: 44
+      state: 'on'
+    light.solarium_couch:
+      min_color_temp_kelvin: 9000
+      max_color_temp_kelvin: 2000
+      min_mireds: 500
+      max_mireds: 111
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 0
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      xy_color:
+      - 0.701
+      - 0.299
+      rate_limit_total: 100
+      rate_limit_remaining: -25740
+      rate_limit_reset_seconds: -1759256422.96
+      rate_limit_reset: '1969-12-31T19:00:00'
+      rate_limit_on: 5
+      manufacturer: Govee
+      model: H619A
+      icon: phu:light-strip
+      friendly_name: Under Couch
+      supported_features: 0
+      state: 'on'
+    light.stair_path_lights:
+      min_color_temp_kelvin: 9000
+      max_color_temp_kelvin: 2000
+      min_mireds: 500
+      max_mireds: 111
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 240
+      - 100
+      rgb_color:
+      - 0
+      - 0
+      - 255
+      xy_color:
+      - 0.136
+      - 0.04
+      rate_limit_total: 100
+      rate_limit_remaining: -25740
+      rate_limit_reset_seconds: -1759256422.97
+      rate_limit_reset: '1969-12-31T19:00:00'
+      rate_limit_on: 5
+      manufacturer: Govee
+      model: H7055
+      icon: mdi:floor-lamp-torchiere
+      friendly_name: Rock Wall Path
+      supported_features: 0
+      state: 'on'
+    light.slider_path_lights:
+      min_color_temp_kelvin: 9000
+      max_color_temp_kelvin: 2000
+      min_mireds: 500
+      max_mireds: 111
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 0
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      xy_color:
+      - 0.701
+      - 0.299
+      rate_limit_total: 100
+      rate_limit_remaining: -25740
+      rate_limit_reset_seconds: -1759256422.97
+      rate_limit_reset: '1969-12-31T19:00:00'
+      rate_limit_on: 5
+      manufacturer: Govee
+      model: H7055
+      icon: mdi:floor-lamp-torchiere
+      friendly_name: Slider Path
+      supported_features: 0
+      state: 'on'
+    light.solarium_path_lights:
+      min_color_temp_kelvin: 9000
+      max_color_temp_kelvin: 2000
+      min_mireds: 500
+      max_mireds: 111
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 0
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      xy_color:
+      - 0.701
+      - 0.299
+      rate_limit_total: 100
+      rate_limit_remaining: -25740
+      rate_limit_reset_seconds: -1759256422.96
+      rate_limit_reset: '1969-12-31T19:00:00'
+      rate_limit_on: 5
+      manufacturer: Govee
+      model: H7055
+      icon: mdi:floor-lamp-torchiere
+      friendly_name: Upper Path
+      supported_features: 0
+      state: 'on'
+  icon: mdi:baseball
+  metadata: {}
