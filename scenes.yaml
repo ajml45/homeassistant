@@ -2277,3 +2277,348 @@
       state: 'on'
   icon: mdi:baseball
   metadata: {}
+- id: '1762116542898'
+  name: Bathroom Salon
+  entities:
+    light.shower_light:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 175.978
+      - 70.196
+      rgb_color:
+      - 76
+      - 255
+      - 243
+      xy_color:
+      - 0.171
+      - 0.359
+      rgbw_color:
+      - 76
+      - 255
+      - 243
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Shower Light
+      supported_features: 4
+      state: 'on'
+    light.can_light:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 284.444
+      - 42.52
+      rgb_color:
+      - 226
+      - 146
+      - 254
+      xy_color:
+      - 0.328
+      - 0.21
+      rgbw_color:
+      - 226
+      - 146
+      - 254
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Can Light
+      supported_features: 4
+      state: 'on'
+    light.tub_light_left:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 322.957
+      - 90.196
+      rgb_color:
+      - 255
+      - 25
+      - 167
+      xy_color:
+      - 0.513
+      - 0.218
+      rgbw_color:
+      - 255
+      - 25
+      - 167
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Tub Light Left
+      supported_features: 4
+      state: 'on'
+    light.tub_light_middle:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 120
+      - 62.353
+      rgb_color:
+      - 96
+      - 255
+      - 96
+      xy_color:
+      - 0.219
+      - 0.617
+      rgbw_color:
+      - 96
+      - 255
+      - 96
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Tub Light Middle
+      supported_features: 4
+      state: 'on'
+    light.tub_light_right:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Bedtime
+      - Candlelight
+      - Christmas
+      - Cozy
+      - Cool white
+      - Daylight
+      - Diwali
+      - Deep dive
+      - Fall
+      - Fireplace
+      - Forest
+      - Focus
+      - Golden white
+      - Halloween
+      - Jungle
+      - Mojito
+      - Night light
+      - Ocean
+      - Party
+      - Pulse
+      - Pastel colors
+      - Plantgrowth
+      - Romance
+      - Relax
+      - Sunset
+      - Spring
+      - Summer
+      - Steampunk
+      - True colors
+      - TV time
+      - White
+      - Wake-up
+      - Warm white
+      - Rhythm
+      supported_color_modes:
+      - color_temp
+      - rgbw
+      effect:
+      color_mode: rgbw
+      brightness: 255
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 79.565
+      - 36.078
+      rgb_color:
+      - 225
+      - 255
+      - 163
+      xy_color:
+      - 0.349
+      - 0.439
+      rgbw_color:
+      - 225
+      - 255
+      - 163
+      - 0
+      icon: mdi:light-recessed
+      friendly_name: Tub Light Right
+      supported_features: 4
+      state: 'on'
+  icon: mdi:hair-dryer-outline
+  metadata: {}
