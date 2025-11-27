@@ -1688,53 +1688,7 @@ googleai_notify_arlo_fish:
   mode: single
   icon: mdi:message-image
   description: ''
-
-googleai_notify_arlo_front_door:
-  alias: GoogleAI Notify Arlo Front Door
-  sequence:
-  - data:
-      filename: /media/snapshot.jpg
-    action: camera.snapshot
-    target:
-      entity_id: camera.aarlo_front_door
-  - data:
-      prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Dont describe
-        stationary objects or buildings.
-      image_filename: /media/snapshot.jpg
-    response_variable: content
-    action: google_generative_ai_conversation.generate_content
-  - variables:
-      content: '{{ content }}'
-  - device_id: d916e1ebea4ac034183f9ec8728ed01b
-    domain: mobile_app
-    type: notify
-    message: '{{ content }}'
-    title: Arlo Front Door Motion
-  - stop: end
-    response_variable: content
-  fields:
-    prompt:
-      selector:
-        text:
-          multiline: true
-      name: prompt
-    media_player:
-      selector:
-        entity:
-          filter:
-          - domain: media_player
-      name: media player
-    camera:
-      selector:
-        entity:
-          filter:
-          - domain: camera
-      name: camera
-  mode: single
-  icon: mdi:message-image
-  description: ''
-
+  
 bedtime:
   alias: Bed Time
   sequence:

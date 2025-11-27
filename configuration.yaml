@@ -22,10 +22,6 @@ sensor: !include_dir_merge_list sensors/
 shell_command:
   git_backup: bash /config/git-backup.sh
 
-# Text to speech
-# tts:
-#   - platform: google_translate
-
 #http:
 #  ssl_certificate: /ssl/fullchain.pem
 #  ssl_key: /ssl/privkey.pem
