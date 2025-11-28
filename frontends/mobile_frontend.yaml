@@ -1631,12 +1631,12 @@ views:
                     }
               - show_name: true
                 show_icon: true
-                name: Plugs
+                name: Diffusers
                 type: button
                 tap_action:
                   action: navigate
-                  navigation_path: /mobile-rooms/plugs
-                icon: mdi:power-plug
+                  navigation_path: /mobile-rooms/diffusers
+                icon: mdi:scent
                 card_mod:
                   style: |
                     ha-card {
@@ -4265,9 +4265,9 @@ views:
                               states('sensor.solarium_fan_runtime_today') |
                               float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
     type: masonry
-  - title: Plugs
-    path: plugs
-    icon: mdi:power-plug
+  - title: Diffusers
+    path: diffusers
+    icon: mdi:scent
     subview: true
     badges: []
     cards:
@@ -4303,103 +4303,209 @@ views:
                     }
           - type: vertical-stack
             cards:
-              - type: custom:bubble-card
-                card_type: separator
-                name: Things
-                styles: |
-                  ha-card { 
-                      color: #242e42 !important;
-                  }
-                  .separator-container div:last-child {
-                      background-color: #4C5857 !important;
-                  }
-                  h4 {
-                      text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-                  }
-                  ha-card div div div:nth-child(2) {
-                        height: 5px!important;
-                  }
-                icon: mdi:power-plug
               - type: horizontal-stack
                 cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: scene.master_bedtime
-                    show_state: false
-                    card_layout: large
-                    icon: mdi:sleep
-                    name: Master Bedtime
-                    tap_action:
-                      action: perform-action
-                      perform_action: scene.turn_on
-                      target:
-                        entity_id: scene.master_bedtime
-                    scrolling_effect: false
-                    show_icon: true
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: switch.air_purifier
-                    show_state: false
-                    card_layout: large
-                    name: Air Purifier
-                    icon: mdi:air-purifier
-                    show_icon: true
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: switch.charlotte_bedtime
-                    show_state: false
-                    card_layout: large
-                    icon: mdi:sleep
-                    name: Charlotte Bedtime
-                    tap_action:
-                      action: toggle
-                    scrolling_effect: false
-                    show_icon: true
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: switch.henry_bedtime
-                    show_state: false
-                    card_layout: large
-                    name: Henry Bedtime
-                    icon: mdi:sleep
-                    show_icon: true
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: switch.lion_fountain
-                    show_state: false
-                    card_layout: large
-                    name: Lion Fountain
-                  - type: custom:bubble-card
-                    card_type: button
-                    show_state: false
-                    card_layout: large
-                    name: Fish Lights
-                    entity: switch.fish_lights
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: switch.pool_lights
-                    show_state: false
-                    card_layout: large
-                    icon: mdi:pool
-                    name: Pool Lights
-                    tap_action:
-                      action: toggle
-                    scrolling_effect: false
-                    show_icon: true
-                  - type: custom:bubble-card
-                    card_type: button
-                    entity: switch.pool_heater
-                    show_state: false
-                    card_layout: large
-                    name: Pool Heater
-                    icon: mdi:pool-thermometer
-                    show_icon: true
+                  - type: vertical-stack
+                    cards:
+                      - type: custom:bubble-card
+                        card_type: separator
+                        name: Great Room
+                        styles: |
+                          ha-card { 
+                            color: #242e42 !important;
+                          }
+                          .separator-container div:last-child {
+                              background-color: #4C5857 !important;
+                          }
+                          h4 {
+                            text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                          }
+                          ha-card div div div:nth-child(2) {
+                                height: 5px!important;
+                          }
+                        icon: mdi:sofa
+                      - type: custom:mushroom-chips-card
+                        chips:
+                          - type: entity
+                            entity: sensor.great_room_diffuser_active_fragrance
+                          - type: entity
+                            entity: sensor.great_room_diffuser_controller
+                          - type: conditional
+                            conditions:
+                              - condition: state
+                                entity: binary_sensor.great_room_diffuser_connected
+                                state_not: 'on'
+                            chip:
+                              type: entity
+                              entity: binary_sensor.great_room_diffuser_connected
+                      - type: entities
+                        entities:
+                          - entity: select.great_room_diffuser_fragrance
+                            name: Fragrance
+                          - entity: select.great_room_diffuser_intensity
+                            name: Intensity
+                          - entity: switch.great_room_diffuser_away_mode
+                            name: Away mode
+                      - type: custom:mushroom-light-card
+                        entity: light.great_room_diffuser_nightlight
+                        name: Nightlight
+                        fill_container: false
+                        use_light_color: true
+                        show_brightness_control: true
+                        show_color_temp_control: false
+                        show_color_control: true
+                        collapsible_controls: false
+                      - type: entities
+                        entities:
+                          - entity: switch.great_room_diffuser_ambient_mode
+                            name: Ambient mode
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:bubble-card
+                            card_type: separator
+                            name: ''
+                            styles: >
+                              ha-card { 
+                                color: #242e42 !important;
+                              } .separator-container div:last-child {
+                                background-color: #4C5857 !important;
+                              } h4 {
+                                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                              } ha-card div div div:nth-child(2) {
+                                    height: 5px!important;
+                              } ${card.querySelector('.bubble-name').innerText =
+                              hass.formatEntityState(hass.states['sensor.great_room_diffuser_slot_1_fragrance'])}
+                            icon: mdi:weather-sunset-up
+                          - type: custom:bubble-card
+                            card_type: separator
+                            name: ''
+                            styles: >
+                              ha-card { 
+                                color: #242e42 !important;
+                              } .separator-container div:last-child {
+                                background-color: #4C5857 !important;
+                              } h4 {
+                                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                              }
+
+                              ha-card div div div:nth-child(2) {
+                                    height: 5px!important;
+                              }
+
+                              } ${card.querySelector('.bubble-name').innerText =
+
+                              hass.formatEntityState(hass.states['sensor.great_room_diffuser_slot_2_fragrance'])}
+                            icon: mdi:sleep
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:entity-progress-card
+                            entity: >-
+                              sensor.great_room_diffuser_slot_1_fragrance_remaining
+                            theme: optimal_when_high
+                            name: Slot 1 Remaining
+                          - type: custom:entity-progress-card
+                            entity: >-
+                              sensor.great_room_diffuser_slot_2_fragrance_remaining
+                            theme: optimal_when_high
+                            name: Slot 2 Remaining
+                  - type: vertical-stack
+                    cards:
+                      - type: custom:bubble-card
+                        card_type: separator
+                        name: Front Foyer
+                        styles: |
+                          ha-card { 
+                            color: #242e42 !important;
+                          }
+                          .separator-container div:last-child {
+                              background-color: #4C5857 !important;
+                          }
+                          h4 {
+                            text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                          }
+                          ha-card div div div:nth-child(2) {
+                                height: 5px!important;
+                          }
+                        icon: mdi:sofa
+                      - type: custom:mushroom-chips-card
+                        chips:
+                          - type: entity
+                            entity: sensor.front_foyer_diffuser_active_fragrance
+                          - type: entity
+                            entity: sensor.front_foyer_diffuser_controller
+                          - type: conditional
+                            conditions:
+                              - condition: state
+                                entity: binary_sensor.front_foyer_diffuser_connected
+                                state_not: 'on'
+                            chip:
+                              type: entity
+                              entity: binary_sensor.front_foyer_diffuser_connected
+                      - type: entities
+                        entities:
+                          - entity: select.front_foyer_diffuser_fragrance
+                            name: Fragrance
+                          - entity: select.front_foyer_diffuser_intensity
+                            name: Intensity
+                          - entity: switch.front_foyer_diffuser_away_mode
+                            name: Away mode
+                      - type: custom:mushroom-light-card
+                        entity: light.front_foyer_diffuser_nightlight
+                        name: Nightlight
+                        fill_container: false
+                        use_light_color: true
+                        show_brightness_control: true
+                        show_color_temp_control: false
+                        show_color_control: true
+                        collapsible_controls: false
+                      - type: entities
+                        entities:
+                          - entity: switch.front_foyer_diffuser_ambient_mode
+                            name: Ambient mode
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:bubble-card
+                            card_type: separator
+                            name: ''
+                            styles: >
+                              ha-card { 
+                                color: #242e42 !important;
+                              } .separator-container div:last-child {
+                                background-color: #4C5857 !important;
+                              } h4 {
+                                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                              } ha-card div div div:nth-child(2) {
+                                    height: 5px!important;
+                              } ${card.querySelector('.bubble-name').innerText =
+                              hass.formatEntityState(hass.states['sensor.front_foyer_diffuser_slot_1_fragrance'])}
+                            icon: mdi:weather-sunset-up
+                          - type: custom:bubble-card
+                            card_type: separator
+                            name: ''
+                            styles: >
+                              ha-card { 
+                                color: #242e42 !important;
+                              } .separator-container div:last-child {
+                                background-color: #4C5857 !important;
+                              } h4 {
+                                text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+                              } ha-card div div div:nth-child(2) {
+                                    height: 5px!important;
+                              } ${card.querySelector('.bubble-name').innerText =
+                              hass.formatEntityState(hass.states['sensor.front_foyer_diffuser_slot_2_fragrance'])}
+                            icon: mdi:sleep
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:entity-progress-card
+                            entity: >-
+                              sensor.front_foyer_diffuser_slot_1_fragrance_remaining
+                            theme: optimal_when_high
+                            name: Slot 1 Remaining
+                          - type: custom:entity-progress-card
+                            entity: >-
+                              sensor.front_foyer_diffuser_slot_2_fragrance_remaining
+                            theme: optimal_when_high
+                            name: Slot 2 Remaining
             view_layout:
               grid-area: things
     type: masonry
