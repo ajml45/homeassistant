@@ -8,7 +8,6 @@ first_floor_lights_up_5:
       entity_id: light.first_floor_lights
   mode: single
   icon: mdi:plus
-
 first_floor_lights_down_5:
   alias: First Floor Lights Down 5
   sequence:
@@ -19,7 +18,6 @@ first_floor_lights_down_5:
       entity_id: light.first_floor_lights
   mode: single
   icon: mdi:minus
-
 light_fader:
   alias: Ashley’s Light Fader
   description: 'Fades a lamp over time. If you have any questions or comments about
@@ -1361,334 +1359,6 @@ light_fader:
   mode: parallel
   max: 15
   icon: mdi:lightbulb-on-50
-
-'1707529040498':
-  alias: Spoken GoogleAI Arlo Driveway
-  fields:
-    prompt:
-      selector:
-        text:
-          multiline: true
-      name: prompt
-    media_player:
-      selector:
-        entity:
-          filter:
-          - domain: media_player
-      name: media player
-    camera:
-      selector:
-        entity:
-          filter:
-          - domain: camera
-      name: camera
-  sequence:
-  - data:
-      entity_id: camera.aarlo_driveway
-      filename: /media/snapshot.jpg
-    action: camera.snapshot
-  - data:
-      prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Dont describe
-        stationary objects or buildings.
-      image_filename: /media/snapshot.jpg
-    response_variable: content
-    action: google_generative_ai_conversation.generate_content
-  - target:
-      entity_id: tts.piper
-    data:
-      media_player_entity_id: media_player.this_device
-      message: '{{ content.text }}'
-      cache: false
-    action: tts.speak
-  - device_id: d916e1ebea4ac034183f9ec8728ed01b
-    domain: mobile_app
-    type: notify
-    message: '"{{ content }}"'
-    title: 'Arlo Driveway '
-  - variables:
-      content: '{{ content }}'
-  - stop: end
-    response_variable: content
-  mode: single
-  icon: mdi:message-image
-
-googleai_notify_arlo_driveway:
-  alias: GoogleAI Notify Arlo Driveway
-  sequence:
-  - data:
-      entity_id: camera.aarlo_driveway
-      filename: /media/snapshot.jpg
-    action: camera.snapshot
-  - data:
-      prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Dont describe
-        stationary objects or buildings.
-      image_filename: /media/snapshot.jpg
-    response_variable: content
-    action: google_generative_ai_conversation.generate_content
-  - variables:
-      content: '{{ content }}'
-  - device_id: d916e1ebea4ac034183f9ec8728ed01b
-    domain: mobile_app
-    type: notify
-    message: '{{ content }}'
-    title: Arlo Driveway Motion
-  - stop: end
-    response_variable: content
-  fields:
-    prompt:
-      selector:
-        text:
-          multiline: true
-      name: prompt
-    media_player:
-      selector:
-        entity:
-          filter:
-          - domain: media_player
-      name: media player
-    camera:
-      selector:
-        entity:
-          filter:
-          - domain: camera
-      name: camera
-  mode: single
-  icon: mdi:message-image
-
-googleai_notify_arlo_street:
-  alias: GoogleAI Notify Arlo Street
-  sequence:
-  - data:
-      entity_id: camera.aarlo_street
-      filename: /media/snapshot.jpg
-    action: camera.snapshot
-  - data:
-      prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Dont describe
-        stationary objects or buildings.
-      image_filename: /media/snapshot.jpg
-    response_variable: content
-    action: google_generative_ai_conversation.generate_content
-  - variables:
-      content: '{{ content }}'
-  - device_id: d916e1ebea4ac034183f9ec8728ed01b
-    domain: mobile_app
-    type: notify
-    message: '"{{ content }}"'
-    title: Motion Street
-  - stop: end
-    response_variable: content
-  fields:
-    prompt:
-      selector:
-        text:
-          multiline: true
-      name: prompt
-    media_player:
-      selector:
-        entity:
-          filter:
-          - domain: media_player
-      name: media player
-    camera:
-      selector:
-        entity:
-          filter:
-          - domain: camera
-      name: camera
-  mode: single
-  icon: mdi:message-image
-
-spoken_googleai_arlo_street:
-  alias: Spoken GoogleAI Arlo Street
-  sequence:
-  - data:
-      entity_id: camera.aarlo_street
-      filename: /media/snapshot.jpg
-    action: camera.snapshot
-  - data:
-      prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Dont describe
-        stationary objects or buildings.
-      image_filename: /media/snapshot.jpg
-    response_variable: content
-    action: google_generative_ai_conversation.generate_content
-  - target:
-      entity_id: tts.piper
-    data:
-      media_player_entity_id: media_player.this_device
-      message: '{{ content.text }}'
-      cache: false
-    action: tts.speak
-  - device_id: d916e1ebea4ac034183f9ec8728ed01b
-    domain: mobile_app
-    type: notify
-    message: '"{{ content }}"'
-  - variables:
-      content: '{{ content }}'
-  - stop: end
-    response_variable: content
-  fields:
-    prompt:
-      selector:
-        text:
-          multiline: true
-      name: prompt
-    media_player:
-      selector:
-        entity:
-          filter:
-          - domain: media_player
-      name: media player
-    camera:
-      selector:
-        entity:
-          filter:
-          - domain: camera
-      name: camera
-  mode: single
-  icon: mdi:message-image
-
-googleai_notify_arlo_backyard:
-  alias: GoogleAI Notify Arlo Backyard
-  sequence:
-  - data:
-      filename: /media/snapshot.jpg
-    action: camera.snapshot
-    target:
-      entity_id: camera.aarlo_backyard
-  - data:
-      prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Dont describe
-        stationary objects or buildings.
-      image_filename: /media/snapshot.jpg
-    response_variable: content
-    action: google_generative_ai_conversation.generate_content
-  - variables:
-      content: '{{ content }}'
-  - device_id: d916e1ebea4ac034183f9ec8728ed01b
-    domain: mobile_app
-    type: notify
-    message: '{{ content }}'
-    title: Arlo Backyard Motion
-  - stop: end
-    response_variable: content
-  fields:
-    prompt:
-      selector:
-        text:
-          multiline: true
-      name: prompt
-    media_player:
-      selector:
-        entity:
-          filter:
-          - domain: media_player
-      name: media player
-    camera:
-      selector:
-        entity:
-          filter:
-          - domain: camera
-      name: camera
-  mode: single
-  icon: mdi:message-image
-  description: ''
-
-googleai_notify_arlo_basement:
-  alias: GoogleAI Notify Arlo Basement
-  sequence:
-  - data:
-      filename: /media/snapshot.jpg
-    action: camera.snapshot
-    target:
-      entity_id: camera.aarlo_basement
-  - data:
-      prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Dont describe
-        stationary objects or buildings.
-      image_filename: /media/snapshot.jpg
-    response_variable: content
-    action: google_generative_ai_conversation.generate_content
-  - variables:
-      content: '{{ content }}'
-  - device_id: d916e1ebea4ac034183f9ec8728ed01b
-    domain: mobile_app
-    type: notify
-    message: '{{ content }}'
-    title: Arlo Basement Motion
-  - stop: end
-    response_variable: content
-  fields:
-    prompt:
-      selector:
-        text:
-          multiline: true
-      name: prompt
-    media_player:
-      selector:
-        entity:
-          filter:
-          - domain: media_player
-      name: media player
-    camera:
-      selector:
-        entity:
-          filter:
-          - domain: camera
-      name: camera
-  mode: single
-  icon: mdi:message-image
-  description: ''
-
-googleai_notify_arlo_fish:
-  alias: GoogleAI Notify Arlo Fish
-  sequence:
-  - data:
-      filename: /media/snapshot.jpg
-    action: camera.snapshot
-    target:
-      entity_id: camera.aarlo_fish
-  - data:
-      prompt: Briefly describe what you see in this image from my doorbell camera.
-        Your message needs to be short to fit in a phone notification. Dont describe
-        stationary objects or buildings.
-      image_filename: /media/snapshot.jpg
-    response_variable: content
-    action: google_generative_ai_conversation.generate_content
-  - variables:
-      content: '{{ content }}'
-  - device_id: d916e1ebea4ac034183f9ec8728ed01b
-    domain: mobile_app
-    type: notify
-    message: '{{ content }}'
-    title: Arlo Fish Motion
-  - stop: end
-    response_variable: content
-  fields:
-    prompt:
-      selector:
-        text:
-          multiline: true
-      name: prompt
-    media_player:
-      selector:
-        entity:
-          filter:
-          - domain: media_player
-      name: media player
-    camera:
-      selector:
-        entity:
-          filter:
-          - domain: camera
-      name: camera
-  mode: single
-  icon: mdi:message-image
-  description: ''
-  
 bedtime:
   alias: Bed Time
   sequence:
@@ -1730,7 +1400,6 @@ bedtime:
       entity_id:
       - script.charlotte_bedtime_on
       - script.henry_bedtime_on
-
 charlotte_bedtime_on:
   alias: Charlotte Bedtime On
   sequence:
@@ -1743,7 +1412,6 @@ charlotte_bedtime_on:
       - switch.charlotte_noise_machine
       - switch.charlotte_night_light
       - switch.charlotte_fan
-
 charlotte_bedtime_off:
   alias: Charlotte Bedtime Off
   sequence:
@@ -1756,7 +1424,6 @@ charlotte_bedtime_off:
   - service: light.turn_off
     target:
       entity_id: light.charlotte_bedroom_table_lamp
-
 henry_bedtime_off:
   alias: Henry Bedtime Off
   sequence:
@@ -1770,7 +1437,6 @@ henry_bedtime_off:
     action: light.turn_off
   description: ''
   icon: mdi:hockey-sticks
-
 henry_bedtime_on:
   alias: Henry Bedtime On
   sequence:
@@ -1784,7 +1450,6 @@ henry_bedtime_on:
     action: switch.turn_on
   description: ''
   icon: mdi:hockey-sticks
-
 morning:
   alias: Morning
   sequence:
@@ -1801,7 +1466,6 @@ morning:
   description: Calls morning scene and blind open scene (to get around Hunter blind
     tilt/position issues)
   icon: mdi:weather-sunset-up
-
 find_iphone_alert_christina:
   sequence:
   - data:
@@ -1815,7 +1479,6 @@ find_iphone_alert_christina:
   alias: Find iPhone Alert Christina
   mode: single
   description: ''
-  
 find_phone_alert_andrew:
   alias: Find iPhone Alert - Andrew
   sequence:
@@ -1829,47 +1492,45 @@ find_phone_alert_andrew:
     action: notify.mobile_app_andrews_phone
   mode: single
   description: ''
-
 away_adjust_climate:
   alias: Adjust Thermostats for Away Mode
   mode: single
   sequence:
-    - repeat:
-        for_each:
-          - climate.kitchen
-          - climate.upstairs
-        sequence:
-          - variables:
-              current_temp: "{{ state_attr(repeat.item, 'temperature') }}"
-              hvac_mode: "{{ states(repeat.item) }}"
-          - choose:
-              - conditions:
-                  - condition: template
-                    value_template: "{{ hvac_mode == 'cool' }}"
-                sequence:
-                  - service: climate.set_temperature
-                    target:
-                      entity_id: "{{ repeat.item }}"
-                    data:
-                      temperature: "{{ current_temp + 5 }}"
-              - conditions:
-                  - condition: template
-                    value_template: "{{ hvac_mode == 'heat' }}"
-                sequence:
-                  - service: climate.set_temperature
-                    target:
-                      entity_id: "{{ repeat.item }}"
-                    data:
-                      temperature: "{{ current_temp - 5 }}"
-
+  - repeat:
+      for_each:
+      - climate.kitchen
+      - climate.upstairs
+      sequence:
+      - variables:
+          current_temp: '{{ state_attr(repeat.item, ''temperature'') }}'
+          hvac_mode: '{{ states(repeat.item) }}'
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ hvac_mode == ''cool'' }}'
+          sequence:
+          - service: climate.set_temperature
+            target:
+              entity_id: '{{ repeat.item }}'
+            data:
+              temperature: '{{ current_temp + 5 }}'
+        - conditions:
+          - condition: template
+            value_template: '{{ hvac_mode == ''heat'' }}'
+          sequence:
+          - service: climate.set_temperature
+            target:
+              entity_id: '{{ repeat.item }}'
+            data:
+              temperature: '{{ current_temp - 5 }}'
 return_restore_climate:
   alias: Restore Thermostats to Normal Preset
   mode: single
   sequence:
-    - service: climate.set_preset_mode
-      target:
-        entity_id:
-          - climate.kitchen
-          - climate.upstairs
-      data:
-        preset_mode: none
+  - service: climate.set_preset_mode
+    target:
+      entity_id:
+      - climate.kitchen
+      - climate.upstairs
+    data:
+      preset_mode: none
