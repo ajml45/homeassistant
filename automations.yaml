@@ -1234,34 +1234,6 @@
         minutes: 30
         seconds: 0
   mode: single
-- id: '1707839154324'
-  alias: Driveway Motion Notification
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.aarlo_motion_driveway
-    to: 'on'
-  condition: []
-  action:
-  - action: script.googleai_notify_arlo_driveway
-    metadata: {}
-    data: {}
-  mode: single
-- id: '1707858054576'
-  alias: Motion Street Notify
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.aarlo_motion_street
-    to: 'on'
-  condition: []
-  action:
-  - service: script.googleai_notify_arlo_street
-    metadata: {}
-    data: {}
-  mode: single
 - id: '1717961799961'
   alias: Lutron Pico - Kitchen Light
   description: All Kitchen Lights
