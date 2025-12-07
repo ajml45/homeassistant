@@ -5,7 +5,7 @@ default_config:
 frontend:
   extra_module_url:
   - /local/community/custom-brand-icons/custom-brand-icons.js
-  - /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524400
+  - /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524410
   themes: !include_dir_merge_named themes
 automation: !include automations.yaml
 binary_sensor: !include binary_sensors.yaml
