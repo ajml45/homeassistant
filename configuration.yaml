@@ -22,18 +22,6 @@ sensor: !include_dir_merge_list sensors/
 shell_command:
   git_backup: bash /config/git-backup.sh
 
-#http:
-#  ssl_certificate: /ssl/fullchain.pem
-#  ssl_key: /ssl/privkey.pem
-
-
-#  - platform: command_line
-#    name: GPT_Response
-#    command: "curl -XPOST https://api.openai.com/v1/chat/completions -H 'Content-Type: application/json' -H 'Authorization: Bearer !secret OpenAL' -d '{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"Act as a personal assistant for Andrew. Christina is his wife.  Andrew and Christina have two kids.  Charlotte, 4, who is well behaved and Henry, 1, who is always in trouble.  You are witty and talk conversationally, making jokes. The current time is {{ now() }}, and the current day is {{ now().weekday() }}. Greet me and our family in a friendly but respectful way, commenting on the weather, and sometimes making a joke, in less than 250
-#    characters.\"}], \"top_p\": 1, \"temperature\": 0.7, \"max_tokens\": 320, \"presence_penalty\": 1}'"
-#    value_template: "{{ value_json.choices[0].message.content }}"
-#    scan_interval: 21600
-
 input_text:
   active_scene:
     name: Active Scene
