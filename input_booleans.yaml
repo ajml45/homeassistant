@@ -58,29 +58,3 @@ guests_present:
 vacation:
   name: Vacation
   initial: off
-
-# --- BoB Squad badges ---
-bob_basic_training:
-  name: Basic Training Complete
-  initial: off
-bob_pt_warrior:
-  name: PT Warrior Complete
-  initial: off
-bob_stealth_operative:
-  name: Stealth Operative Complete
-  initial: off
-bob_seal_splash:
-  name: SEAL Splash Complete
-  initial: off
-bob_weapons_specialist:
-  name: Weapons Specialist Complete
-  initial: off
-bob_medical_expert:
-  name: Medical Expert Complete
-  initial: off
-bob_squad_leader:
-  name: Squad Leader Complete
-  initial: off
-bob_drill_master:
-  name: Drill Master Complete
-  initial: off
