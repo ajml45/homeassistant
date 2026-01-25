@@ -213,7 +213,7 @@
       - light.great_room
       brightness: 64
       color_temp_kelvin: 2910
-      color_temp: 343
+      color_temp:
       hs_color:
       - 27.98
       - 59.396
@@ -280,10 +280,10 @@
       - color_temp
       - rgbw
       - xy
-      color_mode: color_temp
+      color_mode: color_temp_kelvin
       brightness: 128
       color_temp_kelvin: 2915
-      color_temp: 343
+      color_temp:
       hs_color:
       - 27.971
       - 59.254
@@ -359,10 +359,10 @@
       icon: mdi:lightbulb-group
       friendly_name: First Floor Lights
       supported_features: 44
-      color_mode: color_temp
+      color_mode: color_temp_kelvin
       brightness: 204
       color_temp_kelvin: 2773
-      color_temp: 360
+      color_temp:
       hs_color:
       - 28.242
       - 63.439
@@ -488,10 +488,10 @@
       - color_temp
       - rgbw
       - xy
-      color_mode: color_temp
+      color_mode: color_temp_kelvin
       brightness: 153
       color_temp_kelvin: 2915
-      color_temp: 343
+      color_temp:
       hs_color:
       - 27.971
       - 59.254
@@ -565,10 +565,10 @@
       - color_temp
       - rgbw
       - xy
-      color_mode: color_temp
+      color_mode: color_temp_kelvin
       brightness: 44
       color_temp_kelvin: 2915
-      color_temp: 343
+      color_temp:
       hs_color:
       - 27.971
       - 59.254
@@ -651,10 +651,10 @@
       - light.mudroom
       - light.white_room
       - light.office
-      color_mode: color_temp
+      color_mode: color_temp_kelvin
       brightness: 26
       color_temp_kelvin: 2823
-      color_temp: 354
+      color_temp:
       hs_color:
       - 28.142
       - 61.929
@@ -731,10 +731,10 @@
       - light.mudroom
       - light.white_room
       - light.office
-      color_mode: color_temp
+      color_mode: color_temp_kelvin
       brightness: 128
       color_temp_kelvin: 2846
-      color_temp: 351
+      color_temp:
       hs_color:
       - 28.098
       - 61.248
@@ -811,10 +811,10 @@
       - light.mudroom
       - light.white_room
       - light.office
-      color_mode: color_temp
+      color_mode: color_temp_kelvin
       brightness: 128
       color_temp_kelvin: 2849
-      color_temp: 351
+      color_temp:
       hs_color:
       - 28.092
       - 61.159
@@ -1165,11 +1165,11 @@
   entities:
     light.great_room:
       brightness: 115
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.front_foyer:
       brightness: 255
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.kitchen_above_cabinet:
       brightness: 255
@@ -1184,13 +1184,13 @@
       state: 'off'
     light.sink_pendants:
       brightness: 255
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.island_pendants:
       state: 'off'
     light.stove_sconces:
       brightness: 255
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
   icon: mdi:chef-hat
 - id: '1726769617850'
@@ -1198,7 +1198,7 @@
   entities:
     light.front_foyer:
       brightness: 255
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.kitchen_above_cabinet:
       brightness: 255
@@ -1214,43 +1214,43 @@
       state: 'off'
     light.island_pendants:
       brightness: 255
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.stove_sconces:
       brightness: 130
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.mudroom:
       state: 'off'
     light.great_room_table_lamp:
       brightness: 255
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.right_couch_lamp:
       brightness: 255
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.bar_lamp_right:
       brightness: 255
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.bar_lamp_left:
       brightness: 255
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.left_couch_lamp:
       brightness: 255
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.great_room_bar_cabinet_lights:
       state: 'on'
     light.middle_can_right:
       brightness: 120
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.back_can_left:
       brightness: 120
-      color_temp: 345
+      ccolor_temp_kelvin: 2845
       state: 'on'
     light.front_can_middle:
       state: 'off'
@@ -1258,17 +1258,17 @@
       state: 'off'
     light.back_can_right:
       brightness: 120
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.front_can_left:
       state: 'off'
     light.front_can_right:
       brightness: 120
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.back_can_middle:
       brightness: 120
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.middle_can_middle:
       state: 'off'
@@ -1319,21 +1319,21 @@
   entities:
     light.great_room:
       brightness: 50
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.kitchen:
       brightness: 50
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.mudroom:
       state: 'off'
     light.office:
       brightness: 65
-      color_temp: 345
+      ccolor_temp_kelvin: 2845
       state: 'on'
     light.front_foyer:
       brightness: 100
-      color_temp: 345
+      ccolor_temp_kelvin: 2845
       state: 'on'
     light.white_room:
       state: 'off'
@@ -1349,31 +1349,31 @@
   entities:
     light.great_room:
       brightness: 128
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.basement:
       brightness: 128
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.kitchen:
       brightness: 155
-      color_temp: 345
+      ccolor_temp_kelvin: 2845
       state: 'on'
     light.mudroom:
       brightness: 128
-      color_temp: 345
+      ccolor_temp_kelvin: 2845
       state: 'on'
     light.office:
       brightness: 128
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.front_foyer:
       brightness: 255
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.white_room:
       brightness: 128
-      color_temp: 345
+      color_temp_kelvin: 2845
       state: 'on'
     light.master_bedroom_sconces:
       brightness: 128
