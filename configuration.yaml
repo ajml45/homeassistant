@@ -1,6 +1,8 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 
+prometheus:
+
 # Load configs from seperate files
 frontend:
   extra_module_url:
