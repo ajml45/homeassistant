@@ -1534,3 +1534,278 @@ return_restore_climate:
       - climate.upstairs
     data:
       preset_mode: none
+'1778538483267':
+  alias: Lego Return To Idle
+  mode: restart
+  sequence:
+  - delay:
+      seconds: 25
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0
+    action: media_player.volume_set
+  - delay:
+      seconds: 1
+  - target:
+      entity_id: media_player.sonos_office
+    action: media_player.media_stop
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 30
+      rgb_color:
+      - 40
+      - 30
+      - 50
+      transition: 3
+    action: light.turn_on
+  - target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: none
+    action: input_text.set_value
+  description: ''
+trivia_victory:
+  alias: Trivia Victory
+  mode: single
+  sequence:
+  - data:
+      topic: lego/pi/play
+      payload: trivia/responses/victory_0{{ range(1, 9) | random }}.wav
+    action: mqtt.publish
+  - repeat:
+      count: 3
+      sequence:
+      - target:
+          entity_id: light.solarium_rope_light
+        data:
+          rgb_color:
+          - 255
+          - 215
+          - 0
+          brightness_pct: 100
+        action: light.turn_on
+      - delay: '00:00:00.3'
+      - target:
+          entity_id: light.solarium_rope_light
+        data:
+          rgb_color:
+          - 0
+          - 100
+          - 255
+          brightness_pct: 100
+        action: light.turn_on
+      - delay: '00:00:00.3'
+      - target:
+          entity_id: light.solarium_rope_light
+        data:
+          rgb_color:
+          - 0
+          - 255
+          - 0
+          brightness_pct: 100
+        action: light.turn_on
+      - delay: '00:00:00.3'
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 215
+      - 0
+      brightness_pct: 100
+    action: light.turn_on
+  - delay:
+      seconds: 4
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 50
+      - 100
+      - 200
+      brightness_pct: 50
+      transition: 2
+    action: light.turn_on
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.5
+    action: media_player.volume_set
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      message: "Mission complete, Commander. This session, the Rebellion gained {{
+        states('input_number.rebellion_session_score') | int }} points, and the Empire
+        gained {{ states('input_number.empire_session_score') | int }} points. Overall,
+        the Rebellion has {{ states('input_number.rebellion_score') | int }} victories,
+        and the Empire has {{ states('input_number.empire_score') | int }} victories.
+        {% if states('input_number.rebellion_score') | int > states('input_number.empire_score')
+        | int %}\n  The Rebellion leads the galaxy. May the Force be with you.\n{%
+        elif states('input_number.empire_score') | int > states('input_number.rebellion_score')
+        | int %}\n  The Empire grows stronger. Train harder, young Jedi.\n{% else
+        %}\n  The galaxy hangs in balance. Every answer matters.\n{% endif %}\n"
+      options:
+        voice: GuyNeural
+    action: tts.cloud_say
+  - delay:
+      seconds: 12
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 30
+      rgb_color:
+      - 40
+      - 30
+      - 50
+      transition: 3
+    action: light.turn_on
+  - target:
+      entity_id: input_select.star_wars_game_mode
+    data:
+      option: free_play
+    action: input_select.select_option
+  - target:
+      entity_id: input_number.rebellion_session_score
+    data:
+      value: 0
+    action: input_number.set_value
+  - target:
+      entity_id: input_number.empire_session_score
+    data:
+      value: 0
+    action: input_number.set_value
+  - target:
+      entity_id: input_number.star_wars_trivia_score
+    data:
+      value: 0
+    action: input_number.set_value
+battle_ambient_loop:
+  alias: Battle Ambient Loop
+  mode: restart
+  sequence:
+  - repeat:
+      while:
+      - condition: state
+        entity_id: input_select.star_wars_game_mode
+        state: battle
+      sequence:
+      - data:
+          topic: lego/pi/play
+          payload: RANDOM:combat
+        action: mqtt.publish
+      - delay:
+          seconds: '{{ range(5, 16) | random }}'
+  description: ''
+battle_victory:
+  alias: Battle Victory
+  mode: single
+  sequence:
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 255
+      - 255
+      brightness_pct: 100
+    action: light.turn_on
+  - delay: '00:00:00.5'
+  - target:
+      entity_id: input_select.star_wars_game_mode
+    data:
+      option: free_play
+    action: input_select.select_option
+  - data:
+      topic: lego/pi/play
+      payload: RANDOM:combat
+    action: mqtt.publish
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.5
+    action: media_player.volume_set
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      media_content_id: http://192.168.68.21:8123/local/sounds/starwars/stings/stings_force_theme.mp3
+      media_content_type: music
+    action: media_player.play_media
+  - repeat:
+      count: 4
+      sequence:
+      - target:
+          entity_id: light.solarium_rope_light
+        data:
+          rgb_color:
+          - 255
+          - 215
+          - 0
+          brightness_pct: 100
+        action: light.turn_on
+      - delay: '00:00:00.3'
+      - target:
+          entity_id: light.solarium_rope_light
+        data:
+          rgb_color:
+          - 255
+          - 255
+          - 255
+          brightness_pct: 100
+        action: light.turn_on
+      - delay: '00:00:00.3'
+      - target:
+          entity_id: light.solarium_rope_light
+        data:
+          rgb_color:
+          - 50
+          - 150
+          - 255
+          brightness_pct: 100
+        action: light.turn_on
+      - delay: '00:00:00.3'
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 215
+      - 0
+      brightness_pct: 100
+    action: light.turn_on
+  - delay:
+      seconds: 3
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.5
+    action: media_player.volume_set
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      message: 'Direct hits, Commander. The Empire''s base is in ruins. Excellent
+        shooting. The Rebellion is proud of you.
+
+        '
+      options:
+        voice: GuyNeural
+    action: tts.cloud_say
+  - delay:
+      seconds: 8
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 30
+      rgb_color:
+      - 40
+      - 30
+      - 50
+      transition: 3
+    action: light.turn_on
+  - target:
+      entity_id: input_number.battle_hits
+    data:
+      value: 0
+    action: input_number.set_value
+  description: ''

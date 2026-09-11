@@ -218,7 +218,7 @@
   alias: Solarium Light Fade
   description: ''
   triggers:
-  - at: '19:40:00'
+  - at: '20:00:00'
     trigger: time
   conditions:
   - condition: time
@@ -1933,4 +1933,689 @@
     data: {}
     target:
       entity_id: script.morning
+  mode: single
+- id: '1775854974925'
+  alias: Soundbar Shelf Light
+  description: ''
+  triggers:
+  - device_id: c014797991dd3f0849355d12f070bcfe
+    domain: media_player
+    entity_id: e377dc428971303b7c5942475ddc4cb3
+    type: turned_on
+    trigger: device
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 8629207c6e982c967fb8543e384616d0
+    entity_id: b25163cf3bee71f31e85456dd7085b47
+    domain: light
+  mode: single
+- id: '1775855176742'
+  alias: Soundbar Shelf Light Off
+  description: ''
+  triggers:
+  - device_id: c014797991dd3f0849355d12f070bcfe
+    domain: media_player
+    entity_id: e377dc428971303b7c5942475ddc4cb3
+    type: turned_off
+    trigger: device
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 8629207c6e982c967fb8543e384616d0
+    entity_id: b25163cf3bee71f31e85456dd7085b47
+    domain: light
+  mode: single
+- id: '00001'
+  alias: NFC Yoda
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-5B-C5-3F-D4-2A-81
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: yoda
+  - service: media_player.volume_set
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.4
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      media_content_id: http://192.168.68.21:8123/local/sounds/starwars/voices/voices_yoda_helpyou.mp3
+      media_content_type: music
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 0
+      - 249
+      - 0
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: '00002'
+  alias: NFC Darth Vader
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-87-70-7D-8F-61-80
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: vader
+  - service: media_player.volume_set
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.4
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      media_content_id: http://192.168.68.21:8123/local/sounds/starwars/voices/voices_darthvadar_breathing.mp3
+      media_content_type: music
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      color_name: darkred
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: '00003'
+  alias: NFC R2D2
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-20-3E-80-8F-61-80
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: r2d2
+  - service: media_player.volume_set
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.4
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      media_content_id: http://192.168.68.21:8123/local/sounds/starwars/voices/voices_r2d2.mp3
+      media_content_type: music
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      effect: Glacier
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: '00004'
+  alias: NFC Emperor
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-6C-C8-3F-D4-2A-81
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: emperor
+  - service: mqtt.publish
+    data:
+      topic: lego/pi/play
+      payload: voices/voices_emperor_wipethemout.wav
+  - service: media_player.volume_set
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.4
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      media_content_id: http://192.168.68.21:8123/local/sounds/starwars/stings/stings_imperial_march.mp3
+      media_content_type: music
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      effect: Fire
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: '00005'
+  alias: NFC C3PO
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-D1-D9-00-4F-61-80
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: C3PO
+  - service: mqtt.publish
+    data:
+      topic: lego/pi/play
+      payload: voices/voices_c3po_iamc3po.wav
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      color_name: gold
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: '00006'
+  alias: NFC Chewbacca
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-B9-6A-7F-8F-61-80
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Chewbacca
+  - service: mqtt.publish
+    data:
+      topic: lego/pi/play
+      payload: voices/voices_chewy_roar.wav
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      color_name: orange
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: '00007'
+  alias: NFC Ewok
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-33-D9-01-4F-61-80
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Ewok
+  - service: mqtt.publish
+    data:
+      topic: lego/pi/play
+      payload: voices/voices_ewok_2.wav
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      color_name: orange
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: 00008
+  alias: NFC Stormtrooper
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-FB-84-7E-8F-61-80
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Stormtrooper
+  - service: mqtt.publish
+    data:
+      topic: lego/pi/play
+      payload: voices/voices_stormtrooper_surrender.wav
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      color_name: white
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: 00009
+  alias: NFC Rebel Pilot
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-B3-D0-01-4F-61-80
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Rebel Pilot
+  - service: mqtt.publish
+    data:
+      topic: lego/pi/play
+      payload: voices/voices_rebel_pilot_attackpositions.wav
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      color_name: orange
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: '00010'
+  alias: NFC Beach Luke
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-C1-BD-01-4F-61-81
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Beach Luke
+  - service: media_player.volume_set
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.4
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      media_content_id: spotify:track:2EPr9Wx7e1cpGEbNAtuN7x
+      media_content_type: music
+  - service: mqtt.publish
+    data:
+      topic: lego/pi/play
+      payload: voices/voices_luke_junk.wav
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      color_name: blue
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: '00011'
+  alias: NFC Luke
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-56-C7-01-4F-61-80
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Luke
+  - service: media_player.volume_set
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.4
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      media_content_id: spotify:track:7a9UUo3zfID7Ik2fTQjRLi
+      media_content_type: music
+  - service: mqtt.publish
+    data:
+      topic: lego/pi/play
+      payload: voices/voices_luke_junk.wav
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      color_name: green
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: '00012'
+  alias: NFC Clone Trooper
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-19-E7-80-8F-61-80
+  action:
+  - service: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Clone Trooper
+  - service: mqtt.publish
+    data:
+      topic: lego/pi/play
+      payload: voices/voices_clonetrooper_rogerroger.wav
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      color_name: orange
+  - service: script.turn_on
+    target:
+      entity_id: script.lego_return_to_idle
+  mode: single
+- id: '10001'
+  alias: Trivia - Start Mode
+  triggers:
+  - topic: lego/bracelet/scanned
+    payload: 04-60-7B-7D-8F-61-80
+    trigger: mqtt
+  actions:
+  - target:
+      entity_id: input_select.star_wars_game_mode
+    data:
+      option: trivia
+    action: input_select.select_option
+  - target:
+      entity_id: input_number.star_wars_trivia_score
+    data:
+      value: 0
+    action: input_number.set_value
+  - target:
+      entity_id: input_number.rebellion_session_score
+    data:
+      value: 0
+    action: input_number.set_value
+  - target:
+      entity_id: input_number.empire_session_score
+    data:
+      value: 0
+    action: input_number.set_value
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 60
+      rgb_color:
+      - 50
+      - 100
+      - 200
+    action: light.turn_on
+  - data:
+      topic: lego/pi/play
+      payload: trivia/responses/intro_01.wav
+    action: mqtt.publish
+  - delay:
+      seconds: 4
+  - data:
+      topic: lego/trivia/request_question
+      payload: ''
+    action: mqtt.publish
+  mode: single
+- id: '10002'
+  alias: Trivia - Forward Answer
+  trigger:
+  - platform: mqtt
+    topic: lego/trivia/answered
+  condition:
+  - condition: state
+    entity_id: input_select.star_wars_game_mode
+    state: trivia
+  action:
+  - service: mqtt.publish
+    data:
+      topic: lego/trivia/answer_submitted
+      payload: '{{ trigger.payload }}'
+  mode: single
+- id: '10003'
+  alias: Trivia - Correct Answer
+  triggers:
+  - topic: lego/trivia/answer_result
+    payload: correct
+    trigger: mqtt
+  actions:
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 0
+      - 255
+      - 0
+      brightness_pct: 100
+    action: light.turn_on
+  - target:
+      entity_id: input_number.star_wars_trivia_score
+    action: input_number.increment
+  - target:
+      entity_id: input_number.rebellion_score
+    action: input_number.increment
+  - target:
+      entity_id: input_number.rebellion_session_score
+    action: input_number.increment
+  - delay:
+      seconds: 4
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: input_number.star_wars_trivia_score
+        above: 4
+      sequence:
+      - target:
+          entity_id: script.trivia_victory
+        action: script.turn_on
+    default:
+    - target:
+        entity_id: light.solarium_rope_light
+      data:
+        brightness_pct: 60
+        rgb_color:
+        - 50
+        - 100
+        - 200
+      action: light.turn_on
+    - data:
+        topic: lego/trivia/request_question
+        payload: ''
+      action: mqtt.publish
+  mode: single
+- id: '10004'
+  alias: Trivia - Wrong Answer
+  triggers:
+  - topic: lego/trivia/answer_result
+    payload: wrong
+    trigger: mqtt
+  actions:
+  - target:
+      entity_id: input_number.empire_score
+    action: input_number.increment
+  - target:
+      entity_id: input_number.empire_session_score
+    action: input_number.increment
+  - repeat:
+      count: 2
+      sequence:
+      - target:
+          entity_id: light.solarium_rope_light
+        data:
+          rgb_color:
+          - 255
+          - 0
+          - 0
+          brightness_pct: 100
+        action: light.turn_on
+      - delay: '00:00:00.2'
+      - target:
+          entity_id: light.solarium_rope_light
+        data:
+          rgb_color:
+          - 50
+          - 100
+          - 200
+          brightness_pct: 60
+        action: light.turn_on
+      - delay: '00:00:00.2'
+  mode: single
+- id: '10005'
+  alias: Trivia - Gave Up
+  trigger:
+  - platform: mqtt
+    topic: lego/trivia/answer_result
+    payload: gave_up
+  action:
+  - delay: 00:00:06
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 50
+      - 100
+      - 200
+      brightness_pct: 60
+  - service: mqtt.publish
+    data:
+      topic: lego/trivia/request_question
+      payload: ''
+  mode: single
+- id: '20001'
+  alias: Battle - Start Mode
+  trigger:
+  - platform: mqtt
+    topic: lego/bracelet/scanned
+    payload: 04-B5-BA-7B-8F-61-80
+  action:
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.star_wars_game_mode
+    data:
+      option: battle
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.battle_hits
+    data:
+      value: 0
+  - service: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 180
+      - 20
+      - 20
+      brightness_pct: 70
+  - service: mqtt.publish
+    data:
+      topic: lego/pi/play
+      payload: RANDOM:alerts
+  - delay:
+      seconds: 2
+  - service: script.turn_on
+    target:
+      entity_id: script.battle_ambient_loop
+  mode: single
+- id: '20002'
+  alias: Battle - Hit Detected
+  triggers:
+  - entity_id: binary_sensor.hue_motion_sensor_2_motion
+    from: 'off'
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: input_select.star_wars_game_mode
+    state: battle
+  actions:
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 255
+      - 255
+      brightness_pct: 100
+    action: light.turn_on
+  - data:
+      topic: lego/pi/play
+      payload: RANDOM:combat
+    action: mqtt.publish
+  - target:
+      entity_id: input_number.battle_hits
+    action: input_number.increment
+  - delay: '00:00:00.4'
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 180
+      - 20
+      - 20
+      brightness_pct: 70
+    action: light.turn_on
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: input_number.battle_hits
+        above: 0
+      sequence:
+      - target:
+          entity_id: script.battle_victory
+        action: script.turn_on
+  mode: single
+- id: '30001'
+  alias: henry
+  description: ''
+  triggers:
+  - topic: lego/bracelet/scanned
+    payload: 1A-48-45-1D
+    trigger: mqtt
+  actions:
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.3
+    action: media_player.volume_set
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      media:
+        media_content_id: spotify:track:0BRHnOFm6sjxN1i9LJrUDu
+        media_content_type: music
+        metadata: {}
+    action: media_player.play_media
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      color_name: green
+    action: light.turn_on
   mode: single
