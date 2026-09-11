@@ -1,0 +1,51 @@
+###############################################################################
+# Global rule: ignore everything ................................................................
+*
+###############################################################################
+
+# ---------------------------------------------------------------------------
+# Root-level YAML files to INCLUDE in the repo
+# ---------------------------------------------------------------------------
+!automations.yaml
+!configuration.yaml
+!scenes.yaml
+!scripts.yaml
+!input_booleans.yaml
+!input_select.yaml
+!switches.yaml
+!groups.yaml
+!binary_sensors.yaml
+
+# ---------------------------------------------------------------------------
+# Theme & frontend assets
+# ---------------------------------------------------------------------------
+!themes/
+
+# keep only the three theme YAMLs I explicitly manage
+themes/*
+!themes/isaaclucas_kitchen.yaml
+!themes/mobile.yaml
+!themes/mudroom.yaml
+
+# ---------------------------------------------------------------------------
+# Include-folders
+# ---------------------------------------------------------------------------
+!sensors/
+!templates/
+
+# By default ignore everything inside those folders …
+sensors/*
+templates/*
+
+# … except YAML files (yruntime helpers, washer/dryer, etc.)
+!sensors/*.yaml
+!templates/*.yaml
+
+# SSH keys
+.ssh/
+
+# Home Assistant Git backup
+git-backup.log
+
+# SSH credentials
+.ssh/

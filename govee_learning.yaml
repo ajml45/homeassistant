@@ -1,0 +1,50 @@
+2D:E5:D4:AD:FC:49:1A:07:
+  set_brightness_max:
+  get_brightness_max: 100
+  before_set_brightness_turn_on: false
+  config_offline_is_off: false
+8D:1C:D4:AD:FC:20:A0:D3:
+  set_brightness_max: 100
+  get_brightness_max: 100
+  before_set_brightness_turn_on: false
+  config_offline_is_off: false
+1B:B7:D4:AD:FC:7B:0A:CB:
+  set_brightness_max:
+  get_brightness_max: 100
+  before_set_brightness_turn_on: false
+  config_offline_is_off: false
+BC:4A:D4:AD:FC:7B:0A:FD:
+  set_brightness_max: 100
+  get_brightness_max: 100
+  before_set_brightness_turn_on: false
+  config_offline_is_off: false
+AB:6B:CF:38:32:30:67:7F:
+  set_brightness_max: 100
+  get_brightness_max: 100
+  before_set_brightness_turn_on: false
+  config_offline_is_off: false
+10:DD:D4:35:33:33:2F:86:
+  set_brightness_max: 100
+  get_brightness_max: 100
+  before_set_brightness_turn_on: false
+  config_offline_is_off: false
+E4:D9:D8:32:32:33:10:20:
+  set_brightness_max: 100
+  get_brightness_max: 100
+  before_set_brightness_turn_on: false
+  config_offline_is_off: false
+09:3B:D3:32:32:33:40:71:
+  set_brightness_max: 100
+  get_brightness_max: 100
+  before_set_brightness_turn_on: false
+  config_offline_is_off: false
+17:CB:35:33:35:0E:61:FF:
+  set_brightness_max: 100
+  get_brightness_max: 100
+  before_set_brightness_turn_on: false
+  config_offline_is_off: false
+7E:85:D4:AD:FC:5D:FE:58:
+  set_brightness_max: 100
+  get_brightness_max: 100
+  before_set_brightness_turn_on: false
+  config_offline_is_off: false

@@ -1,0 +1,154 @@
+# sensors/hvac_runtime.yaml
+# -----------------------------------------------------------
+# History-stats sensors for Kitchen, Solarium, and Upstairs
+# (Heat / AC / Fan — Today & Yesterday)
+# -----------------------------------------------------------
+
+# ---------- KITCHEN ----------
+- platform: history_stats
+  name: Kitchen Heat Runtime Today
+  entity_id: binary_sensor.hvac_kitchen_heating_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now() }}'
+
+- platform: history_stats
+  name: Kitchen AC Runtime Today
+  entity_id: binary_sensor.hvac_kitchen_ac_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now() }}'
+
+- platform: history_stats
+  name: Kitchen Fan Runtime Today
+  entity_id: binary_sensor.hvac_kitchen_fan_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now() }}'
+
+- platform: history_stats
+  name: Kitchen Heat Runtime Yesterday
+  entity_id: binary_sensor.hvac_kitchen_heating_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Kitchen AC Runtime Yesterday
+  entity_id: binary_sensor.hvac_kitchen_ac_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Kitchen Fan Runtime Yesterday
+  entity_id: binary_sensor.hvac_kitchen_fan_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+
+# ---------- SOLARIUM ----------
+- platform: history_stats
+  name: Solarium Heat Runtime Today
+  entity_id: binary_sensor.hvac_solarium_heating_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now() }}'
+
+- platform: history_stats
+  name: Solarium AC Runtime Today
+  entity_id: binary_sensor.hvac_solarium_ac_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now() }}'
+
+- platform: history_stats
+  name: Solarium Fan Runtime Today
+  entity_id: binary_sensor.hvac_solarium_fan_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now() }}'
+
+- platform: history_stats
+  name: Solarium Heat Runtime Yesterday
+  entity_id: binary_sensor.hvac_solarium_heating_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Solarium AC Runtime Yesterday
+  entity_id: binary_sensor.hvac_solarium_ac_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Solarium Fan Runtime Yesterday
+  entity_id: binary_sensor.hvac_solarium_fan_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+
+# ---------- UPSTAIRS ----------
+- platform: history_stats
+  name: Upstairs Heat Runtime Today
+  entity_id: binary_sensor.hvac_upstairs_heating_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now() }}'
+
+- platform: history_stats
+  name: Upstairs AC Runtime Today
+  entity_id: binary_sensor.hvac_upstairs_ac_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now() }}'
+
+- platform: history_stats
+  name: Upstairs Fan Runtime Today
+  entity_id: binary_sensor.hvac_upstairs_fan_on
+  state: 'on'
+  type: time
+  start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now() }}'
+
+- platform: history_stats
+  name: Upstairs Heat Runtime Yesterday
+  entity_id: binary_sensor.hvac_upstairs_heating_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Upstairs AC Runtime Yesterday
+  entity_id: binary_sensor.hvac_upstairs_ac_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now().replace(hour=0, minute=0, second=0) }}'
+
+- platform: history_stats
+  name: Upstairs Fan Runtime Yesterday
+  entity_id: binary_sensor.hvac_upstairs_fan_on
+  state: 'on'
+  type: time
+  start: '{{ (now() - timedelta(days=1)).replace(hour=0, minute=0, second=0) }}'
+  end:   '{{ now().replace(hour=0, minute=0, second=0) }}'

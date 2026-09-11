@@ -1,0 +1,399 @@
+###############################################################################
+# templates.yaml
+###############################################################################
+
+# =============================================================================
+# VIRTUAL SWITCHES
+# Bedtime switches that control noise machines, night lights, and room status
+# =============================================================================
+
+- switch:
+    - name: Henry Bedtime
+      unique_id: henry_bedtime
+      default_entity_id: switch.henry_bedtime
+      state: "{{ is_state('input_boolean.henry_room_status', 'on') }}"
+      turn_on:
+        - action: switch.turn_on
+          target:
+            entity_id:
+              - switch.henry_noise_machine
+              - switch.henry_night_light
+        - action: light.turn_off
+          target:
+            entity_id: light.henry_bedroom_table_lamp
+        - action: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.henry_room_status
+      turn_off:
+        - action: switch.turn_off
+          target:
+            entity_id:
+              - switch.henry_noise_machine
+              - switch.henry_night_light
+        - action: light.turn_off
+          target:
+            entity_id: light.henry_bedroom_table_lamp
+        - action: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.henry_room_status
+
+    - name: Charlotte Bedtime
+      unique_id: charlotte_bedtime
+      default_entity_id: switch.charlotte_bedtime
+      state: "{{ is_state('input_boolean.charlotte_room_status', 'on') }}"
+      turn_on:
+        - action: switch.turn_on
+          target:
+            entity_id:
+              - switch.charlotte_noise_machine
+              - switch.charlotte_fan
+              - switch.charlotte_night_light
+        - action: light.turn_off
+          target:
+            entity_id: light.charlotte_bedroom_table_lamp
+        - action: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.charlotte_room_status
+      turn_off:
+        - action: switch.turn_off
+          target:
+            entity_id:
+              - switch.charlotte_noise_machine
+              - switch.charlotte_fan
+              - switch.charlotte_night_light
+        - action: light.turn_off
+          target:
+            entity_id: light.charlotte_bedroom_table_lamp
+        - action: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.charlotte_room_status
+
+
+# =============================================================================
+# BINARY SENSORS
+# HVAC state monitoring — heating / cooling / fan / eco per zone
+#
+# default_entity_id pins the entity_id to the pre-migration value that
+# sensors.yaml (history_stats) and the dashboards reference.
+# =============================================================================
+
+- binary_sensor:
+
+    # -------------------------------------------------------------------------
+    # Kitchen
+    # -------------------------------------------------------------------------
+    - name: Kitchen Heat On
+      unique_id: hvac_kitchen_heating_on
+      default_entity_id: binary_sensor.hvac_kitchen_heating_on
+      state: "{{ is_state_attr('climate.kitchen', 'hvac_action', 'heating') }}"
+
+    - name: Kitchen AC On
+      unique_id: hvac_kitchen_ac_on
+      default_entity_id: binary_sensor.hvac_kitchen_ac_on
+      state: "{{ is_state_attr('climate.kitchen', 'hvac_action', 'cooling') }}"
+
+    - name: Kitchen Fan On
+      unique_id: hvac_kitchen_fan_on
+      default_entity_id: binary_sensor.hvac_kitchen_fan_on
+      state: >
+        {{ is_state_attr('climate.kitchen', 'fan_mode', 'on')
+           and not is_state_attr('climate.kitchen', 'hvac_action', 'heating')
+           and not is_state_attr('climate.kitchen', 'hvac_action', 'cooling') }}
+
+    - name: Kitchen Eco Mode
+      unique_id: hvac_kitchen_eco_mode
+      default_entity_id: binary_sensor.hvac_kitchen_eco_mode
+      state: >
+        {{ is_state_attr('climate.kitchen', 'preset_mode', 'eco')
+           and is_state_attr('climate.kitchen', 'hvac_action', 'idle') }}
+
+    # -------------------------------------------------------------------------
+    # Solarium
+    # -------------------------------------------------------------------------
+    - name: Solarium Heat On
+      unique_id: hvac_solarium_heating_on
+      default_entity_id: binary_sensor.hvac_solarium_heating_on
+      state: "{{ is_state_attr('climate.solarium', 'hvac_action', 'heating') }}"
+
+    - name: Solarium AC On
+      unique_id: hvac_solarium_ac_on
+      default_entity_id: binary_sensor.hvac_solarium_ac_on
+      state: "{{ is_state_attr('climate.solarium', 'hvac_action', 'cooling') }}"
+
+    - name: Solarium Fan On
+      unique_id: hvac_solarium_fan_on
+      default_entity_id: binary_sensor.hvac_solarium_fan_on
+      state: >
+        {{ is_state_attr('climate.solarium', 'fan_mode', 'on')
+           and not is_state_attr('climate.solarium', 'hvac_action', 'heating')
+           and not is_state_attr('climate.solarium', 'hvac_action', 'cooling') }}
+
+    - name: Solarium Eco Mode
+      unique_id: hvac_solarium_eco_mode
+      default_entity_id: binary_sensor.hvac_solarium_eco_mode
+      state: >
+        {{ is_state_attr('climate.solarium', 'preset_mode', 'eco')
+           and is_state_attr('climate.solarium', 'hvac_action', 'idle') }}
+
+    # -------------------------------------------------------------------------
+    # Upstairs
+    # -------------------------------------------------------------------------
+    - name: Upstairs Heat On
+      unique_id: hvac_upstairs_heating_on
+      default_entity_id: binary_sensor.hvac_upstairs_heating_on
+      state: "{{ is_state_attr('climate.upstairs', 'hvac_action', 'heating') }}"
+
+    - name: Upstairs AC On
+      unique_id: hvac_upstairs_ac_on
+      default_entity_id: binary_sensor.hvac_upstairs_ac_on
+      state: "{{ is_state_attr('climate.upstairs', 'hvac_action', 'cooling') }}"
+
+    - name: Upstairs Fan On
+      unique_id: hvac_upstairs_fan_on
+      default_entity_id: binary_sensor.hvac_upstairs_fan_on
+      state: >
+        {{ is_state_attr('climate.upstairs', 'fan_mode', 'on')
+           and not is_state_attr('climate.upstairs', 'hvac_action', 'heating')
+           and not is_state_attr('climate.upstairs', 'hvac_action', 'cooling') }}
+
+    - name: Upstairs Eco Mode
+      unique_id: hvac_upstairs_eco_mode
+      default_entity_id: binary_sensor.hvac_upstairs_eco_mode
+      state: >
+        {{ is_state_attr('climate.upstairs', 'preset_mode', 'eco')
+           and is_state_attr('climate.upstairs', 'hvac_action', 'idle') }}
+
+
+# =============================================================================
+# SENSORS
+# =============================================================================
+
+- sensor:
+
+    # -------------------------------------------------------------------------
+    # Washer & Dryer
+    # -------------------------------------------------------------------------
+    - name: "Washer Door Lock"
+      unique_id: washer_door_lock
+      default_entity_id: sensor.washer_door_lock
+      state: "{{ state_attr('sensor.washer', 'door_lock') }}"
+
+    - name: "Washer Time Display"
+      unique_id: washer_time_display
+      default_entity_id: sensor.washer_time_display
+      state: >
+        {% if is_state('sensor.washer_run_state', 'Standby') %}
+          -:--
+        {% elif not is_state('sensor.washer_run_state', '-') %}
+          {{ state_attr('sensor.washer', 'remain_time').split(':')[:-1] | join(':') }}
+        {% endif %}
+
+    - name: "Dryer Time Display"
+      unique_id: dryer_time_display
+      default_entity_id: sensor.dryer_time_display
+      state: >
+        {% if is_state('sensor.dryer_run_state', 'Standby') %}
+          -:--
+        {% elif not is_state('sensor.dryer_run_state', '-') %}
+          {{ state_attr('sensor.dryer', 'remain_time').split(':')[:-1] | join(':') }}
+        {% endif %}
+
+    # -------------------------------------------------------------------------
+    # HVAC set-point lines (for mini-graph cards)
+    # -------------------------------------------------------------------------
+    - name: "Kitchen Set Temperature Line"
+      unique_id: kitchen_set_temperature_line
+      default_entity_id: sensor.kitchen_set_temperature_line
+      unit_of_measurement: "°F"
+      device_class: temperature
+      state_class: measurement
+      state: "{{ state_attr('climate.kitchen', 'temperature') }}"
+
+    - name: "Solarium Set Temperature Line"
+      unique_id: solarium_set_temperature_line
+      default_entity_id: sensor.solarium_set_temperature_line
+      unit_of_measurement: "°F"
+      device_class: temperature
+      state_class: measurement
+      state: "{{ state_attr('climate.solarium', 'temperature') }}"
+
+    - name: "Upstairs Set Temperature Line"
+      unique_id: upstairs_set_temperature_line
+      default_entity_id: sensor.upstairs_set_temperature_line
+      unit_of_measurement: "°F"
+      device_class: temperature
+      state_class: measurement
+      state: "{{ state_attr('climate.upstairs', 'temperature') }}"
+
+    # -------------------------------------------------------------------------
+    # Light counters
+    # -------------------------------------------------------------------------
+    - name: "Total Lights Count Template"
+      unique_id: total_lights_count_template
+      default_entity_id: sensor.total_lights_count_template
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >-
+        {% set exclude = [
+          "light.basement", "light.exterior", "light.great_room",
+          "light.kitchen", "light.mudroom", "light.office",
+          "light.offices", "light.solarium", "light.white_room",
+          "light.first_floor_lights"
+        ] %}
+        {{ states.light
+           | rejectattr('entity_id', 'in', exclude)
+           | selectattr('attributes.is_hue_group', 'undefined')
+           | selectattr('attributes.entity_id', 'undefined')
+           | selectattr('state', 'eq', 'on')
+           | list | count }}
+
+    - name: "Kitchen Lights On"
+      unique_id: kitchen_lights_on
+      default_entity_id: sensor.kitchen_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {% set lights = [
+          states('light.kitchen_above_cabinet'),
+          states('light.kitchen_under_cabinet'),
+          states('light.kitchen_cans_fridge'),
+          states('light.kitchen_cans_sink'),
+          states('light.sink_pendants'),
+          states('light.stove_sconces'),
+          states('light.island_pendants'),
+          states('light.toe_kick')
+        ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+
+    - name: "Great Room Lights On"
+      unique_id: great_room_lights_on
+      default_entity_id: sensor.great_room_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {% set lights = [
+          states('light.great_room_table_lamp'),
+          states('light.bar_lamp_left'),
+          states('light.bar_lamp_right'),
+          states('light.left_couch_lamp'),
+          states('light.right_couch_lamp'),
+          states('light.great_room_bar_cabinet_lights'),
+          states('light.great_room_fireplace_can'),
+          states('light.great_room_back_cans'),
+          states('light.great_room_front_cans'),
+          states('light.great_room_middle_cans')
+        ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+
+    - name: "Master Suite Lights On"
+      unique_id: master_suite_lights_on
+      default_entity_id: sensor.master_suite_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {% set lights = [
+          states('light.tub_light_left'),
+          states('light.tub_light_middle'),
+          states('light.tub_light_right'),
+          states('light.can_light'),
+          states('light.shower_light'),
+          states('light.master_bedroom_sconces')
+        ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+
+    - name: "Mudroom Lights On"
+      unique_id: mudroom_lights_on
+      default_entity_id: sensor.mudroom_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {% set lights = [
+          states('light.mudroom_can_lights'),
+          states('light.mudroom_pendants')
+        ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+
+    - name: "Foyer Offices Lights On"
+      unique_id: foyer_offices_lights_on
+      default_entity_id: sensor.foyer_offices_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {% set lights = [
+          states('light.front_foyer_chandelier'),
+          states('light.front_foyer'),
+          states('light.office_desk_lamp'),
+          states('light.office_ceiling_light'),
+          states('light.office_floor_lamp'),
+          states('light.white_room_main_lights'),
+          states('light.white_room_piano_light'),
+          states('light.white_room_table_lamps')
+        ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+
+    - name: "Upstairs Lights On"
+      unique_id: upstairs_lights_on
+      default_entity_id: sensor.upstairs_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {% set lights = [
+          states('light.front_foyer_upstairs_hallway_lights'),
+          states('light.charlotte_bedroom_table_lamp'),
+          states('light.henry_bedroom_table_lamp'),
+          states('light.upstairs_bathroom_light')
+        ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+
+    - name: "Basement Lights On"
+      unique_id: basement_lights_on
+      default_entity_id: sensor.basement_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {% set lights = [
+          states('light.basement_stairs_lights'),
+          states('light.basement_sitting_area_main_lights'),
+          states('light.basement_sitting_area_table_lamps'),
+          states('light.basement_sitting_area_spot_lights'),
+          states('light.solarium_sconces'),
+          states('light.wine_cellar_sconces'),
+          states('light.wine_cellar_spot_lights')
+        ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+
+    - name: "Solarium Lights On"
+      unique_id: solarium_lights_on
+      default_entity_id: sensor.solarium_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {% set lights = [
+          states('light.pool_area'),
+          states('light.sitting_area'),
+          states('light.solarium_couch'),
+          states('light.solarium_path_lights'),
+          states('light.solarium_spot_lights'),
+          states('light.slider_path_lights'),
+          states('light.stair_path_lights'),
+          states('light.solarium_rope_light')
+        ] %}
+        {{ lights | select('eq', 'on') | list | count }}
+
+    - name: "Exterior Lights On"
+      unique_id: exterior_lights_on
+      default_entity_id: sensor.exterior_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {% set lights = [
+          states('light.exterior_alcove'),
+          states('light.exterior_upper_garage'),
+          states('light.exterior_lower_garage'),
+          states('light.exterior_front_door'),
+          states('light.exterior_front_spotlights'),
+          states('light.exterior_back_porch_lights'),
+          states('light.exterior_lower_garage_area'),
+          states('light.exterior_dog_area')
+        ] %}
+        {{ lights | select('eq', 'on') | list | count }}

@@ -1,0 +1,682 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Mudroom tablet — Home Assistant theme
+#
+# The laundry/mudroom runs cool where the kitchen runs warm: check-blue fern
+# wallpaper, a soapstone counter, gray-and-white marble tile. So this is the
+# same system rendered on the cool ramp rather than the Gray Horse one.
+# White Dove beadboard and coffered ceiling are still the millwork, so cards
+# still come from the Dove end of the ramp.
+#
+# Hardware here is polished nickel and black iron, not aged brass — but brass
+# still carries action. Meaning stays constant across one floor; a control that
+# means "on" twenty feet away must not change colour on the way there.
+#
+# Assign on the tablet's own HA user: Profile → Theme → mudroom_tablet.
+# Home Lab Style Guide v3. Palette from the house: BM White Dove trim, Gray
+# Horse walls, Calacatta marble, navy, aged brass, rattan, walnut.
+#
+# Install
+#   1. /config/themes/white_dove.yaml
+#   2. configuration.yaml:
+#        frontend:
+#          themes: !include_dir_merge_named themes
+#   3. Developer Tools → Actions → frontend.reload_themes
+#   4. Profile → Theme → White Dove, Mode → Auto
+#
+# Fonts (required — HA will not load a webfont on its own)
+#   Libre Franklin (UI) and IBM Plex Mono (code/data). Self-host so the
+#   dashboard doesn't depend on Google's CDN or on being online:
+#
+#   a. Download the variable woff2 files, drop them in /config/www/fonts/
+#   b. /config/www/fonts.css:
+#        @font-face { font-family:'Libre Franklin'; font-style:normal;
+#          font-weight:100 900; font-display:swap;
+#          src:url(/local/fonts/LibreFranklin.woff2) format('woff2-variations'); }
+#        @font-face { font-family:'Libre Franklin'; font-style:italic;
+#          font-weight:100 900; font-display:swap;
+#          src:url(/local/fonts/LibreFranklin-Italic.woff2) format('woff2-variations'); }
+#        @font-face { font-family:'IBM Plex Mono'; font-style:normal;
+#          font-weight:400 600; font-display:swap;
+#          src:url(/local/fonts/IBMPlexMono.woff2) format('woff2'); }
+#   c. /config/www/fonts.js:
+#        (function () {
+#          const l = document.createElement('link');
+#          l.rel = 'stylesheet';
+#          l.href = '/local/fonts.css?v=1';
+#          document.head.appendChild(l);
+#        })();
+#   d. configuration.yaml:
+#        frontend:
+#          extra_module_url:
+#            - /local/fonts.js?v=1
+#      (extra_module_url loads on every page — the Lovelace `resources:` route
+#      only covers dashboards, so the settings pages keep Roboto.)
+#   e. Restart, then hard-refresh each browser and the companion app.
+#      Bump ?v= whenever you change the CSS or the browser will serve the old one.
+#
+# Written for HA 2025.5+ (paper-* variables were removed there and replaced by
+# the ha-font-* tokens). Legacy aliases are kept at the bottom of the
+# typography block for older custom cards.
+# ─────────────────────────────────────────────────────────────────────────────
+
+mudroom_tablet:
+
+  # ══ Typography ══════════════════════════════════════════════════════════
+  # One family carries the whole interface; weight does the work that a second
+  # typeface usually does. Mono is for numbers that update in place and code.
+  ha-font-family-body: "'Libre Franklin', system-ui, -apple-system, 'Segoe UI', sans-serif"
+  ha-font-family-heading: "'Libre Franklin', system-ui, -apple-system, 'Segoe UI', sans-serif"
+  ha-font-family-longform: "'Libre Franklin', system-ui, sans-serif"
+  ha-font-family-code: "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace"
+  ha-font-smoothing: "antialiased"
+
+  ha-font-size-2xs: "10px"
+  ha-font-size-xs: "12px"
+  ha-font-size-s: "14px"
+  ha-font-size-m: "16px"
+  ha-font-size-l: "18px"
+  ha-font-size-xl: "20px"
+  ha-font-size-2xl: "24px"
+  ha-font-size-3xl: "28px"
+  ha-font-size-4xl: "34px"
+
+  ha-font-weight-light: "400"      # 300 is too fine on a wall tablet — pinned to 400
+  ha-font-weight-normal: "400"
+  ha-font-weight-medium: "500"
+  ha-font-weight-bold: "600"
+  ha-font-weight-body: "400"
+  ha-font-weight-heading: "600"
+  ha-font-weight-action: "500"
+
+  ha-card-header-font-family: "var(--ha-font-family-heading)"
+  ha-card-header-font-size: "20px"
+
+  # Legacy aliases. Removed from core in 2025.5; some custom cards still read them.
+  primary-font-family: "var(--ha-font-family-body)"
+  code-font-family: "var(--ha-font-family-code)"
+
+  # ══ Geometry ════════════════════════════════════════════════════════════
+  # Guide rule: 12px on cards, 6–8px on controls, nothing squared, nothing
+  # pill-shaped except tags. Hairline borders instead of shadows.
+  ha-card-border-radius: "12px"
+  ha-card-border-width: "1px"
+  ha-card-box-shadow: "none"
+  border-radius: "8px"
+  ha-dialog-border-radius: "12px"
+  popup-border-radius: "12px"
+  ha-badge-border-radius: "18px"
+  header-height: "56px"
+  ha-view-sections-column-gap: "12px"
+  ha-view-sections-row-gap: "12px"
+
+  # ══ Mushroom geometry ═══════════════════════════════════════════════════
+  mush-spacing: "10px"
+  mush-title-padding: "24px 12px 8px"
+  mush-title-spacing: "8px"
+  mush-title-font-size: "22px"
+  mush-title-font-weight: "600"
+  mush-title-line-height: "28px"
+  mush-title-letter-spacing: "0px"
+  mush-title-color: "var(--primary-text-color)"
+  mush-subtitle-font-size: "14px"
+  mush-subtitle-font-weight: "400"
+  mush-subtitle-line-height: "20px"
+  mush-subtitle-color: "var(--secondary-text-color)"
+  mush-subtitle-letter-spacing: "0px"
+  mush-card-primary-font-size: "14px"
+  mush-card-secondary-font-size: "12px"
+  mush-card-primary-font-weight: "500"
+  mush-card-secondary-font-weight: "400"
+  mush-card-primary-line-height: "20px"
+  mush-card-secondary-line-height: "16px"
+  mush-card-primary-color: "var(--primary-text-color)"
+  mush-card-secondary-color: "var(--secondary-text-color)"
+  mush-card-primary-letter-spacing: "0.01em"
+  mush-card-secondary-letter-spacing: "0.02em"
+  mush-chip-spacing: "8px"
+  mush-chip-padding: "0 0.25em"
+  mush-chip-height: "36px"
+  mush-chip-border-radius: "8px"          # tags are the only pill; chips are controls
+  mush-chip-border-width: "var(--ha-card-border-width, 1px)"
+  mush-chip-border-color: "var(--ha-card-border-color, var(--divider-color))"
+  mush-chip-box-shadow: "none"
+  mush-chip-font-size: "0.3em"
+  mush-chip-font-weight: "500"
+  mush-chip-icon-size: "0.5em"
+  mush-chip-background: "var(--ha-card-background)"
+  mush-control-border-radius: "8px"
+  mush-control-height: "42px"
+  mush-control-button-ratio: "1"
+  mush-control-icon-size: "0.5em"
+  mush-control-spacing: "12px"
+  mush-slider-threshold: "10"
+  mush-badge-size: "16px"
+  mush-badge-icon-size: "0.75em"
+  mush-badge-border-radius: "50%"
+  mush-icon-border-radius: "50%"
+  mush-icon-size: "36px"
+  mush-icon-symbol-size: "0.6em"
+
+  # Mushroom colour aliases → the house ramp defined per mode below.
+  mush-rgb-red: "var(--rgb-red-color)"
+  mush-rgb-pink: "var(--rgb-pink-color)"
+  mush-rgb-purple: "var(--rgb-purple-color)"
+  mush-rgb-deep-purple: "var(--rgb-deep-purple-color)"
+  mush-rgb-indigo: "var(--rgb-indigo-color)"
+  mush-rgb-blue: "var(--rgb-blue-color)"
+  mush-rgb-light-blue: "var(--rgb-light-blue-color)"
+  mush-rgb-cyan: "var(--rgb-cyan-color)"
+  mush-rgb-teal: "var(--rgb-teal-color)"
+  mush-rgb-green: "var(--rgb-green-color)"
+  mush-rgb-light-green: "var(--rgb-light-green-color)"
+  mush-rgb-lime: "var(--rgb-lime-color)"
+  mush-rgb-yellow: "var(--rgb-yellow-color)"
+  mush-rgb-amber: "var(--rgb-amber-color)"
+  mush-rgb-orange: "var(--rgb-orange-color)"
+  mush-rgb-deep-orange: "var(--rgb-deep-orange-color)"
+  mush-rgb-brown: "var(--rgb-brown-color)"
+  mush-rgb-light-grey: "var(--rgb-light-grey-color)"
+  mush-rgb-grey: "var(--rgb-grey-color)"
+  mush-rgb-dark-grey: "var(--rgb-dark-grey-color)"
+  mush-rgb-blue-grey: "var(--rgb-blue-grey-color)"
+  mush-rgb-black: "var(--rgb-black-color)"
+  mush-rgb-white: "var(--rgb-white-color)"
+  mush-rgb-disabled: "var(--rgb-disabled-color)"
+  mush-rgb-info: "var(--rgb-light-blue-color)"
+  mush-rgb-success: "var(--rgb-green-color)"
+  mush-rgb-warning: "var(--rgb-amber-color)"
+  mush-rgb-danger: "var(--rgb-red-color)"
+  mush-rgb-state-entity: "var(--rgb-blue-color)"
+  mush-rgb-state-light: "var(--rgb-amber-color)"      # lights are the brass signal
+  mush-rgb-state-switch: "var(--rgb-blue-color)"
+  mush-rgb-state-fan: "var(--rgb-cyan-color)"
+  mush-rgb-state-alarm-disarmed: "var(--rgb-grey-color)"
+  mush-rgb-state-alarm-armed: "var(--rgb-green-color)"
+  mush-rgb-state-alarm-triggered: "var(--rgb-red-color)"
+  mush-rgb-state-person-home: "var(--rgb-green-color)"
+  mush-rgb-state-person-not-home: "var(--rgb-grey-color)"
+  mush-rgb-state-person-zone: "var(--rgb-light-blue-color)"
+  mush-rgb-state-person-unknown: "var(--rgb-disabled-color)"
+  mush-rgb-state-cover-open: "var(--rgb-blue-color)"
+  mush-rgb-state-cover-closed: "var(--rgb-disabled-color)"
+  mush-rgb-state-climate-auto: "var(--rgb-green-color)"
+  mush-rgb-state-climate-cool: "var(--rgb-light-blue-color)"
+  mush-rgb-state-climate-dry: "var(--rgb-orange-color)"
+  mush-rgb-state-climate-fan-only: "var(--rgb-blue-grey-color)"
+  mush-rgb-state-climate-heat: "var(--rgb-deep-orange-color)"
+  mush-rgb-state-climate-heat-cool: "var(--rgb-green-color)"
+  mush-rgb-state-climate-idle: "var(--rgb-grey-color)"
+  mush-rgb-state-climate-off: "var(--rgb-disabled-color)"
+
+  # ══ Bubble Card ═════════════════════════════════════════════════════════
+  # Bubble Card draws its own accents rather than reading HA state colours, so
+  # they have to be named here. Navy fills, brass points: a filled button is a
+  # surface and takes navy; icons stay brass. Unknown names are inert, so this
+  # list is safe across Bubble Card versions.
+  bubble-accent-color: "var(--bubble-house-accent)"
+  bubble-light-color: "var(--bubble-house-accent)"
+  bubble-button-accent-color: "var(--bubble-house-accent)"
+  bubble-icon-background-color: "var(--ha-card-background)"
+  # Ink on navy is 1.2:1 — unreadable. Anything on a Bubble fill takes the
+  # light label, matching text-primary-color on any other filled control.
+  bubble-button-text-color: "var(--primary-text-color)"
+  bubble-name-color: "var(--primary-text-color)"
+  bubble-state-color: "var(--secondary-text-color)"
+  bubble-border-radius: "12px"
+  bubble-select-border-radius: "8px"
+  bubble-select-list-border-radius: "8px"
+  bubble-select-button-border-radius: "8px"
+
+  # ══ Card-mod ════════════════════════════════════════════════════════════
+  card-mod-theme: "mudroom_tablet"
+  card-mod-more-info-yaml: |
+    $: |
+      .mdc-dialog .mdc-dialog__scrim {
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        background: rgba(43, 46, 41, .45);
+      }
+      .mdc-dialog .mdc-dialog__container .mdc-dialog__surface {
+        box-shadow: none !important;
+        border: 1px solid var(--ha-card-border-color);
+        border-radius: var(--ha-dialog-border-radius);
+      }
+    .: |
+      :host {
+        --ha-card-box-shadow: none;
+      }
+
+  modes:
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # LIGHT — White Dove ground, marble cards, navy header, Gray Horse rails
+    # ═══════════════════════════════════════════════════════════════════════
+    light:
+
+      # ── Identity ──
+      primary-color: "#1F3A5C"              # navy — links, focus, brand
+      dark-primary-color: "#16253F"
+      light-primary-color: "#8AAECE"
+      accent-color: "#8A6A2E"               # brass-deep — the one brass thing
+      rgb-primary-color: "31, 58, 92"
+      rgb-accent-color: "138, 106, 46"
+
+      # ── Surfaces ──
+      # The house puts Gray Horse walls BEHIND White Dove cabinetry, so the
+      # ground is the wall and the cards are the millwork. v4 had the page on
+      # White Dove and cards on marble — 1.04:1 apart, which is no step at all.
+      primary-background-color: "#A9B6BE"   # chambray — the wallpaper read at distance
+      card-background-color: "#CDD3D2"      # tile-white — 1.37:1 above the page
+      ha-card-background: "#CDD3D2"
+      secondary-background-color: "#BBC4C8" # tile-gray, sunk
+      app-header-background-color: "#1F3A5C"
+      app-header-text-color: "#EFEEE5"
+      app-header-edit-background-color: "#5A646B"
+      markdown-code-background-color: "#BBC4C8"
+      code-editor-background-color: "#CDD3D2"
+      mdc-theme-surface: "#CDD3D2"
+      more-info-header-background: "#CDD3D2"
+
+      # ── Text ──
+      # gray-horse-mid (#7E93A6) only reaches 3.0:1 on marble, so secondary text
+      # steps down to gray-horse-deep (5.7:1) and #7E93A6 is demoted to disabled.
+      primary-text-color: "#2B2E29"         # ink, 12.5:1
+      secondary-text-color: "#434B56"       # hale — 5.7:1 on tile-white
+      text-primary-color: "#EFEEE5"         # text sitting on primary/accent fills
+      text-light-primary-color: "#EFEEE5"
+      disabled-text-color: "#7E93A6"
+      ha-card-header-color: "#2B2E29"
+
+      # ── Structure ──
+      divider-color: "rgba(126, 147, 166, 0.55)"
+      ha-card-border-color: "rgba(126, 147, 166, 0.55)"
+      outline-color: "rgba(126, 147, 166, 0.55)"
+
+      # ── Icons and states ──
+      state-icon-color: "#5A646B"
+      state-icon-active-color: "#8A6A2E"
+      state-active-color: "#7E6029"   # brass-cta, 3.9:1 on tile-white
+      bubble-house-accent: "#1F3A5C"   # navy — Bubble fills
+      state-inactive-color: "#7E93A6"
+      state-unavailable-color: "#A9B6BE"
+      paper-item-icon-color: "#5A646B"
+      paper-item-icon-active-color: "#8A6A2E"
+
+      # ── Base colour ramp ──
+      # Everything HA colours by domain resolves through these, so overriding
+      # the ramp once beats enumerating a hundred state-* variables.
+      red-color: "#9E4034"          # brick — living room fireplace
+      pink-color: "#A65C55"
+      purple-color: "#6B5B7B"
+      deep-purple-color: "#544A6B"
+      indigo-color: "#16253F"       # navy-deep
+      blue-color: "#1F3A5C"         # navy
+      light-blue-color: "#3E5F91"   # delft
+      cyan-color: "#7E93A6"         # check-blue
+      teal-color: "#5C7A72"
+      green-color: "#5F7A5C"        # sage
+      light-green-color: "#7A9070"
+      lime-color: "#8E9A5F"
+      yellow-color: "#B08A3A"
+      amber-color: "#C08A2E"        # ochre, not orange — doesn't fight brass
+      orange-color: "#B5793F"       # oak
+      deep-orange-color: "#A05A2E"
+      brown-color: "#4A3222"        # walnut
+      light-grey-color: "#A9B6BE"   # gray-horse
+      grey-color: "#7E93A6"
+      dark-grey-color: "#5A646B"
+      blue-grey-color: "#6E7A80"
+      black-color: "#2B2E29"        # ink, never #000
+      white-color: "#EFEEE5"        # white-dove, never #FFF
+      disabled-color: "#A9B6BE"
+
+      rgb-red-color: "158, 64, 52"
+      rgb-pink-color: "166, 92, 85"
+      rgb-purple-color: "107, 91, 123"
+      rgb-deep-purple-color: "84, 74, 107"
+      rgb-indigo-color: "22, 37, 63"
+      rgb-blue-color: "31, 58, 92"
+      rgb-light-blue-color: "62, 95, 145"
+      rgb-cyan-color: "126, 147, 166"
+      rgb-teal-color: "92, 122, 114"
+      rgb-green-color: "95, 122, 92"
+      rgb-light-green-color: "122, 144, 112"
+      rgb-lime-color: "142, 154, 95"
+      rgb-yellow-color: "176, 138, 58"
+      rgb-amber-color: "192, 138, 46"
+      rgb-orange-color: "181, 121, 63"
+      rgb-deep-orange-color: "160, 90, 46"
+      rgb-brown-color: "74, 50, 34"
+      rgb-light-grey-color: "185, 187, 177"
+      rgb-grey-color: "138, 141, 130"
+      rgb-dark-grey-color: "92, 97, 87"
+      rgb-blue-grey-color: "110, 122, 128"
+      rgb-black-color: "43, 46, 41"
+      rgb-white-color: "239, 238, 229"
+      rgb-disabled-color: "185, 187, 177"
+      rgb-state-default-color: "138, 106, 46"
+
+      # ── Semantic ──
+      error-color: "#9E4034"
+      warning-color: "#C08A2E"
+      success-color: "#5F7A5C"
+      info-color: "#3E5F91"
+
+      # ── Sidebar ──
+      # Gray Horse taken down in lightness — literally the wall colour.
+      sidebar-background-color: "#5A646B"   # soapstone — this room's counter
+      sidebar-text-color: "#EFEEE5"
+      sidebar-icon-color: "#CDD3D2"
+      sidebar-selected-background-color: "rgba(196, 160, 82, 0.16)"
+      sidebar-selected-text-color: "#EFEEE5"
+      sidebar-selected-icon-color: "#EFEEE5"
+      paper-listbox-background-color: "#5A646B"
+
+      # ── Controls ──
+      mdc-theme-primary: "#7E6029"          # filled buttons: 5.0:1 with White Dove
+      mdc-theme-on-primary: "#EFEEE5"
+      switch-checked-color: "#8A6A2E"
+      switch-checked-button-color: "#8A6A2E"
+      switch-checked-track-color: "#C4A052"
+      switch-unchecked-color: "#F4F2EE"
+      switch-unchecked-button-color: "#F4F2EE"
+      switch-unchecked-track-color: "#A9B6BE"
+      # HA 2026.5 moved ha-switch to Web Awesome and removed the six tokens
+      # above. Keep both: the old names still feed some custom cards.
+      ha-switch-checked-background-color: "#8A6A2E"
+      ha-switch-checked-thumb-background-color: "#EFEEE5"
+      ha-switch-checked-border-color: "#8A6A2E"
+      ha-switch-checked-thumb-border-color: "#8A6A2E"
+      ha-switch-checked-background-color-hover: "#7E6029"
+      ha-switch-background-color: "#E7E4D9"
+      ha-switch-thumb-background-color: "#5A646B"
+      ha-switch-border-color: "rgba(126, 147, 166, 0.55)"
+      ha-switch-thumb-border-color: "#5A646B"
+      ha-switch-thumb-box-shadow: none
+      ha-checkbox-checked-background-color: "#7E6029"
+      ha-checkbox-checked-icon-color: "#EFEEE5"
+      ha-checkbox-background-color: "#F4F2EE"
+      ha-checkbox-border-color: "#5A646B"
+      ha-checkbox-border-color-hover: "#7E6029"
+      ha-checkbox-border-radius: 4px
+      ha-progress-bar-indicator-color: "#8A6A2E"
+      ha-progress-bar-track-color: "#E7E4D9"
+      ha-progress-bar-border-radius: 4px
+      slider-color: "#8A6A2E"
+      slider-secondary-color: "#B3A896"   # tumbleweed
+      slider-track-color: "#E7E4D9"
+      slider-bar-color: "#8A6A2E"
+      paper-slider-knob-color: "#8A6A2E"
+      paper-slider-active-color: "#8A6A2E"
+      paper-slider-container-color: "#E7E4D9"
+      paper-slider-pin-color: "#5A646B"
+      paper-radio-button-checked-color: "#8A6A2E"
+      paper-toggle-button-checked-bar-color: "#8A6A2E"
+
+      # ── Inputs ──
+      input-fill-color: "#EFEEE5"
+      input-ink-color: "#2B2E29"
+      input-label-ink-color: "#434B56"
+      input-disabled-fill-color: "#E7E4D9"
+      input-disabled-ink-color: "#7E93A6"
+      input-disabled-label-ink-color: "#7E93A6"
+      input-idle-line-color: "rgba(185, 187, 177, 0.7)"
+      input-hover-line-color: "#1F3A5C"
+      input-dropdown-icon-color: "#5A646B"
+      mdc-text-field-fill-color: "#EFEEE5"
+      mdc-text-field-ink-color: "#2B2E29"
+      mdc-text-field-label-ink-color: "#434B56"
+      mdc-select-fill-color: "#EFEEE5"
+      mdc-select-ink-color: "#2B2E29"
+      paper-input-container-focus-color: "#8A6A2E"
+
+      # ── Tables and badges ──
+      table-row-background-color: "#F4F2EE"
+      table-row-alternative-background-color: "#EFEEE5"
+      label-badge-background-color: "#F4F2EE"
+      label-badge-text-color: "#2B2E29"
+      label-badge-red: "#9E4034"
+      label-badge-blue: "#1F3A5C"
+      label-badge-green: "#5F7A5C"
+      label-badge-yellow: "#C08A2E"
+      label-badge-grey: "#7E93A6"
+
+      # ── Energy dashboard ──
+      energy-grid-consumption-color: "#3E5F91"
+      energy-grid-return-color: "#5F7A5C"
+      energy-solar-color: "#C08A2E"
+      energy-non-fossil-color: "#7E93A6"
+      energy-battery-in-color: "#6B5B7B"
+      energy-battery-out-color: "#A9C0D4"
+      energy-gas-color: "#9E4034"
+      energy-water-color: "#7E93A6"
+
+      # ── Graphs ──
+      # rattan and oak are texture colours — this is where they belong.
+      history-unknown-color: "#A9B6BE"
+      history-unavailable-color: "#E7E4D9"
+      graph-line-color: "#1F3A5C"
+      accent-medium-color: "#C8A87A"
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # DARK — walnut ground, not slate. The house's darks are wood.
+    # ═══════════════════════════════════════════════════════════════════════
+    dark:
+
+      # ── Identity ──
+      primary-color: "#8AAECE"              # navy-light
+      dark-primary-color: "#3E5F91"
+      light-primary-color: "#A9C0D4"
+      accent-color: "#C4A052"               # brass-light
+      rgb-primary-color: "138, 174, 206"
+      rgb-accent-color: "196, 160, 82"
+
+      # ── Surfaces ──
+      # Dusk: navy panels recessed into a grayed-blue field, every surface
+      # within 10° of hue. Walnut-dark is right at 2am, too dark at 7pm.
+      primary-background-color: "#5A646B"   # soapstone — the ground
+      card-background-color: "#1F3A5C"      # navy — 1.91:1 above the ground
+      ha-card-background: "#1F3A5C"
+      secondary-background-color: "#16253F" # navy-deep, sunk
+      app-header-background-color: "#16253F" # navy-deep carries identity up top
+      app-header-text-color: "#EFEEE5"
+      app-header-edit-background-color: "#16253F"
+      markdown-code-background-color: "#16253F"
+      code-editor-background-color: "#16253F"
+      mdc-theme-surface: "#2C241D"
+      more-info-header-background: "#1F3A5C"
+
+      # ── Text ──
+      primary-text-color: "#E8E4DA"         # 9.1:1 on navy
+      secondary-text-color: "#B9BBB1"       # gray-horse, 5.9:1 on navy.
+      # Only White Dove goes on the bare ground; signals live on cards.
+      text-primary-color: "#221B15"         # text on the light primary/accent fills
+      text-light-primary-color: "#E8E4DA"
+      disabled-text-color: "#7C7F76"
+      ha-card-header-color: "#E8E4DA"
+
+      # ── Structure ──
+      divider-color: "rgba(239, 238, 229, 0.22)"
+      ha-card-border-color: "rgba(239, 238, 229, 0.22)"
+      outline-color: "rgba(185, 187, 177, 0.18)"
+
+      # ── Icons and states ──
+      state-icon-color: "#B9BBB1"
+      state-icon-active-color: "#C4A052"
+      state-active-color: "#C4A052"
+      bubble-house-accent: "#8AAECE"   # navy-light — Bubble fills
+      state-inactive-color: "#8A8D82"
+      state-unavailable-color: "#6E7268"
+      paper-item-icon-color: "#B9BBB1"
+      paper-item-icon-active-color: "#C4A052"
+
+      # ── Base colour ramp, lifted for dark ──
+      red-color: "#D0736A"
+      pink-color: "#D08A83"
+      purple-color: "#A394B5"
+      deep-purple-color: "#8E82A8"
+      indigo-color: "#6F8CB8"
+      blue-color: "#8AAECE"
+      light-blue-color: "#7FA6C4"
+      cyan-color: "#A9C0D4"
+      teal-color: "#8AB0A6"
+      green-color: "#85A683"
+      light-green-color: "#A3BE9C"
+      lime-color: "#B7C08A"
+      yellow-color: "#D9C07E"
+      amber-color: "#D9B15E"
+      orange-color: "#C8A87A"       # rattan
+      deep-orange-color: "#C98A5C"
+      brown-color: "#8A6A4E"
+      light-grey-color: "#C6C8BE"
+      grey-color: "#9A9C92"
+      dark-grey-color: "#6E7268"
+      blue-grey-color: "#93A3AC"
+      black-color: "#221B15"
+      white-color: "#EFEEE5"
+      disabled-color: "#6E7268"
+
+      rgb-red-color: "208, 115, 106"
+      rgb-pink-color: "208, 138, 131"
+      rgb-purple-color: "163, 148, 181"
+      rgb-deep-purple-color: "142, 130, 168"
+      rgb-indigo-color: "111, 140, 184"
+      rgb-blue-color: "138, 174, 206"
+      rgb-light-blue-color: "127, 166, 196"
+      rgb-cyan-color: "169, 192, 212"
+      rgb-teal-color: "138, 176, 166"
+      rgb-green-color: "133, 166, 131"
+      rgb-light-green-color: "163, 190, 156"
+      rgb-lime-color: "183, 192, 138"
+      rgb-yellow-color: "217, 192, 126"
+      rgb-amber-color: "217, 177, 94"
+      rgb-orange-color: "200, 168, 122"
+      rgb-deep-orange-color: "201, 138, 92"
+      rgb-brown-color: "138, 106, 78"
+      rgb-light-grey-color: "198, 200, 190"
+      rgb-grey-color: "154, 156, 146"
+      rgb-dark-grey-color: "110, 114, 104"
+      rgb-blue-grey-color: "147, 163, 172"
+      rgb-black-color: "34, 27, 21"
+      rgb-white-color: "239, 238, 229"
+      rgb-disabled-color: "110, 114, 104"
+      rgb-state-default-color: "196, 160, 82"
+
+      # ── Semantic ──
+      error-color: "#D0736A"
+      warning-color: "#D9B15E"
+      success-color: "#85A683"
+      info-color: "#7FA6C4"
+
+      # ── Sidebar ──
+      # Keeps the Gray Horse thread rather than introducing a slate that appears
+      # nowhere in the house. Swap to "#2C241D" if it reads too light.
+      sidebar-background-color: "#434B56"   # hale — 1.46:1 below the ground
+      sidebar-text-color: "#EFEEE5"
+      sidebar-icon-color: "#C6C8BE"
+      sidebar-selected-background-color: "rgba(196, 160, 82, 0.20)"
+      sidebar-selected-text-color: "#EFEEE5"
+      sidebar-selected-icon-color: "#D9B15E"
+      paper-listbox-background-color: "#434B56"
+
+      # ── Controls ──
+      mdc-theme-primary: "#C4A052"
+      mdc-theme-on-primary: "#221B15"
+      switch-checked-color: "#C4A052"
+      switch-checked-button-color: "#C4A052"
+      switch-checked-track-color: "#8A6A2E"
+      switch-unchecked-color: "#B9BBB1"
+      switch-unchecked-button-color: "#B9BBB1"
+      switch-unchecked-track-color: "#16253F"
+      ha-switch-checked-background-color: "#C4A052"
+      ha-switch-checked-thumb-background-color: "#1F3A5C"
+      ha-switch-checked-border-color: "#C4A052"
+      ha-switch-checked-thumb-border-color: "#C4A052"
+      ha-switch-checked-background-color-hover: "#D9B15E"
+      ha-switch-background-color: "#16253F"
+      ha-switch-thumb-background-color: "#B9BBB1"
+      ha-switch-border-color: "rgba(185, 187, 177, 0.20)"
+      ha-switch-thumb-border-color: "#B9BBB1"
+      ha-switch-thumb-box-shadow: none
+      ha-checkbox-checked-background-color: "#C4A052"
+      ha-checkbox-checked-icon-color: "#1F3A5C"
+      ha-checkbox-background-color: "#1F3A5C"
+      ha-checkbox-border-color: "#B9BBB1"
+      ha-checkbox-border-color-hover: "#C4A052"
+      ha-checkbox-border-radius: 4px
+      ha-progress-bar-indicator-color: "#C4A052"
+      ha-progress-bar-track-color: "#16253F"
+      ha-progress-bar-border-radius: 4px
+      slider-color: "#C4A052"
+      slider-secondary-color: "#6E7268"
+      slider-track-color: "#372D24"
+      slider-bar-color: "#C4A052"
+      paper-slider-knob-color: "#C4A052"
+      paper-slider-active-color: "#C4A052"
+      paper-slider-container-color: "#372D24"
+      paper-slider-pin-color: "#16253F"
+      paper-radio-button-checked-color: "#C4A052"
+      paper-toggle-button-checked-bar-color: "#C4A052"
+
+      # ── Inputs ──
+      input-fill-color: "#372D24"
+      input-ink-color: "#E8E4DA"
+      input-label-ink-color: "#B9BBB1"
+      input-disabled-fill-color: "#2C241D"
+      input-disabled-ink-color: "#7C7F76"
+      input-disabled-label-ink-color: "#7C7F76"
+      input-idle-line-color: "rgba(185, 187, 177, 0.25)"
+      input-hover-line-color: "#8AAECE"
+      input-dropdown-icon-color: "#B9BBB1"
+      mdc-text-field-fill-color: "#372D24"
+      mdc-text-field-ink-color: "#E8E4DA"
+      mdc-text-field-label-ink-color: "#B9BBB1"
+      mdc-select-fill-color: "#372D24"
+      mdc-select-ink-color: "#E8E4DA"
+      paper-input-container-focus-color: "#C4A052"
+
+      # ── Tables and badges ──
+      table-row-background-color: "#2C241D"
+      table-row-alternative-background-color: "#372D24"
+      label-badge-background-color: "#2C241D"
+      label-badge-text-color: "#E8E4DA"
+      label-badge-red: "#D0736A"
+      label-badge-blue: "#8AAECE"
+      label-badge-green: "#85A683"
+      label-badge-yellow: "#D9B15E"
+      label-badge-grey: "#9A9C92"
+
+      # ── Energy dashboard ──
+      energy-grid-consumption-color: "#7FA6C4"
+      energy-grid-return-color: "#85A683"
+      energy-solar-color: "#D9B15E"
+      energy-non-fossil-color: "#A9C0D4"
+      energy-battery-in-color: "#A394B5"
+      energy-battery-out-color: "#C8A87A"
+      energy-gas-color: "#D0736A"
+      energy-water-color: "#A9C0D4"
+
+      # ── Graphs ──
+      history-unknown-color: "#6E7268"
+      history-unavailable-color: "#372D24"
+      graph-line-color: "#8AAECE"
+      accent-medium-color: "#C8A87A"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Tuning knobs — one-line swaps, in the order you're most likely to want them
+#
+#   Sidebar too heavy in light mode      light: sidebar-background-color: "#6E7367"
+#   Sidebar too light in dark mode       dark:  sidebar-background-color: "#2C241D"
+#   Dark header too blue                 dark:  app-header-background-color: "#2C241D"
+#   Cards not separating from the page   light: card-background-color: "#F8F7F3"
+#   Want visible card edges              raise the two rgba border alphas to 0.7 / 0.28
+#   Want shadows back                    ha-card-box-shadow: "0 1px 3px rgba(43,46,41,0.10)"
+#
+# Known rough edge: some Material 3 dropdown surfaces (automation editor
+# selectors) ignore the theme and render on their own tokens. If you hit white
+# boxes in dark mode, add these to the dark block:
+#   md-sys-color-surface: "#2C241D"
+#   md-sys-color-surface-container: "#372D24"
+#   md-sys-color-surface-container-high: "#42362B"
+#   md-sys-color-on-surface: "#E8E4DA"
+# ─────────────────────────────────────────────────────────────────────────────
