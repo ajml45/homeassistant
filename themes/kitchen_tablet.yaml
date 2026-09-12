@@ -289,7 +289,7 @@ kitchen_tablet:
       state-icon-color: "#5C6157"
       state-icon-active-color: "#8A6A2E"
       state-active-color: "#7E6029"   # raw brass is 2.47:1 on millwork
-      bubble-house-accent: "#1F3A5C"   # navy — Bubble fills
+      bubble-house-accent: "#A9C0D4"   # china-blue — ink reads at 7.3:1
       state-inactive-color: "#8A8D82"
       state-unavailable-color: "#B9BBB1"
       paper-item-icon-color: "#5C6157"
@@ -564,7 +564,7 @@ kitchen_tablet:
       # ── Sidebar ──
       # Keeps the Gray Horse thread rather than introducing a slate that appears
       # nowhere in the house. Swap to "#2C241D" if it reads too light.
-      sidebar-background-color: "#434B56"   # hale — 1.46:1 below the ground
+      sidebar-background-color: "#16253F"   # navy-deep — 2.53:1, a real anchor
       sidebar-text-color: "#EFEEE5"
       sidebar-icon-color: "#C6C8BE"
       sidebar-selected-background-color: "rgba(196, 160, 82, 0.20)"

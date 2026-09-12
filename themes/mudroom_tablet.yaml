@@ -265,7 +265,7 @@ mudroom_tablet:
       # The house puts Gray Horse walls BEHIND White Dove cabinetry, so the
       # ground is the wall and the cards are the millwork. v4 had the page on
       # White Dove and cards on marble — 1.04:1 apart, which is no step at all.
-      primary-background-color: "#A9B6BE"   # chambray — the wallpaper read at distance
+      primary-background-color: "#9EACB8"   # chambray — 1.53:1 below tile-white
       card-background-color: "#CDD3D2"      # tile-white — 1.37:1 above the page
       ha-card-background: "#CDD3D2"
       secondary-background-color: "#BBC4C8" # tile-gray, sunk
@@ -296,7 +296,7 @@ mudroom_tablet:
       state-icon-color: "#5A646B"
       state-icon-active-color: "#8A6A2E"
       state-active-color: "#7E6029"   # brass-cta, 3.9:1 on tile-white
-      bubble-house-accent: "#1F3A5C"   # navy — Bubble fills
+      bubble-house-accent: "#A9C0D4"   # china-blue — ink reads at 7.3:1
       state-inactive-color: "#7E93A6"
       state-unavailable-color: "#A9B6BE"
       paper-item-icon-color: "#5A646B"
@@ -475,8 +475,8 @@ mudroom_tablet:
       # Dusk: navy panels recessed into a grayed-blue field, every surface
       # within 10° of hue. Walnut-dark is right at 2am, too dark at 7pm.
       primary-background-color: "#5A646B"   # soapstone — the ground
-      card-background-color: "#1F3A5C"      # navy — 1.91:1 above the ground
-      ha-card-background: "#1F3A5C"
+      card-background-color: "#16253F"      # navy-deep — 2.53:1, deeper than the kitchen
+      ha-card-background: "#16253F"
       secondary-background-color: "#16253F" # navy-deep, sunk
       app-header-background-color: "#16253F" # navy-deep carries identity up top
       app-header-text-color: "#EFEEE5"
@@ -484,7 +484,7 @@ mudroom_tablet:
       markdown-code-background-color: "#16253F"
       code-editor-background-color: "#16253F"
       mdc-theme-surface: "#2C241D"
-      more-info-header-background: "#1F3A5C"
+      more-info-header-background: "#16253F"
 
       # ── Text ──
       primary-text-color: "#E8E4DA"         # 9.1:1 on navy
