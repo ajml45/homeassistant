@@ -3735,45 +3735,63 @@ views:
               - groups
               - grouping
               - media browser
+              - queue
+            entities:
+              - media_player.sonos_great_room_soundbar
+              - media_player.sonos_kitchen
+              - media_player.sonos_office
+              - media_player.sonos_solarium
+              - media_player.sonos_basement
+              - media_player.sonos_workshop
+              - media_player.sonos_garage
+            entityNameRegexToReplace: '^Sonos '
+            entityNameReplacement: ''
             heightPercentage: 115
             dynamicVolumeSlider: true
+            storePlayerInSessionStorage: true
             predefinedGroups:
               - name: All
+                volume: 15
+                unmuteWhenGrouped: true
                 entities:
-                  - media_player.basement_sonos
-                  - media_player.great_room_sonos
-                  - media_player.kitchen_sonos
-                  - media_player.office_sonos
-                  - media_player.solarium_sonos
+                  - media_player.sonos_basement
+                  - media_player.sonos_great_room_soundbar
+                  - media_player.sonos_kitchen
+                  - media_player.sonos_office
+                  - media_player.sonos_solarium
+                  - media_player.sonos_garage
+                  - media_player.sonos_workshop
               - name: 1st Floor
+                volume: 15
+                unmuteWhenGrouped: true
                 entities:
-                  - media_player.great_room_sonos
-                  - media_player.kitchen_sonos
-                  - media_player.office_sonos
+                  - media_player.sonos_great_room_soundbar
+                  - media_player.sonos_kitchen
+                  - media_player.sonos_office
               - name: Basement
+                unmuteWhenGrouped: true
                 entities:
-                  - media_player.basement_sonos
-                  - media_player.solarium_sonos
+                  - player: media_player.sonos_basement
+                    volume: 15
+                  - player: media_player.sonos_solarium
+                    volume: 12
+                  - player: media_player.sonos_workshop
+                    volume: 25
             player:
               showVolumeUpAndDownButtons: true
               artworkAsBackgroundBlur: 10
               controlsAndHeaderBackgroundOpacity: 0.7
-              mediaArtworkOverrides:
-                - mediaTitleEquals: TV
-                  imageUrl: /local/images/other/tv.jpg
+              artworkBorderRadius: 12
+              showChannel: true
+              showAudioInputFormat: true
+            grouping:
+              skipApplyButton: true
             mediaBrowser:
               itemsPerRow: 3
-              shortcut:
-                media_content_id: REPLACE_ME
-                media_content_type: REPLACE_ME
-                icon: mdi:spotify
-                name: My Spotify
+              hideItems:
+                - My media
               favorites:
-                exclude:
-                  - My Media
-                topItems:
-                  - REPLACE_WITH_FAVORITE_1
-                  - REPLACE_WITH_FAVORITE_2
+                sortByType: true
   - title: Vacuums
     path: vacuums
     subview: true
