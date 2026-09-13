@@ -64,6 +64,11 @@ sidebar:
       name: Meals
       active: true
       icon: mdi:silverware-fork-knife
+    - action: navigate
+      navigation_path: /isaac-lucas/settings
+      name: Settings
+      active: true
+      icon: mdi:cog-outline
   bottomCard:
     type: vertical-stack
     cardOptions:
@@ -5647,411 +5652,6 @@ views:
               }
         view_layout:
           grid-area: left
-  - title: IT
-    path: it
-    icon: mdi:desktop-classic
-    badges: []
-    cards:
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
-            card_type: separator
-            icon: mdi:router-network
-            name: Internet Data
-            styles: |
-              ha-card { 
-                  color: var(--primary-text-color) !important;
-              }
-              .separator-container div:last-child {
-                  background-color: var(--divider-color) !important;
-              }
-              h4 {
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-          - type: custom:stack-in-card
-            card_mod:
-              style: |
-                ha-card {
-                    background-color: var(--ha-card-background) !important; 
-                }
-            cards:
-              - type: custom:layout-card
-                layout_type: grid
-                layout:
-                  width: 100%
-                  grid-template-columns: 10% 80%
-                  grid-template-rows: auto
-                cards: null
-              - type: custom:layout-card
-                layout_type: grid
-                cards:
-                  - type: custom:mushroom-chips-card
-                    chips:
-                      - type: template
-                        entity: sensor.speedtest_ping
-                        icon: mdi:speedometer
-                        icon_color: null
-                        content: Run Speedtest
-                        card_mod:
-                          style: |
-                            ha-card {
-                                background-color: var(--ha-card-background) !important; 
-                            }
-                      - type: template
-                        entity: sensor.speedtest_ping
-                        icon: null
-                        icon_color: deep-orange
-                        content: ''
-                        card_mod:
-                          style: |
-                            ha-card {
-                                background-color: var(--ha-card-background) !important; 
-                            }
-                    alignment: left
-                    card_mod:
-                      style: |
-                        ha-card {
-                            background-color: var(--ha-card-background) !important; 
-                        }
-              - square: false
-                columns: 3
-                type: grid
-                cards:
-                  - type: custom:stack-in-card
-                    cards:
-                      - type: custom:apexcharts-card
-                        chart_type: radialBar
-                        experimental:
-                          color_threshold: true
-                        series:
-                          - entity: sensor.speedtest_download
-                            color_threshold:
-                              - value: 50
-                                color: '#9E4034'
-                              - value: 70
-                                color: deep-orange
-                              - value: 80
-                                color: orange
-                              - value: 90
-                                color: yellow
-                              - value: 100
-                                color: lime
-                              - value: 110
-                                color: light-green
-                              - value: 120
-                                color: green
-                            max: 200
-                            show:
-                              legend_value: false
-                        apex_config:
-                          plotOptions:
-                            radialBar:
-                              offsetY: 0
-                              startAngle: -108
-                              endAngle: 108
-                              hollow:
-                                size: 80%
-                              dataLabels:
-                                name:
-                                  show: false
-                                value:
-                                  show: false
-                              track:
-                                strokeWidth: 70%
-                                margin: 0
-                          fill:
-                            type: gradient
-                            gradient:
-                              type: horizontal
-                              inverseColors: false
-                              opacityFrom: 1
-                              opacityTo: 1
-                          legend:
-                            show: false
-                          chart:
-                            height: 130
-                        card_mod:
-                          style: |
-                            ha-card {
-                                background-color: var(--ha-card-background) !important; 
-                            }
-                      - type: custom:mushroom-legacy-template-card
-                        entity: sensor.speedtest_download
-                        primary: |
-                          {{states('sensor.speedtest_download')|round(1)}} Mbps
-                        secondary: Download
-                        icon: mdi:download
-                        icon_color: >-
-                          {% set value = states('sensor.speedtest_download') |
-                          int(default=0) %}
-
-                          {% if value < 50 %} red 
-
-                          {% elif value < 70 %} deep-orange 
-
-                          {% elif value < 80 %} orange 
-
-                          {% elif value < 90 %} yellow 
-
-                          {% elif value < 100 %} lime 
-
-                          {% elif value < 110 %} light-green 
-
-                          {% elif value < 120 %} green 
-
-                          {% else %} green 
-
-                          {% endif %}
-                        layout: vertical
-                        card_mod:
-                          style: |
-                            :host {
-                              background: var(--ha-card-background) !important;
-                             } 
-                            ha-card {
-                              margin-top: -65px;
-                              margin-left: auto;
-                              margin-right: auto;
-                              margin-bottom: 2px;
-                              box-shadow: none;
-                              background: none;
-                            }
-                  - type: custom:stack-in-card
-                    cards:
-                      - type: custom:mushroom-entity-card
-                        entity: sensor.speedtest_ping
-                        primary_info: state
-                        secondary_info: name
-                        name: Ping
-                        icon_color: light-green
-                        icon: mdi:wan
-                        layout: vertical
-                        card_mod:
-                          style: |
-                            ha-card {
-                              margin-top: auto;
-                              width: auto;
-                              margin-left: auto;
-                              margin-right: auto;
-                              --card-primary-font-size: 12px;
-                              --card-secondary-font-size: 10px;
-                              background-color: var(--ha-card-background) !important;
-                            }
-                  - type: custom:stack-in-card
-                    cards:
-                      - type: custom:apexcharts-card
-                        chart_type: radialBar
-                        experimental:
-                          color_threshold: true
-                        series:
-                          - entity: sensor.speedtest_upload
-                            color_threshold:
-                              - value: 5
-                                color: '#9E4034'
-                              - value: 6
-                                color: deep-orange
-                              - value: 7
-                                color: orange
-                              - value: 10
-                                color: yellow
-                              - value: 15
-                                color: lime
-                              - value: 20
-                                color: light-green
-                              - value: 25
-                                color: green
-                            max: 40
-                            show:
-                              legend_value: false
-                        apex_config:
-                          plotOptions:
-                            radialBar:
-                              offsetY: 0
-                              startAngle: -108
-                              endAngle: 108
-                              hollow:
-                                size: 80%
-                              dataLabels:
-                                name:
-                                  show: false
-                                value:
-                                  show: false
-                              track:
-                                strokeWidth: 70%
-                                margin: 0
-                          fill:
-                            type: gradient
-                            gradient:
-                              type: horizontal
-                          legend:
-                            show: false
-                          chart:
-                            height: 130
-                        card_mod:
-                          style: |
-                            ha-card {
-                              background-color: var(--ha-card-background) !important;
-                            }
-                      - type: custom:mushroom-legacy-template-card
-                        entity: sensor.speedtest_upload
-                        primary: |
-                          {{states('sensor.speedtest_upload')|round(1)}} Mbps
-                        secondary: Upload
-                        icon: mdi:upload
-                        icon_color: >-
-                          {% set value = states('sensor.speedtest_upload') |
-                          int(default=0) %}
-
-                          {% if value < 5 %} red 
-
-                          {% elif value < 6 %} deep-orange 
-
-                          {% elif value < 7 %} orange 
-
-                          {% elif value < 10 %} yellow 
-
-                          {% elif value < 15 %} lime 
-
-                          {% elif value < 20 %} light-green 
-
-                          {% elif value < 25 %} green 
-
-                          {% else %} green 
-
-                          {% endif %}
-                        layout: vertical
-                        card_mod:
-                          style: |
-                            :host {
-                              background: var(--ha-card-background) !important;
-                             } 
-                            ha-card {
-                              margin-top: -65px;
-                              margin-left: auto;
-                              margin-right: auto;
-                              margin-bottom: 2px;
-                              box-shadow: none;
-                              background: none;
-                              
-                            }
-              - type: custom:fold-entity-row
-                head:
-                  type: custom:mushroom-legacy-template-card
-                  label: padding
-                  tap_action: null
-                  multiline_secondary: true
-                  card_mod:
-                    style: |
-                      ha-card {
-                        margin-left: 250px;
-                        background-color: var(--ha-card-background) !important;
-                      }
-                padding: 0
-                entities:
-                  - type: custom:stack-in-card
-                    cards:
-                      - type: custom:mini-graph-card
-                        entities:
-                          - entity: sensor.speedtest_download
-                            line_color: blue
-                          - entity: sensor.speedtest_upload
-                            show_adaptive_color: true
-                            line_color: purple
-                            y_axis: secondary
-                        hours_to_show: 24
-                        points_per_hour: 1
-                        line_width: 1
-                        font_size: 100
-                        height: 300
-                        lower_bound: 0
-                        lower_bound_secondary: 0
-                        upper_bound_secondary: 50
-                        upper_bound: 200
-                        animate: true
-                        name: Last 24 Hours
-                        show:
-                          icon: false
-                          state: false
-                          legend: true
-                          fill: fade
-                          labels: true
-                          labels_secondary: true
-                          average: true
-                          extrema: true
-                        card_mod:
-                          style: |
-                            ha-card {
-                              background-color: var(--ha-card-background) !important;
-                            }
-                      - type: custom:mini-graph-card
-                        entities:
-                          - entity: sensor.speedtest_download
-                            line_color: blue
-                          - entity: sensor.speedtest_upload
-                            show_adaptive_color: true
-                            line_color: purple
-                            y_axis: secondary
-                        hours_to_show: 120
-                        points_per_hour: 1
-                        line_width: 1
-                        font_size: 100
-                        height: 300
-                        lower_bound: 0
-                        lower_bound_secondary: 0
-                        upper_bound_secondary: 50
-                        upper_bound: 200
-                        animate: true
-                        name: Last 5 Days
-                        show:
-                          icon: false
-                          state: false
-                          legend: true
-                          fill: fade
-                          labels: true
-                          labels_secondary: true
-                          average: true
-                          extrema: true
-                        card_mod:
-                          style: |
-                            ha-card {
-                              background-color: var(--ha-card-background) !important;
-                            }
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
-            card_type: separator
-            icon: mdi:star
-            styles: |
-              ha-card { 
-                  color: var(--primary-text-color) !important;
-              }
-              .separator-container div:last-child {
-                  background-color: var(--divider-color) !important;
-              }
-              h4 {
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Links
-          - type: entities
-            entities:
-              - type: weblink
-                name: Settings
-                url: http://homeassistant:8123/config/dashboard
-              - type: weblink
-                name: Glances
-                url: http://homeassistant:8123/a0d7b954_glances
-              - type: weblink
-                name: HACS
-                url: http://homeassistant:8123/hacs/entry
-            card_mod:
-              style: |
-                ha-card {
-                    background-color: var(--ha-card-background) !important; 
-                }
   - title: Save
     path: save
     icon: mdi:content-save
@@ -6406,7 +6006,7 @@ views:
                 height: 5px!important;
               }
           - type: custom:mealie-mealplan-card
-            config_entry_id: xxx
+            config_entry_id: 01M2BNMKTSQJRGJDNBT00PFPGF
             day_offset: 0
             layout: vertical
             recipes_layout: vertical
@@ -6468,7 +6068,7 @@ views:
                 height: 5px!important;
               }
           - type: custom:mealie-mealplan-card
-            config_entry_id: xxx
+            config_entry_id: 01M2BNMKTSQJRGJDNBT00PFPGF
             day_offset: 1
             layout: vertical
             recipes_layout: horizontal
@@ -6684,7 +6284,7 @@ views:
           }
         cards:
           - type: custom:mealie-recipe-card
-            config_entry_id: 'xxx'
+            config_entry_id: 01M2BNMKTSQJRGJDNBT00PFPGF
             result_limit: 60
             show_image: true
             show_rating: true
@@ -6706,3 +6306,562 @@ views:
                 .recipe-link {
                   text-transform: none !important;
                 }
+  - title: Settings
+    path: settings
+    icon: mdi:cog-outline
+    type: custom:grid-layout
+    badges: []
+    layout:
+      grid-template-columns: 32% 36% 32%
+      grid-template-rows: auto
+      grid-template-areas: |
+        "attention  internet  house"
+        "attention  internet  links"
+        "attention  internet    system"
+      mediaquery:
+        '(max-width: 1200px)':
+          grid-template-columns: 100%
+          grid-template-rows: auto auto auto auto auto
+          grid-template-areas: |
+            "house"
+            "attention"
+            "internet"
+            "system"
+            "links"
+    cards:
+      - type: vertical-stack
+        view_layout:
+          grid-area: house
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:home-account
+            name: House
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                background-color: var(--divider-color) !important;
+              }
+              ha-card div div div:nth-child(2) {
+                height: 5px!important;
+              }
+          - type: custom:mushroom-select-card
+            entity: input_select.house_mode
+            secondary_info: none
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: input_boolean.guests_present
+                name: Guests Present
+            card_mod:
+              style: |
+                ha-card {
+                  background-color: var(--ha-card-background) !important;
+                }
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:battery-alert-variant-outline
+            name: Needs Attention
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                background-color: var(--divider-color) !important;
+              }
+              ha-card div div div:nth-child(2) {
+                height: 5px!important;
+              }
+          - type: custom:mushroom-legacy-template-card
+            entity: sensor.hue_motion_sensor_1_battery
+            icon: mdi:battery-heart-variant
+            layout: horizontal
+            tap_action:
+              action: navigate
+              navigation_path: '#batteries'
+            primary: |
+              {% set ns = namespace(n=0) %}
+              {% for s in states.sensor
+                   | selectattr('attributes.device_class','defined')
+                   | selectattr('attributes.device_class','eq','battery')
+                   | rejectattr('entity_id','search','phone|macbook|internal_battery|ha_tablet|dusty_jr|cleanopatra') %}
+                {% if s.state | float(101) < 20 %}{% set ns.n = ns.n + 1 %}{% endif %}
+              {% endfor %}
+              {% set ns.n = ns.n + (states.binary_sensor
+                   | selectattr('attributes.device_class','defined')
+                   | selectattr('attributes.device_class','eq','battery')
+                   | selectattr('state','eq','on') | list | count) %}
+              {{ 'All batteries OK' if ns.n == 0
+                 else ns.n ~ (' device needs' if ns.n == 1 else ' devices need') ~ ' a new cell' }}
+            secondary: Tap for the full list
+          - type: custom:auto-entities
+            show_empty: false
+            card:
+              type: entities
+              show_header_toggle: false
+              card_mod:
+                style: |
+                  ha-card {
+                    background-color: var(--ha-card-background) !important;
+                  }
+            filter:
+              include:
+                - domain: sensor
+                  attributes:
+                    device_class: battery
+                  state: < 20
+                - domain: binary_sensor
+                  attributes:
+                    device_class: battery
+                  state: 'on'
+              exclude:
+                - entity_id: '*phone*'
+                - entity_id: '*internal_battery*'
+                - entity_id: '*ha_tablet*'
+                - entity_id: sensor.dusty_jr_battery
+                - entity_id: sensor.cleanopatra_battery
+            sort:
+              method: state
+              numeric: true
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:package-up
+            name: Updates
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                background-color: var(--divider-color) !important;
+              }
+              ha-card div div div:nth-child(2) {
+                height: 5px!important;
+              }
+          - type: custom:mushroom-legacy-template-card
+            icon: mdi:package-variant-closed-check
+            layout: horizontal
+            tap_action:
+              action: none
+            primary: >
+              {% set n = states.update | selectattr('state', 'eq', 'on') | list
+              | count %}
+
+              {{ 'Everything up to date' if n == 0
+                 else n ~ ' update' ~ ('' if n == 1 else 's') ~ ' available' }}
+            secondary: |
+              {{ states.update | list | count }} components tracked
+          - type: custom:auto-entities
+            show_empty: false
+            card:
+              type: entities
+              show_header_toggle: false
+              card_mod:
+                style: |
+                  ha-card {
+                    background-color: var(--ha-card-background) !important;
+                  }
+            filter:
+              include:
+                - domain: update
+                  state: 'on'
+            sort:
+              method: friendly_name
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:battery-off-outline
+            name: Not Reporting
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                background-color: var(--divider-color) !important;
+              }
+              ha-card div div div:nth-child(2) {
+                height: 5px!important;
+              }
+          - type: markdown
+            content: |
+              {% set dead = states.sensor
+                   | selectattr('attributes.device_class', 'defined')
+                   | selectattr('attributes.device_class', 'eq', 'battery')
+                   | selectattr('state', 'eq', 'unavailable')
+                   | rejectattr('entity_id', 'search', 'phone|internal_battery|ha_tablet')
+                   | list %}
+              {% if dead | count == 0 %}
+              Everything reporting.
+              {% else %}
+              {% for s in dead | sort(attribute='name') %}
+              **{{ s.name | replace(' Battery', '') | replace(' battery', '')
+                          | replace(' Level', '') | replace(' level', '') | trim }}**
+              &nbsp;· out {{ relative_time(s.last_changed) }}
+              {% endfor %}
+              {% endif %}
+            card_mod:
+              style: |
+                ha-card {
+                  background-color: var(--ha-card-background) !important;
+                }
+                ha-markdown {
+                  padding: 12px 16px !important;
+                  line-height: 1.5;
+                }
+        view_layout:
+          grid-area: attention
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:server-outline
+            name: System
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                background-color: var(--divider-color) !important;
+              }
+              ha-card div div div:nth-child(2) {
+                height: 5px!important;
+              }
+          - type: custom:mushroom-legacy-template-card
+            entity: sensor.backup_last_successful_automatic_backup
+            icon: mdi:cloud-check-variant-outline
+            layout: horizontal
+            primary: >
+              {% set att =
+              states('sensor.backup_last_attempted_automatic_backup') %}
+
+              {% set ok  =
+              states('sensor.backup_last_successful_automatic_backup') %}
+
+              {% if att in ['unknown','unavailable'] or ok in
+              ['unknown','unavailable'] %}
+                Backup state unknown
+              {% elif as_datetime(att) > as_datetime(ok) %}
+                Backup FAILED — last good {{ relative_time(as_datetime(ok)) }} ago
+              {% else %}
+                Backed up {{ relative_time(as_datetime(ok)) }} ago
+              {% endif %}
+            secondary: >
+              {% set nxt =
+              states('sensor.backup_next_scheduled_automatic_backup') %}
+
+              {% if nxt not in ['unknown','unavailable'] %}
+                Next {{ as_timestamp(nxt) | timestamp_custom('%a %-I:%M %p') }}
+              {% endif %}
+            icon_color: >
+              {% set att =
+              states('sensor.backup_last_attempted_automatic_backup') %}
+
+              {% set ok  =
+              states('sensor.backup_last_successful_automatic_backup') %}
+
+              {% if att not in ['unknown','unavailable'] and ok not in
+              ['unknown','unavailable']
+                    and as_datetime(att) > as_datetime(ok) %}red{% else %}green{% endif %}
+          - type: tile
+            entity: sensor.kitchen_tablet_memory_free
+            name: Kitchen tablet free memory
+            icon: mdi:tablet-dashboard
+            vertical: false
+            features:
+              - type: bar-gauge
+                min: 0
+                max: 100
+              - type: trend-graph
+                hours_to_show: 48
+                detail: false
+            features_position: bottom
+            card_mod:
+              style: |
+                ha-card {
+                  --tile-color:
+                    {% set p = states('sensor.kitchen_tablet_memory_free') | float(100) %}
+                    {% if p < 15 %}#9E4034{% elif p < 25 %}#C08A2E{% else %}#5F7A5C{% endif %};
+                }
+          - type: tile
+            entity: sensor.mudroom_tablet_memory_free
+            name: Mudroom tablet free memory
+            icon: mdi:tablet-dashboard
+            vertical: false
+            features:
+              - type: bar-gauge
+                min: 0
+                max: 100
+              - type: trend-graph
+                hours_to_show: 48
+                detail: false
+            features_position: bottom
+            card_mod:
+              style: |
+                ha-card {
+                  --tile-color:
+                    {% set p = states('sensor.mudroom_tablet_memory_free') | float(100) %}
+                    {% if p < 15 %}#9E4034{% elif p < 25 %}#C08A2E{% else %}#5F7A5C{% endif %};
+                }
+        view_layout:
+          grid-area: system
+      - type: vertical-stack
+        view_layout:
+          grid-area: links
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:link-variant
+            name: Links
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                background-color: var(--divider-color) !important;
+              }
+              ha-card div div div:nth-child(2) {
+                height: 5px!important;
+              }
+          - type: entities
+            entities:
+              - type: weblink
+                name: Home Assistant Settings
+                icon: mdi:cog-outline
+                url: /config/dashboard?disable_km
+              - type: weblink
+                name: Glances
+                icon: mdi:chart-box-outline
+                url: /a0d7b954_glances?disable_km
+              - type: weblink
+                name: HACS
+                icon: mdi:package-variant
+                url: /hacs/entry?disable_km
+              - type: weblink
+                name: Grafana
+                icon: mdi:chart-areaspline
+                url: https://metrics.cmaisaac.com
+            card_mod:
+              style: |
+                ha-card {
+                  background-color: var(--ha-card-background) !important;
+                }
+                a {
+                  color: var(--primary-color) !important;
+                  text-decoration: none !important;
+                }
+                ha-icon {
+                  color: var(--primary-color) !important;
+                }
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: '#batteries'
+        name: All Batteries
+        icon: mdi:battery-50
+        hide_backdrop: true
+        is_sidebar_hidden: false
+        margin_top_mobile: 0px
+        margin: 0px
+        back_open: true
+        margin_top_desktop: -44px
+        auto_close: '180000'
+        bg_opacity: 85
+        bg_blur: 100
+        styles: |
+          bubble-card::after {
+            display: none !important;
+          }
+        cards:
+          - type: custom:auto-entities
+            card:
+              type: entities
+              show_header_toggle: false
+            filter:
+              include:
+                - domain: sensor
+                  attributes:
+                    device_class: battery
+                - domain: binary_sensor
+                  attributes:
+                    device_class: battery
+            sort:
+              method: state
+              numeric: true
+              ignore_case: true
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:router-network
+            name: Internet
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                background-color: var(--divider-color) !important;
+              }
+              ha-card div div div:nth-child(2) {
+                height: 5px!important;
+              }
+          - type: tile
+            entity: sensor.speedtest_download
+            name: Download
+            icon: mdi:download-network-outline
+            features_position: bottom
+            features:
+              - type: bar-gauge
+                min: 0
+                max: 2200
+            card_mod:
+              style: |
+                ha-card {
+                  --tile-color:
+                    {% set v = states('sensor.speedtest_download') | float(0) %}
+                    {% if v < 50 %}#9E4034{% elif v < 80 %}#C08A2E{% else %}#5F7A5C{% endif %};
+                }
+          - type: tile
+            entity: sensor.speedtest_upload
+            name: Upload
+            icon: mdi:upload-network-outline
+            features_position: bottom
+            features:
+              - type: bar-gauge
+                min: 0
+                max: 110
+            card_mod:
+              style: |
+                ha-card {
+                  --tile-color:
+                    {% set v = states('sensor.speedtest_upload') | float(0) %}
+                    {% if v < 12 %}#9E4034{% elif v < 20 %}#C08A2E{% else %}#5F7A5C{% endif %};
+                }
+          - type: tile
+            entity: sensor.speedtest_ping
+            name: Ping
+            icon: mdi:swap-horizontal
+            features_position: bottom
+            features:
+              - type: trend-graph
+                hours_to_show: 24
+                detail: false
+            card_mod:
+              style: |
+                ha-card {
+                  --tile-color:
+                    {% set v = states('sensor.speedtest_ping') | float(0) %}
+                    {% if v > 90 %}#9E4034{% elif v > 60 %}#C08A2E{% else %}#5F7A5C{% endif %};
+                }
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: sensor.be65pro_download_speed
+                name: Down now
+              - entity: sensor.be65pro_upload_speed
+                name: Up now
+            card_mod:
+              style: |
+                ha-card {
+                  background-color: var(--ha-card-background) !important;
+                }
+          - type: tile
+            entity: sensor.speedtest_download
+            name: Run speed test
+            icon: mdi:speedometer
+            hide_state: true
+            vertical: false
+            tap_action:
+              action: perform-action
+              perform_action: homeassistant.update_entity
+              target:
+                entity_id: sensor.speedtest_download
+            card_mod:
+              style: |
+                ha-card {
+                  --tile-color: #7E6029;
+                }
+          - type: tile
+            entity: sensor.speedtest_download
+            name: Speed history
+            icon: mdi:chart-line
+            hide_state: true
+            tap_action:
+              action: navigate
+              navigation_path: '#internet'
+        view_layout:
+          grid-area: internet
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: '#internet'
+        name: Speed history
+        icon: mdi:chart-line
+        hide_backdrop: true
+        is_sidebar_hidden: false
+        margin_top_mobile: 0px
+        margin: 0px
+        back_open: true
+        margin_top_desktop: -44px
+        width_desktop: 1000px
+        auto_close: '180000'
+        bg_opacity: 85
+        bg_blur: 100
+        styles: |
+          bubble-card::after {
+            display: none !important;
+          }
+        cards:
+          - type: custom:apexcharts-card
+            graph_span: 24h
+            header:
+              show: true
+              title: Last 24 hours
+              show_states: true
+              colorize_states: true
+            series:
+              - entity: sensor.speedtest_download
+                name: Download
+                color: '#1F3A5C'
+                stroke_width: 2
+              - entity: sensor.speedtest_upload
+                name: Upload
+                color: '#A8813C'
+                stroke_width: 2
+          - type: custom:apexcharts-card
+            graph_span: 5d
+            span:
+              end: day
+            header:
+              show: true
+              title: Last 5 days
+              show_states: false
+            series:
+              - entity: sensor.speedtest_download
+                name: Download
+                color: '#1F3A5C'
+                type: area
+                opacity: 0.15
+                stroke_width: 2
+                group_by:
+                  func: avg
+                  duration: 6h
+              - entity: sensor.speedtest_upload
+                name: Upload
+                color: '#A8813C'
+                type: area
+                opacity: 0.15
+                stroke_width: 2
+                group_by:
+                  func: avg
+                  duration: 6h
+          - type: custom:apexcharts-card
+            graph_span: 24h
+            header:
+              show: true
+              title: Ping
+              show_states: true
+            series:
+              - entity: sensor.speedtest_ping
+                name: Ping
+                color: '#5A646B'
+                stroke_width: 2
