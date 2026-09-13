@@ -1,302 +1,749 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Mobile — Home Assistant theme
+#
+# The phone dashboard. Same palette and rules as white_dove; the surfaces are
+# the desktop ones rather than the tablets' dimmed ones, because a phone is a
+# held object in an already-lit room, not a lightbox on a wall.
+#
+# What is new here: room tints. Every room card on the mobile dashboard is
+# painted with that room's own wall colour, at a value shared by all of them.
+# The tokens are named per mode, so one card_mod rule in the dashboard covers
+# light and dark — see the room block in each mode, and the card_mod snippet
+# in the notes at the bottom of this file.
+#
+# Install
+#   1. /config/themes/mobile.yaml
+#   2. configuration.yaml already has:
+#        frontend:
+#          themes: !include_dir_merge_named themes
+#   3. Developer Tools → Actions → frontend.reload_themes
+#   4. On the phone: Profile → Theme → Mobile, Mode → Auto
+#
+# Fonts are loaded globally by /local/fonts.js — nothing extra to do here.
+#
+# NOTE: the room tints are not yet in the style guide, so the mechanical hex
+# audit in HANDOVER §6 will report them until §9 is written.
+# ─────────────────────────────────────────────────────────────────────────────
+
 mobile:
-  
-  # Fonts
-  primary-font-family: 'Raleway,Roboto,Noto,sans-serif'
-  paper-font-common-base_-_font-family: "var(--primary-font-family)"
-  paper-font-common-code_-_font-family: "var(--primary-font-family)"
-  paper-font-body1_-_font-family: "var(--primary-font-family)"
-  paper-font-subhead_-_font-family: "var(--primary-font-family)"
-  paper-font-headline_-_font-family: "var(--primary-font-family)"
-  paper-font-caption_-_font-family: "var(--primary-font-family)"
-  paper-font-title_-_font-family: "var(--primary-font-family)"
-  ha-card-header-font-family: "var(--primary-font-family)"
 
-  # Text
-  text-color: '#ffffff' 
-  primary-text-color: 'var(--text-color)'
-  text-primary-color: 'var(--text-color)'
-  secondary-text-color: "#BAC0C6"
-  text-medium-light-color: '#A0A2A8'
-  text-medium-color: '#80828A'
-  disabled-text-color: '#626569'
-  primary-color: 'var(--accent-color)'
-  text-light-primary-color: 'var(--text-color)'
+  # ══ Typography ══════════════════════════════════════════════════════════
+  # One family carries the whole interface; weight does the work that a second
+  # typeface usually does. Mono is for numbers that update in place and code.
+  ha-font-family-body: "'Libre Franklin', system-ui, -apple-system, 'Segoe UI', sans-serif"
+  ha-font-family-heading: "'Libre Franklin', system-ui, -apple-system, 'Segoe UI', sans-serif"
+  ha-font-family-longform: "'Libre Franklin', system-ui, sans-serif"
+  ha-font-family-code: "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace"
+  ha-font-smoothing: "antialiased"
 
-  # Text Fields an Dropdown
-  mdc-text-field-fill-color: '#2e3b53'
-  mdc-text-field-ink-color: 'var(--text-color)'
-  mdc-select-fill-color: '#2e3b53'
-  mdc-text-field-label-ink-color: 'var(--secondary-text-color)'
-  input-fill-color: 'var(--background-color)'
-  input-ink-color: 'var(--text-color)'
-  input-label-ink-color: 'var(--text-color)'
-  input-disabled-fill-color: 'var(--background-color)'
-  input-disabled-ink-color: 'var(--disabled-text-color)'
-  input-disabled-label-ink-color: 'var(--disabled-text-color)'
-  input-idle-line-color: 'var(--background-color)'
-  input-dropdown-icon-color: 'var(--secondary-text-color)'
-  input-hover-line-color: 'var(--primary-color)'
-  code-editor-background-color: '#222c40'
-  codemirror-property: 'var(--accent-color)'
-  
-  # Main Colors
-  app-header-background-color: '#242e42'
-  header-height: 48px
-  accent-color: '#1A89F5'
-  accent-medium-color: 'var(--accent-color)'
+  ha-font-size-2xs: "10px"
+  ha-font-size-xs: "12px"
+  ha-font-size-s: "14px"
+  ha-font-size-m: "16px"
+  ha-font-size-l: "18px"
+  ha-font-size-xl: "20px"
+  ha-font-size-2xl: "24px"
+  ha-font-size-3xl: "28px"
+  ha-font-size-4xl: "34px"
 
-  # Background
-  background-color: '#1c1c1c'
-  primary-background-color: 'var(--background-color)'
-  background-color-2: '#282828' 
-  secondary-background-color: '#282828'
-  markdown-code-background-color: 'var(--background-color)'
-  
-  # Card
-  card-background-color: 'var(--ha-card-background)'
-  ha-card-background: 'rgba(43,55,78,1)' #'linear-gradient(145deg, #273246, #2e3b53)'
-  ha-card-box-shadow: "3px 3px 13px -6px rgba(17,35,52,1)"
-  ha-card-border-radius: "5px"
-  border-radius: "5px"
-  ha-card-border-color: 'rgba(0,0,0,0)'
-  ha-card-border-width: '0'
+  ha-font-weight-light: "400"      # 300 disappears at phone sizes — pinned to 400
+  ha-font-weight-normal: "400"
+  ha-font-weight-medium: "500"
+  ha-font-weight-bold: "600"
+  ha-font-weight-body: "400"
+  ha-font-weight-heading: "600"
+  ha-font-weight-action: "500"
 
-  # Dialog
-  ha-dialog-border-radius: "5px"
+  ha-card-header-font-family: "var(--ha-font-family-heading)"
+  ha-card-header-font-size: "20px"
 
-  # Icons
-  paper-item-icon-color: '#EBEBEB'
-  paper-item-icon-active-color: 'var(--accent-color)'
+  # Legacy aliases. Removed from core in 2025.5; some custom cards still read them.
+  primary-font-family: "var(--ha-font-family-body)"
+  code-font-family: "var(--ha-font-family-code)"
 
-  # RGB States
-  rgb-state-default-color: '26, 137, 245'
-  rgb-accent-color: 'var(--rgb-state-default-color)'
-  # rgb-state-light-color: 'var(--rgb-state-default-color)'
-  # rgb-state-switch-color: 'var(--rgb-state-default-color)'
-  # rgb-state-automation-color: 'var(--rgb-state-default-color)'
-  # rgb-state-binary-sensor-color: 'var(--rgb-state-default-color)'
-  # rgb-state-cover-color: 'var(--rgb-state-default-color)'
-  # rgb-state-fan-color: 'var(--rgb-state-default-color)'
-  # rgb-state-group-color: 'var(--rgb-state-default-color)'
-  # rgb-state-humidifier-color: 'var(--rgb-state-default-color)'
-  # rgb-state-input-boolean-color: 'var(--rgb-state-default-color)'
-  # rgb-state-media-player-color: 'var(--rgb-state-default-color)'
-  # rgb-state-remote-color: 'var(--rgb-state-default-color)'
-  # rgb-state-script-color: 'var(--rgb-state-default-color)'
-  # rgb-state-timer-color: 'var(--rgb-state-default-color)'
-  # rgb-state-vacuum-color: 'var(--rgb-state-default-color)'
-  # rgb-state-alarm-armed-color: var(--rgb-red-color)
-  # rgb-state-alarm-arming-color: var(--rgb-orange-color)
-  # rgb-state-alarm-disarmed-color: var(--rgb-grey-color)
-  # rgb-state-alarm-pending-color: var(--rgb-orange-color)
-  # rgb-state-alarm-triggered-color: var(--rgb-red-color)
-  # rgb-state-alert-color: var(--rgb-red-color)
-  # rgb-state-binary-sensor-alerting-color: var(--rgb-red-color)
-  # rgb-state-calendar-color: var(--rgb-blue-color)
-  # rgb-state-camera-color: var(--rgb-blue-color)
-  # rgb-state-climate-auto-color: var(--rgb-green-color)
-  # rgb-state-climate-cool-color: var(--rgb-blue-color)
-  # rgb-state-climate-dry-color: var(--rgb-orange-color)
-  # rgb-state-climate-fan-only-color: var(--rgb-cyan-color)
-  # rgb-state-climate-heat-color: var(--rgb-deep-orange-color)
-  # rgb-state-climate-heat-cool-color: var(--rgb-amber-color)
-  # rgb-state-climate-idle-color: var(--rgb-disabled-color)
-  # rgb-state-lock-jammed-color: var(--rgb-red-color)
-  # rgb-state-lock-locked-color: var(--rgb-red-color)
-  # rgb-state-lock-pending-color: var(--rgb-orange-color)
-  # rgb-state-lock-unlocked-color: var(--rgb-red-color)
-  # rgb-state-person-home-color: var(--rgb-green-color)
-  # rgb-state-person-zone-color: var(--rgb-blue-color)
-  # rgb-state-person-not-home-color: var(--rgb-grey-color)
-  # rgb-state-sensor-battery-high-color: var(--rgb-green-color)
-  # rgb-state-sensor-battery-low-color: var(--rgb-red-color)
-  # rgb-state-sensor-battery-medium-color: var(--rgb-orange-color)
-  # rgb-state-sensor-battery-unknown-color: var(--rgb-disabled-color)
-  # rgb-state-siren-color: var(--rgb-red-color)
-  # rgb-state-sun-day-color: var(--rgb-amber-color)
-  # rgb-state-sun-night-color: var(--rgb-deep-purple-color)
-  # rgb-state-update-color: var(--rgb-green-color)
-  # rgb-state-update-installing-color: var(--rgb-orange-color)
-  # rgb-state-light-color: 'var(--rgb-state-default-color)'
-  # rgb-state-switch-color: 'var(--rgb-state-default-color)'
-  # rgb-state-automation-color: 'var(--rgb-state-default-color)'
-  # rgb-state-binary-sensor-color: 'var(--rgb-state-default-color)'
-  # rgb-state-cover-color: 'var(--rgb-state-default-color)'
-  # rgb-state-fan-color: 'var(--rgb-state-default-color)'
-  # rgb-state-group-color: 'var(--rgb-state-default-color)'
-  # rgb-state-humidifier-color: 'var(--rgb-state-default-color)'
-  # rgb-state-input-boolean-color: 'var(--rgb-state-default-color)'
-  # rgb-state-media-player-color: 'var(--rgb-state-default-color)'
-  # rgb-state-remote-color: 'var(--rgb-state-default-color)'
-  # rgb-state-script-color: 'var(--rgb-state-default-color)'
-  # rgb-state-timer-color: 'var(--rgb-state-default-color)'
-  # rgb-state-vacuum-color: 'var(--rgb-state-default-color)'
-  # error-color: #db4437
-  # warning-color: #ffa600
-  # success-color: #43a047
-  # info-color: #039be5
+  # ══ Geometry ════════════════════════════════════════════════════════════
+  # Guide rule: 12px on cards, 6–8px on controls, nothing squared, nothing
+  # pill-shaped except tags. Hairline borders instead of shadows.
+  ha-card-border-radius: "12px"
+  ha-card-border-width: "1px"
+  ha-card-box-shadow: "none"
+  border-radius: "8px"
+  ha-dialog-border-radius: "12px"
+  popup-border-radius: "12px"
+  ha-badge-border-radius: "18px"
+  header-height: "56px"
+  ha-view-sections-column-gap: "12px"
+  ha-view-sections-row-gap: "12px"
 
-  # State Colors
-  state-active-color: '#1A89F5'
-  state-red-color: '#FC937E'
-  state-green-color: '#00CA8B'
-  state-orange-color: '#F7D88B'
-  state-alarm_control_panel-armed_away-color: 'var(--state-green-color)'
-  state-alarm_control_panel-armed_custom_bypass-color: 'var(--state-green-color)'
-  state-alarm_control_panel-armed_home-color: 'var(--state-green-color)'
-  state-alarm_control_panel-armed_night-color: 'var(--state-green-color)'
-  state-alarm_control_panel-armed_vacation-color: 'var(--state-green-color)'
-  state-alarm_control_panel-arming-color: 'var(--state-orange-color)'
-  state-alarm_control_panel-disarming-color: 'var(--state-orange-color)'
-  state-alarm_control_panel-pending-color: 'var(--state-orange-color)'
-  state-alarm_control_panel-triggered-color: 'var(--state-red-color)'
-  state-alert-off-color: var(--paper-item-icon-color)
-  state-alert-on-color: 'var(--state-red-color)'
-  state-automation-active-color: 'var(--accent-color)'
-  state-binary_sensor-active-color: 'var(--accent-color)'
-  state-binary_sensor-battery-on-color: 'var(--state-red-color)'
-  state-binary_sensor-carbon_monoxide-on-color: 'var(--state-red-color)'
-  state-binary_sensor-gas-on-color: 'var(--state-red-color)'
-  state-binary_sensor-heat-on-color: 'var(--state-red-color)'
-  state-binary_sensor-lock-on-color: 'var(--state-red-color)'
-  state-binary_sensor-moisture-on-color: 'var(--state-red-color)'
-  state-binary_sensor-problem-on-color: var(--state-red-color)
-  state-binary_sensor-safety-on-color: 'var(--state-red-color)'
-  state-binary_sensor-smoke-on-color: 'var(--state-red-color)'
-  state-binary_sensor-sound-on-color: 'var(--state-red-color)'
-  state-binary_sensor-tamper-on-color: 'var(--state-red-color)'
-  state-climate-auto-color: 'var(--accent-color)'
-  state-climate-cool-color: 'var(--accent-color)'
-  state-climate-dry-color: 'var(--accent-color)'
-  state-climate-fan_only-color: 'var(--accent-color)'
-  state-climate-heat-color: 'var(--state-orange-color)'
-  state-climate-heat-cool-color: 'var(--accent-color)'
-  state-cover-active-color: 'var(--accent-color)'
-  state-device_tracker-active-color: 'var(--accent-color)'
-  state-device_tracker-home-color: 'var(--accent-color)'
-  state-fan-active-color: 'var(--accent-color)'
-  state-group-active-color: 'var(--accent-color)'
-  state-humidifier-active-color: 'var(--accent-color)'
-  state-input_boolean-active-color: 'var(--accent-color)'
-  state-light-active-color: 'var(--accent-color)'
-  state-lock-jammed-color: 'var(--state-red-color)'
-  state-lock-locked-color: 'var(--accent-color)'
-  state-lock-pending-color: 'var(--state-orange-color)'
-  state-lock-unlocked-color: var(--paper-item-icon-color)
-  state-media_player-active-color: 'var(--accent-color)'
-  state-person-active-color: 'var(--accent-color)'
-  state-person-home-color: 'var(--accent-color)'
-  state-plant-active-color: 'var(--state-red-color)'
-  state-siren-active-color: 'var(--state-red-color)'
-  state-sun-above_horizon-color: 'var(--amber-color)'
-  state-sun-below_horizon-color: 'var(--indigo-color)'
-  state-switch-active-color: 'var(--accent-color)'
-  state-update-active-color: 'var(--accent-color)'
-  state-vacuum-active-color: 'var(--accent-color)'
-  state-sensor-battery-high-color: 'var(--accent-color)'
-  state-sensor-battery-low-color: 'var(--state-red-color)'
-  state-sensor-battery-medium-color: 'var(--state-orange-color)'
+  # ══ Mushroom geometry ═══════════════════════════════════════════════════
+  mush-spacing: "10px"
+  mush-title-padding: "24px 12px 8px"
+  mush-title-spacing: "8px"
+  mush-title-font-size: "22px"
+  mush-title-font-weight: "600"
+  mush-title-line-height: "28px"
+  mush-title-letter-spacing: "0px"
+  mush-title-color: "var(--primary-text-color)"
+  mush-subtitle-font-size: "14px"
+  mush-subtitle-font-weight: "400"
+  mush-subtitle-line-height: "20px"
+  mush-subtitle-color: "var(--secondary-text-color)"
+  mush-subtitle-letter-spacing: "0px"
+  mush-card-primary-font-size: "14px"
+  mush-card-secondary-font-size: "12px"
+  mush-card-primary-font-weight: "500"
+  mush-card-secondary-font-weight: "400"
+  mush-card-primary-line-height: "20px"
+  mush-card-secondary-line-height: "16px"
+  mush-card-primary-color: "var(--primary-text-color)"
+  mush-card-secondary-color: "var(--secondary-text-color)"
+  mush-card-primary-letter-spacing: "0.01em"
+  mush-card-secondary-letter-spacing: "0.02em"
+  mush-chip-spacing: "8px"
+  mush-chip-padding: "0 0.25em"
+  mush-chip-height: "36px"
+  mush-chip-border-radius: "8px"          # tags are the only pill; chips are controls
+  mush-chip-border-width: "var(--ha-card-border-width, 1px)"
+  mush-chip-border-color: "var(--ha-card-border-color, var(--divider-color))"
+  mush-chip-box-shadow: "none"
+  mush-chip-font-size: "0.3em"
+  mush-chip-font-weight: "500"
+  mush-chip-icon-size: "0.5em"
+  mush-chip-background: "var(--ha-card-background)"
+  mush-control-border-radius: "8px"
+  mush-control-height: "42px"
+  mush-control-button-ratio: "1"
+  mush-control-icon-size: "0.5em"
+  mush-control-spacing: "12px"
+  mush-slider-threshold: "10"
+  mush-badge-size: "16px"
+  mush-badge-icon-size: "0.75em"
+  mush-badge-border-radius: "50%"
+  mush-icon-border-radius: "50%"
+  mush-icon-size: "36px"
+  mush-icon-symbol-size: "0.6em"
 
-  # Sidebar
-  sidebar-background-color: 'var(--background-color)'
-  sidebar-icon-color: '#98a7b9'
-  sidebar-selected-icon-color: 'var(--accent-color)'
-  sidebar-selected-text-color: 'var(--text-color)'
-  paper-listbox-background-color: 'var(--sidebar-background-color)'
-  divider-color: 'var(--background-color)'
-  light-primary-color: 'var(--ha-card-background)'
+  # Mushroom colour aliases → the house ramp defined per mode below.
+  mush-rgb-red: "var(--rgb-red-color)"
+  mush-rgb-pink: "var(--rgb-pink-color)"
+  mush-rgb-purple: "var(--rgb-purple-color)"
+  mush-rgb-deep-purple: "var(--rgb-deep-purple-color)"
+  mush-rgb-indigo: "var(--rgb-indigo-color)"
+  mush-rgb-blue: "var(--rgb-blue-color)"
+  mush-rgb-light-blue: "var(--rgb-light-blue-color)"
+  mush-rgb-cyan: "var(--rgb-cyan-color)"
+  mush-rgb-teal: "var(--rgb-teal-color)"
+  mush-rgb-green: "var(--rgb-green-color)"
+  mush-rgb-light-green: "var(--rgb-light-green-color)"
+  mush-rgb-lime: "var(--rgb-lime-color)"
+  mush-rgb-yellow: "var(--rgb-yellow-color)"
+  mush-rgb-amber: "var(--rgb-amber-color)"
+  mush-rgb-orange: "var(--rgb-orange-color)"
+  mush-rgb-deep-orange: "var(--rgb-deep-orange-color)"
+  mush-rgb-brown: "var(--rgb-brown-color)"
+  mush-rgb-light-grey: "var(--rgb-light-grey-color)"
+  mush-rgb-grey: "var(--rgb-grey-color)"
+  mush-rgb-dark-grey: "var(--rgb-dark-grey-color)"
+  mush-rgb-blue-grey: "var(--rgb-blue-grey-color)"
+  mush-rgb-black: "var(--rgb-black-color)"
+  mush-rgb-white: "var(--rgb-white-color)"
+  mush-rgb-disabled: "var(--rgb-disabled-color)"
+  mush-rgb-info: "var(--rgb-light-blue-color)"
+  mush-rgb-success: "var(--rgb-green-color)"
+  mush-rgb-warning: "var(--rgb-amber-color)"
+  mush-rgb-danger: "var(--rgb-red-color)"
+  mush-rgb-state-entity: "var(--rgb-blue-color)"
+  mush-rgb-state-light: "var(--rgb-amber-color)"      # lights are the brass signal
+  mush-rgb-state-switch: "var(--rgb-blue-color)"
+  mush-rgb-state-fan: "var(--rgb-cyan-color)"
+  mush-rgb-state-alarm-disarmed: "var(--rgb-grey-color)"
+  mush-rgb-state-alarm-armed: "var(--rgb-green-color)"
+  mush-rgb-state-alarm-triggered: "var(--rgb-red-color)"
+  mush-rgb-state-person-home: "var(--rgb-green-color)"
+  mush-rgb-state-person-not-home: "var(--rgb-grey-color)"
+  mush-rgb-state-person-zone: "var(--rgb-light-blue-color)"
+  mush-rgb-state-person-unknown: "var(--rgb-disabled-color)"
+  mush-rgb-state-cover-open: "var(--rgb-blue-color)"
+  mush-rgb-state-cover-closed: "var(--rgb-disabled-color)"
+  mush-rgb-state-climate-auto: "var(--rgb-green-color)"
+  mush-rgb-state-climate-cool: "var(--rgb-light-blue-color)"
+  mush-rgb-state-climate-dry: "var(--rgb-orange-color)"
+  mush-rgb-state-climate-fan-only: "var(--rgb-blue-grey-color)"
+  mush-rgb-state-climate-heat: "var(--rgb-deep-orange-color)"
+  mush-rgb-state-climate-heat-cool: "var(--rgb-green-color)"
+  mush-rgb-state-climate-idle: "var(--rgb-grey-color)"
+  mush-rgb-state-climate-off: "var(--rgb-disabled-color)"
 
-  # Sliders
-  paper-slider-knob-color: 'var(--accent-color)'
-  paper-slider-pin-color: 'var(--background-color-2)'
-  paper-slider-active-color: 'var(--accent-color)'
-  paper-slider-container-color: 'var(--background-color-2)'
+  # ══ Bubble Card ═════════════════════════════════════════════════════════
+  # Bubble Card draws its own accents rather than reading HA state colours, so
+  # they have to be named here. Navy fills, brass points: a filled button is a
+  # surface and takes navy; icons stay brass. Unknown names are inert, so this
+  # list is safe across Bubble Card versions.
+  bubble-accent-color: "var(--bubble-house-accent)"
+  bubble-light-color: "var(--bubble-house-accent)"
+  bubble-button-accent-color: "var(--bubble-house-accent)"
+  bubble-icon-background-color: "var(--ha-card-background)"
+  # Ink on navy is 1.2:1 — unreadable. Anything on a Bubble fill takes the
+  # light label, matching text-primary-color on any other filled control.
+  bubble-button-text-color: "var(--primary-text-color)"
+  bubble-name-color: "var(--primary-text-color)"
+  bubble-state-color: "var(--secondary-text-color)"
+  bubble-border-radius: "12px"
+  bubble-select-border-radius: "8px"
+  bubble-select-list-border-radius: "8px"
+  bubble-select-button-border-radius: "8px"
 
-  # Toggle:
-  paper-toggle-button-checked-bar-color: 'var(--accent-color)'
-  mdc-theme-primary: 'var(--accent-color)'
-  mdc-theme-secondary: '#70889e'
-
-  # Switch
-  switch-unchecked-color: '#70889e'
-  switch-checked-button-color: 'var(--accent-color)'
-  switch-unchecked-track-color: 'var(--background-color-2)'
-  switch-checked-track-color: 'var(--background-color-2)'
-
-  # Radio Button
-  paper-radio-button-checked-color: 'var(--accent-color)'
-
-  # Popups
-  more-info-header-background: 'var(--secondary-background-color)'
-  paper-dialog-background-color: 'var(--background-color)' #'rgba(47,59,82,0.4)'
-  popup-border-radius: "5px"
-
-  # Tables
-  table-row-background-color: 'var(--background-color)'
-  table-row-alternative-background-color: 'var(--ha-card-background)'
-
-  # Badges
-  label-badge-background-color: 'var(--background-color)'
-  label-badge-text-color: 'var(--text-primary-color)'
-  label-badge-red: 'rgba(73,85,108,1)'
-  label-badge-blue: 'rgba(26,137,245,1)'
-  label-badge-green: 'rgba(0,202,139,1)'
-  label-badge-yellow: 'rgba(222,176,107,1)'
-
-  paper-input-container-focus-color: 'var(--accent-color)'
-  
-  # Custom Header
-  ch-background: 'var(--background-color)'
-  ch-active-tab-color: 'var(--accent-color)'
-  ch-notification-dot-color: 'var(--accent-color)'
-  ch-all-tabs-color: 'var(--sidebar-icon-color)'
-  ch-tab-indicator-color: 'var(--accent-color)'
-
-  # Mini Mediaplayer
-  mini-media-player-base-color: 'var(--text-color)'
-  mini-media-player-accent-color: 'var(--accent-color)'
-  mini-media-player-button-color: 'var(--ha-card-background)'
-
-  # Alarm
-  alarm-color-armed: 'rgba(247,53,67,1)'
-
-  # Sonos
-  sonos-ha-card-background-color: "rgba(0,0,0,0)"
-  sonos-background-color: "none"
-  sonos-border-width: "0rem"
-  sonos-border-radius: "var(--border-radius-bar)"
-
-
-  # Card-Mod #####################################################################
-  # Uncomment the Code below if you have card-mod installed and want blur effect #
-  ################################################################################
-  card-mod-theme: mobile
-  
+  # ══ Card-mod ════════════════════════════════════════════════════════════
+  card-mod-theme: "mobile"
   card-mod-more-info-yaml: |
     $: |
       .mdc-dialog .mdc-dialog__scrim {
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        background: rgba(0,0,0,.6);
-      } 
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        background: rgba(43, 46, 41, .45);
+      }
       .mdc-dialog .mdc-dialog__container .mdc-dialog__surface {
         box-shadow: none !important;
-        border-radius: var(--ha-card-border-radius);
+        border: 1px solid var(--ha-card-border-color);
+        border-radius: var(--ha-dialog-border-radius);
       }
     .: |
       :host {
         --ha-card-box-shadow: none;
       }
-  
-  card-mod-root-yaml: |
-    .: |
-      @media only screen and (max-width: 768px) {
-          .header {
-            display: none;
-            opacity: 0;
-          }
-          #view {
-            padding-top: 0 !important;
-            margin-top: 0 !important;
-            height: calc(100vh - env(safe-area-inset-top)) !important;
-          }
+
+  modes:
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # LIGHT — dove-wash ground, marble cards, room cards one step below
+    # ═══════════════════════════════════════════════════════════════════════
+    light:
+
+      # ── Identity ──
+      primary-color: "#1F3A5C"              # navy — links, focus, brand
+      dark-primary-color: "#16253F"
+      light-primary-color: "#8AAECE"
+      accent-color: "#8A6A2E"               # brass-deep — the one brass thing
+      rgb-primary-color: "31, 58, 92"
+      rgb-accent-color: "138, 106, 46"
+
+      # ── Surfaces ──
+      # Dove-wash ground, marble cards. A phone is held at arm's length in a
+      # room that is already lit, so it keeps the desktop values rather than
+      # the tablet's dimmed ones. Room cards step DOWN from here — see below.
+      primary-background-color: "#E2E2D9"   # dove-wash
+      card-background-color: "#F4F2EE"      # marble-field — 1.17:1 above the page
+      ha-card-background: "#F4F2EE"
+      secondary-background-color: "#E7E4D9" # sunk (derived)
+      app-header-background-color: "#1F3A5C"
+      app-header-text-color: "#EFEEE5"
+      app-header-edit-background-color: "#5C6157"
+      markdown-code-background-color: "#E7E4D9"
+      code-editor-background-color: "#F4F2EE"
+      mdc-theme-surface: "#F4F2EE"
+      more-info-header-background: "#F4F2EE"
+
+      # ── Text ──
+      # gray-horse-deep is 5.7:1 on marble. On a tinted room card it is only
+      # 3.8:1, so room cards carry their own secondary step — see below.
+      primary-text-color: "#2B2E29"         # ink, 12.5:1
+      secondary-text-color: "#5C6157"       # gray-horse-deep, 5.7:1 on marble
+      text-primary-color: "#EFEEE5"         # text sitting on primary/accent fills
+      text-light-primary-color: "#EFEEE5"
+      disabled-text-color: "#8A8D82"
+      ha-card-header-color: "#2B2E29"
+
+      # ── Structure ──
+      divider-color: "rgba(185, 187, 177, 0.55)"
+      ha-card-border-color: "rgba(185, 187, 177, 0.55)"
+      outline-color: "rgba(185, 187, 177, 0.55)"
+
+      # ── Icons and states ──
+      state-icon-color: "#5C6157"
+      state-icon-active-color: "#8A6A2E"
+      state-active-color: "#8A6A2E"   # brass-deep, 3.9:1 on marble
+      bubble-house-accent: "#A9C0D4"   # china-blue — ink reads at 7.3:1
+      state-inactive-color: "#8A8D82"
+      state-unavailable-color: "#B9BBB1"
+      paper-item-icon-color: "#5C6157"
+      paper-item-icon-active-color: "#8A6A2E"
+
+      # ── Base colour ramp ──
+      # Everything HA colours by domain resolves through these, so overriding
+      # the ramp once beats enumerating a hundred state-* variables.
+      red-color: "#9E4034"          # brick — living room fireplace
+      pink-color: "#A65C55"
+      purple-color: "#6B5B7B"
+      deep-purple-color: "#544A6B"
+      indigo-color: "#16253F"       # navy-deep
+      blue-color: "#1F3A5C"         # navy
+      light-blue-color: "#3E5F91"   # delft
+      cyan-color: "#7E93A6"         # check-blue
+      teal-color: "#5C7A72"
+      green-color: "#5F7A5C"        # sage
+      light-green-color: "#7A9070"
+      lime-color: "#8E9A5F"
+      yellow-color: "#B08A3A"
+      amber-color: "#C08A2E"        # ochre, not orange — doesn't fight brass
+      orange-color: "#B5793F"       # oak
+      deep-orange-color: "#A05A2E"
+      brown-color: "#4A3222"        # walnut
+      light-grey-color: "#B9BBB1"   # gray-horse
+      grey-color: "#8A8D82"
+      dark-grey-color: "#5C6157"
+      blue-grey-color: "#6E7A80"
+      black-color: "#2B2E29"        # ink, never #000
+      white-color: "#EFEEE5"        # white-dove, never #FFF
+      disabled-color: "#B9BBB1"
+
+      rgb-red-color: "158, 64, 52"
+      rgb-pink-color: "166, 92, 85"
+      rgb-purple-color: "107, 91, 123"
+      rgb-deep-purple-color: "84, 74, 107"
+      rgb-indigo-color: "22, 37, 63"
+      rgb-blue-color: "31, 58, 92"
+      rgb-light-blue-color: "62, 95, 145"
+      rgb-cyan-color: "126, 147, 166"
+      rgb-teal-color: "92, 122, 114"
+      rgb-green-color: "95, 122, 92"
+      rgb-light-green-color: "122, 144, 112"
+      rgb-lime-color: "142, 154, 95"
+      rgb-yellow-color: "176, 138, 58"
+      rgb-amber-color: "192, 138, 46"
+      rgb-orange-color: "181, 121, 63"
+      rgb-deep-orange-color: "160, 90, 46"
+      rgb-brown-color: "74, 50, 34"
+      rgb-light-grey-color: "185, 187, 177"
+      rgb-grey-color: "138, 141, 130"
+      rgb-dark-grey-color: "92, 97, 87"
+      rgb-blue-grey-color: "110, 122, 128"
+      rgb-black-color: "43, 46, 41"
+      rgb-white-color: "239, 238, 229"
+      rgb-disabled-color: "185, 187, 177"
+      rgb-state-default-color: "138, 106, 46"
+
+      # ── Semantic ──
+      error-color: "#9E4034"
+      warning-color: "#C08A2E"
+      success-color: "#5F7A5C"
+      info-color: "#3E5F91"
+
+      # ── Sidebar ──
+      # Gray Horse taken down in lightness — literally the wall colour.
+      sidebar-background-color: "#5C6157"
+      sidebar-text-color: "#EFEEE5"
+      sidebar-icon-color: "#C6C8BE"
+      sidebar-selected-background-color: "rgba(196, 160, 82, 0.16)"
+      sidebar-selected-text-color: "#EFEEE5"
+      sidebar-selected-icon-color: "#EFEEE5"
+      paper-listbox-background-color: "#5C6157"
+
+      # ── Controls ──
+      mdc-theme-primary: "#7E6029"          # filled buttons: 5.0:1 with White Dove
+      mdc-theme-on-primary: "#EFEEE5"
+      switch-checked-color: "#8A6A2E"
+      switch-checked-button-color: "#8A6A2E"
+      switch-checked-track-color: "#C4A052"
+      switch-unchecked-color: "#F4F2EE"
+      switch-unchecked-button-color: "#F4F2EE"
+      switch-unchecked-track-color: "#B9BBB1"
+      # HA 2026.5 moved ha-switch to Web Awesome and removed the six tokens
+      # above. Keep both: the old names still feed some custom cards.
+      ha-switch-checked-background-color: "#8A6A2E"
+      ha-switch-checked-thumb-background-color: "#EFEEE5"
+      ha-switch-checked-border-color: "#8A6A2E"
+      ha-switch-checked-thumb-border-color: "#8A6A2E"
+      ha-switch-checked-background-color-hover: "#7E6029"
+      ha-switch-background-color: "#E7E4D9"
+      ha-switch-thumb-background-color: "#5C6157"
+      ha-switch-border-color: "rgba(185, 187, 177, 0.55)"
+      ha-switch-thumb-border-color: "#5C6157"
+      ha-switch-thumb-box-shadow: none
+      ha-checkbox-checked-background-color: "#7E6029"
+      ha-checkbox-checked-icon-color: "#EFEEE5"
+      ha-checkbox-background-color: "#F4F2EE"
+      ha-checkbox-border-color: "#5C6157"
+      ha-checkbox-border-color-hover: "#7E6029"
+      ha-checkbox-border-radius: 4px
+      ha-progress-bar-indicator-color: "#8A6A2E"
+      ha-progress-bar-track-color: "#E7E4D9"
+      ha-progress-bar-border-radius: 4px
+      slider-color: "#8A6A2E"
+      slider-secondary-color: "#B3A896"   # tumbleweed
+      slider-track-color: "#E7E4D9"
+      slider-bar-color: "#8A6A2E"
+      paper-slider-knob-color: "#8A6A2E"
+      paper-slider-active-color: "#8A6A2E"
+      paper-slider-container-color: "#E7E4D9"
+      paper-slider-pin-color: "#5C6157"
+      paper-radio-button-checked-color: "#8A6A2E"
+      paper-toggle-button-checked-bar-color: "#8A6A2E"
+
+      # ── Inputs ──
+      input-fill-color: "#EFEEE5"
+      input-ink-color: "#2B2E29"
+      input-label-ink-color: "#5C6157"
+      input-disabled-fill-color: "#E7E4D9"
+      input-disabled-ink-color: "#8A8D82"
+      input-disabled-label-ink-color: "#8A8D82"
+      input-idle-line-color: "rgba(185, 187, 177, 0.7)"
+      input-hover-line-color: "#1F3A5C"
+      input-dropdown-icon-color: "#5C6157"
+      mdc-text-field-fill-color: "#EFEEE5"
+      mdc-text-field-ink-color: "#2B2E29"
+      mdc-text-field-label-ink-color: "#5C6157"
+      mdc-select-fill-color: "#EFEEE5"
+      mdc-select-ink-color: "#2B2E29"
+      paper-input-container-focus-color: "#8A6A2E"
+
+      # ── Tables and badges ──
+      table-row-background-color: "#F4F2EE"
+      table-row-alternative-background-color: "#EFEEE5"
+      label-badge-background-color: "#F4F2EE"
+      label-badge-text-color: "#2B2E29"
+      label-badge-red: "#9E4034"
+      label-badge-blue: "#1F3A5C"
+      label-badge-green: "#5F7A5C"
+      label-badge-yellow: "#C08A2E"
+      label-badge-grey: "#8A8D82"
+
+      # ── Energy dashboard ──
+      energy-grid-consumption-color: "#3E5F91"
+      energy-grid-return-color: "#5F7A5C"
+      energy-solar-color: "#C08A2E"
+      energy-non-fossil-color: "#7E93A6"
+      energy-battery-in-color: "#6B5B7B"
+      energy-battery-out-color: "#A9C0D4"
+      energy-gas-color: "#9E4034"
+      energy-water-color: "#7E93A6"
+
+      # ── Graphs ──
+      # rattan and oak are texture colours — this is where they belong.
+      history-unknown-color: "#B9BBB1"
+      history-unavailable-color: "#E7E4D9"
+      graph-line-color: "#1F3A5C"
+      accent-medium-color: "#C8A87A"
+
+      # ── Room tints ──
+      # Each room card is that room's own wall, rendered at a value shared by
+      # every other room card. Hue and chroma carry the room; value carries
+      # nothing, so the ink and the brass behave identically on all of them.
+      # Light: one step BELOW the page — the marble utility cards stay above it,
+      # so a white card is a function and a tinted card is a place.
+      # Dark:  one step ABOVE the page — the same hue, the lightness reversed.
+      # Chroma is each room's own, capped: the main floor really is a neutral,
+      # and pretending otherwise would put olive on two-thirds of the screen.
+      # Where two rooms share a wall colour, the hairline carries the second
+      # one — the office card is both offices, the upstairs card is both kids.
+      mobile-room-greatroom: "#E1C2BD"        # brick #9E4034 — the fireplace and the tartan
+      mobile-room-greatroom-line: "rgba(158, 64, 52, 0.55)"
+      mobile-room-kitchen: "#C7C9BF"          # gray-horse #B9BBB1 — the walls, near-neutral on purpose
+      mobile-room-kitchen-line: "rgba(185, 187, 177, 0.55)"
+      mobile-room-mudroom: "#B8CBDB"          # check-blue #7E93A6 — the fern-stripe wallpaper
+      mobile-room-mudroom-line: "rgba(126, 147, 166, 0.55)"
+      mobile-room-office: "#CDC9BC"           # measured greige; hairline is hale, for the other office
+      mobile-room-office-line: "rgba(67, 75, 86, 0.55)"
+      mobile-room-master: "#BCCBCF"           # soft blue, mist family — CONFIRM the paint
+      mobile-room-master-line: "rgba(164, 185, 191, 0.55)"
+      mobile-room-upstairs: "#DBC3C6"         # marshmallow bunny #FDE2E6; hairline beacon gray #CDD7DE
+      mobile-room-upstairs-line: "rgba(205, 215, 222, 0.55)"
+      mobile-room-basement: "#D0C7B3"         # manchester-tan #DBD2BC — walls, trim and paneling, all one colour
+      mobile-room-basement-line: "rgba(219, 210, 188, 0.55)"
+      mobile-room-solarium: "#CBC9C1"         # stacked-stone #ABA79C; hairline copper #B87352
+      mobile-room-solarium-line: "rgba(184, 115, 82, 0.55)"
+      mobile-room-exterior: "#B2D0AF"         # sage #5F7A5C — boxwood and foliage
+      mobile-room-exterior-line: "rgba(95, 122, 92, 0.55)"
+
+      # Shared by every room card. The tinted surface sits low enough that
+      # raw brass (2.4:1) and gray-horse-deep (3.8:1) both fail on it, so both
+      # step down — the same move §8 makes for the tablets.
+      mobile-room-ink-2: "#50544B"          # secondary text, 4.6:1 on every tint
+      mobile-room-active: "#7E6029"         # brass-cta — 3.5:1 on every tint
+      mobile-room-active-rgb: "126, 96, 41"
+      mobile-room-idle: "#5C6157"           # off icons
+      mobile-room-idle-rgb: "92, 97, 87"
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # DARK — walnut ground, room cards one step above. The tints invert.
+    # ═══════════════════════════════════════════════════════════════════════
+    dark:
+
+      # ── Identity ──
+      primary-color: "#8AAECE"              # navy-light
+      dark-primary-color: "#3E5F91"
+      light-primary-color: "#A9C0D4"
+      accent-color: "#C4A052"               # brass-light
+      rgb-primary-color: "138, 174, 206"
+      rgb-accent-color: "196, 160, 82"
+
+      # ── Surfaces ──
+      # Walnut, not dusk. The tablets run dusk because they are lit objects in
+      # a lit room at 7pm; a phone in dark mode is usually the only lit thing
+      # in the room, which is the case walnut-dark was chosen for.
+      primary-background-color: "#221B15"   # walnut-dark
+      card-background-color: "#2C241D"      # 1.11:1 above the page
+      ha-card-background: "#2C241D"
+      secondary-background-color: "#372D24" # sunk
+      app-header-background-color: "#2C241D" # hidden by kiosk_mode; set for the popups
+      app-header-text-color: "#EFEEE5"
+      app-header-edit-background-color: "#372D24"
+      markdown-code-background-color: "#372D24"
+      code-editor-background-color: "#372D24"
+      mdc-theme-surface: "#2C241D"
+      more-info-header-background: "#2C241D"
+
+      # ── Text ──
+      primary-text-color: "#E8E4DA"         # 13.9:1 on the walnut card
+      secondary-text-color: "#B9BBB1"       # gray-horse, 9.1:1 on the walnut card
+      text-primary-color: "#221B15"         # text on the light primary/accent fills
+      text-light-primary-color: "#E8E4DA"
+      disabled-text-color: "#7C7F76"
+      ha-card-header-color: "#E8E4DA"
+
+      # ── Structure ──
+      divider-color: "rgba(239, 238, 229, 0.22)"
+      ha-card-border-color: "rgba(239, 238, 229, 0.22)"
+      outline-color: "rgba(185, 187, 177, 0.18)"
+
+      # ── Icons and states ──
+      state-icon-color: "#B9BBB1"
+      state-icon-active-color: "#C4A052"
+      state-active-color: "#C4A052"
+      bubble-house-accent: "#8AAECE"   # navy-light — Bubble fills
+      state-inactive-color: "#8A8D82"
+      state-unavailable-color: "#6E7268"
+      paper-item-icon-color: "#B9BBB1"
+      paper-item-icon-active-color: "#C4A052"
+
+      # ── Base colour ramp, lifted for dark ──
+      red-color: "#D0736A"
+      pink-color: "#D08A83"
+      purple-color: "#A394B5"
+      deep-purple-color: "#8E82A8"
+      indigo-color: "#6F8CB8"
+      blue-color: "#8AAECE"
+      light-blue-color: "#7FA6C4"
+      cyan-color: "#A9C0D4"
+      teal-color: "#8AB0A6"
+      green-color: "#85A683"
+      light-green-color: "#A3BE9C"
+      lime-color: "#B7C08A"
+      yellow-color: "#D9C07E"
+      amber-color: "#D9B15E"
+      orange-color: "#C8A87A"       # rattan
+      deep-orange-color: "#C98A5C"
+      brown-color: "#8A6A4E"
+      light-grey-color: "#C6C8BE"
+      grey-color: "#9A9C92"
+      dark-grey-color: "#6E7268"
+      blue-grey-color: "#93A3AC"
+      black-color: "#221B15"
+      white-color: "#EFEEE5"
+      disabled-color: "#6E7268"
+
+      rgb-red-color: "208, 115, 106"
+      rgb-pink-color: "208, 138, 131"
+      rgb-purple-color: "163, 148, 181"
+      rgb-deep-purple-color: "142, 130, 168"
+      rgb-indigo-color: "111, 140, 184"
+      rgb-blue-color: "138, 174, 206"
+      rgb-light-blue-color: "127, 166, 196"
+      rgb-cyan-color: "169, 192, 212"
+      rgb-teal-color: "138, 176, 166"
+      rgb-green-color: "133, 166, 131"
+      rgb-light-green-color: "163, 190, 156"
+      rgb-lime-color: "183, 192, 138"
+      rgb-yellow-color: "217, 192, 126"
+      rgb-amber-color: "217, 177, 94"
+      rgb-orange-color: "200, 168, 122"
+      rgb-deep-orange-color: "201, 138, 92"
+      rgb-brown-color: "138, 106, 78"
+      rgb-light-grey-color: "198, 200, 190"
+      rgb-grey-color: "154, 156, 146"
+      rgb-dark-grey-color: "110, 114, 104"
+      rgb-blue-grey-color: "147, 163, 172"
+      rgb-black-color: "34, 27, 21"
+      rgb-white-color: "239, 238, 229"
+      rgb-disabled-color: "110, 114, 104"
+      rgb-state-default-color: "196, 160, 82"
+
+      # ── Semantic ──
+      error-color: "#D0736A"
+      warning-color: "#D9B15E"
+      success-color: "#85A683"
+      info-color: "#7FA6C4"
+
+      # ── Sidebar ──
+      sidebar-background-color: "#59635B"   # gray-horse-deep, lifted
+      sidebar-text-color: "#EFEEE5"
+      sidebar-icon-color: "#C6C8BE"
+      sidebar-selected-background-color: "rgba(196, 160, 82, 0.20)"
+      sidebar-selected-text-color: "#EFEEE5"
+      sidebar-selected-icon-color: "#D9B15E"
+      paper-listbox-background-color: "#59635B"
+
+      # ── Controls ──
+      mdc-theme-primary: "#C4A052"
+      mdc-theme-on-primary: "#221B15"
+      switch-checked-color: "#C4A052"
+      switch-checked-button-color: "#C4A052"
+      switch-checked-track-color: "#8A6A2E"
+      switch-unchecked-color: "#B9BBB1"
+      switch-unchecked-button-color: "#B9BBB1"
+      switch-unchecked-track-color: "#4A3F35"
+      ha-switch-checked-background-color: "#C4A052"
+      ha-switch-checked-thumb-background-color: "#2C241D"
+      ha-switch-checked-border-color: "#C4A052"
+      ha-switch-checked-thumb-border-color: "#C4A052"
+      ha-switch-checked-background-color-hover: "#D9B15E"
+      ha-switch-background-color: "#4A3F35"
+      ha-switch-thumb-background-color: "#B9BBB1"
+      ha-switch-border-color: "rgba(185, 187, 177, 0.20)"
+      ha-switch-thumb-border-color: "#B9BBB1"
+      ha-switch-thumb-box-shadow: none
+      ha-checkbox-checked-background-color: "#C4A052"
+      ha-checkbox-checked-icon-color: "#2C241D"
+      ha-checkbox-background-color: "#2C241D"
+      ha-checkbox-border-color: "#B9BBB1"
+      ha-checkbox-border-color-hover: "#C4A052"
+      ha-checkbox-border-radius: 4px
+      ha-progress-bar-indicator-color: "#C4A052"
+      ha-progress-bar-track-color: "#372D24"
+      ha-progress-bar-border-radius: 4px
+      slider-color: "#C4A052"
+      slider-secondary-color: "#6E7268"
+      slider-track-color: "#372D24"
+      slider-bar-color: "#C4A052"
+      paper-slider-knob-color: "#C4A052"
+      paper-slider-active-color: "#C4A052"
+      paper-slider-container-color: "#372D24"
+      paper-slider-pin-color: "#372D24"
+      paper-radio-button-checked-color: "#C4A052"
+      paper-toggle-button-checked-bar-color: "#C4A052"
+
+      # ── Inputs ──
+      input-fill-color: "#372D24"
+      input-ink-color: "#E8E4DA"
+      input-label-ink-color: "#B9BBB1"
+      input-disabled-fill-color: "#2C241D"
+      input-disabled-ink-color: "#7C7F76"
+      input-disabled-label-ink-color: "#7C7F76"
+      input-idle-line-color: "rgba(185, 187, 177, 0.25)"
+      input-hover-line-color: "#8AAECE"
+      input-dropdown-icon-color: "#B9BBB1"
+      mdc-text-field-fill-color: "#372D24"
+      mdc-text-field-ink-color: "#E8E4DA"
+      mdc-text-field-label-ink-color: "#B9BBB1"
+      mdc-select-fill-color: "#372D24"
+      mdc-select-ink-color: "#E8E4DA"
+      paper-input-container-focus-color: "#C4A052"
+
+      # ── Tables and badges ──
+      table-row-background-color: "#2C241D"
+      table-row-alternative-background-color: "#372D24"
+      label-badge-background-color: "#2C241D"
+      label-badge-text-color: "#E8E4DA"
+      label-badge-red: "#D0736A"
+      label-badge-blue: "#8AAECE"
+      label-badge-green: "#85A683"
+      label-badge-yellow: "#D9B15E"
+      label-badge-grey: "#9A9C92"
+
+      # ── Energy dashboard ──
+      energy-grid-consumption-color: "#7FA6C4"
+      energy-grid-return-color: "#85A683"
+      energy-solar-color: "#D9B15E"
+      energy-non-fossil-color: "#A9C0D4"
+      energy-battery-in-color: "#A394B5"
+      energy-battery-out-color: "#C8A87A"
+      energy-gas-color: "#D0736A"
+      energy-water-color: "#A9C0D4"
+
+      # ── Graphs ──
+      history-unknown-color: "#6E7268"
+      history-unavailable-color: "#372D24"
+      graph-line-color: "#8AAECE"
+      accent-medium-color: "#C8A87A"
+
+      # ── Room tints ──
+      # Each room card is that room's own wall, rendered at a value shared by
+      # every other room card. Hue and chroma carry the room; value carries
+      # nothing, so the ink and the brass behave identically on all of them.
+      # Light: one step BELOW the page — the marble utility cards stay above it,
+      # so a white card is a function and a tinted card is a place.
+      # Dark:  one step ABOVE the page — the same hue, the lightness reversed.
+      # Chroma is each room's own, capped: the main floor really is a neutral,
+      # and pretending otherwise would put olive on two-thirds of the screen.
+      # Where two rooms share a wall colour, the hairline carries the second
+      # one — the office card is both offices, the upstairs card is both kids.
+      mobile-room-greatroom: "#453432"        # brick #9E4034 — the fireplace and the tartan
+      mobile-room-greatroom-line: "rgba(158, 64, 52, 0.40)"
+      mobile-room-kitchen: "#383834"          # gray-horse #B9BBB1 — the walls, near-neutral on purpose
+      mobile-room-kitchen-line: "rgba(185, 187, 177, 0.40)"
+      mobile-room-mudroom: "#303942"          # check-blue #7E93A6 — the fern-stripe wallpaper
+      mobile-room-mudroom-line: "rgba(126, 147, 166, 0.40)"
+      mobile-room-office: "#3A3833"           # measured greige; hairline is hale, for the other office
+      mobile-room-office-line: "rgba(67, 75, 86, 0.40)"
+      mobile-room-master: "#323A3C"           # soft blue, mist family — CONFIRM the paint
+      mobile-room-master-line: "rgba(164, 185, 191, 0.40)"
+      mobile-room-upstairs: "#423537"         # marshmallow bunny #FDE2E6; hairline beacon gray #CDD7DE
+      mobile-room-upstairs-line: "rgba(205, 215, 222, 0.40)"
+      mobile-room-basement: "#3C382D"         # manchester-tan #DBD2BC — walls, trim and paneling, all one colour
+      mobile-room-basement-line: "rgba(219, 210, 188, 0.40)"
+      mobile-room-solarium: "#393835"         # stacked-stone #ABA79C; hairline copper #B87352
+      mobile-room-solarium-line: "rgba(184, 115, 82, 0.40)"
+      mobile-room-exterior: "#2D3C2B"         # sage #5F7A5C — boxwood and foliage
+      mobile-room-exterior-line: "rgba(95, 122, 92, 0.40)"
+
+      # Shared by every room card. The tinted surface sits low enough that
+      # the same tokens resolve to the dark-mode steps.
+      mobile-room-ink-2: "#B9BBB1"          # gray-horse, 6.0:1 on every tint
+      mobile-room-active: "#C4A052"         # brass-light — 4.7:1 on every tint
+      mobile-room-active-rgb: "196, 160, 82"
+      mobile-room-idle: "#8A8D82"           # off icons
+      mobile-room-idle-rgb: "138, 141, 130"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Dashboard side — one card_mod block per room card
+#
+# Goes on the custom:stack-in-card wrapper, replacing the existing block. The
+# only thing that changes between rooms is the token name.
+#
+#   card_mod:
+#     style: |
+#       ha-card {
+#         height: 90px;
+#         background: var(--mobile-room-kitchen);
+#         border: 1px solid var(--mobile-room-kitchen-line);
+#         --ha-card-background: var(--mobile-room-kitchen);
+#         --ha-card-border-width: 0;
+#         --secondary-text-color: var(--mobile-room-ink-2);
+#         --mush-card-primary-font-size: 12px;
+#         --mush-card-secondary-font-size: 10px;
+#       }
+#
+# And on the mushroom-legacy-template-card inside it, so the icon follows the
+# mode instead of a baked-in literal. card_mod styles are Jinja-templated, so
+# the state test happens in Jinja and the colour choice happens in CSS:
+#
+#   card_mod:
+#     style: |
+#       mushroom-shape-icon {
+#       {% if is_state(config.entity, 'on') %}
+#         --icon-color: var(--mobile-room-active) !important;
+#         --shape-color: rgba(var(--mobile-room-active-rgb), 0.20) !important;
+#       {% else %}
+#         --icon-color: var(--mobile-room-idle) !important;
+#         --shape-color: rgba(var(--mobile-room-idle-rgb), 0.15) !important;
+#       {% endif %}
+#       }
+#
+# With that in place, `icon_color:` on the card can go away entirely — which
+# also retires the Great Room template that has no else clause.
+#
+# Tuning knobs
+#   Tints too strong          raise every room value one step toward #E2E2D9
+#   Tints invisible in sun    swap page to "#D7D7CE" and lift the tints instead
+#   Room cards too heavy      drop the hairline alpha from 0.55 to 0.35
+#   Want the tablet dusk      copy the dark surfaces from kitchen_tablet.yaml
+# ─────────────────────────────────────────────────────────────────────────────

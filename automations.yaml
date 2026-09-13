@@ -2619,3 +2619,53 @@
       color_name: green
     action: light.turn_on
   mode: single
+- id: '1789243276034'
+  alias: Refresh Fully Kiosk AM
+  description: ''
+  triggers:
+  - trigger: sun.sunrise
+    options:
+      offset:
+        hours: 0
+        minutes: 5
+        seconds: 0
+        days: 0
+      offset_type: after
+  conditions: []
+  actions:
+  - action: button.press
+    metadata: {}
+    target:
+      entity_id: button.kitchen_kitchen_ha_tablet_restart_browser
+    data: {}
+  - action: button.press
+    metadata: {}
+    target:
+      entity_id: button.mudroom_mudroom_ha_tablet_restart_browser
+    data: {}
+  mode: single
+- id: '1789243394148'
+  alias: Refresh Fully Kiosk PM
+  description: ''
+  triggers:
+  - trigger: sun.sunset
+    options:
+      offset:
+        hours: 0
+        minutes: 5
+        seconds: 0
+        days: 0
+      offset_type: after
+  conditions: []
+  actions:
+  - action: button.press
+    metadata: {}
+    target:
+      entity_id: button.kitchen_kitchen_ha_tablet_restart_browser
+    data: {}
+  - action: button.press
+    metadata: {}
+    target:
+      entity_id: button.mudroom_mudroom_ha_tablet_restart_browser
+    data: {}
+  mode: single
