@@ -59,6 +59,11 @@ sidebar:
       name: Weather
       active: true
       icon: mdi:sun-angle-outline
+    - action: navigate
+      navigation_path: /isaac-lucas/meals
+      name: Meals
+      active: true
+      icon: mdi:silverware-fork-knife
   bottomCard:
     type: vertical-stack
     cardOptions:
@@ -72,18 +77,24 @@ sidebar:
                 opacity: 0 !important;
             }
         - type: custom:mushroom-legacy-template-card
-          primary: >
-            {% set exclude =
-            ["light.great_room","light.kitchen","light.mudroom","light.office","light.white_room","light.first_floor_lights"]
-            %}
-                      {{ states.light
-                        | rejectattr('entity_id','in', exclude )
-                        | selectattr('attributes.is_hue_group','undefined')
-                        | selectattr('attributes.entity_id', 'undefined')
-                        | selectattr('state','eq','on')
-                        | list
-                        | count
-                      }} Lights On
+          primary: |
+            {% set exclude = [
+              "light.great_room",
+              "light.kitchen",
+              "light.mudroom",
+              "light.office",
+              "light.white_room",
+              "light.first_floor_lights"
+            ] %}
+            {{ states.light
+              | rejectattr('entity_id', 'in', exclude)
+              | rejectattr('entity_id', 'search', 'segment_\d+$')
+              | selectattr('attributes.is_hue_group', 'undefined')
+              | selectattr('attributes.entity_id', 'undefined')
+              | selectattr('state', 'eq', 'on')
+              | list
+              | count
+            }} Lights On
           icon: ''
           entity: light.first_floor_lights
           layout: vertical
@@ -2512,24 +2523,6 @@ views:
               }
             name: Cleaning
             card_layout: large
-          - type: horizontal-stack
-            cards:
-              - show_name: true
-                show_icon: true
-                name: Robots
-                type: button
-                tap_action:
-                  action: navigate
-                  navigation_path: '#robots'
-                icon: mdi:broom
-              - show_name: true
-                show_icon: true
-                name: Diffusers
-                type: button
-                tap_action:
-                  action: navigate
-                  navigation_path: '#diffusers'
-                icon: mdi:scent
           - type: vertical-stack
             cards:
               - type: conditional
@@ -4966,12 +4959,10 @@ views:
                 show_icon: true
               - type: custom:bubble-card
                 card_type: button
-                entity: switch.air_purifier
+                entity: switch.lion_fountain
                 show_state: false
                 card_layout: large
-                name: Air Purifier
-                icon: mdi:air-purifier
-                show_icon: true
+                name: Lion Fountain
           - type: horizontal-stack
             cards:
               - type: custom:bubble-card
@@ -4997,20 +4988,6 @@ views:
             cards:
               - type: custom:bubble-card
                 card_type: button
-                entity: switch.lion_fountain
-                show_state: false
-                card_layout: large
-                name: Lion Fountain
-              - type: custom:bubble-card
-                card_type: button
-                show_state: false
-                card_layout: large
-                name: Fish Lights
-                entity: switch.fish_lights
-          - type: horizontal-stack
-            cards:
-              - type: custom:bubble-card
-                card_type: button
                 entity: switch.pool_lights
                 show_state: false
                 card_layout: large
@@ -5028,6 +5005,40 @@ views:
                 name: Pool Heater
                 icon: mdi:pool-thermometer
                 show_icon: true
+          - type: horizontal-stack
+            cards:
+              - show_name: true
+                show_icon: true
+                name: Robots
+                type: button
+                tap_action:
+                  action: navigate
+                  navigation_path: '#robots'
+                icon: mdi:broom
+              - show_name: true
+                show_icon: true
+                name: Diffusers
+                type: button
+                tap_action:
+                  action: navigate
+                  navigation_path: '#diffusers'
+                icon: mdi:scent
+              - show_name: true
+                show_icon: true
+                name: Diffusers
+                type: button
+                tap_action:
+                  action: navigate
+                  navigation_path: '#diffusers'
+                icon: mdi:scent
+              - show_name: true
+                show_icon: true
+                name: Diffusers
+                type: button
+                tap_action:
+                  action: navigate
+                  navigation_path: '#diffusers'
+                icon: mdi:scent
         view_layout:
           grid-area: things
       - type: custom:bubble-card
@@ -6355,3 +6366,343 @@ views:
           .bubble-select-card-container {
               border: 1px solid var(--divider-color) !important;
           }
+  - title: Meals
+    path: meals
+    icon: mdi:silverware-fork-knife
+    type: custom:grid-layout
+    badges: []
+    layout:
+      grid-template-columns: 34% 34% 32%
+      grid-template-rows: auto
+      grid-template-areas: |
+        "tonight tomorrow list"
+        "tonight week     list"
+      mediaquery:
+        '(max-width: 1200px)':
+          grid-template-columns: 100%
+          grid-template-rows: auto auto auto auto
+          grid-template-areas: |
+            "tonight"
+            "tomorrow"
+            "week"
+            "list"
+    cards:
+      - type: vertical-stack
+        view_layout:
+          grid-area: tonight
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:silverware-variant
+            name: Tonight
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                background-color: var(--divider-color) !important;
+              }
+              ha-card div div div:nth-child(2) {
+                height: 5px!important;
+              }
+          - type: custom:mealie-mealplan-card
+            config_entry_id: xxx
+            day_offset: 0
+            layout: vertical
+            recipes_layout: vertical
+            show_image: true
+            show_description: true
+            show_servings: true
+            show_rating: false
+            show_prep_time: true
+            show_perform_time: false
+            show_total_time: true
+            card_mod:
+              style: |
+                ha-card {
+                  border: 1px solid var(--divider-color);
+                  border-radius: 12px;
+                  background: var(--ha-card-background);
+                  box-shadow: none;
+                  --primary-color: #A9C0D4;
+                  --text-primary-color: #2B2E29;
+                  --mealie-day-columns: 1;
+                }
+                .date-label {
+                  box-shadow: none !important;
+                  text-transform: none !important;
+                  font-weight: 600 !important;
+                }
+                .recipe-link {
+                  text-transform: none !important;
+                }
+          - type: custom:bubble-card
+            card_type: button
+            button_type: custom
+            entity: sensor.mealie_recipes
+            name: Find a recipe
+            icon: mdi:book-open-page-variant-outline
+            show_state: false
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: '#recipes'
+            styles: |
+              .bubble-icon {
+                color: var(--accent-color) !important;
+              }
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:weather-sunset-up
+            name: Tomorrow
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                background-color: var(--divider-color) !important;
+              }
+              ha-card div div div:nth-child(2) {
+                height: 5px!important;
+              }
+          - type: custom:mealie-mealplan-card
+            config_entry_id: xxx
+            day_offset: 1
+            layout: vertical
+            recipes_layout: horizontal
+            show_image: true
+            show_description: false
+            show_servings: true
+            show_rating: false
+            show_prep_time: false
+            show_perform_time: false
+            show_total_time: true
+            card_mod:
+              style: |
+                ha-card {
+                  border: 1px solid var(--divider-color);
+                  border-radius: 12px;
+                  background: var(--ha-card-background);
+                  box-shadow: none;
+                  --primary-color: #A9C0D4;
+                  --text-primary-color: #2B2E29;
+                  --mealie-recipe-columns: 2;
+                }
+                .date-label {
+                  box-shadow: none !important;
+                  text-transform: none !important;
+                  font-weight: 600 !important;
+                }
+                .recipe-link {
+                  text-transform: none !important;
+                }
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:calendar-week
+            name: The week ahead
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                background-color: var(--divider-color) !important;
+              }
+              ha-card div div div:nth-child(2) {
+                height: 5px!important;
+              }
+          - type: custom:atomic-calendar-revive
+            name: Meal plan
+            entities:
+              - calendar.mealie_dinner
+              - calendar.mealie_lunch
+              - calendar.mealie_breakfast
+            firstDayOfWeek: 1
+            maxDaysToShow: 7
+            refreshInterval: 300
+            showMonth: false
+            showWeekDay: true
+            showEventIcon: true
+            showCalendarName: true
+            showEventDate: true
+            showDescription: false
+            showCurrentEventLine: false
+            showNoEventsForToday: true
+            showProgressBar: false
+            showRelativeTime: false
+            sortByStartTime: true
+            disableEventLink: true
+            disableLocationLink: true
+            noEventText: Nothing planned yet
+            cardHeight: 420px
+            style: |
+              ha-card {
+                border: 1px solid var(--divider-color);
+                border-radius: 12px;
+                background: var(--ha-card-background);
+              }
+        view_layout:
+          grid-area: tomorrow
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:cart-outline
+            name: Market Basket
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+
+              .bubble-icon {
+                color: #D23429 !important;
+              }
+
+              .bubble-line {        background: linear-gradient(
+                  90deg,
+                  #D23429 0%,
+                  #D23429 45%,
+                  #FFFFFF 45%,
+                  #FFFFFF 55%,
+                  #123CA0 55%,
+                  #123CA0 100%
+                ) !important;
+              }
+
+              ha-card div div div:nth-child(2) {
+                height: 5px !important;
+              }
+          - type: todo-list
+            entity: todo.mealie_market_basket
+            display_order: none
+            card_mod:
+              style: |
+                ha-card {
+                  border: 1px solid var(--divider-color);
+                  border-left: 4px solid #D23429;
+                  border-radius: 12px;
+                  box-shadow: none;
+                  max-height: 300px;
+                  overflow-y: auto;
+                }
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:package-variant-closed
+            name: Amazon
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+
+              .bubble-icon {
+                color: #146EB4 !important;
+              }
+
+              .bubble-line {
+                background: linear-gradient(
+                  90deg,
+                  #146EB4 0%,
+                  #146EB4 82%,
+                  #FF9900 82%,
+                  #FF9900 100%
+                ) !important;
+                height: 5px !important;
+                opacity: 1 !important;
+              }
+          - type: todo-list
+            entity: todo.mealie_amazon
+            display_order: none
+            card_mod:
+              style: |
+                ha-card {
+                  border: 1px solid var(--divider-color);
+                  border-left: 4px solid #146EB4;
+                  border-radius: 12px;
+                  box-shadow: none;
+                  max-height: 240px;
+                  overflow-y: auto;
+                }
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:store-outline
+            name: BJ's
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+
+              .bubble-icon {
+                color: #B82038 !important;
+              }
+
+              .bubble-line {        background: linear-gradient(
+                  90deg,
+                  #B82038 0%,
+                  #B82038 72%,
+                  #FFFFFF 72%,
+                  #FFFFFF 82%,
+                  #B82038 82%,
+                  #B82038 100%
+                ) !important;
+              }
+
+              ha-card div div div:nth-child(2) {
+                height: 5px !important;
+              }
+          - type: todo-list
+            entity: todo.mealie_bjs
+            display_order: none
+            card_mod:
+              style: |
+                ha-card {
+                  border: 1px solid var(--divider-color);
+                  border-left: 4px solid #B82038;
+                  border-radius: 12px;
+                  box-shadow: none;
+                  max-height: 240px;
+                  overflow-y: auto;
+                }
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: '#recipes'
+        name: Recipes
+        icon: mdi:book-open-page-variant-outline
+        hide_backdrop: true
+        is_sidebar_hidden: false
+        margin_top_mobile: 0px
+        margin: 0px
+        back_open: true
+        margin_top_desktop: -44px
+        width_desktop: 1000px
+        auto_close: '180000'
+        bg_opacity: 85
+        bg_blur: 100
+        styles: |
+          bubble-card::after {
+            display: none !important;
+          }
+        cards:
+          - type: custom:mealie-recipe-card
+            config_entry_id: 'xxx'
+            result_limit: 60
+            show_image: true
+            show_rating: true
+            show_servings: true
+            show_description: false
+            show_prep_time: false
+            show_perform_time: false
+            show_total_time: true
+            card_mod:
+              style: |
+                ha-card {
+                  border: 1px solid var(--divider-color);
+                  border-radius: 12px;
+                  background: var(--ha-card-background);
+                  box-shadow: none;
+                  --primary-color: #A9C0D4;
+                  --text-primary-color: #2B2E29;
+                }
+                .recipe-link {
+                  text-transform: none !important;
+                }
