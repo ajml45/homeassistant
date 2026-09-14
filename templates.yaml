@@ -397,3 +397,26 @@
           states('light.exterior_dog_area')
         ] %}
         {{ lights | select('eq', 'on') | list | count }}
+    - name: Kitchen Tablet Memory Free
+      unique_id: kitchen_tablet_memory_free_pct
+      unit_of_measurement: "%"
+      state_class: measurement
+      icon: mdi:memory
+      availability: >
+        {{ states('sensor.kitchen_kitchen_ha_tablet_total_memory') | float(0) > 0 }}
+      state: >
+        {% set f = states('sensor.kitchen_kitchen_ha_tablet_free_memory') | float(0) %}
+        {% set t = states('sensor.kitchen_kitchen_ha_tablet_total_memory') | float(0) %}
+        {{ (f / t * 100) | round(0) }}
+ 
+    - name: Mudroom Tablet Memory Free
+      unique_id: mudroom_tablet_memory_free_pct
+      unit_of_measurement: "%"
+      state_class: measurement
+      icon: mdi:memory
+      availability: >
+        {{ states('sensor.mudroom_mudroom_ha_tablet_total_memory') | float(0) > 0 }}
+      state: >
+        {% set f = states('sensor.mudroom_mudroom_ha_tablet_free_memory') | float(0) %}
+        {% set t = states('sensor.mudroom_mudroom_ha_tablet_total_memory') | float(0) %}
+        {{ (f / t * 100) | round(0) }}
