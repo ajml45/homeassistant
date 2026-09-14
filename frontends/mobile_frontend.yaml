@@ -3790,6 +3790,10 @@ views:
               itemsPerRow: 3
               hideItems:
                 - My media
+                - Radio Browser
+                - AI Generated Images
+                - Frigate
+                - Nest
               favorites:
                 sortByType: true
   - title: Vacuums
