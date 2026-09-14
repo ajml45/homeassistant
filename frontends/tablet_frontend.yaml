@@ -410,67 +410,100 @@ views:
           - type: custom:bubble-card
             card_type: separator
             icon: mdi:music-note-outline
+            name: Music
             styles: |
-              ha-card { 
+              ha-card {
                   color: var(--primary-text-color) !important;
               }
               .separator-container div:last-child {
                   background-color: var(--divider-color) !important;
               }
-              h4 {
-              }
               ha-card div div div:nth-child(2) {
                     height: 5px!important;
               }
-            name: Music
           - type: custom:sonos-card
             sections:
               - player
-              - volumes
               - grouping
-              - media browser
-              - groups
-            heightPercentage: 96
-            entityId: media_player.kitchen_sonos
-            dynamicVolumeSlider: true
-            style: |
-              ha-card {
-                border: 1px solid var(--divider-color);
-                border-radius: 12px;
-                background: var(--ha-card-background);
-              } 
-            predefinedGroups:
-              - name: All
-                entities:
-                  - media_player.basement_sonos
-                  - media_player.great_room_sonos
-                  - media_player.kitchen_sonos
-                  - media_player.office_sonos
-                  - media_player.solarium_sonos
-              - name: 1st Floor
-                entities:
-                  - media_player.great_room_sonos
-                  - media_player.kitchen_sonos
-                  - media_player.office_sonos
-              - name: Basement
-                entities:
-                  - media_player.basement_sonos
-                  - media_player.solarium_sonos
+              - volumes
+            entities:
+              - media_player.sonos_great_room_soundbar
+              - media_player.sonos_kitchen
+              - media_player.sonos_office
+              - media_player.sonos_solarium
+              - media_player.sonos_basement
+              - media_player.sonos_workshop
+              - media_player.sonos_garage
+            entityNameRegexToReplace: '^Sonos '
+            entityNameReplacement: ''
+            storePlayerInSessionStorage: true
+            fontFamily: '''Libre Franklin'', system-ui, sans-serif'
+            baseFontSize: 1.1
+            heightPercentage: auto
+            footerHeight: 3.5
+            sectionButtonIcons:
+              player: mdi:play-circle-outline
             player:
-              showVolumeUpAndDownButtons: true
               artworkAsBackgroundBlur: 10
               controlsAndHeaderBackgroundOpacity: 0.7
-            mediaBrowser:
-              itemsPerRow: 3
-              shortcut:
-                media_content_id: REPLACE_ME
-                media_content_type: REPLACE_ME
-                icon: mdi:spotify
-                name: My Spotify
-              favorites:
-                topItems:
-                  - REPLACE_WITH_FAVORITE_1
-                  - REPLACE_WITH_FAVORITE_2
+              artworkBorderRadius: 12
+              controlsLargeIcons: true
+              hideArtistAlbum: true
+              showChannel: true
+              artworkMinHeight: 7
+            grouping:
+              compact: true
+              skipApplyButton: true
+              hideVolumes: true
+              hideUngroupAllButtons: true
+              buttonIcons:
+                predefinedGroup: mdi:home-sound-in-outline
+            predefinedGroups:
+              - name: Everywhere
+                volume: 15
+                unmuteWhenGrouped: true
+                entities:
+                  - media_player.sonos_great_room_soundbar
+                  - media_player.sonos_kitchen
+                  - media_player.sonos_office
+                  - media_player.sonos_solarium
+                  - media_player.sonos_basement
+                  - media_player.sonos_workshop
+                  - media_player.sonos_garage
+              - name: 1st Floor
+                volume: 15
+                unmuteWhenGrouped: true
+                entities:
+                  - media_player.sonos_great_room_soundbar
+                  - media_player.sonos_kitchen
+                  - media_player.sonos_office
+              - name: Downstairs
+                unmuteWhenGrouped: true
+                entities:
+                  - player: media_player.sonos_basement
+                    volume: 15
+                  - player: media_player.sonos_solarium
+                    volume: 12
+                  - player: media_player.sonos_workshop
+                    volume: 25
+          - type: horizontal-stack
+            cards:
+              - type: button
+                show_name: true
+                show_icon: true
+                name: Music Controls
+                icon: mdi:tune-vertical
+                tap_action:
+                  action: navigate
+                  navigation_path: /isaac-lucas/music
+              - type: button
+                show_name: true
+                show_icon: true
+                name: Find Music
+                icon: mdi:magnify
+                tap_action:
+                  action: navigate
+                  navigation_path: '#music_browse'
         view_layout:
           grid-area: sonos
       - type: vertical-stack
@@ -567,6 +600,67 @@ views:
                 .entities.no-header {
                   padding-top: 0px !important;
                 }
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: '#music_browse'
+        name: Find music
+        icon: mdi:magnify
+        is_sidebar_hidden: false
+        margin_top_mobile: 0px
+        margin: 0px
+        back_open: true
+        margin_top_desktop: -44px
+        width_desktop: 1000px
+        bg_opacity: 85
+        bg_blur: 100
+        styles: |
+          bubble-card::after {
+            display: none !important;
+          }
+        cards:
+          - type: custom:sonos-card
+            sections:
+              - media browser
+              - search
+            entities:
+              - media_player.sonos_great_room_soundbar
+              - media_player.sonos_kitchen
+              - media_player.sonos_office
+              - media_player.sonos_solarium
+              - media_player.sonos_basement
+              - media_player.sonos_workshop
+              - media_player.sonos_garage
+            entityNameRegexToReplace: '^Sonos '
+            entityNameReplacement: ''
+            storePlayerInSessionStorage: true
+            fontFamily: var(--ha-font-family-body)
+            baseFontSize: 1.15
+            listItemHeight: 3.25
+            footerHeight: 3.5
+            widthPercentage: 100
+            heightPercentage: 100
+            sectionButtonIcons:
+              mediaBrowser: mdi:bookshelf
+            mediaBrowser:
+              itemsPerRow: 4
+              hideActivePlayerName: false
+              hideItems:
+                - My media
+                - Radio Browser
+                - AI Generated Images
+                - Frigate
+                - Nest
+              favorites:
+                title: Favorites
+                sortByType: true
+                hideTitleForThumbnailIcons: true
+                iconBorder: 1px solid var(--ha-card-border-color)
+                iconPadding: 0.5
+            search:
+              defaultMediaType: track
+              searchLimit: 40
+              autoSearchMinChars: 3
+              hideActivePlayerName: false
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#mail'
@@ -676,109 +770,214 @@ views:
     badges: []
     type: custom:grid-layout
     layout:
-      grid-template-columns: 28% 42% 30%
+      grid-template-columns: 30% 40% 30%
       grid-template-rows: auto
       grid-template-areas: |
-        "main1 main3 main5"
-        "main1 main3 main5"
-        "main2 main3 main5"
-        "main2 main4 main5"
+        "grouping player browse"
+        "grouping player browse"
+        "volumes  player browse"
+        "volumes  player browse"
+      mediaquery:
+        '(max-width: 1100px)':
+          grid-template-columns: 100%
+          grid-template-rows: auto auto auto auto
+          grid-template-areas: |
+            "player"
+            "grouping"
+            "browse"
+            "volumes"
     cards:
       - type: custom:sonos-card
         sections:
-          - groups
-        entityNameRegexToReplace: ' Sonos'
-        entityNameReplacement: ''
-        entities:
-          - media_player.great_room_sonos
-          - media_player.kitchen_sonos
-          - media_player.office_sonos
-          - media_player.basement_sonos
-          - media_player.solarium_sonos
-        heightPercentage: 77
-        widthPercentage: 100
-        view_layout:
-          grid-area: main1
-      - type: custom:sonos-card
-        sections:
           - grouping
-        entityNameRegexToReplace: ' Sonos'
+        entities:
+          - media_player.sonos_great_room_soundbar
+          - media_player.sonos_kitchen
+          - media_player.sonos_office
+          - media_player.sonos_solarium
+          - media_player.sonos_basement
+          - media_player.sonos_workshop
+          - media_player.sonos_garage
+        entityNameRegexToReplace: '^Sonos '
         entityNameReplacement: ''
-        predefinedGroups:
-          - name: 1st Floor
-            entities:
-              - media_player.great_room_sonos
-              - media_player.kitchen_sonos
-              - media_player.office_sonos
-          - name: Everywhere
-            entities:
-              - media_player.basement_sonos
-              - media_player.great_room_sonos
-              - media_player.kitchen_sonos
-              - media_player.office_sonos
-              - media_player.solarium_sonos
-        widthPercentage: 100
-        heightPercentage: 41
-        view_layout:
-          grid-area: main4
-        card_mod:
-          style:
-            sonos-grouping:
-              $: |
-                mwc-list.list {
-                  column-count: 2;
-                }
-            .: |
-              ha-card {
-                --layout-margin: 0px 4px 4px 4px !important;
-              }
-      - type: custom:sonos-card
-        sections:
-          - player
-        entityNameRegexToReplace: ' Sonos'
-        entityNameReplacement: ''
+        storePlayerInSessionStorage: true
+        fontFamily: '''Libre Franklin'', system-ui, sans-serif'
+        baseFontSize: 1.15
+        listItemHeight: 3.25
         widthPercentage: 100
         heightPercentage: 100
         view_layout:
-          grid-area: main3
-        entityId: media_player.kitchen_sonos
-        player:
-          showVolumeUpAndDownButtons: true
-          artworkAsBackgroundBlur: 10
-          controlsAndHeaderBackgroundOpacity: 0.7
-          mediaArtworkOverrides:
-            - mediaTitleEquals: TV
-              imageUrl: /local/images/other/tv.jpg
-      - type: custom:sonos-card
-        sections:
-          - media browser
-        entityNameRegexToReplace: ' Sonos'
-        entityNameReplacement: ''
-        heightPercentage: 140
-        widthPercentage: 100
-        view_layout:
-          grid-area: main5
-        mediaBrowser:
-          itemsPerRow: 2
-          favorites:
-            hideTitleForThumbnailIcons: true
-        card_mod:
-          style: |
-            ha-card {
-              --layout-margin: 4px 4px 4px 4px !important;
-            }
+          grid-area: grouping
+        grouping:
+          skipApplyButton: true
+          disableMainSpeakers: true
+          buttonFontSize: 1.05
+          buttonIcons:
+            predefinedGroup: mdi:home-sound-in-outline
+            joinAll: mdi:speaker-multiple
+            unJoinAll: mdi:speaker-off
+        predefinedGroups:
+          - name: Everywhere
+            volume: 15
+            unmuteWhenGrouped: true
+            entities:
+              - media_player.sonos_great_room_soundbar
+              - media_player.sonos_kitchen
+              - media_player.sonos_office
+              - media_player.sonos_solarium
+              - media_player.sonos_basement
+              - media_player.sonos_workshop
+              - media_player.sonos_garage
+          - name: 1st Floor
+            volume: 15
+            unmuteWhenGrouped: true
+            entities:
+              - media_player.sonos_great_room_soundbar
+              - media_player.sonos_kitchen
+              - media_player.sonos_office
+          - name: Downstairs
+            unmuteWhenGrouped: true
+            entities:
+              - player: media_player.sonos_basement
+                volume: 15
+              - player: media_player.sonos_solarium
+                volume: 12
+              - player: media_player.sonos_workshop
+                volume: 25
+          - name: Outside
+            volume: 20
+            unmuteWhenGrouped: true
+            entities:
+              - media_player.sonos_garage
+              - media_player.sonos_solarium
       - type: custom:sonos-card
         sections:
           - volumes
-        entityNameRegexToReplace: ' Sonos'
+          - groups
+        entities:
+          - media_player.sonos_great_room_soundbar
+          - media_player.sonos_kitchen
+          - media_player.sonos_office
+          - media_player.sonos_solarium
+          - media_player.sonos_basement
+          - media_player.sonos_workshop
+          - media_player.sonos_garage
+        entityNameRegexToReplace: '^Sonos '
         entityNameReplacement: ''
+        storePlayerInSessionStorage: true
+        fontFamily: '''Libre Franklin'', system-ui, sans-serif'
+        baseFontSize: 1.15
         dynamicVolumeSlider: true
-        heightPercentage: 64
+        volumeSliderHeight: 1.4
+        changeVolumeOnSlide: true
+        footerHeight: 3.5
         widthPercentage: 100
+        heightPercentage: 100
         view_layout:
-          grid-area: main2
+          grid-area: volumes
+        volumes:
+          hideCogwheel: true
+          labelForAllSlider: All rooms
+          hideActivePlayerName: true
+        groups:
+          compact: true
+          hideCurrentTrack: true
+        sectionButtonIcons:
+          volumes: mdi:tune-vertical
+          groups: mdi:speaker-multiple
+      - type: custom:sonos-card
+        sections:
+          - player
+          - queue
+        entities:
+          - media_player.sonos_great_room_soundbar
+          - media_player.sonos_kitchen
+          - media_player.sonos_office
+          - media_player.sonos_solarium
+          - media_player.sonos_basement
+          - media_player.sonos_workshop
+          - media_player.sonos_garage
+        entityNameRegexToReplace: '^Sonos '
+        entityNameReplacement: ''
+        storePlayerInSessionStorage: true
+        fontFamily: '''Libre Franklin'', system-ui, sans-serif'
+        baseFontSize: 1.15
+        footerHeight: 3.5
+        widthPercentage: 100
+        heightPercentage: 100
+        view_layout:
+          grid-area: player
+        sectionButtonIcons:
+          player: mdi:play-circle-outline
         player:
+          artworkAsBackgroundBlur: 10
+          controlsAndHeaderBackgroundOpacity: 0.7
+          artworkBorderRadius: 12
+          controlsLargeIcons: true
           showVolumeUpAndDownButtons: true
+          showFastForwardAndRewindButtons: true
+          fastForwardAndRewindStepSizeSeconds: 30
+          showChannel: true
+          showAudioInputFormat: true
+          headerSongFontSize: 1.35
+          fallbackArtwork: /local/images/other/tv.jpg
+          mediaArtworkOverrides:
+            - mediaTitleEquals: TV
+              imageUrl: /local/images/other/tv.jpg
+            - sourceRegexp: HDMI.*
+              imageUrl: /local/images/other/tv.jpg
+            - ifMissing: true
+              imageUrl: /local/images/other/tv.jpg
+        queue:
+          title: Up next
+          hideActivePlayerName: true
+          selectedItemBackgroundColor: var(--sonos-queue-active-bg)
+          selectedItemTextColor: var(--sonos-queue-active-text)
+      - type: custom:sonos-card
+        sections:
+          - media browser
+          - search
+        entities:
+          - media_player.sonos_great_room_soundbar
+          - media_player.sonos_kitchen
+          - media_player.sonos_office
+          - media_player.sonos_solarium
+          - media_player.sonos_basement
+          - media_player.sonos_workshop
+          - media_player.sonos_garage
+        entityNameRegexToReplace: '^Sonos '
+        entityNameReplacement: ''
+        storePlayerInSessionStorage: true
+        fontFamily: '''Libre Franklin'', system-ui, sans-serif'
+        baseFontSize: 1.15
+        listItemHeight: 3.25
+        footerHeight: 3.5
+        widthPercentage: 100
+        heightPercentage: 100
+        view_layout:
+          grid-area: browse
+        sectionButtonIcons:
+          mediaBrowser: mdi:bookshelf
+        mediaBrowser:
+          itemsPerRow: 2
+          hideActivePlayerName: true
+          hideItems:
+            - My media
+            - Radio Browser
+            - AI Generated Images
+            - Frigate
+            - Nest
+          favorites:
+            title: Favorites
+            sortByType: true
+            hideTitleForThumbnailIcons: true
+            iconBorder: 1px solid rgba(185, 187, 177, 0.5)
+            iconPadding: 0.5
+        search:
+          defaultMediaType: track
+          searchLimit: 40
+          autoSearchMinChars: 3
+          hideActivePlayerName: true
   - title: Living Areas
     path: main-floor
     icon: mdi:lamps
@@ -2654,14 +2853,6 @@ views:
                         top: 74%
                         transform: translate(-100%,-50%)
                   image: /local/hass-dryer-card-bg.png
-          - type: vertical-stack
-            cards:
-              - type: custom:mushroom-select-card
-                entity: input_select.house_mode
-                secondary_info: none
-              - type: entities
-                entities:
-                  - entity: input_boolean.guests_present
         view_layout:
           grid-area: cleaning
       - type: vertical-stack
