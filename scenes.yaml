@@ -1000,7 +1000,7 @@
       - light.kitchen_cans_sink
       - light.sink_sconce_left
       - light.sink_sconce_right
-      - light.stove_scone_left
+      - light.stove_sconce_left
       - light.stove_sconce_right
       - light.island_pendant_left
       - light.island_pendant_right
@@ -1250,7 +1250,7 @@
       state: 'on'
     light.back_can_left:
       brightness: 120
-      ccolor_temp_kelvin: 2845
+      color_temp_kelvin: 2845
       state: 'on'
     light.front_can_middle:
       state: 'off'
@@ -1329,11 +1329,11 @@
       state: 'off'
     light.office:
       brightness: 65
-      ccolor_temp_kelvin: 2845
+      color_temp_kelvin: 2845
       state: 'on'
     light.front_foyer:
       brightness: 100
-      ccolor_temp_kelvin: 2845
+      color_temp_kelvin: 2845
       state: 'on'
     light.white_room:
       state: 'off'
@@ -1357,11 +1357,11 @@
       state: 'on'
     light.kitchen:
       brightness: 155
-      ccolor_temp_kelvin: 2845
+      color_temp_kelvin: 2845
       state: 'on'
     light.mudroom:
       brightness: 128
-      ccolor_temp_kelvin: 2845
+      color_temp_kelvin: 2845
       state: 'on'
     light.office:
       brightness: 128

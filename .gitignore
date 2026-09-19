@@ -1,51 +1,37 @@
-###############################################################################
-# Global rule: ignore everything ................................................................
+# Ignore everything by default; whitelist what we intentionally version.
 *
-###############################################################################
 
-# ---------------------------------------------------------------------------
-# Root-level YAML files to INCLUDE in the repo
-# ---------------------------------------------------------------------------
-!automations.yaml
+# Repo housekeeping
+!.gitignore
+!README.md
+!git-backup.sh
+
+# Core config (root-level includes referenced from configuration.yaml)
 !configuration.yaml
-!scenes.yaml
+!automations.yaml
 !scripts.yaml
+!scenes.yaml
+!groups.yaml
 !input_booleans.yaml
 !input_select.yaml
-!switches.yaml
-!groups.yaml
-!binary_sensors.yaml
+!sensors.yaml
+!templates.yaml
 
-# ---------------------------------------------------------------------------
-# Theme & frontend assets
-# ---------------------------------------------------------------------------
+# Themes (loaded via !include_dir_merge_named themes)
 !themes/
-
-# keep only the three theme YAMLs I explicitly manage
 themes/*
-!themes/isaaclucas_kitchen.yaml
-!themes/mobile.yaml
-!themes/mudroom.yaml
+!themes/*.yaml
 
-# ---------------------------------------------------------------------------
-# Include-folders
-# ---------------------------------------------------------------------------
-!sensors/
-!templates/
+# Dashboards (source of truth for the UI dashboards; paste into raw editor / yaml mode)
+!frontends/
+frontends/*
+!frontends/*.yaml
 
-# By default ignore everything inside those folders …
-sensors/*
-templates/*
-
-# … except YAML files (yruntime helpers, washer/dryer, etc.)
-!sensors/*.yaml
-!templates/*.yaml
-
-# SSH keys
+# Never commit these even if a rule above would match
 .ssh/
-
-# Home Assistant Git backup
 git-backup.log
-
-# SSH credentials
-.ssh/
+secrets.yaml
+.storage/
+*.log
+*.db
+*.db-*

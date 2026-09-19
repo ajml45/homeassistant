@@ -1361,38 +1361,49 @@ light_fader:
   icon: mdi:lightbulb-on-50
 bedtime:
   alias: Bed Time
+  description: Dim the rooms that are still on, then run the kids' bedtime scripts.
+    Each room is wrapped in if/then so an already-off room doesn't abort the rest
+    of the sequence (a bare condition step stops the whole script).
   sequence:
-  - condition: state
-    entity_id: light.kitchen
-    state: 'on'
-  - target:
+  - if:
+    - condition: state
       entity_id: light.kitchen
-    data:
-      brightness_pct: 10
-    action: light.turn_on
-  - condition: state
-    entity_id: light.great_room
-    state: 'on'
-  - target:
+      state: 'on'
+    then:
+    - target:
+        entity_id: light.kitchen
+      data:
+        brightness_pct: 10
+      action: light.turn_on
+  - if:
+    - condition: state
       entity_id: light.great_room
-    data:
-      brightness_pct: 15
-    action: light.turn_on
-  - condition: state
-    entity_id: light.mudroom
-    state: 'on'
-  - target:
+      state: 'on'
+    then:
+    - target:
+        entity_id: light.great_room
+      data:
+        brightness_pct: 15
+      action: light.turn_on
+  - if:
+    - condition: state
       entity_id: light.mudroom
-    action: light.turn_off
-    data: {}
-  - condition: state
-    entity_id: light.offices
-    state: 'on'
-  - target:
+      state: 'on'
+    then:
+    - target:
+        entity_id: light.mudroom
+      action: light.turn_off
+      data: {}
+  - if:
+    - condition: state
       entity_id: light.offices
-    data:
-      brightness_pct: 15
-    action: light.turn_on
+      state: 'on'
+    then:
+    - target:
+        entity_id: light.offices
+      data:
+        brightness_pct: 15
+      action: light.turn_on
   - action: script.turn_on
     metadata: {}
     data: {}

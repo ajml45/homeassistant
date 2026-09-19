@@ -3,7 +3,7 @@ default_config:
 
 prometheus:
 
-# Load configs from seperate files
+# Load configs from separate files
 frontend:
   extra_module_url:
   - /local/community/custom-brand-icons/custom-brand-icons.js
@@ -24,11 +24,6 @@ sensor: !include sensors.yaml
 shell_command:
   git_backup: bash /config/git-backup.sh
 
-input_text:
-  active_scene:
-    name: Active Scene
-    initial: "Normal"
-
 input_datetime:
   last_left_home:
     name: Last Left Home
@@ -41,9 +36,3 @@ mqtt:
       state_topic: "homeassistant/guests/presence"
       payload_home: "home"
       payload_not_home: "not_home"
-
-tts:
-  - platform: google_translate
-    service_name: google_say
-    language: en
-

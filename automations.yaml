@@ -221,15 +221,6 @@
   - at: '20:00:00'
     trigger: time
   conditions:
-  - condition: time
-    weekday:
-    - sun
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
   - condition: state
     entity_id: light.solarium
     state: 'on'
@@ -444,15 +435,6 @@
     offset: -02:00:00
     trigger: sun
   conditions:
-  - condition: time
-    weekday:
-    - sun
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
   - condition: state
     entity_id: light.solarium
     state: 'off'
@@ -1413,10 +1395,6 @@
           entity_id: scene.off
         action: scene.turn_on
         data: {}
-      - data:
-          entity_id: input_text.active_scene
-          value: All Off
-        action: input_text.set_value
     - conditions:
       - condition: state
         entity_id: input_select.scenes
@@ -1426,10 +1404,6 @@
           entity_id: script.morning
         action: script.turn_on
         data: {}
-      - data:
-          entity_id: input_text.active_scene
-          value: Wake Up
-        action: input_text.set_value
     - conditions:
       - condition: state
         entity_id: input_select.scenes
@@ -1439,10 +1413,6 @@
           entity_id: scene.normal
         action: scene.turn_on
         data: {}
-      - data:
-          entity_id: input_text.active_scene
-          value: Normal
-        action: input_text.set_value
     - conditions:
       - condition: state
         entity_id: input_select.scenes
@@ -1452,10 +1422,6 @@
           entity_id: scene.cooking
         action: scene.turn_on
         data: {}
-      - data:
-          entity_id: input_text.active_scene
-          value: Cooking
-        action: input_text.set_value
     - conditions:
       - condition: state
         entity_id: input_select.scenes
@@ -1465,10 +1431,6 @@
           entity_id: scene.dinner
         action: scene.turn_on
         data: {}
-      - data:
-          entity_id: input_text.active_scene
-          value: Dinner
-        action: input_text.set_value
     - conditions:
       - condition: state
         entity_id: input_select.scenes
@@ -1478,10 +1440,6 @@
           entity_id: scene.relax
         action: scene.turn_on
         data: {}
-      - data:
-          entity_id: input_text.active_scene
-          value: Relax
-        action: input_text.set_value
     - conditions:
       - condition: state
         entity_id: input_select.scenes
@@ -1491,10 +1449,6 @@
           entity_id: script.bedtime_2
         action: script.turn_on
         data: {}
-      - data:
-          entity_id: input_text.active_scene
-          value: Bedtime
-        action: input_text.set_value
     - conditions:
       - condition: state
         entity_id: input_select.scenes
@@ -1504,10 +1458,6 @@
           entity_id: scene.master_bedtime
         action: scene.turn_on
         data: {}
-      - data:
-          entity_id: input_text.active_scene
-          value: Master Bedtime
-        action: input_text.set_value
     - conditions:
       - condition: state
         entity_id: input_select.scenes
@@ -1517,10 +1467,6 @@
           entity_id: script.party
         action: script.turn_on
         data: {}
-      - data:
-          entity_id: input_text.active_scene
-          value: Party
-        action: input_text.set_value
     - conditions:
       - condition: state
         entity_id: input_select.scenes
@@ -1530,10 +1476,6 @@
           entity_id: scene.red_sox
         action: scene.turn_on
         data: {}
-      - data:
-          entity_id: input_text.active_scene
-          value: Red Sox
-        action: input_text.set_value
 - id: '1748640799685'
   alias: GitHub Daily Backup
   description: ''
@@ -1755,7 +1697,7 @@
       - light.white_room_piano_light
       - light.white_room_table_lamps
       - light.wine_cellar_sconces
-      - light.stove_scone_left
+      - light.stove_sconce_left
       - light.solarium_sconces
   - action: input_datetime.set_datetime
     metadata: {}
@@ -2180,7 +2122,7 @@
     target:
       entity_id: script.lego_return_to_idle
   mode: single
-- id: 00008
+- id: '00008'
   alias: NFC Stormtrooper
   trigger:
   - platform: mqtt
@@ -2206,7 +2148,7 @@
     target:
       entity_id: script.lego_return_to_idle
   mode: single
-- id: 00009
+- id: '00009'
   alias: NFC Rebel Pilot
   trigger:
   - platform: mqtt
@@ -2592,7 +2534,7 @@
         action: script.turn_on
   mode: single
 - id: '30001'
-  alias: henry
+  alias: NFC Henry Bracelet
   description: ''
   triggers:
   - topic: lego/bracelet/scanned
