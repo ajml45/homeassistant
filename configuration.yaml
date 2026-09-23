@@ -20,6 +20,10 @@ input_select: !include input_select.yaml
 template: !include templates.yaml
 sensor: !include sensors.yaml
 
+http:
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
+
 #shell script to push to git
 shell_command:
   git_backup: bash /config/git-backup.sh
