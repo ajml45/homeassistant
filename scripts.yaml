@@ -1478,29 +1478,26 @@ morning:
     tilt/position issues)
   icon: mdi:weather-sunset-up
 find_iphone_alert_christina:
+  alias: Find iPhone Alert - Christina
+  icon: mdi:map-marker-question
   sequence:
-  - data:
-      device_name: christina_iphone
-    action: icloud3.find_iphone_alert
-  - data:
-      title: Find iPhone Alert
-      message: Find iPhone Alert was triggered for Christina (Home Assistant/Christinas
-        iPhone)
-    action: notify.mobile_app_christina_iphone
-  alias: Find iPhone Alert Christina
+  - action: notify.mobile_app_christina_s_iphone
+    data: {}
   mode: single
   description: ''
 find_phone_alert_andrew:
   alias: Find iPhone Alert - Andrew
+  icon: mdi:map-marker-question
   sequence:
-  - data:
-      device_name: andrew_iphone_16
-    action: icloud3.find_iphone_alert
-  - data:
-      title: Find iPhone Alert
-      message: Find iPhone Alert was triggered for Andrew (Home Assistant/Andrew iPhone
-        16)
-    action: notify.mobile_app_andrews_phone
+  - action: notify.mobile_app_andrews_phone
+    data:
+      message: Where are you
+      data:
+        push:
+          sound:
+            name: default
+            critical: 1
+            volume: 1
   mode: single
   description: ''
 away_adjust_climate:
