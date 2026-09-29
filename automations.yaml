@@ -2122,7 +2122,7 @@
     target:
       entity_id: script.lego_return_to_idle
   mode: single
-- id: '00008'
+- id: 00008
   alias: NFC Stormtrooper
   trigger:
   - platform: mqtt
@@ -2148,7 +2148,7 @@
     target:
       entity_id: script.lego_return_to_idle
   mode: single
-- id: '00009'
+- id: 00009
   alias: NFC Rebel Pilot
   trigger:
   - platform: mqtt
@@ -2610,4 +2610,116 @@
     target:
       entity_id: button.mudroom_mudroom_ha_tablet_restart_browser
     data: {}
+  mode: single
+- id: '1790619476632'
+  alias: NFC Anakin
+  description: ''
+  triggers:
+  - topic: lego/bracelet/scanned
+    payload: 04-84-10-7F-8F-61-80
+    trigger: mqtt
+  conditions: []
+  actions:
+  - target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Anakin
+    action: input_text.set_value
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.4
+    action: media_player.volume_set
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      media:
+        media_content_id: spotify:track:6C3zb6MZM3CZzjDAB937lb
+        media_content_type: music
+        metadata: {}
+    action: media_player.play_media
+  - data:
+      topic: lego/pi/play
+      payload: voices/voices_anakin_funbegins.wav
+    action: mqtt.publish
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 200
+      - 230
+      - 255
+      brightness_pct: 100
+    action: light.turn_on
+  - delay:
+      milliseconds: 400
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 0
+      - 80
+      - 255
+      brightness_pct: 90
+      transition: 0.5
+    action: light.turn_on
+  - target:
+      entity_id: script.lego_return_to_idle
+    action: script.turn_on
+  mode: single
+- id: '1790620601821'
+  alias: NFC K2SO
+  description: ''
+  triggers:
+  - topic: lego/bracelet/scanned
+    payload: 04-16-E0-80-8F-61-80
+    trigger: mqtt
+  conditions: []
+  actions:
+  - target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Anakin
+    action: input_text.set_value
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.4
+    action: media_player.volume_set
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      media:
+        media_content_id: spotify:track:0O5xBn8C6Reu3ihKbSBgB7
+        media_content_type: music
+        metadata: {}
+    action: media_player.play_media
+  - data:
+      topic: lego/pi/play
+      payload: voices/voices_k2so_iamk2so.wav
+    action: mqtt.publish
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      brightness_pct: 100
+    action: light.turn_on
+  - delay:
+      milliseconds: 1200
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 170
+      - 210
+      - 255
+      brightness_pct: 70
+      transition: 1
+    action: light.turn_on
+  - target:
+      entity_id: script.lego_return_to_idle
+    action: script.turn_on
   mode: single
