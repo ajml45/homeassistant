@@ -2723,3 +2723,378 @@
       entity_id: script.lego_return_to_idle
     action: script.turn_on
   mode: single
+- id: '1790878772589'
+  alias: NFC BB-8
+  description: ''
+  triggers:
+  - topic: lego/bracelet/scanned
+    payload: 04-1B-6B-7F-8F-61-80
+    trigger: mqtt
+  conditions: []
+  actions:
+  - target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: BB-8
+    action: input_text.set_value
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.4
+    action: media_player.volume_set
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      media:
+        media_content_id: spotify:track:0Hicqz1K8PswE0Uijx5STA
+        media_content_type: music
+        metadata: {}
+    action: media_player.play_media
+  - data:
+      topic: lego/pi/play
+      payload: voices/voices_bb8_happy.wav
+    action: mqtt.publish
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 95
+      - 0
+      brightness_pct: 100
+    action: light.turn_on
+  - delay:
+      milliseconds: 200
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      effect: Ripple
+      brightness_pct: 85
+    action: light.turn_on
+  - delay:
+      milliseconds: 1200
+  - target:
+      entity_id: script.lego_return_to_idle
+    action: script.turn_on
+  mode: single
+- id: '1790879376191'
+  alias: NFC Ki-Adi Mundi
+  description: ''
+  triggers:
+  - topic: lego/bracelet/scanned
+    payload: 04-83-D7-7F-8F-61-80
+    trigger: mqtt
+  conditions: []
+  actions:
+  - target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Ki-Adi Mundi
+    action: input_text.set_value
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.4
+    action: media_player.volume_set
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      media:
+        media_content_id: spotify:track:3BlIgczFnUcms6qbVJwMrE
+        media_content_type: music
+        metadata: {}
+    action: media_player.play_media
+  - data:
+      topic: lego/pi/play
+      payload: voices/voices_kiadimundi_wookies.wav
+    action: mqtt.publish
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 20
+      - 140
+      - 40
+      brightness_pct: 70
+    action: light.turn_on
+  - delay:
+      milliseconds: 800
+  - repeat:
+      count: 3
+      sequence:
+      - target:
+          entity_id: light.solarium_rope_light
+        data:
+          rgb_color:
+          - 255
+          - 20
+          - 0
+          brightness_pct: 100
+        action: light.turn_on
+      - delay:
+          milliseconds: 150
+      - target:
+          entity_id: light.solarium_rope_light
+        data:
+          rgb_color:
+          - 20
+          - 140
+          - 40
+          brightness_pct: 70
+        action: light.turn_on
+      - delay:
+          milliseconds: 400
+  - delay:
+      milliseconds: 1000
+  - target:
+      entity_id: script.lego_return_to_idle
+    action: script.turn_on
+  mode: single
+- id: '1790880330662'
+  alias: NFC Ahsoka
+  description: ''
+  triggers:
+  - topic: lego/bracelet/scanned
+    payload: 04-57-DD-01-4F-61-80
+    trigger: mqtt
+  conditions: []
+  actions:
+  - target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Ahsoka
+    action: input_text.set_value
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.3
+    action: media_player.volume_set
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      media:
+        media_content_id: spotify:track:3aBoqiCFwelBFjbEe1NEI1
+        media_content_type: music
+        metadata: {}
+    action: media_player.play_media
+  - data:
+      topic: lego/pi/play
+      payload: voices/voices_ahsoka_lightsaber.wav
+    action: mqtt.publish
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 110
+      - 20
+      brightness_pct: 100
+    action: light.turn_on
+  - delay:
+      milliseconds: 800
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 235
+      - 240
+      - 255
+      brightness_pct: 100
+      transition: 0.5
+    action: light.turn_on
+  - delay:
+      milliseconds: 1000
+  - target:
+      entity_id: script.lego_return_to_idle
+    action: script.turn_on
+  mode: single
+- id: '1790880759887'
+  alias: NFC White Vadar
+  description: ''
+  triggers:
+  - topic: lego/bracelet/scanned
+    payload: 04-06-DF-7D-8F-61-80
+    trigger: mqtt
+  conditions: []
+  actions:
+  - target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: White Vadar
+    action: input_text.set_value
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.35
+    action: media_player.volume_set
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      media:
+        media_content_id: spotify:track:3G7tRC24Uh09Hmp1KZ7LQ2
+        media_content_type: music
+        metadata: {}
+    action: media_player.play_media
+  - data:
+      topic: lego/pi/play
+      payload: voices/voices_vadar_lackoffaith.wav
+    action: mqtt.publish
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      media:
+        media_content_id: spotify:track:3G7tRC24Uh09Hmp1KZ7LQ2
+        media_content_type: music
+        metadata: {}
+    action: media_player.play_media
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    action: light.turn_on
+  - delay:
+      milliseconds: 2500
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 100
+      color_temp_kelvin: 6500
+      transition: 2
+    action: light.turn_on
+  - target:
+      entity_id: script.lego_return_to_idle
+    action: script.turn_on
+  mode: single
+- id: '1790881887818'
+  alias: NFC Rey
+  description: ''
+  triggers:
+  - topic: lego/bracelet/scanned
+    payload: 04-D5-10-7E-8F-61-80
+    trigger: mqtt
+  conditions: []
+  actions:
+  - target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Rey
+    action: input_text.set_value
+  - data:
+      topic: lego/pi/play
+      payload: voices/voices_rey_garbage.wav
+    action: mqtt.publish
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      media:
+        media_content_id: spotify:track:5wsHtmFHWntJzcN6n8ivjd
+        media_content_type: music
+        metadata: {}
+    action: media_player.play_media
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 120
+      - 30
+      brightness_pct: 60
+    action: light.turn_on
+  - delay:
+      milliseconds: 1000
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 215
+      - 0
+      brightness_pct: 100
+      transition: 0.3
+    action: light.turn_on
+  - delay:
+      seconds: 3
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 60
+      - 150
+      - 255
+      brightness_pct: 100
+      transition: 0.2
+    action: light.turn_on
+  - target:
+      entity_id: script.lego_return_to_idle
+    action: script.turn_on
+  mode: single
+- id: '1790883753705'
+  alias: NFC Obi Wan
+  description: ''
+  triggers:
+  - topic: lego/bracelet/scanned
+    payload: 04-63-D4-01-4F-61-80
+    trigger: mqtt
+  conditions: []
+  actions:
+  - target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: Obi Wan
+    action: input_text.set_value
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: 0.4
+    action: media_player.volume_set
+  - data:
+      topic: lego/pi/play
+      payload: voices/voices_obiwan_hello.wav
+    action: mqtt.publish
+  - target:
+      entity_id: media_player.sonos_office
+    data:
+      media:
+        media_content_id: spotify:track:0UvXARxghc7E5grZSpGArl
+        media_content_type: music
+        metadata: {}
+    action: media_player.play_media
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 120
+      - 60
+      brightness_pct: 70
+    action: light.turn_on
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 80
+      - 120
+      brightness_pct: 60
+      transition: 1.5
+    action: light.turn_on
+  - delay:
+      milliseconds: 1500
+  - target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 0
+      - 160
+      - 255
+      brightness_pct: 90
+      transition: 0.5
+    action: light.turn_on
+  - target:
+      entity_id: script.lego_return_to_idle
+    action: script.turn_on
+  mode: single
