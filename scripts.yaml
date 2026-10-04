@@ -1542,38 +1542,90 @@ return_restore_climate:
       - climate.upstairs
     data:
       preset_mode: none
-'1778538483267':
+
+lego_return_to_idle:
   alias: Lego Return To Idle
   mode: restart
   sequence:
-  - delay:
-      seconds: 25
-  - target:
-      entity_id: media_player.sonos_office
-    data:
-      volume_level: 0
-    action: media_player.volume_set
-  - delay:
-      seconds: 1
-  - target:
-      entity_id: media_player.sonos_office
-    action: media_player.media_stop
-  - target:
-      entity_id: light.solarium_rope_light
-    data:
-      brightness_pct: 30
-      rgb_color:
-      - 40
-      - 30
-      - 50
-      transition: 3
-    action: light.turn_on
-  - target:
-      entity_id: input_text.lego_active_character
-    data:
-      value: none
-    action: input_text.set_value
-  description: ''
+    - delay:
+        seconds: 22
+    - variables:
+        start_vol: "{{ state_attr('media_player.sonos_office', 'volume_level') | float(0.4) }}"
+    - if:
+        - condition: state
+          entity_id: media_player.sonos_office
+          state: playing
+      then:
+        - repeat:
+            for_each: [0.6, 0.3, 0.1]
+            sequence:
+              - action: media_player.volume_set
+                target:
+                  entity_id: media_player.sonos_office
+                data:
+                  volume_level: "{{ (start_vol * repeat.item) | round(2) }}"
+              - delay:
+                  milliseconds: 700
+        - action: media_player.media_stop
+          target:
+            entity_id: media_player.sonos_office
+        - delay:
+            milliseconds: 500
+        - action: media_player.volume_set
+          target:
+            entity_id: media_player.sonos_office
+          data:
+            volume_level: "{{ start_vol }}"
+    - action: light.turn_on
+      target:
+        entity_id: light.solarium_rope_light
+      data:
+        brightness_pct: 30
+        rgb_color: [40, 30, 50]
+        transition: 3
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.lego_active_character
+      data:
+        value: none
+
+lego_sonos_swell:
+  alias: Lego Sonos Swell
+  description: Starts a track quietly and swells it up; 40% quieter between 7pm and 7am.
+  mode: restart
+  fields:
+    media:
+      description: Spotify URI or HTTP URL to play
+    volume:
+      description: Target volume (0-1)
+  sequence:
+    - variables:
+        evening: "{{ now().hour >= 19 or now().hour < 7 }}"
+        goal: "{{ ((volume | default(0.4) | float) * (0.6 if evening else 1)) | round(2) }}"
+    - action: media_player.volume_set
+      target:
+        entity_id: media_player.sonos_office
+      data:
+        volume_level: 0.08
+    - action: media_player.play_media
+      target:
+        entity_id: media_player.sonos_office
+      data:
+        media_content_id: "{{ media }}"
+        media_content_type: music
+    - delay:
+        milliseconds: 1500
+    - repeat:
+        for_each: [0.4, 0.6, 0.8, 1.0]
+        sequence:
+          - action: media_player.volume_set
+            target:
+              entity_id: media_player.sonos_office
+            data:
+              volume_level: "{{ (goal | float * repeat.item) | round(2) }}"
+          - delay:
+              milliseconds: 500
+              
 trivia_victory:
   alias: Trivia Victory
   mode: single
