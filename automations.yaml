@@ -3453,3 +3453,52 @@
     - action: script.turn_on
       target:
         entity_id: script.lego_return_to_idle
+- id: '30002'
+  alias: NFC Dad
+  description: Dad slides in Risky Business style. Random announcement or dad joke, Bob Seger, disco lights. Special line if Vader was just scanned.
+  mode: single
+  triggers:
+    - trigger: mqtt
+      topic: lego/bracelet/scanned
+      payload: 08-61-92-25
+  conditions: []
+  actions:
+    # Was Vader (or White Vader) on the pad before Dad?
+    - variables:
+        after_vader: "{{ states('input_text.lego_active_character') | lower in ['vader', 'white vader'] }}"
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.lego_active_character
+      data:
+        value: Dad
+    # Closet: "No. I am your father." after Vader, otherwise a random announcement / dad joke
+    - action: mqtt.publish
+      data:
+        topic: lego/pi/play
+        payload: "{{ 'voices/voices_dad_iamyourfather.wav' if after_vader else 'RANDOM:dad' }}"
+    # Room: the Risky Business sock-slide song
+    - action: script.turn_on
+      target:
+        entity_id: script.lego_sonos_swell
+      data:
+        variables:
+          media: spotify:track:5EOoMWIB9iK4ZpcSex9Ec7
+          volume: 0.45
+    # Warm spotlight for the entrance...
+    - action: light.turn_on
+      target:
+        entity_id: light.solarium_rope_light
+      data:
+        color_temp_kelvin: 2700
+        brightness_pct: 100
+    - delay:
+        milliseconds: 2500
+    # ...then the dance party kicks in
+    - action: light.turn_on
+      target:
+        entity_id: light.solarium_rope_light
+      data:
+        effect: Disco
+    - action: script.turn_on
+      target:
+        entity_id: script.lego_return_to_idle
