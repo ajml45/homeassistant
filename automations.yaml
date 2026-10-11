@@ -3453,52 +3453,99 @@
     - action: script.turn_on
       target:
         entity_id: script.lego_return_to_idle
-- id: '30002'
-  alias: NFC Dad
-  description: Dad slides in Risky Business style. Random announcement or dad joke, Bob Seger, disco lights. Special line if Vader was just scanned.
+- id: '00017'
+  alias: NFC Darth Maul
+  description: Double-bladed red saber ignition and Duel of the Fates. Bonus duel if Obi-Wan or Ahsoka was scanned just before.
   mode: single
   triggers:
     - trigger: mqtt
       topic: lego/bracelet/scanned
-      payload: 08-61-92-25
+      payload: 04-54-29-00-4F-61-80
   conditions: []
   actions:
-    # Was Vader (or White Vader) on the pad before Dad?
+    # Who was on the pad BEFORE Maul? His two famous rivals get a duel.
     - variables:
-        after_vader: "{{ states('input_text.lego_active_character') | lower in ['vader', 'white vader'] }}"
+        after_obiwan: "{{ is_state('input_text.lego_active_character', 'Obi Wan') }}"
+        after_ahsoka: "{{ is_state('input_text.lego_active_character', 'Ahsoka') }}"
+        rival_rgb: "{{ [0, 160, 255] if after_obiwan else [235, 240, 255] }}"
     - action: input_text.set_value
       target:
         entity_id: input_text.lego_active_character
       data:
-        value: Dad
-    # Closet: "No. I am your father." after Vader, otherwise a random announcement / dad joke
+        value: Darth Maul
+    # Closet: double-bladed saber snapping on
     - action: mqtt.publish
       data:
         topic: lego/pi/play
-        payload: "{{ 'voices/voices_dad_iamyourfather.wav' if after_vader else 'RANDOM:dad' }}"
-    # Room: the Risky Business sock-slide song
+        payload: lightsaber/lightsaber_maul_ignite.wav
+    # Room: Duel of the Fates, or "Ahsoka vs. Maul" if Ahsoka is here
     - action: script.turn_on
       target:
         entity_id: script.lego_sonos_swell
       data:
         variables:
-          media: spotify:track:5EOoMWIB9iK4ZpcSex9Ec7
+          media: "{{ 'spotify:track:6Lr2bN5bhrrqeSC1OOj6sZ' if after_ahsoka else 'spotify:track:4oZwvVtLqXMdZLJnlQDlt1' }}"
           volume: 0.45
-    # Warm spotlight for the entrance...
+    # Lights: darkness, blade one, blade two, then a menacing Sith red
     - action: light.turn_on
       target:
         entity_id: light.solarium_rope_light
       data:
-        color_temp_kelvin: 2700
+        rgb_color: [60, 0, 0]
+        brightness_pct: 15
+    - delay:
+        milliseconds: 400
+    - action: light.turn_on
+      target:
+        entity_id: light.solarium_rope_light
+      data:
+        rgb_color: [255, 0, 0]
+        brightness_pct: 60
+    - delay:
+        milliseconds: 450
+    - action: light.turn_on
+      target:
+        entity_id: light.solarium_rope_light
+      data:
+        rgb_color: [255, 20, 0]
         brightness_pct: 100
     - delay:
-        milliseconds: 2500
-    # ...then the dance party kicks in
+        milliseconds: 600
     - action: light.turn_on
       target:
         entity_id: light.solarium_rope_light
       data:
-        effect: Disco
+        rgb_color: [200, 0, 0]
+        brightness_pct: 80
+        transition: 1
+    # Bonus: Obi-Wan (blue) or Ahsoka (white) came first, so they duel
+    - if: "{{ after_obiwan or after_ahsoka }}"
+      then:
+        - delay:
+            milliseconds: 1500
+        - action: mqtt.publish
+          data:
+            topic: lego/pi/play
+            payload: RANDOM:combat
+        - repeat:
+            count: 2
+            sequence:
+              - action: light.turn_on
+                target:
+                  entity_id: light.solarium_rope_light
+                data:
+                  rgb_color: [255, 0, 0]
+                  brightness_pct: 100
+              - delay:
+                  milliseconds: 400
+              - action: light.turn_on
+                target:
+                  entity_id: light.solarium_rope_light
+                data:
+                  rgb_color: "{{ rival_rgb }}"
+                  brightness_pct: 100
+              - delay:
+                  milliseconds: 400
     - action: script.turn_on
       target:
         entity_id: script.lego_return_to_idle
