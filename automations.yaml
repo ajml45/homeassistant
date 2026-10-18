@@ -2388,7 +2388,7 @@
 
 - id: '00012'
   alias: NFC Clone Trooper
-  description: ''
+  description: Roger roger, a blaster shot, then a sheepish "uh oh"
   mode: single
   triggers:
     - trigger: mqtt
@@ -2405,6 +2405,7 @@
     - action: script.turn_on
       target:
         entity_id: script.lego_sonos_stop
+    # "Roger roger"
     - action: mqtt.publish
       data:
         topic: lego/pi/play
@@ -2417,6 +2418,7 @@
         brightness_pct: 100
     - delay:
         milliseconds: 1500
+    # Blaster shot with a red muzzle flash
     - action: mqtt.publish
       data:
         topic: lego/pi/play
@@ -2435,6 +2437,20 @@
       data:
         color_name: orange
         brightness_pct: 100
+    # A beat of silence after the shot... then "uh oh" and the lights sag
+    - delay:
+        milliseconds: 1800
+    - action: mqtt.publish
+      data:
+        topic: lego/pi/play
+        payload: voices/voices_clonetrooper_utoh.wav
+    - action: light.turn_on
+      target:
+        entity_id: light.solarium_rope_light
+      data:
+        color_name: orange
+        brightness_pct: 25
+        transition: 1.5
     - action: script.turn_on
       target:
         entity_id: script.lego_return_to_idle
