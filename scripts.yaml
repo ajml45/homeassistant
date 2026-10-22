@@ -1542,56 +1542,62 @@ return_restore_climate:
       - climate.upstairs
     data:
       preset_mode: none
-
 lego_return_to_idle:
   alias: Lego Return To Idle
   mode: restart
   sequence:
-    - delay:
-        seconds: 22
-    - variables:
-        start_vol: "{{ state_attr('media_player.sonos_office', 'volume_level') | float(0.4) }}"
-    - if:
-        - condition: state
-          entity_id: media_player.sonos_office
-          state: playing
-      then:
-        - repeat:
-            for_each: [0.6, 0.3, 0.1]
-            sequence:
-              - action: media_player.volume_set
-                target:
-                  entity_id: media_player.sonos_office
-                data:
-                  volume_level: "{{ (start_vol * repeat.item) | round(2) }}"
-              - delay:
-                  milliseconds: 700
-        - action: media_player.media_stop
-          target:
-            entity_id: media_player.sonos_office
-        - delay:
-            milliseconds: 500
+  - delay:
+      seconds: 22
+  - variables:
+      start_vol: '{{ state_attr(''media_player.sonos_office'', ''volume_level'') |
+        float(0.4) }}'
+  - if:
+    - condition: state
+      entity_id: media_player.sonos_office
+      state: playing
+    then:
+    - repeat:
+        for_each:
+        - 0.6
+        - 0.3
+        - 0.1
+        sequence:
         - action: media_player.volume_set
           target:
             entity_id: media_player.sonos_office
           data:
-            volume_level: "{{ start_vol }}"
-    - action: light.turn_on
+            volume_level: '{{ (start_vol * repeat.item) | round(2) }}'
+        - delay:
+            milliseconds: 700
+    - action: media_player.media_stop
       target:
-        entity_id: light.solarium_rope_light
-      data:
-        brightness_pct: 30
-        rgb_color: [40, 30, 50]
-        transition: 3
-    - action: input_text.set_value
+        entity_id: media_player.sonos_office
+    - delay:
+        milliseconds: 500
+    - action: media_player.volume_set
       target:
-        entity_id: input_text.lego_active_character
+        entity_id: media_player.sonos_office
       data:
-        value: none
-
+        volume_level: '{{ start_vol }}'
+  - action: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      brightness_pct: 30
+      rgb_color:
+      - 40
+      - 30
+      - 50
+      transition: 3
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.lego_active_character
+    data:
+      value: none
 lego_sonos_swell:
   alias: Lego Sonos Swell
-  description: Starts a track quietly (optionally jumping to a timestamp) and swells it up; 40% quieter 7pm-7am.
+  description: Starts a track quietly (optionally jumping to a timestamp) and swells
+    it up; 40% quieter 7pm-7am.
   mode: restart
   fields:
     media:
@@ -1601,92 +1607,97 @@ lego_sonos_swell:
     seek:
       description: Optional start position in seconds
   sequence:
-    - variables:
-        evening: "{{ now().hour >= 19 or now().hour < 7 }}"
-        goal: "{{ ((volume | default(0.4) | float) * (0.6 if evening else 1)) | round(2) }}"
-        start_at: "{{ seek | default(0) | int }}"
-        track_key: "{{ media.split(':')[-1] if media.startswith('spotify:') else media.split('/')[-1] }}"
-    # Silent while seeking so the jump isn't heard; otherwise start low
-    - action: media_player.volume_set
+  - variables:
+      evening: '{{ now().hour >= 19 or now().hour < 7 }}'
+      goal: '{{ ((volume | default(0.4) | float) * (0.6 if evening else 1)) | round(2)
+        }}'
+      start_at: '{{ seek | default(0) | int }}'
+      track_key: '{{ media.split('':'')[-1] if media.startswith(''spotify:'') else
+        media.split(''/'')[-1] }}'
+  - action: media_player.volume_set
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      volume_level: '{{ 0 if start_at > 0 else 0.08 }}'
+  - action: media_player.play_media
+    target:
+      entity_id: media_player.sonos_office
+    data:
+      media_content_id: '{{ media }}'
+      media_content_type: music
+  - if: '{{ start_at > 0 }}'
+    then:
+    - wait_template: "{{ is_state('media_player.sonos_office', 'playing') and\n   track_key
+        in (state_attr('media_player.sonos_office', 'media_content_id') or '') }}"
+      timeout: 00:00:06
+      continue_on_timeout: true
+    - action: media_player.media_seek
       target:
         entity_id: media_player.sonos_office
       data:
-        volume_level: "{{ 0 if start_at > 0 else 0.08 }}"
-    - action: media_player.play_media
-      target:
-        entity_id: media_player.sonos_office
-      data:
-        media_content_id: "{{ media }}"
-        media_content_type: music
-    - if: "{{ start_at > 0 }}"
-      then:
-        # Wait until the NEW track is actually playing (not the previous character's song)
-        - wait_template: >-
-            {{ is_state('media_player.sonos_office', 'playing') and
-               track_key in (state_attr('media_player.sonos_office', 'media_content_id') or '') }}
-          timeout: "00:00:06"
-          continue_on_timeout: true
-        - action: media_player.media_seek
-          target:
-            entity_id: media_player.sonos_office
-          data:
-            seek_position: "{{ start_at }}"
-        - delay:
-            milliseconds: 300
-      else:
-        - delay:
-            milliseconds: 1500
-    - repeat:
-        for_each: [0.4, 0.6, 0.8, 1.0]
-        sequence:
-          - action: media_player.volume_set
-            target:
-              entity_id: media_player.sonos_office
-            data:
-              volume_level: "{{ (goal | float * repeat.item) | round(2) }}"
-          - delay:
-              milliseconds: 500
-
+        seek_position: '{{ start_at }}'
+    - delay:
+        milliseconds: 300
+    else:
+    - delay:
+        milliseconds: 1500
+  - repeat:
+      for_each:
+      - 0.4
+      - 0.6
+      - 0.8
+      - 1.0
+      sequence:
+      - action: media_player.volume_set
+        target:
+          entity_id: media_player.sonos_office
+        data:
+          volume_level: '{{ (goal | float * repeat.item) | round(2) }}'
+      - delay:
+          milliseconds: 500
 lego_sonos_stop:
   alias: Lego Sonos Stop
-  description: If the Sonos is playing, fade it out quickly, stop it, and put the volume back.
+  description: If the Sonos is playing, fade it out quickly, stop it, and put the
+    volume back.
   mode: restart
   sequence:
-    - if:
-        - condition: state
-          entity_id: media_player.sonos_office
-          state: playing
-      then:
-        - variables:
-            start_vol: "{{ state_attr('media_player.sonos_office', 'volume_level') | float(0.4) }}"
-        - repeat:
-            for_each: [0.5, 0.2]
-            sequence:
-              - action: media_player.volume_set
-                target:
-                  entity_id: media_player.sonos_office
-                data:
-                  volume_level: "{{ (start_vol * repeat.item) | round(2) }}"
-              - delay:
-                  milliseconds: 250
-        - action: media_player.media_stop
-          target:
-            entity_id: media_player.sonos_office
-        - delay:
-            milliseconds: 300
+  - if:
+    - condition: state
+      entity_id: media_player.sonos_office
+      state: playing
+    then:
+    - variables:
+        start_vol: '{{ state_attr(''media_player.sonos_office'', ''volume_level'')
+          | float(0.4) }}'
+    - repeat:
+        for_each:
+        - 0.5
+        - 0.2
+        sequence:
         - action: media_player.volume_set
           target:
             entity_id: media_player.sonos_office
           data:
-            volume_level: "{{ start_vol }}"
-              
+            volume_level: '{{ (start_vol * repeat.item) | round(2) }}'
+        - delay:
+            milliseconds: 250
+    - action: media_player.media_stop
+      target:
+        entity_id: media_player.sonos_office
+    - delay:
+        milliseconds: 300
+    - action: media_player.volume_set
+      target:
+        entity_id: media_player.sonos_office
+      data:
+        volume_level: '{{ start_vol }}'
 trivia_victory:
   alias: Trivia Victory
   mode: single
   sequence:
   - data:
       topic: lego/pi/play
-      payload: trivia/responses/victory_0{{ range(1, 9) | random }}.wav
+      payload: trivia/responses/victory_{{ '%02d' % (range(1, 10) | random) }}.wav
     action: mqtt.publish
   - repeat:
       count: 3
