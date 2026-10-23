@@ -1280,68 +1280,6 @@
     target:
       entity_id: switch.fish_lights
   mode: single
-- alias: Feed Fish Reminder at 6 AM and 4 PM
-  trigger:
-  - platform: time
-    at: 06:00:00
-  - platform: time
-    at: '16:00:00'
-  action:
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.feed_fish_reminder
-  - service: input_boolean.turn_off
-    target:
-      entity_id: input_boolean.feed_fish_reminder_color_change
-  id: 496a93ed9dc8414ab1aced2aed222369
-- alias: Change Button Color if Fish Overdue
-  trigger:
-  - platform: time
-    at: 09:00:00
-  - platform: time
-    at: '19:30:00'
-  action:
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.feed_fish_reminder_color_change
-  id: af97df70547b45b083ee4a198500fa33
-- id: '1729704944600'
-  alias: Kids Morning Reset
-  description: Resets to-do booleans at 5am
-  triggers:
-  - trigger: time
-    at: 05:00:00
-  conditions: []
-  actions:
-  - action: input_boolean.turn_on
-    target:
-      entity_id:
-      - input_boolean.charlotte_brush
-      - input_boolean.henry_brush
-      - input_boolean.charlotte_breakfast
-      - input_boolean.henry_breakfast
-      - input_boolean.charlotte_dressed
-      - input_boolean.charlotte_wakeup
-      - input_boolean.henry_wakeup
-      - input_boolean.henry_dressed
-    data: {}
-  mode: single
-- id: '1729705430069'
-  alias: Charlotte Ballet Reset
-  description: Reset Ballet boolean on Tuesdays
-  triggers:
-  - trigger: time
-    at: 05:00:00
-  conditions:
-  - condition: time
-    weekday:
-    - tue
-  actions:
-  - action: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.charlotte_ballet
-    data: {}
-  mode: single
 - id: '1732739136261'
   alias: Christmas Lights Inside Off Away
   description: Turns off the inside Christmas lights when 0 people are home for more
@@ -1653,10 +1591,10 @@
       - light.front_foyer_chandelier
       - light.front_foyer_upstairs_hallway_lights
       - light.front_foyer
-      - light.great_room_table_lamp
+      - light.great_room_front_lamp
       - light.right_couch_lamp
-      - light.bar_lamp_right
-      - light.bar_lamp_left
+      - light.great_room_back_lamp
+      - light.great_room_bar_lamp
       - light.left_couch_lamp
       - light.great_room_fireplace_can
       - light.great_room_bar_cabinet_lights
@@ -1697,7 +1635,6 @@
       - light.white_room_piano_light
       - light.white_room_table_lamps
       - light.wine_cellar_sconces
-      - light.stove_sconce_left
       - light.solarium_sconces
   - action: input_datetime.set_datetime
     metadata: {}
@@ -3125,32 +3062,6 @@
           entity_id: light.solarium_rope_light
         data:
           effect: Lightning
-- id: '30001'
-  alias: NFC Henry Bracelet
-  description: ''
-  mode: single
-  triggers:
-  - trigger: mqtt
-    topic: lego/bracelet/scanned
-    payload: 1A-48-45-1D
-  conditions: []
-  actions:
-  - action: script.turn_on
-    target:
-      entity_id: script.lego_sonos_swell
-    data:
-      variables:
-        media: spotify:track:0BRHnOFm6sjxN1i9LJrUDu
-        volume: 0.25
-  - action: light.turn_on
-    target:
-      entity_id: light.solarium_rope_light
-    data:
-      brightness_pct: 100
-      color_name: green
-  - action: script.turn_on
-    target:
-      entity_id: script.lego_return_to_idle
 - id: '10001'
   alias: Trivia - Start Mode
   description: ''
@@ -3825,44 +3736,52 @@
       entity_id: script.lego_return_to_idle
 - id: '10006'
   alias: Trivia - Revealing Answer
-  description: 'Amber while the Pi announces the answer after 3 wrong tries'
+  description: Amber while the Pi announces the answer after 3 wrong tries
   mode: single
   triggers:
-    - trigger: mqtt
-      topic: lego/trivia/answer_result
-      payload: revealing
+  - trigger: mqtt
+    topic: lego/trivia/answer_result
+    payload: revealing
   conditions: []
   actions:
-    - action: light.turn_on
-      target:
-        entity_id: light.solarium_rope_light
-      data:
-        rgb_color: [255, 140, 0]
-        brightness_pct: 85
-
+  - action: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 255
+      - 140
+      - 0
+      brightness_pct: 85
 - id: '10007'
   alias: Trivia - Question Incoming
-  description: 'Quick "incoming transmission" blink when a question starts'
+  description: Quick "incoming transmission" blink when a question starts
   mode: single
   triggers:
-    - trigger: mqtt
-      topic: lego/trivia/question_playing
+  - trigger: mqtt
+    topic: lego/trivia/question_playing
   conditions:
-    - condition: state
-      entity_id: input_select.star_wars_game_mode
-      state: trivia
+  - condition: state
+    entity_id: input_select.star_wars_game_mode
+    state: trivia
   actions:
-    - action: light.turn_on
-      target:
-        entity_id: light.solarium_rope_light
-      data:
-        rgb_color: [190, 230, 255]
-        brightness_pct: 100
-    - delay:
-        milliseconds: 400
-    - action: light.turn_on
-      target:
-        entity_id: light.solarium_rope_light
-      data:
-        rgb_color: [50, 100, 200]
-        brightness_pct: 60
+  - action: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 190
+      - 230
+      - 255
+      brightness_pct: 100
+  - delay:
+      milliseconds: 400
+  - action: light.turn_on
+    target:
+      entity_id: light.solarium_rope_light
+    data:
+      rgb_color:
+      - 50
+      - 100
+      - 200
+      brightness_pct: 60

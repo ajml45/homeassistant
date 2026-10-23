@@ -1008,9 +1008,9 @@
       state: 'off'
     light.great_room:
       entity_id:
-      - light.great_room_table_lamp
-      - light.bar_lamp_left
-      - light.bar_lamp_right
+      - light.great_room_bar_lamp
+      - light.great_room_back_lamp
+      - light.great_room_front_lamp
       - light.left_couch_lamp
       - light.right_couch_lamp
       - light.great_room_bar_cabinet_lights

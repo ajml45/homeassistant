@@ -238,7 +238,7 @@
           "light.basement", "light.exterior", "light.great_room",
           "light.kitchen", "light.mudroom", "light.office",
           "light.offices", "light.solarium", "light.white_room",
-          "light.first_floor_lights"
+          "light.first_floor_lights", "light.great_room_lamps"
         ] %}
         {{ states.light
            | rejectattr('entity_id', 'in', exclude)
@@ -272,9 +272,9 @@
       state_class: measurement
       state: >
         {% set lights = [
-          states('light.great_room_table_lamp'),
-          states('light.bar_lamp_left'),
-          states('light.bar_lamp_right'),
+          states('light.great_room_front_lamp'),
+          states('light.great_room_back_lamp'),
+          states('light.great_room_bar_lamp'),
           states('light.left_couch_lamp'),
           states('light.right_couch_lamp'),
           states('light.great_room_bar_cabinet_lights'),
@@ -327,7 +327,8 @@
           states('light.office_floor_lamp'),
           states('light.white_room_main_lights'),
           states('light.white_room_piano_light'),
-          states('light.white_room_table_lamps')
+          states('light.white_room_table_lamps').
+          states('light.solarium_rope_light')
         ] %}
         {{ lights | select('eq', 'on') | list | count }}
 
@@ -375,8 +376,7 @@
           states('light.solarium_path_lights'),
           states('light.solarium_spot_lights'),
           states('light.slider_path_lights'),
-          states('light.stair_path_lights'),
-          states('light.solarium_rope_light')
+          states('light.stair_path_lights')
         ] %}
         {{ lights | select('eq', 'on') | list | count }}
 
