@@ -1281,12 +1281,6 @@
       percentage: 100
       percentage_step: 25
       state: 'on'
-    cover.bedroom:
-      current_position: 0
-      current_tilt_position: 0
-      room_name: Master
-      device_class: curtain
-      state: closed
     light.master_bedroom_sconces:
       state: 'off'
     switch.air_purifier:
@@ -1309,8 +1303,6 @@
   icon: mdi:bed-king-outline
   metadata:
     light.solarium:
-      entity_only: true
-    cover.bedroom:
       entity_only: true
     switch.master_bedroom_noise_machine:
       entity_only: true

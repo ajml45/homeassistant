@@ -225,178 +225,6 @@
       state_class: measurement
       state: "{{ state_attr('climate.upstairs', 'temperature') }}"
 
-    # -------------------------------------------------------------------------
-    # Light counters
-    # -------------------------------------------------------------------------
-    - name: "Total Lights Count Template"
-      unique_id: total_lights_count_template
-      default_entity_id: sensor.total_lights_count_template
-      icon: mdi:lightbulb-on
-      state_class: measurement
-      state: >-
-        {% set exclude = [
-          "light.basement", "light.exterior", "light.great_room",
-          "light.kitchen", "light.mudroom", "light.office",
-          "light.offices", "light.solarium", "light.white_room",
-          "light.first_floor_lights", "light.great_room_lamps"
-        ] %}
-        {{ states.light
-           | rejectattr('entity_id', 'in', exclude)
-           | selectattr('attributes.is_hue_group', 'undefined')
-           | selectattr('attributes.entity_id', 'undefined')
-           | selectattr('state', 'eq', 'on')
-           | list | count }}
-
-    - name: "Kitchen Lights On"
-      unique_id: kitchen_lights_on
-      default_entity_id: sensor.kitchen_lights_on
-      icon: mdi:lightbulb-on
-      state_class: measurement
-      state: >
-        {% set lights = [
-          states('light.kitchen_above_cabinet'),
-          states('light.kitchen_under_cabinet'),
-          states('light.kitchen_cans_fridge'),
-          states('light.kitchen_cans_sink'),
-          states('light.sink_pendants'),
-          states('light.stove_sconces'),
-          states('light.island_pendants'),
-          states('light.toe_kick')
-        ] %}
-        {{ lights | select('eq', 'on') | list | count }}
-
-    - name: "Great Room Lights On"
-      unique_id: great_room_lights_on
-      default_entity_id: sensor.great_room_lights_on
-      icon: mdi:lightbulb-on
-      state_class: measurement
-      state: >
-        {% set lights = [
-          states('light.great_room_front_lamp'),
-          states('light.great_room_back_lamp'),
-          states('light.great_room_bar_lamp'),
-          states('light.left_couch_lamp'),
-          states('light.right_couch_lamp'),
-          states('light.great_room_bar_cabinet_lights'),
-          states('light.great_room_fireplace_can'),
-          states('light.great_room_back_cans'),
-          states('light.great_room_front_cans'),
-          states('light.great_room_middle_cans')
-        ] %}
-        {{ lights | select('eq', 'on') | list | count }}
-
-    - name: "Master Suite Lights On"
-      unique_id: master_suite_lights_on
-      default_entity_id: sensor.master_suite_lights_on
-      icon: mdi:lightbulb-on
-      state_class: measurement
-      state: >
-        {% set lights = [
-          states('light.tub_light_left'),
-          states('light.tub_light_middle'),
-          states('light.tub_light_right'),
-          states('light.can_light'),
-          states('light.shower_light'),
-          states('light.master_bedroom_sconces')
-        ] %}
-        {{ lights | select('eq', 'on') | list | count }}
-
-    - name: "Mudroom Lights On"
-      unique_id: mudroom_lights_on
-      default_entity_id: sensor.mudroom_lights_on
-      icon: mdi:lightbulb-on
-      state_class: measurement
-      state: >
-        {% set lights = [
-          states('light.mudroom_can_lights'),
-          states('light.mudroom_pendants')
-        ] %}
-        {{ lights | select('eq', 'on') | list | count }}
-
-    - name: "Foyer Offices Lights On"
-      unique_id: foyer_offices_lights_on
-      default_entity_id: sensor.foyer_offices_lights_on
-      icon: mdi:lightbulb-on
-      state_class: measurement
-      state: >
-        {% set lights = [
-          states('light.front_foyer_chandelier'),
-          states('light.front_foyer'),
-          states('light.office_desk_lamp'),
-          states('light.office_ceiling_light'),
-          states('light.office_floor_lamp'),
-          states('light.white_room_main_lights'),
-          states('light.white_room_piano_light'),
-          states('light.white_room_table_lamps').
-          states('light.solarium_rope_light')
-        ] %}
-        {{ lights | select('eq', 'on') | list | count }}
-
-    - name: "Upstairs Lights On"
-      unique_id: upstairs_lights_on
-      default_entity_id: sensor.upstairs_lights_on
-      icon: mdi:lightbulb-on
-      state_class: measurement
-      state: >
-        {% set lights = [
-          states('light.front_foyer_upstairs_hallway_lights'),
-          states('light.charlotte_bedroom_table_lamp'),
-          states('light.henry_bedroom_table_lamp'),
-          states('light.upstairs_bathroom_light')
-        ] %}
-        {{ lights | select('eq', 'on') | list | count }}
-
-    - name: "Basement Lights On"
-      unique_id: basement_lights_on
-      default_entity_id: sensor.basement_lights_on
-      icon: mdi:lightbulb-on
-      state_class: measurement
-      state: >
-        {% set lights = [
-          states('light.basement_stairs_lights'),
-          states('light.basement_sitting_area_main_lights'),
-          states('light.basement_sitting_area_table_lamps'),
-          states('light.basement_sitting_area_spot_lights'),
-          states('light.solarium_sconces'),
-          states('light.wine_cellar_sconces'),
-          states('light.wine_cellar_spot_lights')
-        ] %}
-        {{ lights | select('eq', 'on') | list | count }}
-
-    - name: "Solarium Lights On"
-      unique_id: solarium_lights_on
-      default_entity_id: sensor.solarium_lights_on
-      icon: mdi:lightbulb-on
-      state_class: measurement
-      state: >
-        {% set lights = [
-          states('light.pool_area'),
-          states('light.sitting_area'),
-          states('light.solarium_couch'),
-          states('light.solarium_path_lights'),
-          states('light.solarium_spot_lights'),
-          states('light.slider_path_lights'),
-          states('light.stair_path_lights')
-        ] %}
-        {{ lights | select('eq', 'on') | list | count }}
-
-    - name: "Exterior Lights On"
-      unique_id: exterior_lights_on
-      default_entity_id: sensor.exterior_lights_on
-      icon: mdi:lightbulb-on
-      state_class: measurement
-      state: >
-        {% set lights = [
-          states('light.exterior_alcove'),
-          states('light.exterior_upper_garage'),
-          states('light.exterior_lower_garage'),
-          states('light.exterior_front_door'),
-          states('light.exterior_front_spotlights'),
-          states('light.exterior_back_porch_lights'),
-          states('light.exterior_lower_garage_area'),
-          states('light.exterior_dog_area')
-        ] %}
-        {{ lights | select('eq', 'on') | list | count }}
     - name: Kitchen Tablet Memory Free
       unique_id: kitchen_tablet_memory_free_pct
       unit_of_measurement: "%"
@@ -420,3 +248,193 @@
         {% set f = states('sensor.mudroom_mudroom_ha_tablet_free_memory') | float(0) %}
         {% set t = states('sensor.mudroom_mudroom_ha_tablet_total_memory') | float(0) %}
         {{ (f / t * 100) | round(0) }}
+
+# -------------------------------------------------------------------------
+    # Light counters
+    # Each light is listed in exactly one room sensor; the total is their sum.
+    # -------------------------------------------------------------------------
+    - name: "Total Lights Count Template"
+      unique_id: total_lights_count_template
+      default_entity_id: sensor.total_lights_count_template
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {{ [
+             'sensor.kitchen_lights_on',
+             'sensor.great_room_lights_on',
+             'sensor.master_suite_lights_on',
+             'sensor.mudroom_lights_on',
+             'sensor.foyer_offices_lights_on',
+             'sensor.upstairs_lights_on',
+             'sensor.basement_lights_on',
+             'sensor.solarium_lights_on',
+             'sensor.exterior_lights_on'
+           ] | map('states') | map('int', 0) | sum }}
+
+    - name: "Kitchen Lights On"
+      unique_id: kitchen_lights_on
+      default_entity_id: sensor.kitchen_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {{ [
+             'light.island_pendants',
+             'light.kitchen_above_cabinet',
+             'light.kitchen_cans_fridge',
+             'light.kitchen_cans_sink',
+             'light.kitchen_under_cabinet',
+             'light.sink_pendants',
+             'light.stove_sconces',
+             'light.toe_kick',
+             'light.under_island',
+             'light.under_sink'
+           ] | select('is_state', 'on') | list | count }}
+
+    - name: "Great Room Lights On"
+      unique_id: great_room_lights_on
+      default_entity_id: sensor.great_room_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {{ [
+             'light.bar_under_cabinet',
+             'light.great_room_back_cans',
+             'light.great_room_back_lamp',
+             'light.great_room_bar_cabinet_lights',
+             'light.great_room_bar_lamp',
+             'light.great_room_fireplace_can',
+             'light.great_room_front_cans',
+             'light.great_room_front_lamp',
+             'light.great_room_middle_cans',
+             'light.left_couch_lamp',
+             'light.right_couch_lamp',
+             'light.soundbar_shelf_light'
+           ] | select('is_state', 'on') | list | count }}
+
+    - name: "Master Suite Lights On"
+      unique_id: master_suite_lights_on
+      default_entity_id: sensor.master_suite_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {{ [
+             'light.can_light',
+             'light.master_bedroom_sconces',
+             'light.shower_light',
+             'light.tub_light_left',
+             'light.tub_light_middle',
+             'light.tub_light_right'
+           ] | select('is_state', 'on') | list | count }}
+
+    - name: "Mudroom Lights On"
+      unique_id: mudroom_lights_on
+      default_entity_id: sensor.mudroom_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {{ [
+             'light.mudroom_can_lights',
+             'light.mudroom_pendants'
+           ] | select('is_state', 'on') | list | count }}
+
+    - name: "Foyer Offices Lights On"
+      unique_id: foyer_offices_lights_on
+      default_entity_id: sensor.foyer_offices_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {{ [
+             'light.front_foyer',
+             'light.front_foyer_chandelier',
+             'light.office_ceiling_light',
+             'light.office_desk_lamp',
+             'light.office_floor_lamp',
+             'light.solarium_rope_light',
+             'light.white_room_main_lights',
+             'light.white_room_piano_light',
+             'light.white_room_table_lamps'
+           ] | select('is_state', 'on') | list | count }}
+
+    - name: "Upstairs Lights On"
+      unique_id: upstairs_lights_on
+      default_entity_id: sensor.upstairs_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {{ [
+             'light.charlotte_bedroom_table_lamp',
+             'light.front_foyer_upstairs_hallway_lights',
+             'light.henry_bedroom_table_lamp',
+             'light.upstairs_bathroom_light'
+           ] | select('is_state', 'on') | list | count }}
+
+    - name: "Basement Lights On"
+      unique_id: basement_lights_on
+      default_entity_id: sensor.basement_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {{ [
+             'light.basement_sitting_area_main_lights',
+             'light.basement_sitting_area_spot_lights',
+             'light.basement_sitting_area_table_lamps',
+             'light.basement_stairs_lights',
+             'light.solarium_sconces',
+             'light.wine_cellar_sconces',
+             'light.wine_cellar_spot_lights'
+           ] | select('is_state', 'on') | list | count }}
+
+    - name: "Solarium Lights On"
+      unique_id: solarium_lights_on
+      default_entity_id: sensor.solarium_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {{ [
+             'light.pool_area',
+             'light.sitting_area',
+             'light.slider_path_lights',
+             'light.solarium_couch',
+             'light.solarium_path_lights',
+             'light.solarium_spot_lights',
+             'light.stair_path_lights'
+           ] | select('is_state', 'on') | list | count }}
+
+    - name: "Exterior Lights On"
+      unique_id: exterior_lights_on
+      default_entity_id: sensor.exterior_lights_on
+      icon: mdi:lightbulb-on
+      state_class: measurement
+      state: >
+        {{ [
+             'light.exterior_alcove',
+             'light.exterior_back_porch_lights',
+             'light.exterior_dog_area',
+             'light.exterior_front_door',
+             'light.exterior_front_spotlights',
+             'light.exterior_lower_garage',
+             'light.exterior_lower_garage_area',
+             'light.exterior_upper_garage'
+           ] | select('is_state', 'on') | list | count }}
+
+- triggers:
+    - trigger: time_pattern
+      minutes: /30
+    - trigger: homeassistant
+      event: start
+    - trigger: event
+      event_type: event_template_reloaded
+  actions:
+    - action: weather.get_forecasts
+      target:
+        entity_id: weather.nws          # ← your NWS entity
+      data:
+        type: twice_daily
+      response_variable: nws
+  sensor:
+    - name: NWS Forecast
+      unique_id: nws_forecast_twice_daily
+      device_class: timestamp
+      state: "{{ now().isoformat() }}"
+      attributes:
+        forecast: "{{ nws['weather.nws'].forecast[:6] }}"   # ← same entity here
