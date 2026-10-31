@@ -3,14 +3,18 @@ default_config:
 
 prometheus:
 
-# Load configs from separate files
+homeassistant:
+  packages: !include_dir_named packages
+
 frontend:
   extra_module_url:
-  - /local/community/custom-brand-icons/custom-brand-icons.js
-  - /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524421
-  - /hacsfiles/kiosk-mode/kiosk-mode.js
-  - /local/homelab-fonts.js
+    - /local/community/custom-brand-icons/custom-brand-icons.js
+    - /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524421
+    - /hacsfiles/kiosk-mode/kiosk-mode.js
+    - /local/homelab-fonts.js
   themes: !include_dir_merge_named themes
+
+# Load configs from separate files
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
@@ -20,7 +24,7 @@ input_select: !include input_select.yaml
 template: !include templates.yaml
 sensor: !include sensors.yaml
 
-#shell script to push to git
+# Shell script to push to git
 shell_command:
   git_backup: bash /config/git-backup.sh
 
