@@ -2614,3 +2614,27 @@
       state: 'on'
   icon: mdi:hair-dryer-outline
   metadata: {}
+- id: office_watch_tv
+  name: Office Watch TV
+  icon: mdi:television-classic
+  entities:
+    switch.office_fan: "on"
+    switch.office_noise_machine: "off"
+    media_player.google_tv_office: "on"
+    media_player.sonos_office:
+      state: "on"
+      volume_level: 0.10
+    light.offices: "off"
+    light.office: "off"
+- id: great_room_watch_tv
+  name: Great Room Watch TV
+  icon: mdi:television-classic
+  entities:
+    media_player.google_tv_great_room: "on"
+    media_player.sonos_great_room_soundbar:
+      state: "on"
+      volume_level: 0.10
+    light.great_room:
+      state: "on"
+      brightness: 25
+    light.mudroom: "off"

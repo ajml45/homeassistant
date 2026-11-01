@@ -1227,6 +1227,7 @@
       - light.kitchen
       step: 5
       speed: 250
+      on_brightness: 55
 - id: '1717961915849'
   alias: Lutron Pico - Great Room Light
   description: 'All Great Room Lights
@@ -1240,6 +1241,22 @@
       - light.great_room
       step: 5
       speed: 250
+      middle_button_action:
+      - action: scene.turn_on
+        metadata: {}
+        target:
+          entity_id: scene.great_room_watch_tv
+        data: {}
+      - if:
+        - condition: state
+          entity_id: light.kitchen
+          state: 'on'
+        then:
+        - action: light.turn_on
+          target:
+            entity_id: light.kitchen
+          data:
+            brightness_pct: 20
 - id: '1717962019863'
   alias: Lutron Pico - Solarium Light
   description: All Solarium Lights
@@ -3785,3 +3802,18 @@
       - 100
       - 200
       brightness_pct: 60
+- id: '1793473003776'
+  alias: Lutron Pico - Office Light
+  description: ''
+  use_blueprint:
+    path: smartqasa/lutron_pico_5_light.yaml
+    input:
+      pico_1: 1b5e655e63084ce574e6bf7ecd50c4a7
+      entity:
+      - light.office
+      middle_button_action:
+      - action: scene.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: scene.office_watch_tv
