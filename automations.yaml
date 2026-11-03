@@ -1269,6 +1269,12 @@
       step: 5
       speed: 250
       transition_off: 2
+      middle_button_action:
+      - action: script.turn_on
+        metadata: {}
+        target:
+          entity_id: script.tnwgo_button
+        data: {}
 - id: '1724702037211'
   alias: Fish Lights On
   description: ''
