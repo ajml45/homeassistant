@@ -1228,6 +1228,12 @@
       step: 5
       speed: 250
       on_brightness: 55
+      middle_button_action:
+      - action: script.toggle
+        metadata: {}
+        target:
+          entity_id: script.santa_watching_button
+        data: {}
 - id: '1717961915849'
   alias: Lutron Pico - Great Room Light
   description: 'All Great Room Lights
