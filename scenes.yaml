@@ -2618,23 +2618,99 @@
   name: Office Watch TV
   icon: mdi:television-classic
   entities:
-    switch.office_fan: "on"
-    switch.office_noise_machine: "off"
-    media_player.google_tv_office: "on"
+    switch.office_fan: 'on'
+    switch.office_noise_machine: 'off'
+    media_player.google_tv_office: 'on'
     media_player.sonos_office:
-      state: "on"
-      volume_level: 0.10
-    light.offices: "off"
-    light.office: "off"
+      state: 'on'
+      volume_level: 0.1
+    light.offices: 'off'
+    light.office: 'off'
 - id: great_room_watch_tv
   name: Great Room Watch TV
   icon: mdi:television-classic
   entities:
-    media_player.google_tv_great_room: "on"
+    media_player.google_tv_great_room: 'on'
     media_player.sonos_great_room_soundbar:
-      state: "on"
-      volume_level: 0.10
+      state: 'on'
+      volume_level: 0.1
     light.great_room:
-      state: "on"
+      state: 'on'
       brightness: 25
-    light.mudroom: "off"
+    light.mudroom: 'off'
+- id: star_wars_movie
+  name: Star Wars Movie
+  entities:
+    light.kitchen_above_cabinet:
+      state: 'on'
+      brightness: 13
+    light.kitchen_under_cabinet: 'off'
+    light.kitchen_cans_sink: 'off'
+    light.kitchen_cans_fridge: 'off'
+    light.island_pendant_left: 'off'
+    light.island_pendant_right: 'off'
+    light.sink_sconce_left: 'off'
+    light.sink_sconce_right: 'off'
+    light.stove_scone_left: 'off'
+    light.stove_sconce_right: 'off'
+    light.under_island: 'off'
+    light.soundbar_shelf_light:
+      state: 'on'
+      rgb_color:
+      - 40
+      - 90
+      - 255
+      brightness: 50
+    light.front_can_left: 'off'
+    light.front_can_middle: 'off'
+    light.front_can_right: 'off'
+    light.middle_can_left: 'off'
+    light.middle_can_middle: 'off'
+    light.middle_can_right: 'off'
+    light.back_can_left:
+      state: 'on'
+      rgb_color:
+      - 20
+      - 40
+      - 160
+      brightness: 18
+    light.back_can_middle:
+      state: 'on'
+      rgb_color:
+      - 60
+      - 30
+      - 150
+      brightness: 14
+    light.back_can_right:
+      state: 'on'
+      rgb_color:
+      - 20
+      - 40
+      - 160
+      brightness: 18
+    light.right_couch_lamp:
+      state: 'on'
+      rgb_color:
+      - 0
+      - 70
+      - 255
+      brightness: 25
+    light.left_couch_lamp:
+      state: 'on'
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      brightness: 25
+    light.great_room_back_lamp:
+      state: 'on'
+      rgb_color:
+      - 70
+      - 0
+      - 160
+      brightness: 20
+    light.great_room_front_lamp: 'off'
+    light.great_room_fireplace_can: 'off'
+    light.great_room_bar_lamp: 'off'
+    light.great_room_bar_cabinet_lights: 'off'
+  icon: mdi:movie-open-star
