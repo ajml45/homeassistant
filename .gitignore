@@ -1,10 +1,20 @@
 # Ignore everything by default; whitelist what we intentionally version.
+#
+# Order matters: the LAST matching rule wins. Every whitelist line has to sit
+# above the "Never commit" block at the bottom, or it can override it.
+#
+# This repo is PUBLIC — anything whitelisted here is published.
 *
 
 # Repo housekeeping
 !.gitignore
 !README.md
 !git-backup.sh
+!hacs-inventory.md
+
+# The HA version this config was running on at each commit (HA writes it).
+# Handy when bisecting "what broke after the update".
+!.HA_VERSION
 
 # Core config (root-level includes referenced from configuration.yaml)
 !configuration.yaml
@@ -17,21 +27,49 @@
 !sensors.yaml
 !templates.yaml
 
-# Themes (loaded via !include_dir_merge_named themes)
+# Packages (homeassistant: packages: !include_dir_named packages)
+# Subfolders are included too.
+!packages/
+!packages/**/
+!packages/**/*.yaml
+
+# Themes (frontend: themes: !include_dir_merge_named themes), subfolders included
 !themes/
-themes/*
-!themes/*.yaml
+!themes/**/
+!themes/**/*.yaml
 
 # Dashboards (source of truth for the UI dashboards; paste into raw editor / yaml mode)
 !frontends/
-frontends/*
 !frontends/*.yaml
 
-# Never commit these even if a rule above would match
+# Blueprints (Pico light control, Ashley's Light Fader, ...). Anything with
+# `use_blueprint:` won't load on a restore without the blueprint file.
+!blueprints/
+!blueprints/**/
+!blueprints/**/*.yaml
+
+# Hand-made frontend assets loaded by configuration.yaml.
+# Not www/community/ — HACS owns that and reinstalls it.
+!www/
+!www/homelab-fonts.js
+!www/fonts/
+!www/fonts/*
+
+# ESPHome device configs. Leave commented out until every key and password in
+# them is a !secret: the ESPHome wizard writes the API encryption key, OTA
+# password and fallback-AP password inline, and this repo is public.
+# esphome/secrets.yaml and esphome/.esphome/ stay excluded by the block below.
+# !esphome/
+# !esphome/**/
+# !esphome/**/*.yaml
+
+# Never commit these even if a rule above would match. Keep this block LAST.
 .ssh/
-git-backup.log
-secrets.yaml
 .storage/
+.cloud/
+secrets.yaml
+esphome/.esphome/
+git-backup.log
 *.log
 *.db
 *.db-*

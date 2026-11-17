@@ -1,0 +1,147 @@
+# ───────────────────────────────────────────────────────────────
+#  Weather page – data plumbing
+#  Save as: /config/packages/weather_page.yaml
+#
+#  BEFORE SAVING: replace weather.YOUR_NWS (1 place below) with
+#  your NWS weather entity ID.
+#
+#  Needs packages enabled in configuration.yaml:
+#    homeassistant:
+#      packages: !include_dir_named packages
+#  Restart HA after adding (new rest: resources need a restart).
+# ───────────────────────────────────────────────────────────────
+
+# ── Tide station toggle (first option = default) ──────────────
+input_select:
+  weather_tide_station:
+    name: Tide station
+    icon: mdi:waves
+    options:
+      - Dover
+      - Cliff Island
+
+# ── NOAA tide predictions (high/low), refreshed every 6 h ─────
+#    Dover Point, Piscataqua River ......... 8421897
+#    Cliff Island, Luckse Sound, Casco Bay .. 8417821
+#    Times are requested in GMT so the math below is timezone-safe.
+rest:
+  - resource_template: >-
+      https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=home_assistant&datum=MLLW&interval=hilo&units=english&time_zone=gmt&format=json&station=8421897&begin_date={{ (utcnow() - timedelta(days=1)).strftime('%Y%m%d') }}&range=96
+    scan_interval: 21600
+    sensor:
+      - name: Tide Dover Predictions
+        unique_id: tide_dover_predictions
+        value_template: "{{ value_json.predictions | count }}"
+        json_attributes:
+          - predictions
+
+  - resource_template: >-
+      https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=home_assistant&datum=MLLW&interval=hilo&units=english&time_zone=gmt&format=json&station=8417821&begin_date={{ (utcnow() - timedelta(days=1)).strftime('%Y%m%d') }}&range=96
+    scan_interval: 21600
+    sensor:
+      - name: Tide Cliff Island Predictions
+        unique_id: tide_cliff_island_predictions
+        value_template: "{{ value_json.predictions | count }}"
+        json_attributes:
+          - predictions
+
+template:
+  # ── NWS hourly forecast, next 48 h (feeds the big chart) ────
+  - triggers:
+      - trigger: time_pattern
+        minutes: /30
+      - trigger: homeassistant
+        event: start
+      - trigger: event
+        event_type: event_template_reloaded
+    actions:
+      - action: weather.get_forecasts
+        target:
+          entity_id: weather.kpsm
+        data:
+          type: hourly
+        response_variable: fc
+    sensor:
+      - name: Weather Hourly 48h
+        unique_id: weather_hourly_48h
+        device_class: timestamp
+        state: "{{ now().isoformat() }}"
+        attributes:
+          forecast: >-
+            {% set ns = namespace(out=[]) %}
+            {% for f in ((fc.values() | first).forecast or [])[:48] %}
+              {% set ns.out = ns.out + [{
+                't': f.datetime,
+                'temp': f.temperature,
+                'pop': f.precipitation_probability | default(0, true),
+                'day': f.is_daytime | default(none)
+              }] %}
+            {% endfor %}
+            {{ ns.out }}
+
+  # ── Selected tide station: current height, trend, next hi/lo ─
+  #    Height between high/low is cosine-interpolated (how tides
+  #    actually move), recalculated every 5 minutes.
+  - triggers:
+      - trigger: time_pattern
+        minutes: /5
+      - trigger: state
+        entity_id:
+          - input_select.weather_tide_station
+          - sensor.tide_dover_predictions
+          - sensor.tide_cliff_island_predictions
+      - trigger: homeassistant
+        event: start
+      - trigger: event
+        event_type: event_template_reloaded
+    actions:
+      - variables:
+          station: "{{ states('input_select.weather_tide_station') }}"
+      - variables:
+          raw: >-
+            {{ state_attr('sensor.tide_cliff_island_predictions' if station == 'Cliff Island'
+               else 'sensor.tide_dover_predictions', 'predictions') or [] }}
+      - variables:
+          nowts: "{{ as_timestamp(now()) }}"
+          preds: >-
+            {% set ns = namespace(out=[]) %}
+            {% for e in raw %}
+              {% set ns.out = ns.out + [{
+                'ts': as_timestamp(e.t ~ ':00+00:00'),
+                'v': e.v | float(0),
+                'type': e.type
+              }] %}
+            {% endfor %}
+            {{ ns.out }}
+      - variables:
+          past: "{{ preds | selectattr('ts', 'le', nowts) | list }}"
+          future: "{{ preds | selectattr('ts', 'gt', nowts) | list }}"
+      - variables:
+          prev: "{{ past | last if past | count else none }}"
+          nxt: "{{ future | first if future | count else none }}"
+          nh: "{{ future | selectattr('type', 'eq', 'H') | first | default(none) }}"
+          nl: "{{ future | selectattr('type', 'eq', 'L') | first | default(none) }}"
+    sensor:
+      - name: Tide
+        unique_id: tide_selected
+        unit_of_measurement: ft
+        availability: "{{ prev is not none and nxt is not none }}"
+        icon: >-
+          {{ 'mdi:waves-arrow-up' if nxt and nxt.type == 'H' else 'mdi:waves-arrow-down' }}
+        state: >-
+          {% if prev and nxt %}
+            {% set f = (nowts - prev.ts) / (nxt.ts - prev.ts) %}
+            {{ (prev.v + (nxt.v - prev.v) * (1 - cos(pi * f)) / 2) | round(1) }}
+          {% endif %}
+        attributes:
+          station: "{{ station }}"
+          trend: "{{ 'Rising' if nxt and nxt.type == 'H' else 'Falling' }}"
+          next_high: "{{ nh.ts | timestamp_custom('%-I:%M %p') if nh else '' }}"
+          next_high_ft: "{{ nh.v | round(1) if nh else none }}"
+          next_low: "{{ nl.ts | timestamp_custom('%-I:%M %p') if nl else '' }}"
+          next_low_ft: "{{ nl.v | round(1) if nl else none }}"
+          summary: >-
+            {{ 'Rising' if nxt and nxt.type == 'H' else 'Falling' }}
+            · High {{ nh.ts | timestamp_custom('%-I:%M %p') if nh else '–' }}
+            · Low {{ nl.ts | timestamp_custom('%-I:%M %p') if nl else '–' }}
+          chart: "{{ preds }}"

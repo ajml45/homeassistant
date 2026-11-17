@@ -1,0 +1,493 @@
+# =====================================================================
+#  SANTA'S WATCHING  —  /config/packages/santa_watching.yaml
+#
+#  ~22 s behavioral nudge across kitchen + great room (+ solarium as the
+#  view out the kitchen windows):
+#     0–2 s   night falls            8–10 s  tap-tap-tap on the glass
+#     2–8 s   something passes       10 s    "Ho… ho… ho."   (kitchen Sonos)
+#             outside (solarium)     13–16 s lantern glow sweeps the great room
+#     16 s    "Santa's watching."    18–22 s wind-down, then restore
+#             (great room Sonos)
+#  v2 layers: porch creak + breath on the glass before the taps (window-wall
+#  sconces jump with the taps), bell shake after "Ho… ho… ho.", hoofbeats on
+#  the roof + whoosh with the great room sweep, frost crackle/twinkle + icy can
+#  sparkle as the words appear. Voice: ElevenLabs "Mr. Claus".
+#
+#  Media lives in /config/www/santa_watching/ (served at /local/santa_watching/):
+#     kitchen.mp3, great_room.mp3, santa_watching.mp4, index.html
+#
+#  Trigger: call script.santa_watching_button (Pico button TBD).
+#  Press again (after the first 3 s) to cancel.
+# =====================================================================
+
+input_text:
+  santa_watching_tvs:
+    name: "Santa's Watching – saved TV state"
+    max: 255
+    initial: "[]"
+
+script:
+  # -------------------------------------------------------------------
+  #  BUTTON: start, or cancel if already running (ignores presses in the
+  #  first 3 s, and presses while the restore is running)
+  # -------------------------------------------------------------------
+  santa_watching_button:
+    alias: "Santa's Watching – button"
+    icon: mdi:santa
+    mode: single
+    max_exceeded: silent
+    sequence:
+      - choose:
+          - conditions:
+              - "{{ is_state('script.santa_watching_show', 'on') }}"
+            sequence:
+              - condition: template
+                value_template: >-
+                  {{ (now() - states.script.santa_watching_show.last_changed).total_seconds() > 3 }}
+              - action: script.turn_off
+                target:
+                  entity_id: script.santa_watching_show
+              - action: script.turn_on
+                target:
+                  entity_id: script.santa_watching_restore
+                data:
+                  variables:
+                    cancelled: true
+          - conditions:
+              - "{{ is_state('script.santa_watching_restore', 'on') }}"
+            sequence:
+              - stop: "Restore in progress"
+        default:
+          - action: script.turn_on
+            target:
+              entity_id: script.santa_watching_show
+
+  # -------------------------------------------------------------------
+  #  SHOW
+  # -------------------------------------------------------------------
+  santa_watching_show:
+    alias: "Santa's Watching – show"
+    icon: mdi:santa
+    mode: single
+    max_exceeded: silent
+    variables: &santa_watching_config
+      # ===================== TUNABLES =====================
+      pre_roll: 3.5          # s from press to t0 (TV wake-up = the "dramatic pause")
+      audio_lead: 0.6        # Sonos start latency
+      video_lead: 1.5        # Cast start latency
+      tablet_lead: 0.5       # tablet page is clock-synced to t0, this just loads it early
+      restore_at: 23.5       # s after t0: snapshot restore pass 1
+      verify_after: [4, 4]   # extra restore passes, s apart
+      cancel_settle: 2.5     # s between neutral and snapshot on cancel (Govee budget)
+      sonos_volume_day: 50
+      sonos_volume_night: 30   # 20:00–07:00
+      media_version: 2         # bump after replacing media files (cache-buster)
+      base_url: "http://192.168.68.21:8123/local/santa_watching"
+      fader_scripts: []        # e.g. [script.ashleys_light_fader] — stopped at the start
+
+      # ===================== DEVICES =====================
+      sonos_kitchen: media_player.sonos_kitchen
+      sonos_great_room: media_player.sonos_great_room_soundbar
+      tvs:
+        - {cast: media_player.great_room_tv, atv: media_player.google_tv_great_room, remote: remote.google_tv_great_room}
+        - {cast: media_player.kitchen_tv, atv: media_player.google_tv_kitchen, remote: remote.google_tv_kitchen}
+      tablet: kitchen_kitchen_ha_tablet   # Fully Kiosk prefix
+
+      # ===================== COLORS =====================
+      c_night: &sw_night [20, 40, 140]       # great room cans
+      c_hue_night: &sw_hue_night [10, 20, 120]
+      c_lantern: &sw_lantern [255, 130, 20]  # the glow that sweeps the great room
+      c_sleigh: &sw_sleigh [255, 70, 10]     # solarium "something outside"
+      c_red: &sw_red [255, 0, 0]
+      c_ice: &sw_ice [200, 225, 255]         # frost sparkle on the cans
+
+      # ===================== FIXTURE GROUPS =====================
+      gr_cans: &sw_cans
+        [light.back_can_left, light.middle_can_left, light.front_can_left,
+         light.back_can_middle, light.middle_can_middle, light.front_can_middle,
+         light.back_can_right, light.middle_can_right, light.front_can_right]
+      gr_col_left: &sw_col_l [light.back_can_left, light.middle_can_left, light.front_can_left]
+      gr_col_mid: &sw_col_m [light.back_can_middle, light.middle_can_middle, light.front_can_middle]
+      gr_col_right: &sw_col_r [light.back_can_right, light.middle_can_right, light.front_can_right]
+      gr_hue: &sw_hue
+        [light.great_room_back_lamp, light.left_couch_lamp, light.right_couch_lamp, light.great_room_front_lamp]
+      kitchen_ct: &sw_kitchen_ct
+        [light.island_pendant_left, light.island_pendant_right,
+         light.sink_sconce_left, light.sink_sconce_right,
+         light.stove_scone_left, light.stove_sconce_right]
+      solarium_ct: &sw_solarium_ct
+        [light.sitting_area_left_1, light.sitting_area_left_2, light.sitting_area_left_3, light.sitting_area_left_4,
+         light.sitting_area_right_1, light.sitting_area_right_2, light.sitting_area_right_3, light.sitting_area_right_4]
+
+      # Lights that may be left holding a show color → set warm white on cancel
+      neutral_lights:
+        [light.back_can_left, light.middle_can_left, light.front_can_left,
+         light.back_can_middle, light.middle_can_middle, light.front_can_middle,
+         light.back_can_right, light.middle_can_right, light.front_can_right,
+         light.great_room_back_lamp, light.left_couch_lamp, light.right_couch_lamp, light.great_room_front_lamp,
+         light.soundbar_shelf_light, light.under_island,
+         light.solarium_path_lights, light.slider_path_lights, light.stair_path_lights, light.solarium_spot_lights,
+         light.island_pendant_left, light.island_pendant_right,
+         light.sink_sconce_left, light.sink_sconce_right,
+         light.stove_scone_left, light.stove_sconce_right]
+
+      # Everything the show touches (individual lights only — see guide §4)
+      snapshot_entities:
+        # great room
+        - light.back_can_left
+        - light.middle_can_left
+        - light.front_can_left
+        - light.back_can_middle
+        - light.middle_can_middle
+        - light.front_can_middle
+        - light.back_can_right
+        - light.middle_can_right
+        - light.front_can_right
+        - light.great_room_back_lamp
+        - light.left_couch_lamp
+        - light.right_couch_lamp
+        - light.great_room_front_lamp
+        - light.soundbar_shelf_light
+        - light.great_room_fireplace_can
+        - light.great_room_bar_lamp
+        - light.great_room_bar_cabinet_lights
+        # kitchen
+        - light.kitchen_cans_sink
+        - light.kitchen_cans_fridge
+        - light.kitchen_above_cabinet
+        - light.kitchen_under_cabinet
+        - light.island_pendant_left
+        - light.island_pendant_right
+        - light.sink_sconce_left
+        - light.sink_sconce_right
+        - light.stove_scone_left
+        - light.stove_sconce_right
+        - light.under_island
+        # solarium
+        - light.solarium_path_lights
+        - light.slider_path_lights
+        - light.stair_path_lights
+        - light.solarium_spot_lights
+        - light.solarium_couch
+        - light.solarium_sconces
+        - light.sitting_area_left_1
+        - light.sitting_area_left_2
+        - light.sitting_area_left_3
+        - light.sitting_area_left_4
+        - light.sitting_area_right_1
+        - light.sitting_area_right_2
+        - light.sitting_area_right_3
+        - light.sitting_area_right_4
+        # kitchen tablet
+        - switch.kitchen_kitchen_ha_tablet_screen
+        - switch.kitchen_kitchen_ha_tablet_screensaver
+        - number.kitchen_kitchen_ha_tablet_screen_brightness
+
+      # ===================== LIGHT TIMELINE =====================
+      # t = seconds after t0. action defaults to light.turn_on.
+      # One track per technology so a slow bridge never delays the others.
+
+      # WiZ RGB cans — "beat" tier
+      steps_wiz:
+        - {t: 0.0,  entities: *sw_cans,  data: {rgb_color: *sw_night, brightness: 40}}
+        - {t: 13.0, entities: *sw_col_l, data: {rgb_color: *sw_lantern, brightness: 255}}
+        - {t: 14.0, entities: *sw_col_l, data: {rgb_color: *sw_night, brightness: 40}}
+        - {t: 14.0, entities: *sw_col_m, data: {rgb_color: *sw_lantern, brightness: 255}}
+        - {t: 15.0, entities: *sw_col_m, data: {rgb_color: *sw_night, brightness: 40}}
+        - {t: 15.0, entities: *sw_col_r, data: {rgb_color: *sw_lantern, brightness: 255}}
+        - {t: 16.0, entities: *sw_col_r, data: {rgb_color: *sw_night, brightness: 40}}
+        # frost sparkle while "Santa's watching." appears: two cans at a time, never the same can twice in a row
+        - {t: 16.3, entities: [light.back_can_middle, light.front_can_left],   data: {rgb_color: *sw_ice, brightness: 150}}
+        - {t: 16.7, entities: [light.back_can_middle, light.front_can_left],   data: {rgb_color: *sw_night, brightness: 40}}
+        - {t: 16.7, entities: [light.middle_can_right, light.back_can_left],   data: {rgb_color: *sw_ice, brightness: 150}}
+        - {t: 17.1, entities: [light.middle_can_right, light.back_can_left],   data: {rgb_color: *sw_night, brightness: 40}}
+        - {t: 17.1, entities: [light.front_can_middle, light.middle_can_left], data: {rgb_color: *sw_ice, brightness: 150}}
+        - {t: 17.5, entities: [light.front_can_middle, light.middle_can_left], data: {rgb_color: *sw_night, brightness: 40}}
+        - {t: 17.5, entities: [light.back_can_right, light.front_can_right],   data: {rgb_color: *sw_ice, brightness: 150}}
+        - {t: 17.9, entities: [light.back_can_right, light.front_can_right],   data: {rgb_color: *sw_night, brightness: 40}}
+        - {t: 22.0, entities: *sw_cans,  data: {color_temp_kelvin: 2700, brightness: 180}}
+
+      # Lutron dimmers + WiZ CT — white accents
+      steps_white:
+        - {t: 0.0, action: light.turn_off,
+           entities: [light.kitchen_cans_sink, light.kitchen_cans_fridge, light.solarium_sconces],
+           data: {transition: 2}}
+        - {t: 0.0, action: light.turn_off, entities: [light.great_room_bar_cabinet_lights]}
+        - {t: 0.0, action: light.turn_off, entities: *sw_solarium_ct}
+        - {t: 0.0,
+           entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet,
+                      light.great_room_fireplace_can, light.great_room_bar_lamp],
+           data: {brightness: 13, transition: 2}}
+        - {t: 0.0,  entities: *sw_kitchen_ct, data: {color_temp_kelvin: 2200, brightness: 20}}
+        # the window-wall sconces jump once with the taps on the glass
+        - {t: 8.25, entities: [light.sink_sconce_left, light.sink_sconce_right], data: {color_temp_kelvin: 2200, brightness: 70}}
+        - {t: 9.3,  entities: [light.sink_sconce_left, light.sink_sconce_right], data: {color_temp_kelvin: 2200, brightness: 20}}
+        - {t: 22.0, entities: *sw_kitchen_ct, data: {color_temp_kelvin: 2700, brightness: 180}}
+
+      # Hue lamps — fades only (≥0.45 s between commands per lamp)
+      steps_hue:
+        - {t: 0.0,  entities: *sw_hue, data: {rgb_color: *sw_hue_night, brightness: 50, transition: 2}}
+        - {t: 22.0, entities: *sw_hue, data: {color_temp_kelvin: 2700, brightness: 180, transition: 1}}
+
+      # Govee strips (govee2mqtt LAN) — big moments only (≥0.9 s per strip)
+      steps_govee:
+        - {t: 0.0,  entities: [light.under_island], data: {rgb_color: *sw_red, brightness: 40}}
+        - {t: 0.0,  action: light.turn_off, entities: [light.soundbar_shelf_light, light.solarium_couch]}
+        # something passes outside: path → slider → stairs → spot
+        - {t: 2.0,  entities: [light.solarium_path_lights],  data: {rgb_color: *sw_sleigh, brightness: 200}}
+        - {t: 3.5,  entities: [light.slider_path_lights],    data: {rgb_color: *sw_sleigh, brightness: 200}}
+        - {t: 5.0,  entities: [light.stair_path_lights],     data: {rgb_color: *sw_sleigh, brightness: 200}}
+        - {t: 6.5,  entities: [light.solarium_spot_lights],  data: {rgb_color: *sw_sleigh, brightness: 200}}
+        # "Ho… ho… ho." — under-island swells red
+        - {t: 10.0, entities: [light.under_island], data: {rgb_color: *sw_red, brightness: 255}}
+        - {t: 12.5, entities: [light.under_island], data: {brightness: 40}}
+        # "Santa's watching." — soundbar strip glows red
+        - {t: 16.0, entities: [light.soundbar_shelf_light], data: {rgb_color: *sw_red, brightness: 255}}
+        # wind-down: strips go warm in reverse order (this is also their end state)
+        - {t: 18.0, entities: [light.solarium_spot_lights],  data: {color_temp_kelvin: 2700, brightness: 180}}
+        - {t: 19.0, entities: [light.stair_path_lights],     data: {color_temp_kelvin: 2700, brightness: 180}}
+        - {t: 20.0, entities: [light.slider_path_lights],    data: {color_temp_kelvin: 2700, brightness: 180}}
+        - {t: 21.0, entities: [light.solarium_path_lights],  data: {color_temp_kelvin: 2700, brightness: 180}}
+        - {t: 22.0, entities: [light.under_island, light.soundbar_shelf_light],
+           data: {color_temp_kelvin: 2700, brightness: 180}}
+      # ============================================================
+
+    sequence:
+      # 0. Stop anything that would fight us
+      - if:
+          - "{{ fader_scripts | count > 0 }}"
+        then:
+          - action: script.turn_off
+            target:
+              entity_id: "{{ fader_scripts }}"
+
+      # 1. Snapshot lights + tablet
+      - action: scene.create
+        data:
+          scene_id: santa_watching_snapshot
+          snapshot_entities: "{{ snapshot_entities }}"
+
+      # 2. Remember which TVs were on and what app they were in
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.santa_watching_tvs
+        data:
+          value: >-
+            {%- set ns = namespace(out=[]) -%}
+            {%- for tv in tvs -%}
+              {%- set on = states(tv.atv) not in ['off', 'standby', 'unavailable', 'unknown'] -%}
+              {%- set ns.out = ns.out + [[1 if on else 0, (state_attr(tv.atv, 'app_id') or '') if on else '']] -%}
+            {%- endfor -%}
+            {{ ns.out | to_json }}
+
+      # 3. One absolute clock for everything
+      - variables:
+          t0: "{{ now().timestamp() + pre_roll }}"
+          sonos_volume: >-
+            {{ sonos_volume_night if (now().hour >= 20 or now().hour < 7) else sonos_volume_day }}
+
+      # 4. Pre-roll: wake the TVs that are off, take over the tablet
+      - variables:
+          tvs_off: "{{ tvs | map(attribute='atv') | select('is_state', 'off') | list }}"
+      - if:
+          - "{{ tvs_off | count > 0 }}"
+        then:
+          - action: media_player.turn_on
+            target:
+              entity_id: "{{ tvs_off }}"
+            continue_on_error: true
+      - action: switch.turn_on
+        target:
+          entity_id: "switch.{{ tablet }}_screen"
+        continue_on_error: true
+      - action: switch.turn_off
+        target:
+          entity_id: "switch.{{ tablet }}_screensaver"
+        continue_on_error: true
+      - action: number.set_value
+        target:
+          entity_id: "number.{{ tablet }}_screen_brightness"
+        data:
+          value: 255
+        continue_on_error: true
+
+      # 5. The show: independent tracks on the same t0
+      - parallel:
+          # ---- audio: one file per Sonos zone, both start at t0 ----
+          - sequence:
+              - delay:
+                  milliseconds: "{{ [0, ((t0 - audio_lead - now().timestamp()) * 1000) | int] | max }}"
+              - parallel:
+                  - action: media_player.play_media
+                    target:
+                      entity_id: "{{ sonos_kitchen }}"
+                    data:
+                      media_content_id: "{{ base_url }}/kitchen.mp3?v={{ media_version }}"
+                      media_content_type: music
+                      announce: true
+                      extra:
+                        volume: "{{ sonos_volume }}"
+                    continue_on_error: true
+                  - action: media_player.play_media
+                    target:
+                      entity_id: "{{ sonos_great_room }}"
+                    data:
+                      media_content_id: "{{ base_url }}/great_room.mp3?v={{ media_version }}"
+                      media_content_type: music
+                      announce: true
+                      extra:
+                        volume: "{{ sonos_volume }}"
+                    continue_on_error: true
+
+          # ---- TVs: silent MP4 via Cast ----
+          - sequence:
+              - delay:
+                  milliseconds: "{{ [0, ((t0 - video_lead - now().timestamp()) * 1000) | int] | max }}"
+              - action: media_player.play_media
+                target:
+                  entity_id: "{{ tvs | map(attribute='cast') | list }}"
+                data:
+                  media_content_id: "{{ base_url }}/santa_watching.mp4?v={{ media_version }}"
+                  media_content_type: video/mp4
+                continue_on_error: true
+
+          # ---- kitchen tablet: same page, synced to t0 by wall clock ----
+          - sequence:
+              - delay:
+                  milliseconds: "{{ [0, ((t0 - tablet_lead - now().timestamp()) * 1000) | int] | max }}"
+              - action: fully_kiosk.load_url
+                target:
+                  device_id: "{{ device_id('switch.' ~ tablet ~ '_screen') }}"
+                data:
+                  url: "{{ base_url }}/index.html?v={{ media_version }}&t0={{ (t0 * 1000) | int }}"
+                continue_on_error: true
+
+          # ---- light tracks (same runner, different step lists) ----
+          - sequence:
+              - variables:
+                  steps: "{{ steps_wiz }}"
+              - &sw_runner
+                repeat:
+                  for_each: "{{ steps }}"
+                  sequence:
+                    - delay:
+                        milliseconds: "{{ [0, ((t0 + repeat.item.t - now().timestamp()) * 1000) | int] | max }}"
+                    - action: "{{ repeat.item.action | default('light.turn_on') }}"
+                      target:
+                        entity_id: "{{ repeat.item.entities }}"
+                      data: "{{ repeat.item.data | default({}) }}"
+                      continue_on_error: true
+          - sequence:
+              - variables:
+                  steps: "{{ steps_white }}"
+              - *sw_runner
+          - sequence:
+              - variables:
+                  steps: "{{ steps_hue }}"
+              - *sw_runner
+          - sequence:
+              - variables:
+                  steps: "{{ steps_govee }}"
+              - *sw_runner
+
+      # 6. Hand off to restore
+      - delay:
+          milliseconds: "{{ [0, ((t0 + restore_at - now().timestamp()) * 1000) | int] | max }}"
+      - action: script.turn_on
+        target:
+          entity_id: script.santa_watching_restore
+        data:
+          variables:
+            cancelled: false
+
+  # -------------------------------------------------------------------
+  #  RESTORE (end of show, or cancel)
+  # -------------------------------------------------------------------
+  santa_watching_restore:
+    alias: "Santa's Watching – restore"
+    icon: mdi:restore
+    mode: single
+    max_exceeded: silent
+    fields:
+      cancelled:
+        description: "True when called from a cancel (sets show-colored lights warm white first)"
+        example: false
+    variables: *santa_watching_config
+    sequence:
+      # Cancel: lights may be stuck on a show color. Give them a warm-white
+      # memory first, then wait out the Govee budget before restoring.
+      - if:
+          - "{{ cancelled | default(false) | bool }}"
+        then:
+          - delay:
+              seconds: 1   # let any in-flight Govee command land (≥0.9 s budget)
+          - action: light.turn_on
+            target:
+              entity_id: "{{ neutral_lights }}"
+            data:
+              color_temp_kelvin: 2700
+              brightness: 180
+            continue_on_error: true
+          - delay:
+              seconds: "{{ cancel_settle }}"
+
+      - parallel:
+          # ---- lights + tablet settings: restore, then verify twice ----
+          - sequence:
+              - action: scene.turn_on
+                target:
+                  entity_id: scene.santa_watching_snapshot
+                data:
+                  transition: 2
+                continue_on_error: true
+              - repeat:
+                  for_each: "{{ verify_after }}"
+                  sequence:
+                    - delay:
+                        seconds: "{{ repeat.item }}"
+                    - action: scene.turn_on
+                      target:
+                        entity_id: scene.santa_watching_snapshot
+                      continue_on_error: true
+
+          # ---- tablet: back to its dashboard ----
+          - sequence:
+              - action: button.press
+                target:
+                  entity_id: "button.{{ tablet }}_load_start_url"
+                continue_on_error: true
+
+          # ---- TVs: back to what they were doing ----
+          - sequence:
+              - variables:
+                  saved: >-
+                    {%- set s = states('input_text.santa_watching_tvs') -%}
+                    {{ s | from_json if s.startswith('[') else [] }}
+              - repeat:
+                  for_each: "{{ range(tvs | count) | list }}"
+                  sequence:
+                    - variables:
+                        tv: "{{ tvs[repeat.item] }}"
+                        was: "{{ saved[repeat.item] if saved | count > repeat.item else [1, ''] }}"
+                    - choose:
+                        - conditions:
+                            - "{{ was[0] == 0 }}"
+                          sequence:
+                            - action: media_player.turn_off
+                              target:
+                                entity_id: "{{ tv.atv }}"
+                              continue_on_error: true
+                        - conditions:
+                            - "{{ was[1] | length > 0 }}"
+                          sequence:
+                            - action: remote.turn_on
+                              target:
+                                entity_id: "{{ tv.remote }}"
+                              data:
+                                activity: "{{ was[1] }}"
+                              continue_on_error: true
+                      default:
+                        - action: media_player.media_stop
+                          target:
+                            entity_id: "{{ tv.cast }}"
+                          continue_on_error: true

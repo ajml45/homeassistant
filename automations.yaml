@@ -218,7 +218,7 @@
   alias: Solarium Light Fade
   description: ''
   triggers:
-  - at: '20:00:00'
+  - at: '19:30:00'
     trigger: time
   conditions:
   - condition: state
@@ -985,10 +985,10 @@
 - id: '1705512854907'
   alias: Charlotte Bedtime Weekday
   description: ''
-  trigger:
-  - platform: time
-    at: '19:21:00'
-  condition:
+  triggers:
+  - at: '18:45:00'
+    trigger: time
+  conditions:
   - condition: time
     weekday:
     - sun
@@ -996,7 +996,7 @@
     - tue
     - wed
     - thu
-  action:
+  actions:
   - metadata: {}
     data: {}
     target:
@@ -1015,37 +1015,37 @@
 - id: '1705512914359'
   alias: Charlotte Bedtime Weekend
   description: ''
-  trigger:
-  - platform: time
-    at: '19:45:00'
-  condition:
+  triggers:
+  - at: '18:45:00'
+    trigger: time
+  conditions:
   - condition: time
     weekday:
     - fri
     - sat
-  action:
-  - service: switch.turn_on
-    metadata: {}
+  actions:
+  - metadata: {}
     data: {}
     target:
       entity_id:
       - switch.charlotte_noise_machine
       - switch.charlotte_night_light
       - switch.charlotte_fan
-  - service: light.turn_on
-    metadata: {}
+    action: switch.turn_on
+  - metadata: {}
     data:
       brightness_pct: 20
     target:
       entity_id: light.charlotte_bedroom_table_lamp
+    action: light.turn_on
   mode: single
 - id: '1705513057222'
   alias: Henry Bedtime Weekday
   description: ''
-  trigger:
-  - platform: time
-    at: '19:30:00'
-  condition:
+  triggers:
+  - at: '18:45:00'
+    trigger: time
+  conditions:
   - condition: time
     weekday:
     - sun
@@ -1053,46 +1053,46 @@
     - tue
     - wed
     - thu
-  action:
-  - service: switch.turn_on
-    metadata: {}
+  actions:
+  - metadata: {}
     data: {}
     target:
       entity_id:
       - switch.henry_noise_machine
       - switch.henry_night_light
-  - service: light.turn_on
-    metadata: {}
+    action: switch.turn_on
+  - metadata: {}
     data:
       brightness_pct: 20
     target:
       entity_id: light.henry_bedroom_table_lamp
+    action: light.turn_on
   mode: single
 - id: '1705513100013'
   alias: Henry Bedtime Weekend
   description: ''
-  trigger:
-  - platform: time
-    at: '19:45:00'
-  condition:
+  triggers:
+  - at: '18:45:00'
+    trigger: time
+  conditions:
   - condition: time
     weekday:
     - fri
     - sat
-  action:
-  - service: switch.turn_on
-    metadata: {}
+  actions:
+  - metadata: {}
     data: {}
     target:
       entity_id:
       - switch.henry_noise_machine
       - switch.henry_night_light
-  - service: light.turn_on
-    metadata: {}
+    action: switch.turn_on
+  - metadata: {}
     data:
       brightness_pct: 20
     target:
       entity_id: light.henry_bedroom_table_lamp
+    action: light.turn_on
   mode: single
 - id: '1707417343122'
   alias: Weekday Office Noise On
@@ -1833,7 +1833,7 @@
   description: ''
   triggers:
   - trigger: time
-    at: 08:15:00
+    at: 07:30:00
   conditions: []
   actions:
   - action: script.turn_on

@@ -1,0 +1,730 @@
+# =====================================================================
+#  "THAT'S NOT WHAT'S GOING ON"  —  whole-house dramatic interruption
+#  Package file: /config/packages/tnwgo.yaml
+#
+#  Requires in configuration.yaml (skip if you already load packages):
+#    homeassistant:
+#      packages: !include_dir_named packages
+#
+#  Media files go in /config/www/tnwgo/  (served at /local/tnwgo/):
+#    index.html  soundtrack.mp3  tnwgo_tv.mp4
+#
+#  Pico: point the button at  script.tnwgo_button
+#    1st press  -> runs the show
+#    2nd press  -> cancels and restores (ignored during the first 3 s,
+#                  so a double-tap doesn't kill it)
+#
+#  Shared timeline (seconds after the soundtrack starts):
+#    0.0  record scratch, house goes black, tablets/TVs glitch
+#    1.2  BRAAAM — every color light slams red, title card slams in
+#    1.0  Alexa (sent):  "That's not what's going on."
+#    6.0  room sweep, one room every 1.2 s (boom + red/white flash)
+#   10.8  5th boom — whole house flashes at once
+#   11.0  Alexa (sent):  "I repeat. That is not what's going on."
+#   12.0  second BRAAAM — all red again
+#   13.6 / 15.0  heartbeat pulses
+#   16.0  lights up — everything warm white, screens go white
+#   17.5  lights fade back to how they were; verify passes at 22 s and 26 s re-send
+#         anything a Hue/Govee light missed
+#   19.6  tablets back to dashboard; TVs relaunch what they were playing,
+#         or turn back off if they were off
+# =====================================================================
+
+input_text:
+  tnwgo_tvs_were_off:
+    name: TNWGO – TVs that were off before the show
+    max: 255
+  tnwgo_tv_resume:
+    name: TNWGO – apps to relaunch on TVs we took over
+    max: 255
+  tnwgo_alexa_volumes:
+    name: TNWGO – Echo volumes before the show
+    max: 255
+
+script:
+  # ------------------------------------------------------------------
+  #  The Pico calls this one
+  # ------------------------------------------------------------------
+  tnwgo_button:
+    alias: "That's Not What's Going On – button"
+    icon: mdi:alert-octagram
+    mode: single
+    max_exceeded: silent
+    sequence:
+      - if:
+          - condition: state
+            entity_id: script.tnwgo_show
+            state: "on"
+        then:
+          - condition: template
+            value_template: >
+              {{ (now() - state_attr('script.tnwgo_show', 'last_triggered')).total_seconds() > 3 }}
+          - action: script.turn_off
+            target:
+              entity_id: script.tnwgo_show
+          - action: script.tnwgo_restore
+        else:
+          - action: script.turn_on
+            target:
+              entity_id: script.tnwgo_show
+
+  # ------------------------------------------------------------------
+  #  The show
+  # ------------------------------------------------------------------
+  tnwgo_show:
+    alias: "That's Not What's Going On"
+    icon: mdi:alert-octagram
+    mode: single
+    max_exceeded: silent
+    variables: &tnwgo_config
+      # ===================== CONFIG — edit here only =====================
+      base_url: "http://192.168.68.21:8123"
+
+      # Rooms in sweep order. 4 rooms take booms 1-4; boom 5 hits the whole house.
+      #   color_lights: Hue / WiZ RGB / Govee (LAN via govee2mqtt) — parent strips only, never _segment_ entities
+      #   color_slow:   cloud-only lights (rate limited) — red, white, restore only. None right now.
+      #   white_lights: Lutron dimmers/switches + WiZ tunable-white — dark during red, flash on their beat
+      # Individual lights only — no Lightener rooms, light groups, or Hue rooms.
+      rooms:
+        - name: Great Room
+          color_lights:
+            - light.front_can_left
+            - light.front_can_middle
+            - light.front_can_right
+            - light.middle_can_left
+            - light.middle_can_middle
+            - light.middle_can_right
+            - light.back_can_left
+            - light.back_can_middle
+            - light.back_can_right
+            - light.great_room_front_lamp
+            - light.great_room_back_lamp
+            - light.left_couch_lamp
+            - light.right_couch_lamp
+            - light.soundbar_shelf_light
+          color_slow: []
+          white_lights:
+            - light.great_room_bar_lamp
+            - light.great_room_fireplace_can
+            - light.great_room_bar_cabinet_lights
+        - name: Kitchen
+          color_lights:
+            - light.under_island
+          color_slow: []
+          white_lights:
+            - light.island_pendant_left
+            - light.island_pendant_right
+            - light.sink_sconce_left
+            - light.sink_sconce_right
+            - light.stove_scone_left
+            - light.stove_sconce_right
+            - light.kitchen_cans_fridge
+            - light.kitchen_cans_sink
+            - light.kitchen_above_cabinet
+            - light.kitchen_under_cabinet
+        - name: Office
+          color_lights:
+            - light.solarium_rope_light        # office closet rope light (misnamed)
+          color_slow: []
+          white_lights:
+            - light.office_ceiling_light
+            - light.office_desk_lamp
+            - light.office_floor_lamp
+        - name: Solarium
+          color_lights:
+            - light.solarium_couch
+            - light.solarium_path_lights
+            - light.slider_path_lights
+            - light.stair_path_lights
+            - light.solarium_spot_lights
+          color_slow: []
+          white_lights:
+            - light.sitting_area_left_1
+            - light.sitting_area_left_2
+            - light.sitting_area_left_3
+            - light.sitting_area_left_4
+            - light.sitting_area_right_1
+            - light.sitting_area_right_2
+            - light.sitting_area_right_3
+            - light.sitting_area_right_4
+            - light.solarium_sconces
+
+      sonos:
+        - media_player.sonos_great_room_soundbar
+        - media_player.sonos_kitchen
+        - media_player.sonos_office
+        - media_player.sonos_solarium
+
+      alexa:                                 # Alexa Media Player — real Echos only, not Sonos-via-Alexa
+        - media_player.andrew_s_echo_show    # Great Room
+        - media_player.echo_show             # Kitchen
+        - media_player.echo_dot_office       # Office
+        - media_player.echo_dot_charlotte    # Solarium (entity ID is misleading)
+
+      # Fully Kiosk name prefixes
+      tablets: [kitchen_kitchen_ha_tablet, mudroom_mudroom_ha_tablet]
+
+      # cast   = Google Cast media_player on the Google TV (plays the video).
+      #          Great room uses the Google TV, not the 65" Frame's own Cast entity.
+      # power  = Android TV Remote media_player (on/off, current app)
+      # remote = Android TV Remote remote entity (relaunches the app afterward)
+      tvs:
+        - cast: media_player.great_room_tv
+          power: media_player.google_tv_great_room
+          remote: remote.google_tv_great_room
+        - cast: media_player.office_tv
+          power: media_player.google_tv_office
+          remote: remote.google_tv_office
+        - cast: media_player.kitchen_tv
+          power: media_player.google_tv_kitchen
+          remote: remote.google_tv_kitchen
+
+      # true  = take over a TV even if something's playing; that app is relaunched afterward.
+      # false = only use a TV that's on if its app is in idle_apps (home screen / ambient).
+      # Off TVs are always woken for the show and turned back off.
+      interrupt_tvs: true
+      idle_apps:                             # home-screen / ambient apps: not relaunched afterward
+        - com.google.android.apps.tv.launcherx
+        - com.google.android.apps.tv.dreamx
+        - com.google.android.backdrop
+      tv_warmup: 3           # seconds to wait for TVs that had to be turned on (dramatic pause)
+      audio_lead: 0.6        # seconds Sonos takes to start playing; lights wait this long
+      line_1: "That's not what's going on."
+      line_2: "I repeat. That is not what's going on."
+      # Volumes — day / quieter from 8pm to 7am
+      sonos_volume: "{{ 30 if now().hour >= 20 or now().hour < 7 else 50 }}"     # 0-100
+      alexa_volume: "{{ 0.6 if now().hour >= 20 or now().hour < 7 else 0.9 }}"  # 0-1
+      alexa_restore_default: 0.4   # used if HA doesn't know an Echo's previous volume
+
+      # Color lights that were OFF before the show get eased to this before turning back off,
+      # so they don't come on later in a show color. Also the show's final "lights up" color.
+      off_reset_kelvin: 2700
+      off_reset_brightness: 180    # 0-255
+      # ===================================================================
+    sequence:
+      # ---------- derived lists ----------
+      - variables:
+          fast_color: "{{ rooms | map(attribute='color_lights') | sum(start=[]) }}"
+          slow_color: "{{ rooms | map(attribute='color_slow') | sum(start=[]) }}"
+          whites: "{{ rooms | map(attribute='white_lights') | sum(start=[]) }}"
+      - variables:
+          all_color: "{{ fast_color + slow_color }}"
+          all_lights: "{{ fast_color + slow_color + whites }}"
+          tablet_brightness: >
+            {{ tablets | map('regex_replace', '^', 'number.')
+                       | map('regex_replace', '$', '_screen_brightness') | list }}
+          tablet_screens: >
+            {{ tablets | map('regex_replace', '^', 'switch.')
+                       | map('regex_replace', '$', '_screen') | list }}
+          tvs_to_use: >
+            {% set ns = namespace(l=[]) %}
+            {% for tv in tvs if states(tv.cast) not in ['unavailable', 'unknown'] %}
+              {% if interrupt_tvs or not is_state(tv.power, 'on')
+                    or state_attr(tv.power, 'app_id') in idle_apps %}
+                {% set ns.l = ns.l + [tv] %}
+              {% endif %}
+            {% endfor %}
+            {{ ns.l }}
+      # Split color lights by technology (Hue bridge and Govee LAN drop commands if hit too fast)
+      - variables:
+          hue_all: "{{ integration_entities('hue') }}"
+          govee_all: "{{ integration_entities('mqtt') }}"
+      - variables:
+          hue_color: "{{ fast_color | select('in', hue_all) | list }}"
+          strip_color: "{{ fast_color | select('in', govee_all) | list }}"
+          beat_color: "{{ fast_color | reject('in', hue_all) | reject('in', govee_all) | list }}"
+      - variables:
+          tvs_off: >
+            {{ tvs_to_use | map(attribute='power') | select('is_state', 'off') | list }}
+
+      # ---------- remember how everything was ----------
+      - action: scene.create
+        data:
+          scene_id: tnwgo_before
+          snapshot_entities: "{{ all_lights + tablet_brightness + tablet_screens }}"
+      # Snapshot keeps on/brightness/color/color-temp/effect for lights that are ON.
+      # For color lights that are OFF, HA has no color to remember. The show ends them on
+      # warm white; the "neutral" scene below does the same job on the cancel path.
+      - variables:
+          color_were_off: "{{ all_color | select('is_state', 'off') | list }}"
+      - if: "{{ color_were_off | count > 0 }}"
+        then:
+          - action: scene.create
+            data:
+              scene_id: tnwgo_neutral
+              entities: >
+                {%- set ns = namespace(p=[]) %}
+                {%- for e in color_were_off %}
+                  {%- set ns.p = ns.p + [(e, {'state': 'on', 'color_mode': 'color_temp',
+                       'color_temp_kelvin': off_reset_kelvin | int,
+                       'brightness': off_reset_brightness | int})] %}
+                {%- endfor %}
+                {{- dict(ns.p) }}
+        else:
+          - action: scene.delete
+            target:
+              entity_id: scene.tnwgo_neutral
+            continue_on_error: true
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.tnwgo_tvs_were_off
+        data:
+          value: "{{ tvs_off | join(',') }}"
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.tnwgo_tv_resume
+        data:
+          value: >
+            {%- set ns = namespace(l=[]) %}
+            {%- for tv in tvs_to_use if is_state(tv.power, 'on') %}
+              {%- set app = state_attr(tv.power, 'app_id') %}
+              {%- if app and app not in idle_apps and tv.remote is defined %}
+                {%- set ns.l = ns.l + [tv.remote ~ '|' ~ app] %}
+              {%- endif %}
+            {%- endfor %}
+            {{- ns.l | join(',') }}
+
+      # ---------- Echos: remember volume, then turn up ----------
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.tnwgo_alexa_volumes
+        data:
+          value: >
+            {%- set ns = namespace(l=[]) %}
+            {%- for e in alexa %}
+              {%- set v = state_attr(e, 'volume_level') %}
+              {%- set ns.l = ns.l + [e ~ '|' ~ (v if v is number else alexa_restore_default)] %}
+            {%- endfor %}
+            {{- ns.l | join(',') }}
+      - action: media_player.volume_set
+        target:
+          entity_id: "{{ alexa }}"
+        data:
+          volume_level: "{{ alexa_volume | float }}"
+        continue_on_error: true
+
+      # ---------- wake any TVs we need (screens come on black: suspense) ----------
+      - if: "{{ tvs_off | count > 0 }}"
+        then:
+          - action: media_player.turn_on
+            target:
+              entity_id: "{{ tvs_off }}"
+            continue_on_error: true
+          - delay:
+              seconds: "{{ tv_warmup }}"
+
+      # ---------- start the soundtrack; everything else keys off t0 ----------
+      - action: media_player.play_media
+        target:
+          entity_id: "{{ sonos }}"
+        data:
+          media_content_id: "{{ base_url }}/local/tnwgo/soundtrack.mp3"
+          media_content_type: music
+          announce: true
+          extra:
+            volume: "{{ sonos_volume | int }}"
+        continue_on_error: true
+      - variables:
+          t0: "{{ now().timestamp() + audio_lead }}"
+
+      - parallel:
+          # ======================= LIGHTS =======================
+          # Three tiers so slow devices aren't flooded:
+          #   beat_color  (WiZ)          — every beat
+          #   hue_color   (Hue bridge)   — big moments + fades, never two commands < 0.45 s apart
+          #   strip_color (Govee LAN)    — big moments only, never two commands < 0.9 s apart
+          - sequence:
+              - delay:
+                  milliseconds: "{{ [0, ((t0 - now().timestamp()) * 1000) | int] | max }}"
+              # 0.0 — blackout (everyone)
+              - action: light.turn_off
+                target:
+                  entity_id: "{{ all_lights }}"
+                data:
+                  transition: 0
+              # 1.2 — BRAAAM: red (everyone)
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 1.2 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ all_color }}"
+                data:
+                  rgb_color: [255, 0, 0]
+                  brightness: 255
+                  transition: 0
+              # 2.4 — sink to a menacing low red (everyone, one command)
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 2.4 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ fast_color }}"
+                data:
+                  rgb_color: [255, 0, 0]
+                  brightness: 60
+                  transition: 3
+              # 6.0+ — the sweep, one room per boom
+              - repeat:
+                  for_each: "{{ rooms }}"
+                  sequence:
+                    - variables:
+                        at: "{{ t0 + 6.0 + (repeat.index - 1) * 1.2 }}"
+                        room_quick: "{{ repeat.item.color_lights | reject('in', govee_all) | list }}"
+                        room_strips: "{{ repeat.item.color_lights | select('in', govee_all) | list }}"
+                    - delay:
+                        milliseconds: "{{ [0, ((at - now().timestamp()) * 1000) | int] | max }}"
+                    - action: light.turn_on
+                      target:
+                        entity_id: "{{ repeat.item.color_lights }}"
+                      data:
+                        rgb_color: [255, 0, 0]
+                        brightness: 255
+                        transition: 0
+                    - action: light.turn_on
+                      target:
+                        entity_id: "{{ repeat.item.white_lights }}"
+                      data:
+                        brightness: 255
+                        transition: 0
+                    - delay:
+                        milliseconds: "{{ [0, ((at + 0.45 - now().timestamp()) * 1000) | int] | max }}"
+                    - action: light.turn_on
+                      target:
+                        entity_id: "{{ room_quick }}"
+                      data:
+                        rgb_color: [255, 0, 0]
+                        brightness: 50
+                        transition: 0.6
+                    - action: light.turn_off
+                      target:
+                        entity_id: "{{ repeat.item.white_lights }}"
+                      data:
+                        transition: 0.5
+                    - delay:
+                        milliseconds: "{{ [0, ((at + 0.9 - now().timestamp()) * 1000) | int] | max }}"
+                    - action: light.turn_on
+                      target:
+                        entity_id: "{{ room_strips }}"
+                      data:
+                        rgb_color: [255, 0, 0]
+                        brightness: 50
+              # 10.8 — 5th boom: whole house at once (strips sit this one out)
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 10.8 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ beat_color + hue_color }}"
+                data:
+                  rgb_color: [255, 0, 0]
+                  brightness: 255
+                  transition: 0
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ whites }}"
+                data:
+                  brightness: 255
+                  transition: 0
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 11.3 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ beat_color + hue_color }}"
+                data:
+                  rgb_color: [255, 0, 0]
+                  brightness: 50
+                  transition: 0.5
+              - action: light.turn_off
+                target:
+                  entity_id: "{{ whites }}"
+                data:
+                  transition: 0.4
+              # 12.0 — "I repeat": everything red again
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 12.0 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ fast_color }}"
+                data:
+                  rgb_color: [255, 0, 0]
+                  brightness: 255
+                  transition: 0
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 12.8 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ beat_color + hue_color }}"
+                data:
+                  brightness: 50
+                  transition: 0.8
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 13.1 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ strip_color }}"
+                data:
+                  rgb_color: [255, 0, 0]
+                  brightness: 60
+              # 13.6 / 15.0 — heartbeat (WiZ cans only; Hue and strips hold low red)
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 13.6 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ beat_color }}"
+                data:
+                  brightness: 220
+                  transition: 0
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 14.0 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ beat_color }}"
+                data:
+                  brightness: 40
+                  transition: 0.6
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 15.0 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ beat_color }}"
+                data:
+                  brightness: 220
+                  transition: 0
+              # 15.2 — Hue lamps start swelling to warm white (smooth fade lands on 16.0)
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 15.2 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ hue_color | reject('in', color_were_off) | list }}"
+                data:
+                  color_temp_kelvin: "{{ off_reset_kelvin | int }}"
+                  brightness: 255
+                  transition: 0.8
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ hue_color | select('in', color_were_off) | list }}"
+                data:
+                  color_temp_kelvin: "{{ off_reset_kelvin | int }}"
+                  brightness: "{{ off_reset_brightness | int }}"
+                  transition: 0.8
+              # 16.0 — lights up, WARM white. Nothing to see here.
+              # Lights that were off get the reset level, so this is also the color they'll
+              # remember after going back off (replaces the old separate "neutral" step).
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 16.0 - now().timestamp()) * 1000) | int] | max }}"
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ (beat_color + strip_color + slow_color) | reject('in', color_were_off) | list }}"
+                data:
+                  color_temp_kelvin: "{{ off_reset_kelvin | int }}"
+                  brightness: 255
+                  transition: 0
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ (beat_color + strip_color + slow_color) | select('in', color_were_off) | list }}"
+                data:
+                  color_temp_kelvin: "{{ off_reset_kelvin | int }}"
+                  brightness: "{{ off_reset_brightness | int }}"
+                  transition: 0
+              - action: light.turn_on
+                target:
+                  entity_id: "{{ whites }}"
+                data:
+                  brightness: 255
+                  transition: 0
+              # 17.5 — restore pass 1 (verify passes 2 and 3 run after the curtain)
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 17.5 - now().timestamp()) * 1000) | int] | max }}"
+              - action: scene.turn_on
+                target:
+                  entity_id: scene.tnwgo_before
+                data:
+                  transition: 2
+
+          # ======================= ALEXA =======================
+          - sequence:
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 1.0 - now().timestamp()) * 1000) | int] | max }}"
+              - action: notify.alexa_media
+                data:
+                  target: "{{ alexa }}"
+                  message: "{{ line_1 }}"
+                  data:
+                    type: tts
+                continue_on_error: true
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + 11.0 - now().timestamp()) * 1000) | int] | max }}"
+              - action: notify.alexa_media
+                data:
+                  target: "{{ alexa }}"
+                  message: "{{ line_2 }}"
+                  data:
+                    type: tts
+                continue_on_error: true
+
+          # ======================= WALL TABLETS =======================
+          - repeat:
+              for_each: "{{ tablets }}"
+              sequence:
+                - action: switch.turn_on
+                  target:
+                    entity_id: "switch.{{ repeat.item }}_screen"
+                  continue_on_error: true
+                - action: switch.turn_off
+                  target:
+                    entity_id: "switch.{{ repeat.item }}_screensaver"
+                  continue_on_error: true
+                - action: fully_kiosk.load_url
+                  target:
+                    device_id: "{{ device_id('switch.' ~ repeat.item ~ '_screen') }}"
+                  data:
+                    url: "{{ base_url }}/local/tnwgo/index.html?v={{ now().timestamp() | int }}"
+                  continue_on_error: true
+                - action: number.set_value
+                  target:
+                    entity_id: "number.{{ repeat.item }}_screen_brightness"
+                  data:
+                    value: 255
+                  continue_on_error: true
+
+          # ======================= TVs =======================
+          - if: "{{ tvs_to_use | count > 0 }}"
+            then:
+              - action: media_player.play_media
+                target:
+                  entity_id: "{{ tvs_to_use | map(attribute='cast') | list }}"
+                data:
+                  media_content_id: "{{ base_url }}/local/tnwgo/tnwgo_tv.mp4"
+                  media_content_type: video/mp4
+                continue_on_error: true
+
+      # ---------- curtain ----------
+      - delay:
+          milliseconds: "{{ [0, ((t0 + 19.6 - now().timestamp()) * 1000) | int] | max }}"
+      - action: script.tnwgo_restore
+        data:
+          skip_lights: true
+      # Verify passes: re-applying the snapshot only re-sends lights that HA sees are
+      # still wrong (dropped Hue/Govee commands), so these are cheap.
+      - delay:
+          milliseconds: "{{ [0, ((t0 + 22.0 - now().timestamp()) * 1000) | int] | max }}"
+      - action: scene.turn_on
+        target:
+          entity_id: scene.tnwgo_before
+        continue_on_error: true
+      - delay:
+          milliseconds: "{{ [0, ((t0 + 26.0 - now().timestamp()) * 1000) | int] | max }}"
+      - action: scene.turn_on
+        target:
+          entity_id: scene.tnwgo_before
+        continue_on_error: true
+
+  # ------------------------------------------------------------------
+  #  Put everything back (end of show, or second Pico press)
+  # ------------------------------------------------------------------
+  tnwgo_restore:
+    alias: "That's Not What's Going On – restore"
+    icon: mdi:restore
+    mode: single
+    fields:
+      skip_lights:
+        description: Lights were already restored by the show
+        example: true
+    variables: *tnwgo_config
+    sequence:
+      - if: "{{ not (skip_lights | default(false)) }}"
+        then:
+          - if: "{{ states('scene.tnwgo_neutral') not in ['unknown', 'unavailable'] }}"
+            then:
+              - action: scene.turn_on
+                target:
+                  entity_id: scene.tnwgo_neutral
+                data:
+                  transition: 1
+                continue_on_error: true
+              - delay:
+                  milliseconds: 2500
+          - action: scene.turn_on
+            target:
+              entity_id: scene.tnwgo_before
+            data:
+              transition: 2
+            continue_on_error: true
+          - delay:
+              seconds: 4
+          - action: scene.turn_on
+            target:
+              entity_id: scene.tnwgo_before
+            continue_on_error: true
+          - delay:
+              seconds: 4
+          - action: scene.turn_on
+            target:
+              entity_id: scene.tnwgo_before
+            continue_on_error: true
+      - repeat:
+          for_each: "{{ tablets }}"
+          sequence:
+            - action: button.press
+              target:
+                entity_id: "button.{{ repeat.item }}_load_start_url"
+              continue_on_error: true
+      - variables:
+          our_casts: >
+            {% set ns = namespace(l=[]) %}
+            {% for tv in tvs %}
+              {% if 'tnwgo' in (state_attr(tv.cast, 'media_content_id') or '') %}
+                {% set ns.l = ns.l + [tv.cast] %}
+              {% endif %}
+            {% endfor %}
+            {{ ns.l }}
+          were_off: >
+            {{ states('input_text.tnwgo_tvs_were_off').split(',') | select('match', 'media_player\.') | list }}
+      - if: "{{ our_casts | count > 0 }}"
+        then:
+          - action: media_player.media_stop
+            target:
+              entity_id: "{{ our_casts }}"
+            continue_on_error: true
+      - repeat:
+          for_each: >
+            {{ states('input_text.tnwgo_tv_resume').split(',') | select('match', 'remote\.') | list }}
+          sequence:
+            - action: remote.turn_on
+              target:
+                entity_id: "{{ repeat.item.split('|')[0] }}"
+              data:
+                activity: "{{ repeat.item.split('|')[1] }}"
+              continue_on_error: true
+      - if: "{{ were_off | count > 0 }}"
+        then:
+          - action: media_player.turn_off
+            target:
+              entity_id: "{{ were_off }}"
+            continue_on_error: true
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.tnwgo_tvs_were_off
+        data:
+          value: ""
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.tnwgo_tv_resume
+        data:
+          value: ""
+      # Echo volumes back (short wait so line 2 isn't cut off by the volume change)
+      - delay:
+          seconds: 2
+      - repeat:
+          for_each: >
+            {{ states('input_text.tnwgo_alexa_volumes').split(',') | select('match', 'media_player\.') | list }}
+          sequence:
+            - action: media_player.volume_set
+              target:
+                entity_id: "{{ repeat.item.split('|')[0] }}"
+              data:
+                volume_level: "{{ repeat.item.split('|')[1] | float }}"
+              continue_on_error: true
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.tnwgo_alexa_volumes
+        data:
+          value: ""
