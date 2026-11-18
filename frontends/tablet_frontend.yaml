@@ -191,28 +191,52 @@ views:
             name: Weather
           - type: custom:clock-weather-card
             entity: weather.openweathermap
-            sun_entity: sun.sun
-            temperature_sensor: sensor.outdoor_temp
-            weather_icon_type: line
-            animated_icon: true
-            forecast_rows: 4
-            locale: en-US
-            time_format: 12
-            date_pattern: DDDD
-            hide_today_section: false
-            hide_forecast_section: false
-            hide_clock: true
-            hide_date: true
-            hourly_forecast: false
-            show_humidity: true
-            style: |
-              ha-card {
-                border: 1px solid var(--divider-color);
-                border-radius: 12px;
-                color: var(--primary-text-color) !important;
-                background: var(--ha-card-background);
-                --secondary-background-color: var(--divider-color);
-              } 
+            tap_action:
+              action: navigate
+              navigation_path: /isaac-lucas/weather
+            sections:
+              header:
+                weather_icon_size: 8rem
+                rows:
+                  - font_size: 4rem
+                    segments:
+                      - type: weather
+                        attribute: temperature
+                        unit: °
+                    alignment: center
+                  - font_size: 1.2rem
+                    segments:
+                      - type: weather
+                      - type: spacer
+                      - type: icon
+                        icon: mdi:weather-windy
+                      - type: template
+                        template: >-
+                          {{ state_attr('weather.openweathermap','wind_speed') |
+                          round(0) | int }} mph
+                  - font_size: 1.1rem
+                    segments:
+                      - type: icon
+                        icon: mdi:water-percent
+                      - type: weather
+                        attribute: humidity
+                      - type: spacer
+                      - type: icon
+                        icon: mdi:leaf
+                      - type: template
+                        template: >-
+                          {{ states('sensor.u_s_air_pollution_level') |
+                          replace('_',' ') | title }} ({{
+                          states('sensor.u_s_air_quality_index') }})
+                weather_icon_type: fill
+              forecast_strip:
+                time_pattern: h a
+                weather_icon_type: fill
+                count: 5
+              forecast_list:
+                row_height: 32px
+                weather_icon_type: fill
+            weather_icon_type: fill
         view_layout:
           grid-area: weather
       - type: vertical-stack
@@ -534,17 +558,10 @@ views:
                 tap_action:
                   action: navigate
                   navigation_path: '#phone_locator'
-              - entity: sensor.andrews_phone_battery_level_2
-              - entity: sensor.andrews_phone_distance_2
-              - entity: sensor.andrews_phone_steps_2
               - entity: sensor.andrew_from_home
                 image: local/images/other/frontdoor.jpg
-              - entity: sensor.andrew_to_berwick
-                image: local/images/other/berwick.jpg
-              - entity: sensor.andrew_to_misspattys
-                image: local/images/other/miss_pattys.JPG
-              - entity: sensor.andrew_to_work
-                image: local/images/other/borthwick.jpg
+              - entity: sensor.andrews_phone_battery_level_2
+              - entity: sensor.andrews_phone_steps_2
             columns: 4
             card_mod:
               style: |
@@ -580,17 +597,10 @@ views:
                 tap_action:
                   action: navigate
                   navigation_path: '#phone_locator'
-              - entity: sensor.christina_s_iphone_battery_level
-              - entity: sensor.christina_s_iphone_distance
-              - entity: sensor.christina_s_iphone_steps
               - entity: sensor.christina_to_home
                 image: local/images/other/frontdoor.jpg
-              - entity: sensor.christina_to_berwick
-                image: local/images/other/berwick.jpg
-              - entity: sensor.christina_to_miss_pattys
-                image: local/images/other/miss_pattys.JPG
-              - entity: sensor.christina_to_boston
-                image: local/images/other/liberty_boston.jpg
+              - entity: sensor.christina_s_iphone_battery_level
+              - entity: sensor.christina_s_iphone_steps
             columns: 4
             card_mod:
               style: |
@@ -3005,22 +3015,23 @@ views:
                     head:
                       type: custom:slider-entity-row
                       entity: light.great_room_lamps
+                      name: Lamps
                       toggle: true
                     entities:
+                      - type: custom:slider-entity-row
+                        entity: light.great_room_front_lamp
+                        toggle: true
                       - type: custom:slider-entity-row
                         entity: light.great_room_back_lamp
                         toggle: true
                       - type: custom:slider-entity-row
-                        entity: light.great_room_front_lamp
+                        entity: light.great_room_bar_lamp
                         toggle: true
                       - type: custom:slider-entity-row
                         entity: light.left_couch_lamp
                         toggle: true
                       - type: custom:slider-entity-row
                         entity: light.right_couch_lamp
-                        toggle: true
-                      - type: custom:slider-entity-row
-                        entity: light.great_room_bar_lamp
                         toggle: true
                   - type: custom:fold-entity-row
                     head:
@@ -3152,11 +3163,6 @@ views:
                       - type: custom:slider-entity-row
                         entity: light.solarium_spot_lights
                         name: Fountain Spots
-                        toggle: true
-                        colorize: true
-                      - type: custom:slider-entity-row
-                        entity: light.solarium_rope_light
-                        name: Rope Light
                         toggle: true
                         colorize: true
                       - type: custom:fold-entity-row
@@ -3578,7 +3584,7 @@ views:
                 icon: mdi:coat-rack
               - type: custom:bubble-card
                 card_type: separator
-                name: Christina's Office
+                name: Andrew's Office
                 styles: |
                   h4 {
                   }
@@ -3586,7 +3592,7 @@ views:
                   ha-card div div div:nth-child(2) {
                         height: 5px!important;
                   }
-                icon: mdi:piano
+                icon: mdi:desk
           - type: horizontal-stack
             cards:
               - type: vertical-stack
@@ -3598,8 +3604,17 @@ views:
                         entity: light.front_foyer_chandelier
                         name: Chandelier
                         toggle: true
-              - type: vertical-stack
-                cards:
+                  - type: custom:bubble-card
+                    card_type: separator
+                    name: Christina's Office
+                    styles: |
+                      h4 {
+                      }
+
+                      ha-card div div div:nth-child(2) {
+                            height: 5px!important;
+                      }
+                    icon: mdi:piano
                   - type: entities
                     show_header_toggle: false
                     entities:
@@ -3615,17 +3630,8 @@ views:
                         entity: light.white_room_main_lights
                         name: Main Lights
                         toggle: true
-                  - type: custom:bubble-card
-                    card_type: separator
-                    name: Andrew's Office
-                    styles: |
-                      h4 {
-                      }
-
-                      ha-card div div div:nth-child(2) {
-                            height: 5px!important;
-                      }
-                    icon: mdi:desk
+              - type: vertical-stack
+                cards:
                   - type: entities
                     show_header_toggle: false
                     entities:
@@ -3641,357 +3647,18 @@ views:
                         entity: light.office_ceiling_light
                         name: Ceiling Light
                         toggle: true
+                      - type: custom:slider-entity-row
+                        entity: light.solarium_rope_light
+                        name: Rope Light
+                        toggle: true
+                        colorize: true
                       - entity: switch.office_noise_machine
                         name: Bookshelf Noise Machine
                         icon: mdi:bookshelf
                       - entity: switch.office_fan
                         name: Desk Fan
                     state_color: true
-      - type: custom:bubble-card
-        card_type: pop-up
-        hash: '#kids_school'
-        name: Kids School
-        icon: mdi:school-outline
-        is_sidebar_hidden: false
-        margin_top_mobile: 0px
-        margin: 0px
-        back_open: true
-        margin_top_desktop: -44px
-        width_desktop: 1000px
-        auto_close: '120000'
-        bg_opacity: 85
-        bg_blur: 100
-        show_header: true
-        cards:
-          - type: horizontal-stack
-            cards:
-              - type: custom:bubble-card
-                card_type: separator
-                name: Charlotte
-                styles: |
-                  h4 {
-                  }
-
-                  ha-card div div div:nth-child(2) {
-                        height: 5px!important;
-                  }
-                icon: mdi:looks
-              - type: custom:bubble-card
-                card_type: separator
-                name: Henry
-                styles: |
-                  h4 {
-                  }
-
-                  ha-card div div div:nth-child(2) {
-                        height: 5px!important;
-                  }
-                icon: mdi:police-badge-outline
-          - type: horizontal-stack
-            cards:
-              - type: vertical-stack
-                cards:
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.charlotte_wakeup
-                        state: 'on'
-                    card:
-                      show_name: true
-                      show_icon: true
-                      type: button
-                      name: Wake Up
-                      icon: mdi:alarm
-                      tap_action:
-                        action: call-service
-                        service: input_boolean.turn_off
-                        target:
-                          entity_id:
-                            - input_boolean.charlotte_wakeup
-                      card_mod:
-                        style: |
-                          ha-card {
-                            background-color: #FDE2E6;
-                            border: 1px solid var(--primary-text-color);
-                            border-radius: 8px;
-                            color: rebeccapurple;
-                            --paper-item-icon-color: rebeccapurple;
-                            height: 90px!important;
-                          }      
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.charlotte_breakfast
-                        state: 'on'
-                    card:
-                      show_name: true
-                      show_icon: true
-                      type: button
-                      name: Eat Breakfast
-                      icon: mdi:silverware-fork-knife
-                      tap_action:
-                        action: perform-action
-                        target:
-                          entity_id: input_boolean.charlotte_breakfast
-                        perform_action: input_boolean.turn_off
-                      card_mod:
-                        style: |
-                          ha-card {
-                            background-color: #FDE2E6;
-                            border: 1px solid var(--primary-text-color);
-                            border-radius: 8px;
-                            color: rebeccapurple;
-                            --paper-item-icon-color: rebeccapurple;
-                            height: 90px!important;
-                          }      
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.charlotte_dressed
-                        state: 'on'
-                    card:
-                      show_name: true
-                      show_icon: true
-                      type: button
-                      name: Get Dressed
-                      icon: mdi:hanger
-                      tap_action:
-                        action: perform-action
-                        target:
-                          entity_id: input_boolean.charlotte_dressed
-                        perform_action: input_boolean.turn_off
-                      card_mod:
-                        style: |
-                          ha-card {
-                            background-color: #FDE2E6;
-                            border: 1px solid var(--primary-text-color);
-                            border-radius: 8px;
-                            color: rebeccapurple;
-                            --paper-item-icon-color: rebeccapurple;
-                            height: 90px!important;
-                          }                
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.charlotte_brush
-                        state: 'on'
-                    card:
-                      show_name: true
-                      show_icon: true
-                      type: button
-                      name: Brush Teeth
-                      icon: mdi:toothbrush
-                      tap_action:
-                        action: perform-action
-                        target:
-                          entity_id: input_boolean.charlotte_brush
-                        perform_action: input_boolean.turn_off
-                      card_mod:
-                        style: |
-                          ha-card {
-                            background-color: #FDE2E6;
-                            border: 1px solid var(--primary-text-color);
-                            border-radius: 8px;
-                            color: rebeccapurple;
-                            --paper-item-icon-color: rebeccapurple;
-                            height: 90px!important;
-                          }      
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.charlotte_ballet
-                        state: 'on'
-                    card:
-                      show_name: true
-                      show_icon: true
-                      type: button
-                      name: Ballet Bag
-                      icon: mdi:shoe-ballet
-                      tap_action:
-                        action: perform-action
-                        target:
-                          entity_id: input_boolean.charlotte_ballet
-                        perform_action: input_boolean.turn_off
-                      card_mod:
-                        style: |
-                          ha-card {
-                            background-color: #FDE2E6;
-                            border: 1px solid var(--primary-text-color);
-                            border-radius: 8px;
-                            color: rebeccapurple;
-                            --paper-item-icon-color: rebeccapurple;
-                            height: 90px!important;
-                          }      
-                  - type: custom:bubble-card
-                    card_type: separator
-                    name: Today's Schedule
-                    styles: |
-                      h4 {
-                      }
-
-                      ha-card div div div:nth-child(2) {
-                            height: 5px!important;
-                      }
-                    icon: mdi:calendar
-                  - type: custom:atomic-calendar-revive
-                    enableModeChange: true
-                    entities:
-                      - entity: calendar.charlotte_daily_schedule
-                        name: Charlotte daily schedule
-                        maxDaysToShow: 1
-                        startDaysAhead: 0
-                        showDate: false
-                        showMonth: false
-                        showWeekDay: false
-                        dateFormat: dddd, MMMM D
-                        hoursFormat: 12h
-                        showDescription: false
-                        showLocation: false
-                        showCurrentEventLine: true
-                        showProgressBar: false
-                        showNoEventsForToday: true
-                    showDeclined: false
-                    hideFinishedEvents: false
-                    showDate: false
-                    compactMode: false
-                    showAllDayEvents: false
-                    allDayBottom: false
-                    offsetHeaderDate: false
-                    showDescription: false
-                    showMonth: false
-                    showDatePerEvent: false
-                    showEventDate: false
-                  - type: custom:bubble-card
-                    card_type: separator
-                    name: Today's Lunch
-                    styles: |
-                      h4 {
-                      }
-
-                      ha-card div div div:nth-child(2) {
-                            height: 5px!important;
-                      }
-                    icon: mdi:silverware-fork-knife
-              - type: vertical-stack
-                cards:
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.henry_wakeup
-                        state: 'on'
-                    card:
-                      show_name: true
-                      show_icon: true
-                      type: button
-                      name: Wake Up
-                      icon: mdi:alarm
-                      tap_action:
-                        action: perform-action
-                        target:
-                          entity_id: input_boolean.henry_wakeup
-                        perform_action: input_boolean.turn_off
-                      card_mod:
-                        style: |
-                          ha-card {
-                            background-color: #ced8df;
-                            border: 1px solid var(--primary-text-color);
-                            border-radius: 8px;
-                            color: var(--primary-text-color);
-                            --paper-item-icon-color: var(--primary-text-color);
-                            height: 90px!important;
-                          }  
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.henry_breakfast
-                        state: 'on'
-                    card:
-                      show_name: true
-                      show_icon: true
-                      type: button
-                      name: Eat Breakfast
-                      icon: mdi:silverware-fork-knife
-                      tap_action:
-                        action: perform-action
-                        target:
-                          entity_id: input_boolean.henry_breakfast
-                        perform_action: input_boolean.turn_off
-                        data: {}
-                      card_mod:
-                        style: |
-                          ha-card {
-                            background-color: #ced8df;
-                            border: 1px solid var(--primary-text-color);
-                            border-radius: 8px;
-                            color: var(--primary-text-color);
-                            --paper-item-icon-color: var(--primary-text-color);
-                            height: 90px!important;
-                          }  
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.henry_dressed
-                        state: 'on'
-                    card:
-                      show_name: true
-                      show_icon: true
-                      type: button
-                      name: Get Dressed
-                      icon: mdi:hanger
-                      tap_action:
-                        action: perform-action
-                        target:
-                          entity_id: input_boolean.henry_dressed
-                        perform_action: input_boolean.turn_off
-                        data: {}
-                      card_mod:
-                        style: |
-                          ha-card {
-                            background-color: #ced8df;
-                            border: 1px solid var(--primary-text-color);
-                            border-radius: 8px;
-                            color: var(--primary-text-color);
-                            --paper-item-icon-color: var(--primary-text-color);
-                            height: 90px!important;
-                          }  
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.henry_brush
-                        state: 'on'
-                    card:
-                      show_name: true
-                      show_icon: true
-                      type: button
-                      name: Brush Teeth
-                      icon: mdi:toothbrush
-                      tap_action:
-                        action: perform-action
-                        target:
-                          entity_id: input_boolean.henry_brush
-                        perform_action: input_boolean.turn_off
-                        data: {}
-                      card_mod:
-                        style: |
-                          ha-card {
-                            background-color: #ced8df;
-                            border: 1px solid var(--primary-text-color);
-                            border-radius: 8px;
-                            color: var(--primary-text-color);
-                            --paper-item-icon-color: var(--primary-text-color);
-                            height: 90px!important;
-                          }  
-                  - type: custom:bubble-card
-                    card_type: separator
-                    styles: |
-                      h4 {
-                      }
-
-                      ha-card div div div:nth-child(2) {
-                            height: 5px!important;
-                      }
-                    icon: ''
-                    name: Other Things?
+        button_type: name
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#upstairs'
@@ -4757,15 +4424,6 @@ views:
                         top: 74%
                         transform: translate(-100%,-50%)
                   image: /local/hass-dryer-card-bg.png
-          - show_name: true
-            show_icon: true
-            type: button
-            tap_action:
-              action: navigate
-              navigation_path: '#kids_school'
-            name: Kids School
-            icon: mdi:school-outline
-            icon_height: 100px
         view_layout:
           grid-area: info
       - type: vertical-stack
@@ -5472,426 +5130,301 @@ views:
     title: Weather
     type: custom:grid-layout
     layout:
-      grid-template-columns: 30% 70%
-      grid-template-rows: auto
+      grid-template-columns: 1fr 1.3fr 1fr
+      grid-template-rows: auto auto 1fr
       grid-template-areas: |
-        "left right"
+        "alert alert alert"
+        "now   chart chart"
+        "now   radar sea"
+      grid-gap: 12px
+      mediaquery:
+        '(max-width: 900px)':
+          grid-template-columns: 100%
+          grid-template-rows: auto
+          grid-template-areas: |
+            "alert"
+            "now"
+            "chart"
+            "sea"
+            "radar"
     cards:
-      - type: vertical-stack
-        cards:
-          - type: entities
-            view_layout:
-              grid-area: air_quality
-            entities:
-              - entity: sensor.u_s_air_pollution_level
-              - entity: sensor.u_s_air_quality_index
-              - entity: sensor.u_s_main_pollutant
-            title: Air Quality
-            footer:
-              type: graph
-              entity: sensor.u_s_air_quality_index
-              detail: 2
-              hours_to_show: 24
-            style: |
-              ha-card {
-                background: var(--ha-card-background);
-              }
-          - type: custom:weather-radar-card
-            map_style: Satellite
-            zoom_level: 9
-            show_scale: false
-            show_marker: true
-            static_map: false
-            show_playback: false
-            show_zoom: false
-            show_range: false
-            show_recenter: false
-            square_map: false
-            extra_labels: false
-            style: |
-              ha-card {
-                background: var(--ha-card-background);
-              }
+      - type: conditional
         view_layout:
-          grid-area: right
-      - type: vertical-stack
-        cards:
-          - type: custom:clock-weather-card
-            entity: weather.openweathermap
-            sun_entity: sun.sun
-            temperature_sensor: sensor.outdoor_temp
-            weather_icon_type: line
-            animated_icon: true
-            forecast_rows: 5
-            locale: en-US
-            time_format: 12
-            date_pattern: DDDD
-            hide_today_section: false
-            hide_forecast_section: false
-            hide_clock: true
-            hide_date: true
-            hourly_forecast: false
-            style: |
-              ha-card {
-                border: 1px solid var(--divider-color);
-                border-radius: 12px;
-                color: var(--primary-text-color) !important;
-                background: var(--ha-card-background);
-                --secondary-background-color: var(--divider-color);
-              } 
-          - type: custom:hourly-weather
-            entity: weather.openweathermap
-            label_spacing: '2'
-            icons: true
-            show_wind: speed
-            show_precipitation_amounts: true
-            show_precipitation_probability: false
-            num_segments: '10'
-            offset: '0'
-            show_date: boundary
-            name: null
-          - type: custom:horizon-card
-            moon: true
-            refresh_period: 60
-            fields:
-              sunrise: true
-              sunset: true
-              dawn: true
-              noon: true
-              dusk: true
-              azimuth: false
-              sun_azimuth: false
-              moon_azimuth: false
-              elevation: false
-              sun_elevation: false
-              moon_elevation: false
-              moonrise: true
-              moonset: true
-              moon_phase: true
-            southern_flip: false
-            language: en
-            time_format: language
-            number_format: language
-            style: |
-              ha-card {
-                background: var(--ha-card-background);
-              }
+          grid-area: alert
+        conditions:
+          - condition: numeric_state
+            entity: sensor.nws_alerts
+            above: 0
+        card:
+          type: custom:weather-alerts-card
+          entity: sensor.nws_alerts
+      - type: custom:clock-weather-card
+        entity: weather.openweathermap
+        weather_icon_type: fill
+        tap_action:
+          action: none
+        sections:
+          header:
+            weather_icon_size: 8rem
+            rows:
+              - font_size: 5rem
+                segments:
+                  - type: weather
+                    attribute: temperature
+                    unit: °
+              - font_size: 1.4rem
+                segments:
+                  - type: weather
+                  - type: text
+                    text: · Feels
+                  - type: weather
+                    attribute: apparent_temperature
+                    unit: °
+              - font_size: 1rem
+                segments:
+                  - type: icon
+                    icon: mdi:weather-windy
+                  - type: template
+                    template: >-
+                      {% set w = 'weather.openweathermap' %} {% set b =
+                      state_attr(w,'wind_bearing') | float(0) %} {{
+                      ['N','NE','E','SE','S','SW','W','NW'][((b / 45) | round(0)
+                      | int) % 8] }} {{ state_attr(w,'wind_speed') | float(0) |
+                      round(0) | int }} mph {%- set g =
+                      state_attr(w,'wind_gust_speed') %} {%- if g %} · gusts {{
+                      g | float(0) | round(0) | int }}{% endif %}
+              - font_size: 1rem
+                segments:
+                  - type: icon
+                    icon: mdi:water-percent
+                  - type: weather
+                    attribute: humidity
+                  - type: icon
+                    icon: mdi:sun-wireless
+                  - type: weather
+                    attribute: uv_index
+                    unit: ' UV'
+              - font_size: 1rem
+                segments:
+                  - type: icon
+                    icon: mdi:leaf
+                  - type: template
+                    template: >-
+                      {{ states('sensor.u_s_air_pollution_level') |
+                      replace('_',' ') | title }} ({{
+                      states('sensor.u_s_air_quality_index') }})
+            weather_icon_type: fill
+          forecast_strip:
+            hide: true
+          forecast_list:
+            weather_entity: weather.kpsm
+            count: 7
+            row_height: 46px
+            weather_icon_type: fill
         view_layout:
-          grid-area: left
-  - title: Save
-    path: save
-    icon: mdi:content-save
-    badges: []
-    cards:
+          grid-area: now
+      - type: custom:apexcharts-card
+        view_layout:
+          grid-area: chart
+        graph_span: 48h
+        span:
+          start: hour
+        now:
+          show: true
+          color: '#d8b14a'
+        header:
+          show: true
+          title: Next 48 hours
+          show_states: false
+        yaxis:
+          - id: temp
+            decimals: 0
+            min: '|-3|'
+            max: '|+3|'
+            apex_config:
+              tickAmount: 4
+          - id: pop
+            show: false
+            min: 0
+            max: 100
+        apex_config:
+          chart:
+            height: 220
+          legend:
+            show: false
+          grid:
+            borderColor: rgba(255,255,255,0.07)
+            strokeDashArray: 3
+          plotOptions:
+            bar:
+              columnWidth: 70%
+              borderRadius: 2
+          xaxis:
+            labels:
+              datetimeFormatter:
+                hour: h tt
+                day: ddd
+          tooltip:
+            enabledOnSeries:
+              - 1
+              - 2
+            x:
+              format: ddd h tt
+        series:
+          - entity: sensor.weather_hourly_48h
+            name: Night
+            type: area
+            yaxis_id: pop
+            color: '#ffffff'
+            opacity: 0.05
+            stroke_width: 0
+            curve: stepline
+            extend_to: false
+            show:
+              in_header: false
+              legend_value: false
+            data_generator: |
+              return (entity.attributes.forecast || []).map(f => {
+                const d = new Date(f.t);
+                const night = (f.day === null || f.day === undefined)
+                  ? (d.getHours() < 7 || d.getHours() >= 18)
+                  : !f.day;
+                return [d.getTime(), night ? 100 : null];
+              });
+          - entity: sensor.weather_hourly_48h
+            name: Rain chance
+            type: column
+            yaxis_id: pop
+            color: '#5b9bd5'
+            opacity: 0.6
+            unit: '%'
+            extend_to: false
+            data_generator: |
+              return (entity.attributes.forecast || [])
+                .map(f => [new Date(f.t).getTime(), f.pop || 0]);
+          - entity: sensor.weather_hourly_48h
+            name: Temperature
+            type: line
+            yaxis_id: temp
+            color: '#d8b14a'
+            stroke_width: 3
+            curve: smooth
+            unit: °
+            extend_to: false
+            data_generator: |
+              return (entity.attributes.forecast || [])
+                .map(f => [new Date(f.t).getTime(), f.temp]);
+      - type: custom:weather-radar-card
+        map_style: Auto
+        zoom_level: 8
+        square_map: true
+        static_map: false
+        show_marker: true
+        show_playback: true
+        show_scale: false
+        show_zoom: false
+        show_range: false
+        show_recenter: false
+        extra_labels: false
+        markers:
+          - entity: zone.home
+        view_layout:
+          grid-area: radar
       - type: vertical-stack
+        view_layout:
+          grid-area: sea
         cards:
-          - type: custom:bubble-pop-up
-            hash: '#recipes'
-            name: Recipes
-            icon: mdi:silverware-fork-knife
-            is_sidebar_hidden: false
-            margin_top_mobile: 0px
-            margin: 0px
-            back_open: true
-            margin_top_desktop: -44px
-            width_desktop: 1000px
-            bg_opacity: 85
-            bg_blur: 100
-          - type: horizontal-stack
-            cards:
-              - type: custom:bubble-card
-                card_type: separator
-                styles: |
-                  h4 {
-                  }
-
-                  ha-card div div div:nth-child(2) {
-                        height: 5px!important;
-                  }
-                icon: mdi:food-turkey
-                name: Turkey
-              - type: custom:bubble-card
-                card_type: separator
-                styles: |
-                  h4 {
-                  }
-
-                  ha-card div div div:nth-child(2) {
-                        height: 5px!important;
-                  }
-                icon: mdi:french-fries
-                name: Potatoes
-              - type: custom:bubble-card
-                card_type: separator
-                styles: |
-                  h4 {
-                  }
-
-                  ha-card div div div:nth-child(2) {
-                        height: 5px!important;
-                  }
-                icon: mdi:liquid-spot
-                name: Gravy
-          - type: vertical-stack
-            cards:
-              - type: horizontal-stack
-                cards:
-                  - type: picture
-                    image: local/images/recipes/turkey1.jpg
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: var(--ha-card-background);
-                        }
-                  - type: picture
-                    image: local/images/recipes/potatoes1.jpg
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: var(--ha-card-background);
-                        }
-                  - type: picture
-                    image: local/images/recipes/gravy1.jpg
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: var(--ha-card-background);
-                        }
-              - type: horizontal-stack
-                cards:
-                  - type: horizontal-stack
-                    cards:
-                      - type: custom:bubble-card
-                        card_type: separator
-                        styles: |
-                          h4 {
-                          }
-
-                          ha-card div div div:nth-child(2) {
-                                height: 5px!important;
-                          }
-                        icon: mdi:bread-slice
-                        name: Bread Stuffing
-                      - type: custom:bubble-card
-                        card_type: separator
-                        styles: |
-                          h4 {
-                          }
-
-                          ha-card div div div:nth-child(2) {
-                                height: 5px!important;
-                          }
-                        icon: mdi:sausage
-                        name: Sausage Stuffing
-              - type: horizontal-stack
-                cards:
-                  - type: picture
-                    image: local/images/recipes/stuffing1.jpg
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: var(--ha-card-background);
-                        }
-                  - type: picture
-                    image: local/images/recipes/sausage_stuffing1.jpg
-                    card_mod:
-                      style: |
-                        ha-card {
-                          background: var(--ha-card-background);
-                        }
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
-            card_type: separator
-            icon: mdi:exclamation
-            styles: |
-              ha-card { 
-                  color: var(--primary-text-color) !important;
-              }
-              .separator-container div:last-child {
-                  background-color: var(--divider-color) !important;
-              }
-              h4 {
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Info
-          - type: conditional
-            conditions:
-              - entity: input_boolean.feed_fish_reminder
-                state: 'on'
-            card:
-              type: button
-              name: Feed the Fish
-              icon: mdi:fish
-              tap_action:
-                action: call-service
-                service: input_boolean.turn_off
-                target:
-                  entity_id:
-                    - input_boolean.feed_fish_reminder
-                    - input_boolean.feed_fish_reminder_color_change
-              styles:
-                card:
-                  - background-color: |
-                      [[[
-                        return states['input_boolean.feed_fish_reminder_color_change'].state === 'on' ? 'var(--state-active-color)' : 'default';
-                      ]]]
-                icon:
-                  - color: var(--primary-text-color)
-          - type: vertical-stack
-            cards:
-              - type: conditional
-                conditions:
-                  - entity: sensor.washer_run_state
-                    state_not: '-'
-                card:
-                  type: picture-elements
-                  elements:
-                    - type: image
-                      entity: sensor.washer_run_state
-                      image: /local/lg-icons/sensing.png
-                      state_image:
-                        Detecting: /local/lg-icons/sensing-on.png
-                      style:
-                        top: 33%
-                        left: 33%
-                        width: 20%
-                        image-rendering: crisp
-                    - type: image
-                      entity: sensor.washer_run_state
-                      image: /local/lg-icons/wash.png
-                      state_image:
-                        Washing: /local/lg-icons/wash-on.png
-                      style:
-                        top: 33%
-                        left: 51%
-                        width: 20%
-                        image-rendering: crisp
-                    - type: image
-                      entity: sensor.washer_run_state
-                      image: /local/lg-icons/rinse.png
-                      state_image:
-                        Rinsing: /local/lg-icons/rinse-on.png
-                      style:
-                        top: 33%
-                        left: 69%
-                        width: 20%
-                        image-rendering: crisp
-                    - type: image
-                      entity: sensor.washer_run_state
-                      image: /local/lg-icons/spin.png
-                      state_image:
-                        Spinning: /local/lg-icons/spin-on.png
-                      style:
-                        top: 33%
-                        left: 87%
-                        width: 20%
-                        image-rendering: crisp
-                    - type: image
-                      entity: sensor.washer
-                      image: /local/lg-icons/wifi.png
-                      state_image:
-                        'on': /local/lg-icons/wifi-on.png
-                      style:
-                        top: 73%
-                        left: 32%
-                        width: 10%
-                        image-rendering: crisp
-                    - type: image
-                      entity: sensor.washer_door_lock
-                      image: /local/lg-icons/lock.png
-                      state_image:
-                        'on': /local/lg-icons/lock-on.png
-                      style:
-                        top: 73%
-                        left: 45%
-                        width: 10%
-                        image-rendering: crisp
-                    - type: state-label
-                      entity: sensor.washer_time_display
-                      style:
-                        color: '#8df427'
-                        font-family: segment7
-                        font-size: 50px
-                        left: 95%
-                        top: 74%
-                        transform: translate(-100%,-50%)
-                  image: /local/hass-washer-card-bg.png
-              - type: conditional
-                conditions:
-                  - entity: sensor.dryer_run_state
-                    state_not: '-'
-                card:
-                  type: picture-elements
-                  elements:
-                    - type: image
-                      entity: sensor.dryer_run_state
-                      image: /local/lg-icons/dry.png
-                      state_image:
-                        Drying: /local/lg-icons/dry-on.png
-                      style:
-                        top: 33%
-                        left: 69%
-                        width: 20%
-                        image-rendering: crisp
-                    - type: image
-                      entity: sensor.dryer_run_state
-                      image: /local/lg-icons/cool.png
-                      state_image:
-                        Cooling: /local/lg-icons/cool-on.png
-                      style:
-                        top: 33%
-                        left: 87%
-                        width: 20%
-                        image-rendering: crisp
-                    - type: image
-                      entity: sensor.dryer
-                      image: /local/lg-icons/wifi.png
-                      state_image:
-                        'on': /local/lg-icons/wifi-on.png
-                      style:
-                        top: 73%
-                        left: 32%
-                        width: 10%
-                        image-rendering: crisp
-                    - type: state-label
-                      entity: sensor.dryer_time_display
-                      style:
-                        color: '#8df427'
-                        font-family: segment7
-                        font-size: 50px
-                        left: 95%
-                        top: 74%
-                        transform: translate(-100%,-50%)
-                  image: /local/hass-dryer-card-bg.png
-          - show_name: true
-            show_icon: true
-            type: button
+          - type: tile
+            entity: sensor.tide
+            name: Tides
+            state_content:
+              - station
+              - state
+              - summary
             tap_action:
-              action: navigate
-              navigation_path: '#kids_school'
-            name: Kids School
-            icon: mdi:school-outline
-            icon_height: 100px
-        view_layout:
-          grid-area: info
-      - type: custom:bubble-card
-        card_type: select
-        entity: input_select.house_mode
-        icon: mdi:home-switch
-        name: House Mode
-        show_state: true
-        show_attribute: true
-        card_layout: large
-        styles: |-
-          .bubble-select-background {
-              opacity: 1 !important;
-          }
-          .bubble-select-card-container {
-              border: 1px solid var(--divider-color) !important;
-          }
+              action: perform-action
+              perform_action: input_select.select_next
+              target:
+                entity_id: input_select.weather_tide_station
+            icon_tap_action:
+              action: perform-action
+              perform_action: input_select.select_next
+              target:
+                entity_id: input_select.weather_tide_station
+          - type: custom:apexcharts-card
+            graph_span: 30h
+            span:
+              start: hour
+              offset: -6h
+            now:
+              show: true
+              color: '#d8b14a'
+            header:
+              show: false
+            yaxis:
+              - decimals: 0
+                apex_config:
+                  tickAmount: 3
+            apex_config:
+              chart:
+                height: 190
+              legend:
+                show: false
+              grid:
+                borderColor: rgba(255,255,255,0.07)
+                strokeDashArray: 3
+              xaxis:
+                labels:
+                  datetimeFormatter:
+                    hour: h tt
+                    day: ddd
+              tooltip:
+                x:
+                  format: ddd h:mm tt
+            series:
+              - entity: sensor.tide
+                name: Tide
+                type: area
+                color: '#5b9bd5'
+                opacity: 0.25
+                stroke_width: 2.5
+                unit: ' ft'
+                extend_to: false
+                show:
+                  in_header: false
+                data_generator: >
+                  // smooth cosine curve between NOAA high/low points
+
+                  const p = entity.attributes.chart || [];
+
+                  const out = [];
+
+                  for (let i = 0; i < p.length - 1; i++) {
+                    const a = p[i], b = p[i + 1];
+                    for (let s = 0; s < 12; s++) {
+                      const f = s / 12;
+                      out.push([
+                        (a.ts + (b.ts - a.ts) * f) * 1000,
+                        a.v + (b.v - a.v) * (1 - Math.cos(Math.PI * f)) / 2
+                      ]);
+                    }
+                  }
+
+                  if (p.length) out.push([p[p.length - 1].ts * 1000, p[p.length
+                  - 1].v]);
+
+                  return out;
+          - type: markdown
+            content: >-
+              {% set ph = states('sensor.moon_phase') %} <ha-icon
+              icon="mdi:weather-sunset-up"></ha-icon> {{
+              as_timestamp(state_attr('sun.sun','next_rising')) |
+              timestamp_custom('%-I:%M %p') }} &nbsp;&nbsp;&nbsp; <ha-icon
+              icon="mdi:weather-sunset-down"></ha-icon> {{
+              as_timestamp(state_attr('sun.sun','next_setting')) |
+              timestamp_custom('%-I:%M %p') }} &nbsp;&nbsp;&nbsp; <ha-icon
+              icon="mdi:moon-{{ ph | replace('_moon','') | replace('_','-')
+              }}"></ha-icon> {{ ph | replace('_',' ') | capitalize }}
   - title: Meals
     path: meals
     icon: mdi:silverware-fork-knife
@@ -5914,8 +5447,6 @@ views:
             "list"
     cards:
       - type: vertical-stack
-        view_layout:
-          grid-area: tonight
         cards:
           - type: custom:bubble-card
             card_type: separator
@@ -5963,23 +5494,6 @@ views:
                   text-transform: none !important;
                 }
           - type: custom:bubble-card
-            card_type: button
-            button_type: custom
-            entity: sensor.mealie_recipes
-            name: Find a recipe
-            icon: mdi:book-open-page-variant-outline
-            show_state: false
-            button_action:
-              tap_action:
-                action: navigate
-                navigation_path: '#recipes'
-            styles: |
-              .bubble-icon {
-                color: var(--accent-color) !important;
-              }
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
             card_type: separator
             icon: mdi:weather-sunset-up
             name: Tomorrow
@@ -6024,6 +5538,10 @@ views:
                 .recipe-link {
                   text-transform: none !important;
                 }
+        view_layout:
+          grid-area: tonight
+      - type: vertical-stack
+        cards:
           - type: custom:bubble-card
             card_type: separator
             icon: mdi:calendar-week
@@ -6068,6 +5586,36 @@ views:
                 border-radius: 12px;
                 background: var(--ha-card-background);
               }
+          - type: custom:bubble-card
+            card_type: separator
+            styles: |
+              ha-card {
+                color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                background-color: var(--divider-color) !important;
+              }
+              ha-card div div div:nth-child(2) {
+                height: 5px!important;
+              }
+          - type: custom:bubble-card
+            card_type: button
+            button_type: custom
+            entity: sensor.mealie_recipes
+            name: Find a recipe
+            icon: mdi:book-open-page-variant-outline
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: '#recipes'
+            styles: |
+              .bubble-icon {
+                color: var(--accent-color) !important;
+              }
+            tap_action:
+              action: navigate
+              navigation_path: '#recipes'
+            rows: '2'
         view_layout:
           grid-area: tomorrow
       - type: vertical-stack
@@ -6791,3 +6339,139 @@ views:
                 name: Ping
                 color: '#5A646B'
                 stroke_width: 2
+  - title: Save
+    path: save
+    icon: mdi:content-save
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-pop-up
+            hash: '#recipes'
+            name: Recipes
+            icon: mdi:silverware-fork-knife
+            is_sidebar_hidden: false
+            margin_top_mobile: 0px
+            margin: 0px
+            back_open: true
+            margin_top_desktop: -44px
+            width_desktop: 1000px
+            bg_opacity: 85
+            bg_blur: 100
+          - type: horizontal-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: separator
+                styles: |
+                  h4 {
+                  }
+
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:food-turkey
+                name: Turkey
+              - type: custom:bubble-card
+                card_type: separator
+                styles: |
+                  h4 {
+                  }
+
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:french-fries
+                name: Potatoes
+              - type: custom:bubble-card
+                card_type: separator
+                styles: |
+                  h4 {
+                  }
+
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:liquid-spot
+                name: Gravy
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: picture
+                    image: local/images/recipes/turkey1.jpg
+                    card_mod:
+                      style: |
+                        ha-card {
+                          background: var(--ha-card-background);
+                        }
+                  - type: picture
+                    image: local/images/recipes/potatoes1.jpg
+                    card_mod:
+                      style: |
+                        ha-card {
+                          background: var(--ha-card-background);
+                        }
+                  - type: picture
+                    image: local/images/recipes/gravy1.jpg
+                    card_mod:
+                      style: |
+                        ha-card {
+                          background: var(--ha-card-background);
+                        }
+              - type: horizontal-stack
+                cards:
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:bubble-card
+                        card_type: separator
+                        styles: |
+                          h4 {
+                          }
+
+                          ha-card div div div:nth-child(2) {
+                                height: 5px!important;
+                          }
+                        icon: mdi:bread-slice
+                        name: Bread Stuffing
+                      - type: custom:bubble-card
+                        card_type: separator
+                        styles: |
+                          h4 {
+                          }
+
+                          ha-card div div div:nth-child(2) {
+                                height: 5px!important;
+                          }
+                        icon: mdi:sausage
+                        name: Sausage Stuffing
+              - type: horizontal-stack
+                cards:
+                  - type: picture
+                    image: local/images/recipes/stuffing1.jpg
+                    card_mod:
+                      style: |
+                        ha-card {
+                          background: var(--ha-card-background);
+                        }
+                  - type: picture
+                    image: local/images/recipes/sausage_stuffing1.jpg
+                    card_mod:
+                      style: |
+                        ha-card {
+                          background: var(--ha-card-background);
+                        }
+      - type: custom:bubble-card
+        card_type: select
+        entity: input_select.house_mode
+        icon: mdi:home-switch
+        name: House Mode
+        show_state: true
+        show_attribute: true
+        card_layout: large
+        styles: |-
+          .bubble-select-background {
+              opacity: 1 !important;
+          }
+          .bubble-select-card-container {
+              border: 1px solid var(--divider-color) !important;
+          }

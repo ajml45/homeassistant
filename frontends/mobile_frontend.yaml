@@ -2697,21 +2697,9 @@ views:
                     icon: mdi:home-automation
                   - type: entities
                     entities:
-                      - entity: automation.charlotte_bedtime_weekday
+                      - entity: automation.kids_bedtime
                         secondary_info: last-triggered
-                        name: Charlotte Bedtime Weekday
-                        icon: mdi:weather-night
-                      - entity: automation.charlotte_bedtime_weekend
-                        secondary_info: last-triggered
-                        name: Charlotte Bedtime Weekend
-                        icon: mdi:weather-night
-                      - entity: automation.henry_bedtime_weekday
-                        secondary_info: last-triggered
-                        name: Henry Bedtime Weekday
-                        icon: mdi:weather-night
-                      - entity: automation.henry_bedtime_weekend
-                        secondary_info: last-triggered
-                        name: Henry Bedtime Weekend
+                        name: Kids Bedtime
                         icon: mdi:weather-night
       - type: custom:bubble-card
         card_type: pop-up

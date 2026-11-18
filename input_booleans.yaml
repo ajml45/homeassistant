@@ -1,11 +1,3 @@
-charlotte_room_status:
-  name: Charlotte Room Status
-  initial: off
-
-henry_room_status:
-  name: Henry Room Status
-  initial: off
-
 guests_present:
   name: Guests
   icon: mdi:account-group

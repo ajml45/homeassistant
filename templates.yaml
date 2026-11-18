@@ -4,14 +4,20 @@
 
 # =============================================================================
 # VIRTUAL SWITCHES
-# Bedtime switches that control noise machines, night lights, and room status
+# Kids' bedtime switches — the one place bedtime is defined (Kids Bedtime
+# automation at 18:45, the Bed Time script and the tablet tiles all use them).
+# On = noise machine + night light (+ Charlotte's fan) on, table lamp off.
+# State follows the noise machine and night light, so it stays right when the
+# Morning scene, vacation mode or a voice command changes them directly.
 # =============================================================================
 
 - switch:
     - name: Henry Bedtime
       unique_id: henry_bedtime
       default_entity_id: switch.henry_bedtime
-      state: "{{ is_state('input_boolean.henry_room_status', 'on') }}"
+      state: >-
+        {{ is_state('switch.henry_noise_machine', 'on')
+           or is_state('switch.henry_night_light', 'on') }}
       turn_on:
         - action: switch.turn_on
           target:
@@ -21,9 +27,6 @@
         - action: light.turn_off
           target:
             entity_id: light.henry_bedroom_table_lamp
-        - action: input_boolean.turn_on
-          target:
-            entity_id: input_boolean.henry_room_status
       turn_off:
         - action: switch.turn_off
           target:
@@ -33,14 +36,13 @@
         - action: light.turn_off
           target:
             entity_id: light.henry_bedroom_table_lamp
-        - action: input_boolean.turn_off
-          target:
-            entity_id: input_boolean.henry_room_status
 
     - name: Charlotte Bedtime
       unique_id: charlotte_bedtime
       default_entity_id: switch.charlotte_bedtime
-      state: "{{ is_state('input_boolean.charlotte_room_status', 'on') }}"
+      state: >-
+        {{ is_state('switch.charlotte_noise_machine', 'on')
+           or is_state('switch.charlotte_night_light', 'on') }}
       turn_on:
         - action: switch.turn_on
           target:
@@ -51,9 +53,6 @@
         - action: light.turn_off
           target:
             entity_id: light.charlotte_bedroom_table_lamp
-        - action: input_boolean.turn_on
-          target:
-            entity_id: input_boolean.charlotte_room_status
       turn_off:
         - action: switch.turn_off
           target:
@@ -64,9 +63,6 @@
         - action: light.turn_off
           target:
             entity_id: light.charlotte_bedroom_table_lamp
-        - action: input_boolean.turn_off
-          target:
-            entity_id: input_boolean.charlotte_room_status
 
 
 # =============================================================================
