@@ -90,7 +90,7 @@ views:
                     }
               - name: Bed Time
                 type: button
-                entity: script.bedtime_2
+                entity: script.bedtime
                 show_name: false
                 show_icon: true
                 icon: mdi:bed-clock
@@ -98,18 +98,13 @@ views:
                   action: perform-action
                   perform_action: script.turn_on
                   target:
-                    entity_id: script.bedtime_2
+                    entity_id: script.bedtime
                 card_mod:
                   style: |
                     ha-card {
                         height: 60px !important;
                         width: 60px;
                     }
-              - type: custom:bubble-card
-                card_type: select
-                entity: input_select.scenes
-                show_icon: false
-                card_layout: large
           - type: custom:bubble-card
             card_type: separator
             name: Individual Room Controls
@@ -1779,10 +1774,10 @@ views:
                       toggle: true
                     entities:
                       - type: custom:slider-entity-row
-                        entity: light.bar_lamp_left
+                        entity: light.great_room_back_lamp
                         toggle: true
                       - type: custom:slider-entity-row
-                        entity: light.bar_lamp_right
+                        entity: light.great_room_front_lamp
                         toggle: true
                       - type: custom:slider-entity-row
                         entity: light.left_couch_lamp
@@ -1791,7 +1786,7 @@ views:
                         entity: light.right_couch_lamp
                         toggle: true
                       - type: custom:slider-entity-row
-                        entity: light.great_room_table_lamp
+                        entity: light.great_room_bar_lamp
                         toggle: true
                   - type: custom:fold-entity-row
                     head:
@@ -2306,10 +2301,6 @@ views:
                 show_header_toggle: false
                 entities:
                   - type: custom:slider-entity-row
-                    entity: light.front_foyer
-                    name: Lamp
-                    toggle: true
-                  - type: custom:slider-entity-row
                     entity: light.front_foyer_chandelier
                     name: Chandelier
                     toggle: true
@@ -2534,12 +2525,6 @@ views:
                   - type: custom:slider-entity-row
                     entity: light.tub_light_right
                     toggle: true
-                footer:
-                  type: buttons
-                  entities:
-                    - entity: scene.purple_bathroom
-                      show_icon: true
-                      name: Relax Lighting
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#upstairs'
@@ -4400,31 +4385,26 @@ views:
                           - type: custom:bubble-card
                             card_type: separator
                             name: ''
-                            styles: >
+                            styles: |
                               ha-card { 
                                 color: var(--primary-text-color) !important;
                               } .separator-container div:last-child {
                                 background-color: var(--divider-color) !important;
                               } h4 { }
-
                               ha-card div div div:nth-child(2) {
                                     height: 5px!important;
                               }
-
                               } ${card.querySelector('.bubble-name').innerText =
-
                               hass.formatEntityState(hass.states['sensor.great_room_diffuser_slot_2_fragrance'])}
                             icon: mdi:sleep
                       - type: horizontal-stack
                         cards:
                           - type: custom:entity-progress-card
-                            entity: >-
-                              sensor.great_room_diffuser_slot_1_fragrance_remaining
+                            entity: sensor.great_room_diffuser_slot_1_fragrance_remaining
                             theme: optimal_when_high
                             name: Slot 1 Remaining
                           - type: custom:entity-progress-card
-                            entity: >-
-                              sensor.great_room_diffuser_slot_2_fragrance_remaining
+                            entity: sensor.great_room_diffuser_slot_2_fragrance_remaining
                             theme: optimal_when_high
                             name: Slot 2 Remaining
                   - type: vertical-stack
@@ -4511,13 +4491,11 @@ views:
                       - type: horizontal-stack
                         cards:
                           - type: custom:entity-progress-card
-                            entity: >-
-                              sensor.front_foyer_diffuser_slot_1_fragrance_remaining
+                            entity: sensor.front_foyer_diffuser_slot_1_fragrance_remaining
                             theme: optimal_when_high
                             name: Slot 1 Remaining
                           - type: custom:entity-progress-card
-                            entity: >-
-                              sensor.front_foyer_diffuser_slot_2_fragrance_remaining
+                            entity: sensor.front_foyer_diffuser_slot_2_fragrance_remaining
                             theme: optimal_when_high
                             name: Slot 2 Remaining
             view_layout:
@@ -6038,7 +6016,7 @@ views:
                   action: call-service
                   service: automation.trigger
                   service_data:
-                    entity_id: automation.nfc_darth_vader_breathing_imperial_theme
+                    entity_id: automation.nfc_darth_vader
                 card_mod:
                   style: |
                     ha-card {
@@ -6089,20 +6067,6 @@ views:
                   service: light.turn_off
                   service_data:
                     entity_id: light.solarium_rope_light
-                card_mod:
-                  style: |
-                    ha-card {
-                      font-size: 12px;
-                      height: 50px;
-                    }
-              - show_name: true
-                show_icon: true
-                type: button
-                name: Reset All
-                icon: mdi:restart
-                tap_action:
-                  action: call-service
-                  service: script.lego_reset_all
                 card_mod:
                   style: |
                     ha-card {

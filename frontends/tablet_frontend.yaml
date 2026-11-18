@@ -89,7 +89,8 @@ sidebar:
               "light.mudroom",
               "light.office",
               "light.white_room",
-              "light.first_floor_lights"
+              "light.great_room_diffuser_nightlight",
+              "light.front_foyer_diffuser_nightlight"
             ] %}
             {{ states.light
               | rejectattr('entity_id', 'in', exclude)
@@ -101,7 +102,7 @@ sidebar:
               | count
             }} Lights On
           icon: ''
-          entity: light.first_floor_lights
+          entity: light.all_lights
           layout: vertical
           tap_action:
             action: more-info
@@ -389,19 +390,6 @@ views:
                   service: scene.turn_on
                   service_data:
                     entity_id: scene.master_bedtime
-                show_state: false
-              - type: custom:bubble-card
-                card_type: button
-                button_type: custom
-                entity: scene.party
-                name: Party
-                icon: mdi:party-popper
-                button_tap_action: false
-                tap_action:
-                  action: call-service
-                  service: scene.turn_on
-                  service_data:
-                    entity_id: scene.party
                 show_state: false
         view_layout:
           grid-area: lights
@@ -977,7 +965,6 @@ views:
           grid-template-columns: 100%
           grid-template-rows: auto auto auto auto auto auto
           grid-template-areas: |
-            "all_lights"
             "scenes"
             "things"
             "blinds"
@@ -3021,10 +3008,10 @@ views:
                       toggle: true
                     entities:
                       - type: custom:slider-entity-row
-                        entity: light.bar_lamp_left
+                        entity: light.great_room_back_lamp
                         toggle: true
                       - type: custom:slider-entity-row
-                        entity: light.bar_lamp_right
+                        entity: light.great_room_front_lamp
                         toggle: true
                       - type: custom:slider-entity-row
                         entity: light.left_couch_lamp
@@ -3033,7 +3020,7 @@ views:
                         entity: light.right_couch_lamp
                         toggle: true
                       - type: custom:slider-entity-row
-                        entity: light.great_room_table_lamp
+                        entity: light.great_room_bar_lamp
                         toggle: true
                   - type: custom:fold-entity-row
                     head:
@@ -3553,12 +3540,6 @@ views:
                   - type: custom:slider-entity-row
                     entity: light.tub_light_right
                     toggle: true
-                footer:
-                  type: buttons
-                  entities:
-                    - entity: scene.purple_bathroom
-                      show_icon: true
-                      name: Relax Lighting
                 card_mod:
                   style: |
                     ha-card {
@@ -3614,10 +3595,6 @@ views:
                     show_header_toggle: false
                     entities:
                       - type: custom:slider-entity-row
-                        entity: light.front_foyer
-                        name: Lamp
-                        toggle: true
-                      - type: custom:slider-entity-row
                         entity: light.front_foyer_chandelier
                         name: Chandelier
                         toggle: true
@@ -3670,229 +3647,6 @@ views:
                       - entity: switch.office_fan
                         name: Desk Fan
                     state_color: true
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
-            card_type: separator
-            icon: mdi:lamps-outline
-            styles: |
-              ha-card { 
-                  color: var(--primary-text-color) !important;
-              }
-              .separator-container div:last-child {
-                  background-color: var(--divider-color) !important;
-              }
-              h4 {
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Main Light Control
-          - square: false
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: entity
-                    entity: scene.1st_floor_lights_off
-                    tap_action:
-                      action: toggle
-                    content_info: name
-                    name: 'Off'
-                    card_mod:
-                      style: |
-                        ha-card {
-                          --chip-height: 50px ;
-                          --chip-padding: 20px; 
-                        }
-                        ha-card:active {
-                                  transform: scale(1.1);
-                                  transition: 0s;
-                        }
-                alignment: center
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: entity
-                    entity: script.first_floor_lights_down_5
-                    tap_action:
-                      action: toggle
-                    content_info: name
-                    name: 5%
-                    card_mod:
-                      style: |
-                        ha-card {
-                          --chip-height: 50px;
-                          --chip-padding:20px; 
-                        }
-                        ha-card:active {
-                          transform: scale(0.975);
-                          transition: 0s;
-                        }
-                alignment: center
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: entity
-                    entity: script.first_floor_lights_up_5
-                    tap_action:
-                      action: toggle
-                    content_info: name
-                    name: 5%
-                    card_mod:
-                      style: |
-                        ha-card {
-                          --chip-height: 50px;
-                          --chip-padding: 20px; 
-                        }
-                        ha-card:active {
-                          transform: scale(0.975);
-                          transition: 0s;
-                        }
-                alignment: center
-            columns: 3
-          - type: custom:mushroom-light-card
-            entity: light.first_floor_lights
-            fill_container: false
-            use_light_color: true
-            icon_color: '#A8813C'
-            show_color_temp_control: false
-            collapsible_controls: false
-            show_brightness_control: false
-            show_color_control: false
-            icon: mdi:lamps
-            tap_action:
-              action: more-info
-            hold_action:
-              action: more-info
-            double_tap_action:
-              action: more-info
-            primary_info: state
-            secondary_info: name
-            layout: vertical
-            icon_type: none
-          - square: false
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: entity
-                    entity: scene.1st_floor_lights_10
-                    tap_action:
-                      action: toggle
-                    content_info: name
-                    name: 10%
-                    card_mod:
-                      style: |
-                        ha-card {
-                          --chip-height: 50px;
-                          --chip-padding: 20px; 
-                        }
-                        ha-card:active {
-                                  transform: scale(1.1);
-                                  transition: 0s;
-                              }
-                alignment: center
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: entity
-                    entity: scene.1st_floor_lights_25
-                    tap_action:
-                      action: toggle
-                    content_info: name
-                    name: 25%
-                    card_mod:
-                      style: |
-                        ha-card {
-                          --chip-height: 50px;
-                          --chip-padding: 20px; 
-                        }
-                        ha-card:active {
-                                  transform: scale(1.1);
-                                  transition: 0s;
-                              }
-                alignment: center
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: entity
-                    entity: scene.1st_floor_lights_45
-                    tap_action:
-                      action: toggle
-                    content_info: name
-                    name: 45%
-                    card_mod:
-                      style: |
-                        ha-card {
-                          --chip-height: 50px;
-                          --chip-padding: 20px; 
-                        }
-                        ha-card:active {
-                                  transform: scale(1.1);
-                                  transition: 0s;
-                              }
-                alignment: center
-            columns: 3
-          - square: false
-            type: grid
-            cards:
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: entity
-                    entity: scene.1st_floor_lights_50
-                    tap_action:
-                      action: toggle
-                    content_info: name
-                    name: 50%
-                    card_mod:
-                      style: |
-                        ha-card {
-                          --chip-height: 50px;
-                          --chip-padding: 20px; 
-                        }
-                        ha-card:active {
-                                  transform: scale(1.1);
-                                  transition: 0s;
-                              }
-                alignment: center
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: entity
-                    entity: scene.1st_floor_lights_65
-                    tap_action:
-                      action: toggle
-                    content_info: name
-                    name: 65%
-                    card_mod:
-                      style: |
-                        ha-card {
-                          --chip-height: 50px;
-                          --chip-padding: 20px; 
-                        }
-                        ha-card:active {
-                                  transform: scale(1.1);
-                                  transition: 0s;
-                              }
-                alignment: center
-              - type: custom:mushroom-chips-card
-                chips:
-                  - type: entity
-                    entity: scene.1st_floor_lights_80
-                    tap_action:
-                      action: toggle
-                    content_info: name
-                    name: 80%
-                    card_mod:
-                      style: |
-                        ha-card {
-                          --chip-height: 50px;
-                          --chip-padding: 20px; 
-                        }
-                        ha-card:active {
-                                  transform: scale(1.1);
-                                  transition: 0s;
-                              }
-                alignment: center
-            columns: 3
-        view_layout:
-          grid-area: all_lights
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#kids_school'
@@ -5368,15 +5122,12 @@ views:
                       - type: custom:bubble-card
                         card_type: separator
                         name: ''
-                        styles: >
+                        styles: |
                           h4 { }
-
                           ha-card div div div:nth-child(2) {
                                 height: 5px!important;
                           }
-
                           } ${card.querySelector('.bubble-name').innerText =
-
                           hass.formatEntityState(hass.states['sensor.great_room_diffuser_slot_2_fragrance'])}
                         icon: mdi:sleep
                   - type: horizontal-stack

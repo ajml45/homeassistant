@@ -286,8 +286,7 @@
              'light.sink_pendants',
              'light.stove_sconces',
              'light.toe_kick',
-             'light.under_island',
-             'light.under_sink'
+             'light.under_island'
            ] | select('is_state', 'on') | list | count }}
 
     - name: "Great Room Lights On"
@@ -297,7 +296,6 @@
       state_class: measurement
       state: >
         {{ [
-             'light.bar_under_cabinet',
              'light.great_room_back_cans',
              'light.great_room_back_lamp',
              'light.great_room_bar_cabinet_lights',
@@ -344,7 +342,6 @@
       state_class: measurement
       state: >
         {{ [
-             'light.front_foyer',
              'light.front_foyer_chandelier',
              'light.office_ceiling_light',
              'light.office_desk_lamp',

@@ -25,7 +25,7 @@ _HACS repository data not found._
 | nest_protect | Nest Protect | 0.5.0 |
 | noaa_tides | NOAA Tides | 0.1.3 |
 | nws_alerts | NWS Alerts | 6.7.3 |
-| pura | Pura | 1.14.1 |
+| pura | Pura | 1.15.0 |
 | smartthinq_sensors | SmartThinQ LGE Sensors | 0.43.0 |
 | webrtc | WebRTC Camera | v3.6.1 |
 

@@ -934,7 +934,6 @@
     target:
       entity_id:
       - switch.lion_fountain
-      - switch.big_fountain
   mode: single
 - id: '1705511124743'
   alias: Fountains On Night
@@ -950,7 +949,6 @@
     target:
       entity_id:
       - switch.lion_fountain
-      - switch.big_fountain
   mode: single
 - id: '1705511201828'
   alias: Fountains Off Night
@@ -964,7 +962,6 @@
     target:
       entity_id:
       - switch.lion_fountain
-      - switch.big_fountain
     data: {}
   mode: single
 - id: '1705511305708'
@@ -979,7 +976,6 @@
     target:
       entity_id:
       - switch.lion_fountain
-      - switch.big_fountain
     data: {}
   mode: single
 - id: '1705512854907'
@@ -1345,104 +1341,6 @@
     target:
       entity_id: switch.christmas_lights_inside
   mode: single
-- id: '1740949398217'
-  alias: Handle Scenes and Scripts Selection
-  description: ''
-  triggers:
-  - entity_id: input_select.scenes
-    trigger: state
-  actions:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_select.scenes
-        state: All Off
-      sequence:
-      - target:
-          entity_id: scene.off
-        action: scene.turn_on
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_select.scenes
-        state: Wake Up
-      sequence:
-      - target:
-          entity_id: script.morning
-        action: script.turn_on
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_select.scenes
-        state: Normal
-      sequence:
-      - target:
-          entity_id: scene.normal
-        action: scene.turn_on
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_select.scenes
-        state: Cooking
-      sequence:
-      - target:
-          entity_id: scene.cooking
-        action: scene.turn_on
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_select.scenes
-        state: Dinner
-      sequence:
-      - target:
-          entity_id: scene.dinner
-        action: scene.turn_on
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_select.scenes
-        state: Relax
-      sequence:
-      - target:
-          entity_id: scene.relax
-        action: scene.turn_on
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_select.scenes
-        state: Bedtime
-      sequence:
-      - target:
-          entity_id: script.bedtime_2
-        action: script.turn_on
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_select.scenes
-        state: Master Bedtime
-      sequence:
-      - target:
-          entity_id: scene.master_bedtime
-        action: scene.turn_on
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_select.scenes
-        state: Party
-      sequence:
-      - target:
-          entity_id: script.party
-        action: script.turn_on
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: input_select.scenes
-        state: Red Sox
-      sequence:
-      - target:
-          entity_id: scene.red_sox
-        action: scene.turn_on
-        data: {}
 - id: '1748640799685'
   alias: GitHub Daily Backup
   description: ''
@@ -1619,7 +1517,6 @@
       - light.charlotte_bedroom_table_lamp
       - light.front_foyer_chandelier
       - light.front_foyer_upstairs_hallway_lights
-      - light.front_foyer
       - light.great_room_front_lamp
       - light.right_couch_lamp
       - light.great_room_back_lamp
@@ -1627,7 +1524,6 @@
       - light.left_couch_lamp
       - light.great_room_fireplace_can
       - light.great_room_bar_cabinet_lights
-      - light.bar_under_cabinet
       - light.middle_can_right
       - light.back_can_left
       - light.front_can_middle
@@ -1647,7 +1543,7 @@
       - light.island_pendant_right
       - light.island_pendant_left
       - light.stove_sconce_right
-      - light.stove_sconce_left
+      - light.stove_scone_left
       - light.toe_kick
       - light.tub_light_left
       - light.can_light
