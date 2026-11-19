@@ -19,6 +19,7 @@ _HACS repository data not found._
 | govee | Govee | 2025.1.1 |
 | hubspace | hubspace | 8.3.0 |
 | icloud3 | iCloud3 | 3.7.7 |
+| illuminance | Illuminance | 5.8.1 |
 | lightener | Lightener | v2.4.0 |
 | mail_and_packages | Mail and Packages | 0.6.10 |
 | mycloud | My Cloud | 1.2.5 |
@@ -42,7 +43,7 @@ _HACS repository data not found._
 | module | /local/community/button-card/button-card.js?v=146194325701 |
 | module | /local/community/clock-weather-card/clock-weather-card.js?v=522634019310 |
 | module | /local/community/custom-brand-icons/custom-brand-icons.js?v=3668620312026111 |
-| module | /local/community/custom-sonos-card/custom-sonos-card.js?v=449416816-v10.9.1 |
+| module | /local/community/custom-sonos-card/custom-sonos-card.js?v=449416816-v10.10.3 |
 | module | /local/community/frigate-hass-card/frigate-hass-card.js?v=394082552651 |
 | module | /local/community/kiosk-mode/kiosk-mode.js?v=4973191281500 |
 | module | /local/community/lovelace-auto-entities/auto-entities.js?v=1677445841161 |
