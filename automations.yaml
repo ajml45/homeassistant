@@ -1348,7 +1348,7 @@
       - light.island_pendant_right
       - light.island_pendant_left
       - light.stove_sconce_right
-      - light.stove_scone_left
+      - light.stove_sconce_left
       - light.toe_kick
       - light.tub_light_left
       - light.can_light
@@ -1659,7 +1659,7 @@
       payload: lightsaber/lightsaber_jedi_ignite.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_temp_kelvin: 9000
       brightness_pct: 100
@@ -1667,7 +1667,7 @@
       milliseconds: 150
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 0
@@ -1707,7 +1707,7 @@
         metadata: {}
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       brightness_pct: 100
       color_name: darkred
@@ -1752,7 +1752,7 @@
         metadata: {}
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       effect: Glacier
   - action: script.turn_on
@@ -1786,14 +1786,14 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       effect: Lightning
   - delay:
       milliseconds: 3500
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       effect: Fire
   - action: script.turn_on
@@ -1826,7 +1826,7 @@
         }}'
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       brightness_pct: 100
       color_name: gold
@@ -1836,7 +1836,7 @@
         milliseconds: 1200
     - action: light.turn_on
       target:
-        entity_id: light.solarium_rope_light
+        entity_id: light.office_closet_rope_light
       data:
         rgb_color:
         - 0
@@ -1847,7 +1847,7 @@
         milliseconds: 500
     - action: light.turn_on
       target:
-        entity_id: light.solarium_rope_light
+        entity_id: light.office_closet_rope_light
       data:
         color_name: gold
         brightness_pct: 100
@@ -1878,7 +1878,7 @@
       payload: voices/voices_chewy_roar.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_name: orange
       brightness_pct: 100
@@ -1886,7 +1886,7 @@
       milliseconds: 1500
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       effect: Forest
   - action: script.turn_on
@@ -1916,7 +1916,7 @@
       payload: voices/voices_ewok_2.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_name: orange
       brightness_pct: 100
@@ -1924,7 +1924,7 @@
       milliseconds: 1500
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       effect: Candlelight
   - action: script.turn_on
@@ -1954,7 +1954,7 @@
       payload: voices/voices_stormtrooper_surrender.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_name: white
       brightness_pct: 100
@@ -1966,7 +1966,7 @@
       payload: RANDOM:combat
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -1977,7 +1977,7 @@
       milliseconds: 250
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_name: white
       brightness_pct: 100
@@ -2008,7 +2008,7 @@
       payload: voices/voices_rebel_pilot_attackpositions.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_name: orange
       brightness_pct: 100
@@ -2020,7 +2020,7 @@
       payload: RANDOM:combat
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_temp_kelvin: 9000
       brightness_pct: 100
@@ -2028,7 +2028,7 @@
       milliseconds: 200
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_name: orange
       brightness_pct: 100
@@ -2059,7 +2059,7 @@
       payload: voices/voices_clonetrooper_rogerroger.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_name: orange
       brightness_pct: 100
@@ -2071,7 +2071,7 @@
       payload: RANDOM:combat
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -2082,7 +2082,7 @@
       milliseconds: 250
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_name: orange
       brightness_pct: 100
@@ -2094,7 +2094,7 @@
       payload: voices/voices_clonetrooper_utoh.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_name: orange
       brightness_pct: 25
@@ -2130,7 +2130,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       brightness_pct: 100
       color_name: blue
@@ -2165,7 +2165,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 0
@@ -2180,7 +2180,7 @@
       payload: lightsaber/lightsaber_jedi_ignite.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_temp_kelvin: 9000
       brightness_pct: 100
@@ -2188,7 +2188,7 @@
       milliseconds: 150
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 0
@@ -2226,7 +2226,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 0
@@ -2241,7 +2241,7 @@
       payload: lightsaber/lightsaber_jedi_ignite.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_temp_kelvin: 9000
       brightness_pct: 100
@@ -2249,7 +2249,7 @@
       milliseconds: 150
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 0
@@ -2287,7 +2287,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -2298,7 +2298,7 @@
       milliseconds: 1200
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 170
@@ -2337,7 +2337,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -2348,7 +2348,7 @@
       milliseconds: 200
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       effect: Ripple
       brightness_pct: 85
@@ -2384,7 +2384,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 20
@@ -2398,7 +2398,7 @@
       sequence:
       - action: light.turn_on
         target:
-          entity_id: light.solarium_rope_light
+          entity_id: light.office_closet_rope_light
         data:
           rgb_color:
           - 255
@@ -2409,7 +2409,7 @@
           milliseconds: 150
       - action: light.turn_on
         target:
-          entity_id: light.solarium_rope_light
+          entity_id: light.office_closet_rope_light
         data:
           rgb_color:
           - 20
@@ -2449,7 +2449,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -2464,7 +2464,7 @@
       payload: lightsaber/lightsaber_jedi_ignite.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_temp_kelvin: 6500
       brightness_pct: 60
@@ -2476,7 +2476,7 @@
       payload: lightsaber/lightsaber_jedi_ignite.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_temp_kelvin: 6500
       brightness_pct: 100
@@ -2511,7 +2511,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -2522,7 +2522,7 @@
       milliseconds: 2500
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_temp_kelvin: 6500
       brightness_pct: 100
@@ -2558,7 +2558,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -2573,7 +2573,7 @@
       payload: lightsaber/lightsaber_jedi_ignite.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -2588,7 +2588,7 @@
       payload: lightsaber/lightsaber_jedi_ignite.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_temp_kelvin: 9000
       brightness_pct: 100
@@ -2596,7 +2596,7 @@
       milliseconds: 150
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 60
@@ -2634,7 +2634,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -2645,7 +2645,7 @@
       milliseconds: 800
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -2661,7 +2661,7 @@
       payload: lightsaber/lightsaber_jedi_ignite.wav
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_temp_kelvin: 9000
       brightness_pct: 100
@@ -2669,7 +2669,7 @@
       milliseconds: 150
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 0
@@ -2718,7 +2718,7 @@
           sequence:
           - action: light.turn_on
             target:
-              entity_id: light.solarium_rope_light
+              entity_id: light.office_closet_rope_light
             data:
               rgb_color:
               - 255
@@ -2729,7 +2729,7 @@
               milliseconds: 400
           - action: light.turn_on
             target:
-              entity_id: light.solarium_rope_light
+              entity_id: light.office_closet_rope_light
             data:
               rgb_color:
               - 0
@@ -2747,7 +2747,7 @@
           milliseconds: 4000
       - action: light.turn_on
         target:
-          entity_id: light.solarium_rope_light
+          entity_id: light.office_closet_rope_light
         data:
           rgb_color:
           - 0
@@ -2758,7 +2758,7 @@
           milliseconds: 600
       - action: light.turn_on
         target:
-          entity_id: light.solarium_rope_light
+          entity_id: light.office_closet_rope_light
         data:
           rgb_color:
           - 0
@@ -2769,7 +2769,7 @@
           milliseconds: 600
       - action: light.turn_on
         target:
-          entity_id: light.solarium_rope_light
+          entity_id: light.office_closet_rope_light
         data:
           rgb_color:
           - 0
@@ -2789,7 +2789,7 @@
           payload: RANDOM:combat
       - action: light.turn_on
         target:
-          entity_id: light.solarium_rope_light
+          entity_id: light.office_closet_rope_light
         data:
           effect: Lightning
 - id: '10001'
@@ -2823,7 +2823,7 @@
       value: 0
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 50
@@ -2868,7 +2868,7 @@
   actions:
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 0
@@ -2879,7 +2879,7 @@
       milliseconds: 300
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 0
@@ -2890,7 +2890,7 @@
       milliseconds: 300
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 0
@@ -2920,7 +2920,7 @@
     default:
     - action: light.turn_on
       target:
-        entity_id: light.solarium_rope_light
+        entity_id: light.office_closet_rope_light
       data:
         rgb_color:
         - 50
@@ -2949,7 +2949,7 @@
       entity_id: input_number.empire_session_score
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -2960,7 +2960,7 @@
       milliseconds: 300
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 90
@@ -2971,7 +2971,7 @@
       milliseconds: 300
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -2982,7 +2982,7 @@
       milliseconds: 1200
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 50
@@ -3003,7 +3003,7 @@
       seconds: 2
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 50
@@ -3047,7 +3047,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 200
@@ -3061,7 +3061,7 @@
       sequence:
       - action: light.turn_on
         target:
-          entity_id: light.solarium_rope_light
+          entity_id: light.office_closet_rope_light
         data:
           rgb_color:
           - 255
@@ -3072,7 +3072,7 @@
           milliseconds: 200
       - action: light.turn_on
         target:
-          entity_id: light.solarium_rope_light
+          entity_id: light.office_closet_rope_light
         data:
           rgb_color:
           - 200
@@ -3086,7 +3086,7 @@
     then:
     - action: light.turn_on
       target:
-        entity_id: light.solarium_rope_light
+        entity_id: light.office_closet_rope_light
       data:
         rgb_color:
         - 170
@@ -3129,7 +3129,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       color_temp_kelvin: 9000
       brightness_pct: 100
@@ -3137,7 +3137,7 @@
       milliseconds: 300
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 0
@@ -3149,7 +3149,7 @@
       milliseconds: 1200
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 70
@@ -3167,7 +3167,7 @@
         payload: RANDOM:combat
     - action: light.turn_on
       target:
-        entity_id: light.solarium_rope_light
+        entity_id: light.office_closet_rope_light
       data:
         effect: Downpour
   - action: script.turn_on
@@ -3204,7 +3204,7 @@
         volume: 0.25
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 90
@@ -3215,7 +3215,7 @@
       milliseconds: 600
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -3226,7 +3226,7 @@
       milliseconds: 150
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 180
@@ -3244,7 +3244,7 @@
         payload: RANDOM:combat
     - action: light.turn_on
       target:
-        entity_id: light.solarium_rope_light
+        entity_id: light.office_closet_rope_light
       data:
         rgb_color:
         - 255
@@ -3255,7 +3255,7 @@
         milliseconds: 400
     - action: light.turn_on
       target:
-        entity_id: light.solarium_rope_light
+        entity_id: light.office_closet_rope_light
       data:
         rgb_color:
         - 255
@@ -3266,7 +3266,7 @@
         milliseconds: 400
     - action: light.turn_on
       target:
-        entity_id: light.solarium_rope_light
+        entity_id: light.office_closet_rope_light
       data:
         rgb_color:
         - 255
@@ -3313,7 +3313,7 @@
         volume: 0.45
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -3324,7 +3324,7 @@
       milliseconds: 1600
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -3335,7 +3335,7 @@
       milliseconds: 600
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 200
@@ -3356,7 +3356,7 @@
         sequence:
         - action: light.turn_on
           target:
-            entity_id: light.solarium_rope_light
+            entity_id: light.office_closet_rope_light
           data:
             rgb_color:
             - 255
@@ -3367,7 +3367,7 @@
             milliseconds: 400
         - action: light.turn_on
           target:
-            entity_id: light.solarium_rope_light
+            entity_id: light.office_closet_rope_light
           data:
             rgb_color: '{{ rival_rgb }}'
             brightness_pct: 100
@@ -3388,7 +3388,7 @@
   actions:
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 255
@@ -3409,7 +3409,7 @@
   actions:
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 190
@@ -3420,7 +3420,7 @@
       milliseconds: 400
   - action: light.turn_on
     target:
-      entity_id: light.solarium_rope_light
+      entity_id: light.office_closet_rope_light
     data:
       rgb_color:
       - 50

@@ -114,7 +114,7 @@ script:
       kitchen_ct: &sw_kitchen_ct
         [light.island_pendant_left, light.island_pendant_right,
          light.sink_sconce_left, light.sink_sconce_right,
-         light.stove_scone_left, light.stove_sconce_right]
+         light.stove_sconce_left, light.stove_sconce_right]
       solarium_ct: &sw_solarium_ct
         [light.sitting_area_left_1, light.sitting_area_left_2, light.sitting_area_left_3, light.sitting_area_left_4,
          light.sitting_area_right_1, light.sitting_area_right_2, light.sitting_area_right_3, light.sitting_area_right_4]
@@ -129,7 +129,7 @@ script:
          light.solarium_path_lights, light.slider_path_lights, light.stair_path_lights, light.solarium_spot_lights,
          light.island_pendant_left, light.island_pendant_right,
          light.sink_sconce_left, light.sink_sconce_right,
-         light.stove_scone_left, light.stove_sconce_right]
+         light.stove_sconce_left, light.stove_sconce_right]
 
       # Everything the show touches (individual lights only — see guide §4)
       snapshot_entities:
@@ -160,7 +160,7 @@ script:
         - light.island_pendant_right
         - light.sink_sconce_left
         - light.sink_sconce_right
-        - light.stove_scone_left
+        - light.stove_sconce_left
         - light.stove_sconce_right
         - light.under_island
         # solarium

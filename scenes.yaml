@@ -223,7 +223,7 @@
       - light.slider_path_lights
       - light.stair_path_lights
       - light.solarium_spot_lights
-      - light.solarium_rope_light
+      - light.office_closet_rope_light
       state: 'off'
     light.white_room:
       entity_id:
@@ -553,7 +553,7 @@
     light.island_pendant_right: 'off'
     light.sink_sconce_left: 'off'
     light.sink_sconce_right: 'off'
-    light.stove_scone_left: 'off'
+    light.stove_sconce_left: 'off'
     light.stove_sconce_right: 'off'
     light.under_island: 'off'
     light.soundbar_shelf_light:

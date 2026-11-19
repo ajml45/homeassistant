@@ -116,7 +116,7 @@ script:
             - light.island_pendant_right
             - light.sink_sconce_left
             - light.sink_sconce_right
-            - light.stove_scone_left
+            - light.stove_sconce_left
             - light.stove_sconce_right
             - light.kitchen_cans_fridge
             - light.kitchen_cans_sink
@@ -124,7 +124,7 @@ script:
             - light.kitchen_under_cabinet
         - name: Office
           color_lights:
-            - light.solarium_rope_light        # office closet rope light (misnamed)
+            - light.office_closet_rope_light        # office closet rope light
           color_slow: []
           white_lights:
             - light.office_ceiling_light

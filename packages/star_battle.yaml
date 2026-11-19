@@ -180,7 +180,7 @@ script:
         - light.island_pendant_right
         - light.sink_sconce_left
         - light.sink_sconce_right
-        - light.stove_scone_left
+        - light.stove_sconce_left
         - light.stove_sconce_right
 
       snapshot_entities:
@@ -224,7 +224,7 @@ script:
         - light.soundbar_shelf_light
         - light.stair_path_lights
         - light.stove_sconce_right
-        - light.stove_scone_left
+        - light.stove_sconce_left
         - light.under_island
         - switch.kitchen_kitchen_ha_tablet_screen
         - switch.kitchen_kitchen_ha_tablet_screensaver
@@ -1462,10 +1462,10 @@ script:
         - {t: 0.0, entities: [light.great_room_bar_cabinet_lights, light.sitting_area_left_1, light.sitting_area_left_2, light.sitting_area_left_3, light.sitting_area_left_4, light.sitting_area_right_1, light.sitting_area_right_2, light.sitting_area_right_3, light.sitting_area_right_4], action: light.turn_off}
         - {t: 0.0, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet, light.great_room_bar_lamp], data: {brightness: 15, transition: 2}}
         - {t: 0.0, entities: [light.great_room_fireplace_can], data: {brightness: 20, transition: 2}}
-        - {t: 0.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
-        - {t: 14.89, entities: [light.stove_scone_left], data: {color_temp_kelvin: 6500, brightness: 255}}
+        - {t: 0.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
+        - {t: 14.89, entities: [light.stove_sconce_left], data: {color_temp_kelvin: 6500, brightness: 255}}
         - {t: 15.02, entities: [light.island_pendant_right], data: {color_temp_kelvin: 6500, brightness: 255}}
-        - {t: 15.04, entities: [light.stove_scone_left], data: {color_temp_kelvin: 2200, brightness: 25}}
+        - {t: 15.04, entities: [light.stove_sconce_left], data: {color_temp_kelvin: 2200, brightness: 25}}
         - {t: 15.15, entities: [light.island_pendant_left], data: {color_temp_kelvin: 6500, brightness: 255}}
         - {t: 15.17, entities: [light.island_pendant_right], data: {color_temp_kelvin: 2200, brightness: 25}}
         - {t: 15.3, entities: [light.island_pendant_left], data: {color_temp_kelvin: 2200, brightness: 25}}
@@ -1473,19 +1473,19 @@ script:
         - {t: 33, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 160}}
         - {t: 33.4, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 15}}
         - {t: 33.5, entities: [light.great_room_fireplace_can], data: {brightness: 20}}
-        - {t: 38.0, entities: [light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 180}}
-        - {t: 38.25, entities: [light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
+        - {t: 38.0, entities: [light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 180}}
+        - {t: 38.25, entities: [light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
         - {t: 45, entities: [light.great_room_fireplace_can], data: {brightness: 255}}
         - {t: 45, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 160}}
         - {t: 45.4, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 15}}
         - {t: 45.5, entities: [light.great_room_fireplace_can], data: {brightness: 20}}
         - {t: 50.0, entities: [light.sink_sconce_left, light.sink_sconce_right], data: {color_temp_kelvin: 6500, brightness: 180}}
         - {t: 50.25, entities: [light.sink_sconce_left, light.sink_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
-        - {t: 74.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 200}}
-        - {t: 74.3, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
-        - {t: 79.39, entities: [light.stove_scone_left], data: {color_temp_kelvin: 6500, brightness: 255}}
+        - {t: 74.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 200}}
+        - {t: 74.3, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
+        - {t: 79.39, entities: [light.stove_sconce_left], data: {color_temp_kelvin: 6500, brightness: 255}}
         - {t: 79.52, entities: [light.island_pendant_right], data: {color_temp_kelvin: 6500, brightness: 255}}
-        - {t: 79.54, entities: [light.stove_scone_left], data: {color_temp_kelvin: 2200, brightness: 25}}
+        - {t: 79.54, entities: [light.stove_sconce_left], data: {color_temp_kelvin: 2200, brightness: 25}}
         - {t: 79.65, entities: [light.island_pendant_left], data: {color_temp_kelvin: 6500, brightness: 255}}
         - {t: 79.67, entities: [light.island_pendant_right], data: {color_temp_kelvin: 2200, brightness: 25}}
         - {t: 79.8, entities: [light.island_pendant_left], data: {color_temp_kelvin: 2200, brightness: 25}}
@@ -1495,13 +1495,13 @@ script:
         - {t: 88.8, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 160}}
         - {t: 89.2, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 15}}
         - {t: 89.3, entities: [light.great_room_fireplace_can], data: {brightness: 20}}
-        - {t: 92.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 200}}
-        - {t: 92.3, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
-        - {t: 95.0, entities: [light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 180}}
-        - {t: 95.25, entities: [light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
-        - {t: 97.99, entities: [light.stove_scone_left], data: {color_temp_kelvin: 6500, brightness: 255}}
+        - {t: 92.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 200}}
+        - {t: 92.3, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
+        - {t: 95.0, entities: [light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 180}}
+        - {t: 95.25, entities: [light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
+        - {t: 97.99, entities: [light.stove_sconce_left], data: {color_temp_kelvin: 6500, brightness: 255}}
         - {t: 98.12, entities: [light.island_pendant_right], data: {color_temp_kelvin: 6500, brightness: 255}}
-        - {t: 98.14, entities: [light.stove_scone_left], data: {color_temp_kelvin: 2200, brightness: 25}}
+        - {t: 98.14, entities: [light.stove_sconce_left], data: {color_temp_kelvin: 2200, brightness: 25}}
         - {t: 98.25, entities: [light.island_pendant_left], data: {color_temp_kelvin: 6500, brightness: 255}}
         - {t: 98.27, entities: [light.island_pendant_right], data: {color_temp_kelvin: 2200, brightness: 25}}
         - {t: 98.4, entities: [light.island_pendant_left], data: {color_temp_kelvin: 2200, brightness: 25}}
@@ -1509,16 +1509,16 @@ script:
         - {t: 101, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 160}}
         - {t: 101.4, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 15}}
         - {t: 101.5, entities: [light.great_room_fireplace_can], data: {brightness: 20}}
-        - {t: 104.39, entities: [light.stove_scone_left], data: {color_temp_kelvin: 6500, brightness: 255}}
+        - {t: 104.39, entities: [light.stove_sconce_left], data: {color_temp_kelvin: 6500, brightness: 255}}
         - {t: 104.52, entities: [light.island_pendant_right], data: {color_temp_kelvin: 6500, brightness: 255}}
-        - {t: 104.54, entities: [light.stove_scone_left], data: {color_temp_kelvin: 2200, brightness: 25}}
+        - {t: 104.54, entities: [light.stove_sconce_left], data: {color_temp_kelvin: 2200, brightness: 25}}
         - {t: 104.65, entities: [light.island_pendant_left], data: {color_temp_kelvin: 6500, brightness: 255}}
         - {t: 104.67, entities: [light.island_pendant_right], data: {color_temp_kelvin: 2200, brightness: 25}}
         - {t: 104.8, entities: [light.island_pendant_left], data: {color_temp_kelvin: 2200, brightness: 25}}
         - {t: 108.0, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet, light.kitchen_cans_sink, light.kitchen_cans_fridge], data: {brightness: 255}}
-        - {t: 108.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 255}}
+        - {t: 108.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 255}}
         - {t: 108.0, entities: [light.great_room_fireplace_can], data: {brightness: 255}}
-        - {t: 108.5, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
+        - {t: 108.5, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
         - {t: 108.6, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 15}}
         - {t: 108.6, entities: [light.kitchen_cans_sink, light.kitchen_cans_fridge], action: light.turn_off}
         - {t: 108.8, entities: [light.great_room_fireplace_can], data: {brightness: 20}}
@@ -2185,13 +2185,13 @@ script:
           - {t: 9.5, entities: [light.back_can_left, light.front_can_right], data: {rgb_color: [255, 170, 40], brightness: 255}}
           - {t: 10.6, entities: [light.back_can_left, light.back_can_middle, light.back_can_right, light.middle_can_left, light.middle_can_middle, light.middle_can_right, light.front_can_left, light.front_can_middle, light.front_can_right], data: {color_temp_kelvin: 2700, brightness: 180}}
         white:
-          - {t: 0.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 255}}
-          - {t: 0.3, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
+          - {t: 0.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 6500, brightness: 255}}
+          - {t: 0.3, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
           - {t: 1.2, entities: [light.island_pendant_left, light.island_pendant_right], data: {color_temp_kelvin: 3000, brightness: 220}}
           - {t: 1.2, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 200, transition: 1}}
-          - {t: 1.35, entities: [light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 3000, brightness: 220}}
+          - {t: 1.35, entities: [light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 3000, brightness: 220}}
           - {t: 2.0, entities: [light.great_room_fireplace_can], data: {brightness: 255, transition: 1}}
-          - {t: 10.6, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2700, brightness: 180}}
+          - {t: 10.6, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2700, brightness: 180}}
           - {t: 10.6, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 100, transition: 2}}
           - {t: 10.6, entities: [light.great_room_fireplace_can], data: {brightness: 60, transition: 2}}
         hue:
@@ -2240,11 +2240,11 @@ script:
           - {t: 9.8, entities: [light.back_can_left, light.back_can_middle, light.back_can_right, light.middle_can_left, light.middle_can_middle, light.middle_can_right, light.front_can_left, light.front_can_middle, light.front_can_right], data: {rgb_color: [140, 0, 0], brightness: 60}}
           - {t: 10.6, entities: [light.back_can_left, light.back_can_middle, light.back_can_right, light.middle_can_left, light.middle_can_middle, light.middle_can_right, light.front_can_left, light.front_can_middle, light.front_can_right], data: {color_temp_kelvin: 2700, brightness: 180}}
         white:
-          - {t: 0.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 120}}
-          - {t: 0.5, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
+          - {t: 0.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 120}}
+          - {t: 0.5, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 25}}
           - {t: 1.5, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet, light.great_room_fireplace_can, light.great_room_bar_lamp], data: {brightness: 3, transition: 2}}
-          - {t: 2.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 6}}
-          - {t: 10.6, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2700, brightness: 180}}
+          - {t: 2.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2200, brightness: 6}}
+          - {t: 10.6, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2700, brightness: 180}}
           - {t: 10.6, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 100, transition: 2}}
           - {t: 10.6, entities: [light.great_room_fireplace_can], data: {brightness: 60, transition: 2}}
         hue:
@@ -2282,7 +2282,7 @@ script:
           - {t: 4.0, entities: [light.back_can_left, light.back_can_middle, light.back_can_right, light.middle_can_left, light.middle_can_middle, light.middle_can_right, light.front_can_left, light.front_can_middle, light.front_can_right], data: {rgb_color: [10, 25, 70], brightness: 60}}
           - {t: 6.0, entities: [light.back_can_left, light.back_can_middle, light.back_can_right, light.middle_can_left, light.middle_can_middle, light.middle_can_right, light.front_can_left, light.front_can_middle, light.front_can_right], data: {color_temp_kelvin: 2700, brightness: 180}}
         white:
-          - {t: 6.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_scone_left, light.stove_sconce_right], data: {color_temp_kelvin: 2700, brightness: 180}}
+          - {t: 6.0, entities: [light.island_pendant_left, light.island_pendant_right, light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right], data: {color_temp_kelvin: 2700, brightness: 180}}
           - {t: 6.0, entities: [light.kitchen_above_cabinet, light.kitchen_under_cabinet], data: {brightness: 100, transition: 2}}
           - {t: 6.0, entities: [light.great_room_fireplace_can], data: {brightness: 60, transition: 2}}
         hue:

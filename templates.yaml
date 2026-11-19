@@ -342,7 +342,7 @@
              'light.office_ceiling_light',
              'light.office_desk_lamp',
              'light.office_floor_lamp',
-             'light.solarium_rope_light',
+             'light.office_closet_rope_light',
              'light.white_room_main_lights',
              'light.white_room_piano_light',
              'light.white_room_table_lamps'
