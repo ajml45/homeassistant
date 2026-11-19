@@ -1,0 +1,758 @@
+# ═════════════════════════════════════════════════════════════════════════════
+#  LIGHTING SCHEDULE                       /config/packages/lighting_schedule.yaml
+#  v1 · 2026-11-19 · replaces the 24 old dusk / fade / exterior automations
+# ═════════════════════════════════════════════════════════════════════════════
+#
+#  WHAT HAPPENS EACH DAY
+#    Dusk-on    From noon until the room's evening time: when a room reads dark
+#               and its lights are off, it comes on at its dusk level.
+#               Once per room per day. "Dark" = the room's own light sensor
+#               below its number, or (no sensor / sensor offline) the outdoor
+#               estimate below its number. After sunset every room still
+#               waiting counts as dark.
+#    Evening    At the room's evening time (Sun–Thu / Fri–Sat) Ashley's fader
+#               dims the room light over 30 min. A room that's off stays off.
+#               A room set to a scene (Dinner etc.) has no single level to fade
+#               from, so it's left alone — 9:00 pm still turns it off.
+#    9:00 pm    Every light still on — every floor, except the master bedroom
+#               and bath — switches off. No fade: the rooms are already dim.
+#    11:30 pm   The same again, plus the extras listed in settings (office fan).
+#    Exterior   On at sunset, off at 10:00 pm. Runs on vacation too.
+#
+#  BUTTONS
+#    Wind Down       every light that's on (except master bed/bath) fades to off
+#                    over 15 min (Ashley's fader, one per light). Bed Time
+#                    (scripts.yaml) calls it too.
+#    Master Bedtime  master bedroom scene + bedroom blinds, kitchen off now,
+#                    solarium fades to off over 15 min. Nothing else changes.
+#
+#  WHEN IT DOESN'T RUN
+#    Vacation (input_select.house_mode) — nothing except the exterior lights.
+#    Paused (input_boolean.lighting_schedule_paused) — dusk-on, evening, 9:00
+#    and 11:30 skip. The buttons and the exterior lights still work.
+#
+#  WHERE TO LOOK
+#    Lighting page (tablet and phone) — every room: level, reading vs. its
+#      number, what's next, and the last thing the schedule did.
+#    input_text.lighting_<room> / lighting_house — that last action, one line
+#      each. Every change shows in the Logbook, so the Logbook reads as a diary.
+#    sensor.lighting_schedule — the same status the page shows.
+#    Settings → Automations → "Lighting – …" → Traces — step by step.
+#
+#  EDITING
+#    Change numbers and times in SETTINGS below, then Developer tools → YAML →
+#    "All YAML configuration". Nothing else in this file needs to change.
+# ═════════════════════════════════════════════════════════════════════════════
+
+template:
+  # ═══ SETTINGS ═══════════════════════════════════════════════════════════════
+  # Defined once here (&lighting) and reused by every automation and script
+  # below (*lighting).
+  - variables: &lighting
+      rooms:
+        # light         the room light (Lightener) the schedule controls
+        # sensor        the room's own light sensor, if it has one
+        # dark_below    lux on that sensor that counts as dark (lights off)
+        # outdoor_below outdoor estimate (sensor.illuminance) that counts as
+        #               dark — for rooms without a sensor, or if it's offline
+        # dusk_level    % the room comes on at
+        # ramp          seconds to ramp up from 1% (0 = straight to the level)
+        # evening       when the evening dim starts and where it ends (0 = off)
+        # fade_step_ms  shortest gap between fader steps (Govee rooms go slow)
+        #
+        # dark_below / outdoor_below are starting values (2026-11-19): tune
+        # them from the readings on the Lighting page after a few days.
+        kitchen:
+          name: Kitchen
+          icon: mdi:food-fork-drink
+          light: light.kitchen
+          sensor: sensor.hue_motion_sensor_1_illuminance
+          dark_below: 15
+          outdoor_below: 10000
+          dusk_level: 45
+          ramp: 300
+          evening: {school_night: "19:45", weekend: "20:00", level: 10}
+          fade_step_ms: 100
+        great_room:
+          name: Great Room
+          icon: mdi:sofa
+          light: light.great_room
+          sensor: sensor.hue_motion_sensor_3_illuminance
+          dark_below: 40
+          outdoor_below: 10000
+          dusk_level: 45
+          ramp: 300
+          evening: {school_night: "19:45", weekend: "20:00", level: 15}
+          fade_step_ms: 100
+        mudroom:
+          name: Mudroom
+          icon: mdi:washing-machine
+          light: light.mudroom
+          outdoor_below: 10000
+          dusk_level: 45
+          ramp: 300
+          evening: {school_night: "19:45", weekend: "20:00", level: 0}
+          fade_step_ms: 100
+        offices:
+          name: Foyer & Offices
+          icon: mdi:chandelier
+          light: light.offices
+          outdoor_below: 10000
+          dusk_level: 45
+          ramp: 300
+          evening: {school_night: "19:00", weekend: "19:30", level: 15}
+          fade_step_ms: 100
+        solarium:
+          name: Solarium
+          icon: mdi:palm-tree
+          light: light.solarium
+          sensor: sensor.hue_motion_sensor_2_illuminance
+          dark_below: 150
+          outdoor_below: 10000
+          dusk_level: 70
+          ramp: 0
+          evening: {school_night: "19:30", weekend: "19:30", level: 0}
+          fade_step_ms: 60000
+        basement:
+          name: Basement
+          icon: mdi:hammer-screwdriver
+          light: light.basement
+          outdoor_below: 10000          # no windows: follows the outdoor estimate
+          dusk_level: 45
+          ramp: 300                     # no evening dim — off at 9:00 pm
+      house:
+        outdoor_sensor: sensor.illuminance
+        pause: input_boolean.lighting_schedule_paused
+        dusk_from: "12:00"              # dusk-on never starts before this
+        weekend_nights: [fri, sat]      # these nights use the "weekend" times
+        evening_fade_minutes: 30
+        lights_out: "21:00"             # everything still on switches off
+        sweep: "23:30"                  # the same again, plus sweep_extras
+        floors: [Basement Level, Main Floor, Upstairs]
+        skip_areas: [master_bedroom, master_bathroom_bathroom]
+        keep_on:                        # never switched off by the schedule
+          - light.great_room_diffuser_nightlight
+          - light.front_foyer_diffuser_nightlight
+        sweep_extras:                   # non-lights turned off at 11:30 pm
+          - switch.office_fan
+        wind_down_minutes: 15
+        exterior_lights:
+          - light.exterior_alcove
+          - light.exterior_front_door
+          - light.exterior_lower_garage
+          - light.exterior_upper_garage
+        exterior_off: "22:00"
+  # ═══ END OF SETTINGS ════════════════════════════════════════════════════════
+
+    sensor:
+      # Live status for the Lighting page. Read-only: it never changes a light.
+      # State: Daytime / Watching for dark / Evening / Lights out / Night /
+      # Paused / Vacation.
+      # Attributes: rooms (per-room status), dusk_due (rooms the Dusk-on
+      # automation should turn on right now), outdoor (lux), last (house line),
+      # times (the house times, formatted for the page).
+      - name: Lighting schedule
+        unique_id: lighting_schedule
+        icon: mdi:lightbulb-auto-outline
+        state: >-
+          {%- set t = now().strftime('%H:%M') %}
+          {%- if is_state('input_select.house_mode', 'Vacation') %}Vacation
+          {%- elif is_state(house.pause, 'on') %}Paused
+          {%- elif t >= house.sweep or t < '04:00' %}Night
+          {%- elif t >= house.lights_out %}Lights out
+          {%- elif t >= rooms.values() | selectattr('evening', 'defined') | map(attribute='evening')
+                         | map(attribute='weekend' if now().strftime('%a') | lower in house.weekend_nights else 'school_night')
+                         | min %}Evening
+          {%- elif t >= house.dusk_from %}Watching for dark
+          {%- else %}Daytime{%- endif %}
+        attributes:
+          outdoor: "{{ states(house.outdoor_sensor) | float(-1) | round(0) | int }}"
+          last: >-
+            {%- set v = states('input_text.lighting_house') %}
+            {%- macro hm(x) %}{{ strptime(x, '%H:%M').strftime('%-I:%M %p') | lower }}{% endmacro %}
+            {{ '' if v in ['unknown', 'unavailable', ''] else (hm(v[11:16]) ~ v[16:]) if v.startswith(now().date() | string) else v }}
+          times: >-
+            {%- macro hm(x) %}{{ strptime(x, '%H:%M').strftime('%-I:%M %p') | lower }}{% endmacro %}
+            {{ {'dusk_from': hm(house.dusk_from), 'lights_out': hm(house.lights_out),
+                'sweep': hm(house.sweep), 'exterior_off': hm(house.exterior_off),
+                'wind_down_minutes': house.wind_down_minutes,
+                'sweep_extras': house.sweep_extras | map('state_attr', 'friendly_name') | reject('none') | list} }}
+          dusk_due: >-
+            {%- set t = now().strftime('%H:%M') %}
+            {%- set today = now().date() | string %}
+            {%- set weekend = now().strftime('%a') | lower in house.weekend_nights %}
+            {%- set out = states(house.outdoor_sensor) | float(-1) %}
+            {%- set held = is_state('input_select.house_mode', 'Vacation') or is_state(house.pause, 'on') %}
+            {%- set ns = namespace(due=[]) %}
+            {%- for k, r in rooms.items() if not held %}
+              {%- set ev = r.get('evening') %}
+              {%- set end = (ev.weekend if weekend else ev.school_night) if ev else house.lights_out %}
+              {%- set lux = states(r.sensor) | float(-1) if r.get('sensor') else -1 %}
+              {%- set dark = (lux >= 0 and lux < r.dark_below)
+                             or (lux < 0 and out >= 0 and out < r.outdoor_below)
+                             or is_state('sun.sun', 'below_horizon') %}
+              {%- if house.dusk_from <= t < end and is_state(r.light, 'off') and dark
+                     and not states('input_text.lighting_' ~ k).startswith(today) %}
+                {%- set ns.due = ns.due + [k] %}
+              {%- endif %}
+            {%- endfor %}
+            {{ ns.due }}
+          rooms: >-
+            {%- macro hm(x) %}{{ strptime(x, '%H:%M').strftime('%-I:%M %p') | lower }}{% endmacro %}
+            {%- set t = now().strftime('%H:%M') %}
+            {%- set today = now().date() | string %}
+            {%- set weekend = now().strftime('%a') | lower in house.weekend_nights %}
+            {%- set out = states(house.outdoor_sensor) | float(-1) %}
+            {%- set vacation = is_state('input_select.house_mode', 'Vacation') %}
+            {%- set paused = is_state(house.pause, 'on') %}
+            {%- set night = t >= house.sweep or t < '04:00' %}
+            {%- set ns = namespace(rooms={}) %}
+            {%- for k, r in rooms.items() %}
+              {%- set on = is_state(r.light, 'on') %}
+              {%- set b = state_attr(r.light, 'brightness') %}
+              {%- set level = (b | int(0) / 2.55) | round(0) | int if on and b is not none else none %}
+              {%- set ev = r.get('evening') %}
+              {%- set ev_t = (ev.weekend if weekend else ev.school_night) if ev else none %}
+              {%- set end = ev_t if ev_t else house.lights_out %}
+              {%- set last = states('input_text.lighting_' ~ k) %}
+              {%- set lux = states(r.sensor) | float(-1) if r.get('sensor') else -1 %}
+              {%- set src = 'room' if lux >= 0 else 'outdoor' %}
+              {%- set reading = (lux if lux >= 0 else out) | round(0) | int %}
+              {%- set limit = r.dark_below if lux >= 0 else r.outdoor_below %}
+              {%- set dark = (reading >= 0 and reading < limit) or is_state('sun.sun', 'below_horizon') %}
+              {%- set ev_text = ('dims to ' ~ ev.level ~ '% at ' ~ hm(ev_t)) if ev and ev.level > 0
+                                else ('off at ' ~ hm(ev_t)) if ev else 'off at ' ~ hm(house.lights_out) %}
+              {%- if vacation %}{% set stage, nxt = 'Vacation', 'Lights stay off' %}
+              {%- elif paused %}{% set stage, nxt = 'Paused', 'Schedule paused' %}
+              {%- elif night %}
+                {%- set stage = 'On after the 11:30 sweep' if on else 'Off for the night' %}
+                {%- set nxt = 'Watching for dark from ' ~ hm(house.dusk_from) %}
+              {%- elif t >= house.lights_out %}
+                {%- set stage = 'On after lights-out' if on else 'Off for the night' %}
+                {%- set nxt = 'off at ' ~ hm(house.sweep) if on else 'Watching for dark tomorrow' %}
+              {%- elif t >= end %}
+                {%- set stage = ('Evening · ' ~ (level ~ '%' if level is not none else 'scene')) if on else 'Off' %}
+                {%- set nxt = 'off at ' ~ hm(house.lights_out) if on else '' %}
+              {%- elif t < house.dusk_from %}
+                {%- set stage = ('On · ' ~ (level ~ '%' if level is not none else 'scene')) if on else 'Daytime' %}
+                {%- set nxt = 'watching for dark from ' ~ hm(house.dusk_from) %}
+              {%- elif on %}
+                {%- set stage = 'On · ' ~ (level ~ '%' if level is not none else 'scene') %}
+                {%- set nxt = ev_text %}
+              {%- elif last.startswith(today) %}
+                {%- set stage, nxt = 'Off', 'stays off until tomorrow' %}
+              {%- else %}
+                {%- set stage = 'Waiting for dark' %}
+                {%- set nxt = 'on at ' ~ r.dusk_level ~ '% when dark' %}
+              {%- endif %}
+              {%- set ns.rooms = dict(ns.rooms, **{k: {
+                  'name': r.name, 'icon': r.icon, 'light': r.light, 'on': on, 'level': level,
+                  'source': src, 'reading': reading, 'limit': limit, 'dark': dark,
+                  'stage': stage, 'next': nxt,
+                  'dusk': r.dusk_level ~ '%',
+                  'evening': '' if not ev else
+                             ((hm(ev.school_night) if ev.school_night == ev.weekend
+                               else hm(ev.school_night) ~ ' Sun–Thu, ' ~ hm(ev.weekend) ~ ' Fri–Sat')
+                              ~ ' → ' ~ (ev.level ~ '%' if ev.level > 0 else 'off')),
+                  'last': '' if last in ['unknown', 'unavailable', ''] else
+                          (hm(last[11:16]) ~ last[16:]) if last.startswith(today) else last}}) %}
+            {%- endfor %}
+            {{ ns.rooms }}
+
+input_boolean:
+  lighting_schedule_paused:
+    name: Lighting schedule paused
+    icon: mdi:pause-circle-outline
+
+# One line per room: the last thing the schedule did there. Written by the
+# automations and scripts below; every change shows in the Logbook.
+input_text:
+  lighting_kitchen:
+    name: Lighting – Kitchen
+    max: 255
+    icon: mdi:history
+  lighting_great_room:
+    name: Lighting – Great Room
+    max: 255
+    icon: mdi:history
+  lighting_mudroom:
+    name: Lighting – Mudroom
+    max: 255
+    icon: mdi:history
+  lighting_offices:
+    name: Lighting – Foyer & Offices
+    max: 255
+    icon: mdi:history
+  lighting_solarium:
+    name: Lighting – Solarium
+    max: 255
+    icon: mdi:history
+  lighting_basement:
+    name: Lighting – Basement
+    max: 255
+    icon: mdi:history
+  lighting_house:
+    name: Lighting – House
+    max: 255
+    icon: mdi:history
+
+automation:
+  # ── Dusk-on ──────────────────────────────────────────────────────────────────
+  # sensor.lighting_schedule works out which rooms are due (dark, off, inside
+  # their window, not done today) and lists them in dusk_due. This turns them
+  # on. It re-checks each room just before acting.
+  - id: lighting_dusk_on
+    alias: Lighting – Dusk-on
+    description: Turns rooms on at their dusk level when they read dark. See packages/lighting_schedule.yaml.
+    mode: queued
+    max: 10
+    max_exceeded: silent
+    variables: *lighting
+    triggers:
+      - trigger: state
+        entity_id: sensor.lighting_schedule
+        attribute: dusk_due
+      - trigger: homeassistant
+        event: start
+    conditions:
+      - condition: template
+        value_template: "{{ state_attr('sensor.lighting_schedule', 'dusk_due') | default([], true) | count > 0 }}"
+    actions:
+      - repeat:
+          for_each: "{{ state_attr('sensor.lighting_schedule', 'dusk_due') }}"
+          sequence:
+            - variables:
+                key: "{{ repeat.item }}"
+                r: "{{ rooms[repeat.item] }}"
+                s: "{{ state_attr('sensor.lighting_schedule', 'rooms')[repeat.item] }}"
+            - if:
+                - condition: template
+                  value_template: "{{ is_state(r.light, 'off') }}"
+              then:
+                # The line goes first, so "Turned on by hand" (below) sees
+                # dusk-on as done and stays quiet.
+                - action: input_text.set_value
+                  target:
+                    entity_id: "input_text.lighting_{{ key }}"
+                  data:
+                    value: >-
+                      {{ now().strftime('%Y-%m-%d %H:%M') }} · Dusk-on {{ r.dusk_level }}% ·
+                      {% if s.reading >= 0 and s.reading < s.limit %}{{ 'outdoor ' if s.source == 'outdoor' }}{{ s.reading }} lx < {{ s.limit }}{% else %}after sunset{% endif %}
+                - if:
+                    - condition: template
+                      value_template: "{{ r.ramp | int(0) > 0 }}"
+                  then:
+                    - action: light.turn_on
+                      target:
+                        entity_id: "{{ r.light }}"
+                      data:
+                        brightness_pct: 1
+                    - delay:
+                        seconds: 2
+                    - action: light.turn_on
+                      target:
+                        entity_id: "{{ r.light }}"
+                      data:
+                        brightness_pct: "{{ r.dusk_level }}"
+                        transition: "{{ r.ramp }}"
+                  else:
+                    - action: light.turn_on
+                      target:
+                        entity_id: "{{ r.light }}"
+                      data:
+                        brightness_pct: "{{ r.dusk_level }}"
+
+  # ── Turned on by hand ──────────────────────────────────────
+  # If someone (or a scene, or Alexa) turns a room on after dusk_from, before
+  # dusk-on has run, that counts as today's dusk-on. Otherwise turning the
+  # room off again later would just have dusk-on switch it back on.
+  - id: lighting_room_turned_on
+    alias: Lighting – Turned on by hand
+    description: Counts a room turned on by hand during the dusk window as today's dusk-on. See packages/lighting_schedule.yaml.
+    mode: queued
+    max: 10
+    variables: *lighting
+    triggers:
+      - trigger: state
+        entity_id:                      # the room lights in SETTINGS
+          - light.kitchen
+          - light.great_room
+          - light.mudroom
+          - light.offices
+          - light.solarium
+          - light.basement
+        from: "off"
+        to: "on"
+    conditions:
+      - condition: template
+        value_template: >-
+          {%- set key = (rooms.items() | selectattr('1.light', 'eq', trigger.entity_id) | map(attribute='0') | list + [''])[0] %}
+          {{ key != '' and now().strftime('%H:%M') >= house.dusk_from
+             and not states('input_text.lighting_' ~ key).startswith(now().date() | string) }}
+    actions:
+      - action: input_text.set_value
+        target:
+          entity_id: >-
+            input_text.lighting_{{ (rooms.items() | selectattr('1.light', 'eq', trigger.entity_id) | map(attribute='0') | list)[0] }}
+        data:
+          value: "{{ now().strftime('%Y-%m-%d %H:%M') }} · Turned on (not by the schedule) · counts as today's dusk-on"
+
+  # ── Evening dim ──────────────────────────────────────────────────────────────
+  # At each room's evening time: fade the room light to its evening level with
+  # Ashley's fader (script.light_fader, runs in the background, 30 min).
+  - id: lighting_evening_dim
+    alias: Lighting – Evening dim
+    description: Dims each room to its evening level at its evening time. See packages/lighting_schedule.yaml.
+    mode: queued
+    max: 5
+    trigger_variables: *lighting
+    triggers:
+      - trigger: template
+        value_template: >-
+          {%- set weekend = now().strftime('%a') | lower in house.weekend_nights %}
+          {{ now().strftime('%H:%M') in rooms.values() | selectattr('evening', 'defined')
+             | map(attribute='evening') | map(attribute='weekend' if weekend else 'school_night') | list }}
+    conditions:
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: input_select.house_mode
+            state: Vacation
+      - condition: template
+        value_template: "{{ is_state(house.pause, 'off') }}"
+    actions:
+      - variables:
+          weekend: "{{ now().strftime('%a') | lower in house.weekend_nights }}"
+          now_hm: "{{ now().strftime('%H:%M') }}"
+          due: >-
+            {%- set ns = namespace(k=[]) %}
+            {%- for k, r in rooms.items() if r.get('evening') %}
+              {%- if (r.evening.weekend if weekend else r.evening.school_night) == now_hm %}
+                {%- set ns.k = ns.k + [k] %}
+              {%- endif %}
+            {%- endfor %}
+            {{ ns.k }}
+      - repeat:
+          for_each: "{{ due }}"
+          sequence:
+            - variables:
+                key: "{{ repeat.item }}"
+                r: "{{ rooms[repeat.item] }}"
+                stamp: "{{ now().strftime('%Y-%m-%d %H:%M') }}"
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ is_state(r.light, 'off') }}"
+                  sequence: []          # already off — nothing to do
+                - conditions:
+                    - condition: template
+                      value_template: "{{ state_attr(r.light, 'brightness') is none }}"
+                  sequence:
+                    - action: input_text.set_value
+                      target:
+                        entity_id: "input_text.lighting_{{ key }}"
+                      data:
+                        value: "{{ stamp }} · Evening dim skipped · room is set to a scene"
+              default:
+                - action: script.turn_on
+                  target:
+                    entity_id: script.light_fader
+                  data:
+                    variables:
+                      light: "{{ r.light }}"
+                      endBrightnessPercent: "{{ r.evening.level }}"
+                      transitionTime:
+                        hours: 0
+                        minutes: "{{ house.evening_fade_minutes }}"
+                        seconds: 0
+                      lampBrightnessScale: zeroToTwoFiftyFive
+                      easingTypeInput: easeInOutCubic
+                      endBrightnessEntityScale: zeroToOneHundred
+                      autoCancelThreshold: 10
+                      shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+                      shouldResetTheStopEntityToOffAtStart: false
+                      shouldInvertTheValueOfTheStopEntity: false
+                      minimumStepDelayInMilliseconds: "{{ r.fade_step_ms | default(100) }}"
+                      shouldTryToUseNativeLampTransitionsToo: false
+                      isDebugMode: false
+                - action: input_text.set_value
+                  target:
+                    entity_id: "input_text.lighting_{{ key }}"
+                  data:
+                    value: >-
+                      {{ stamp }} · Evening dim {{ ((state_attr(r.light, 'brightness') | int(0)) / 2.55) | round(0) | int }}% →
+                      {{ r.evening.level ~ '%' if r.evening.level > 0 else 'off' }} over {{ house.evening_fade_minutes }} min
+
+  # ── 9:00 pm lights out and the 11:30 pm sweep ────────────────────────────────
+  # Every light that's on, on the floors in settings, except the skipped areas
+  # (master bedroom and bath), the keep_on list, groups and Govee segments.
+  - id: lighting_night_off
+    alias: Lighting – Lights out
+    description: Switches off every light still on (except master bed/bath) at 9:00 pm, and again at 11:30 pm with the extras. See packages/lighting_schedule.yaml.
+    mode: single
+    trigger_variables: *lighting
+    triggers:
+      - trigger: template
+        value_template: "{{ now().strftime('%H:%M') == house.lights_out }}"
+        id: lights_out
+      - trigger: template
+        value_template: "{{ now().strftime('%H:%M') == house.sweep }}"
+        id: sweep
+    conditions:
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: input_select.house_mode
+            state: Vacation
+      - condition: template
+        value_template: "{{ is_state(house.pause, 'off') }}"
+    actions:
+      - variables:
+          stamp: "{{ now().strftime('%Y-%m-%d %H:%M') }}"
+          what: "{{ 'Lights out' if trigger.id == 'lights_out' else '11:30 sweep' }}"
+          lights: &night_lights >-
+            {%- set ns = namespace(l=[]) %}
+            {%- for f in house.floors %}
+              {%- for a in floor_areas(f) if a not in house.skip_areas %}
+                {%- for e in area_entities(a) | select('match', 'light[.]') %}
+                  {%- if is_state(e, 'on') and e not in house.keep_on
+                        and state_attr(e, 'entity_id') is none
+                        and state_attr(e, 'is_hue_group') is none
+                        and not e is search('_segment_[0-9]+$') %}
+                    {%- set ns.l = ns.l + [e] %}
+                  {%- endif %}
+                {%- endfor %}
+              {%- endfor %}
+            {%- endfor %}
+            {{ ns.l | unique | list }}
+          extras: >-
+            {{ house.sweep_extras | select('is_state', 'on') | list if trigger.id == 'sweep' else [] }}
+          rooms_on: >-
+            {{ rooms.items() | selectattr('1.light', 'is_state', 'on') | map(attribute='0') | list }}
+      - if:
+          - condition: template
+            value_template: "{{ lights | count > 0 }}"
+        then:
+          - action: light.turn_off
+            target:
+              entity_id: "{{ lights }}"
+      - if:
+          - condition: template
+            value_template: "{{ extras | count > 0 }}"
+        then:
+          - action: homeassistant.turn_off
+            target:
+              entity_id: "{{ extras }}"
+      - repeat:
+          for_each: "{{ rooms_on }}"
+          sequence:
+            - action: input_text.set_value
+              target:
+                entity_id: "input_text.lighting_{{ repeat.item }}"
+              data:
+                value: "{{ stamp }} · {{ what }} · switched off"
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.lighting_house
+        data:
+          value: >-
+            {{ stamp }} · {{ what }} ·
+            {% if lights | count or extras | count %}{{ lights | count }} light{{ 's' if lights | count != 1 }} off{% if extras | count %}, plus {{ extras | map('state_attr', 'friendly_name') | join(', ') }}{% endif %}{% else %}nothing was on{% endif %}
+
+  # ── Exterior ─────────────────────────────────────────────────────────────────
+  # On at sunset, off at exterior_off. Runs on vacation and when paused.
+  - id: lighting_exterior
+    alias: Lighting – Exterior
+    description: Exterior lights on at sunset and off at 10:00 pm, every night. See packages/lighting_schedule.yaml.
+    mode: single
+    trigger_variables: *lighting
+    triggers:
+      - trigger: sun
+        event: sunset
+        id: "on"
+      - trigger: template
+        value_template: "{{ now().strftime('%H:%M') == house.exterior_off }}"
+        id: "off"
+    actions:
+      - action: "light.turn_{{ trigger.id }}"
+        target:
+          entity_id: "{{ house.exterior_lights }}"
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.lighting_house
+        data:
+          value: "{{ now().strftime('%Y-%m-%d %H:%M') }} · Exterior {{ trigger.id }}"
+
+script:
+  # ── Wind Down ────────────────────────────────────────────────────────────────
+  # Every light that's on (same list as 9:00 pm) fades to off over
+  # wind_down_minutes (script.lighting_fade_off below). Stops any evening fades
+  # still running first.
+  lighting_wind_down:
+    alias: Wind Down
+    description: Fades every light that's on (except the master bedroom and bath) to off over 15 minutes.
+    icon: mdi:weather-night
+    mode: single
+    variables: *lighting
+    sequence:
+      - variables:
+          stamp: "{{ now().strftime('%Y-%m-%d %H:%M') }}"
+          lights: *night_lights
+          rooms_on: >-
+            {{ rooms.items() | selectattr('1.light', 'is_state', 'on') | map(attribute='0') | list }}
+      - action: script.turn_off
+        target:
+          entity_id: script.light_fader
+      - repeat:
+          for_each: "{{ rooms_on }}"
+          sequence:
+            - action: input_text.set_value
+              target:
+                entity_id: "input_text.lighting_{{ repeat.item }}"
+              data:
+                value: "{{ stamp }} · Wind Down · fading off over {{ house.wind_down_minutes }} min"
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.lighting_house
+        data:
+          value: "{{ stamp }} · Wind Down · {{ lights | count }} light{{ 's' if lights | count != 1 }} over {{ house.wind_down_minutes }} min"
+      - if:
+          - condition: template
+            value_template: "{{ lights | count > 0 }}"
+        then:
+          - action: script.turn_on
+            target:
+              entity_id: script.lighting_fade_off
+            data:
+              variables:
+                lights: "{{ lights }}"
+                minutes: "{{ house.wind_down_minutes }}"
+
+  # ── Master Bedtime ───────────────────────────────────────────────────────────
+  # The master bedroom scene (fan, noise machine, purifier, master lights off),
+  # bedroom blinds closed, kitchen off now, solarium fades off over
+  # wind_down_minutes. Nothing else changes.
+  master_bedtime:
+    alias: Master Bedtime
+    description: Master bedroom scene and blinds, kitchen off now, solarium fades off over 15 minutes.
+    icon: mdi:bed-king
+    mode: single
+    variables: *lighting
+    sequence:
+      - variables:
+          stamp: "{{ now().strftime('%Y-%m-%d %H:%M') }}"
+          kitchen_on: "{{ is_state(rooms.kitchen.light, 'on') }}"
+          solarium_lights: >-
+            {{ expand(state_attr(rooms.solarium.light, 'entity_id') | default([], true))
+               | selectattr('state', 'eq', 'on') | map(attribute='entity_id')
+               | reject('search', '_segment_[0-9]+$') | list }}
+      - action: scene.turn_on
+        target:
+          entity_id:
+            - scene.master_bedtime
+            - scene.close_blinds_bedroom
+      - if:
+          - condition: template
+            value_template: "{{ kitchen_on }}"
+        then:
+          - action: light.turn_off
+            target:
+              entity_id: "{{ rooms.kitchen.light }}"
+          - action: input_text.set_value
+            target:
+              entity_id: input_text.lighting_kitchen
+            data:
+              value: "{{ stamp }} · Master Bedtime · switched off"
+      - if:
+          - condition: template
+            value_template: "{{ solarium_lights | count > 0 }}"
+        then:
+          - action: input_text.set_value
+            target:
+              entity_id: input_text.lighting_solarium
+            data:
+              value: "{{ stamp }} · Master Bedtime · fading off over {{ house.wind_down_minutes }} min"
+          - action: script.turn_on
+            target:
+              entity_id: script.lighting_fade_off
+            data:
+              variables:
+                lights: "{{ solarium_lights }}"
+                minutes: "{{ house.wind_down_minutes }}"
+      - action: input_text.set_value
+        target:
+          entity_id: input_text.lighting_house
+        data:
+          value: "{{ stamp }} · Master Bedtime"
+
+  # ── Fade off (used by Wind Down and Master Bedtime) ──────────────────────────
+  # Each light fades from where it is now to off over `minutes`, one Ashley's
+  # fader per light, all finishing together. Touching a light during the fade
+  # stops the fade for that light only. Lights with no dimmer (on/off only)
+  # switch off at the end. Runs in the background; each fader shows in the
+  # Logbook as "Ashley's Light Fader started".
+  lighting_fade_off:
+    alias: Lighting – Fade off
+    description: Fades the given lights to off over the given minutes with Ashley's fader. Used by Wind Down and Master Bedtime.
+    icon: mdi:lightbulb-off-outline
+    mode: parallel
+    fields:
+      lights:
+        description: Light entity ids to fade off
+        example: "[light.great_room_bar_lamp]"
+      minutes:
+        description: How long the fade takes
+        example: 15
+    sequence:
+      - variables:
+          dimmable: >-
+            {%- set ns = namespace(l=[]) %}
+            {%- for e in lights if is_state(e, 'on') and state_attr(e, 'brightness') is not none %}
+              {%- set ns.l = ns.l + [e] %}
+            {%- endfor %}
+            {{ ns.l }}
+          on_off: >-
+            {%- set ns = namespace(l=[]) %}
+            {%- for e in lights if is_state(e, 'on') and state_attr(e, 'brightness') is none %}
+              {%- set ns.l = ns.l + [e] %}
+            {%- endfor %}
+            {{ ns.l }}
+      - repeat:
+          for_each: "{{ dimmable }}"
+          sequence:
+            - action: script.turn_on
+              target:
+                entity_id: script.light_fader
+              data:
+                variables:
+                  light: "{{ repeat.item }}"
+                  endBrightnessPercent: 0
+                  transitionTime:
+                    hours: 0
+                    minutes: "{{ minutes }}"
+                    seconds: 0
+                  lampBrightnessScale: zeroToTwoFiftyFive
+                  easingTypeInput: easeInOutCubic
+                  endBrightnessEntityScale: zeroToOneHundred
+                  autoCancelThreshold: 10
+                  shouldStopIfTheLampIsTurnedOffDuringTheFade: true
+                  shouldResetTheStopEntityToOffAtStart: false
+                  shouldInvertTheValueOfTheStopEntity: false
+                  minimumStepDelayInMilliseconds: 1000
+                  shouldTryToUseNativeLampTransitionsToo: false
+                  isDebugMode: false
+      - if:
+          - condition: template
+            value_template: "{{ on_off | count > 0 }}"
+        then:
+          - delay:
+              minutes: "{{ minutes }}"
+          - variables:
+              still_on: "{{ on_off | select('is_state', 'on') | list }}"
+          - if:
+              - condition: template
+                value_template: "{{ still_on | count > 0 }}"
+            then:
+              - action: light.turn_off
+                target:
+                  entity_id: "{{ still_on }}"

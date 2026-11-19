@@ -64,7 +64,7 @@ _HACS repository data not found._
 | module | /local/community/vacuum-card/vacuum-card.js?v=2612912952120 |
 | module | /local/community/vertical-stack-in-card/vertical-stack-in-card.js?v=142051833114 |
 | module | /local/community/weather-radar-card/weather-radar-card.js?v=487680971400 |
-| module | /local/community/weather_alerts_card/weather-alerts-card.js?v=1158790951-v3.9.2 |
+| module | /local/community/weather_alerts_card/weather-alerts-card.js?v=1158790951-v3.10.0 |
 | module | /local/icloud3/icloud3-event-log-card.js |
 | module | /webrtc/webrtc-camera.js?v=v3.6.1 |
 | module | https://cdn.jsdelivr.net/gh/bramkragten/custom-ui@master/swipe-card/swipe-card.js |

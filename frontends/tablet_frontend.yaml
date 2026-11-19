@@ -50,6 +50,11 @@ sidebar:
       active: true
       icon: mdi:lamps-outline
     - action: navigate
+      navigation_path: /isaac-lucas/lighting
+      name: Lighting
+      active: true
+      icon: mdi:lightbulb-auto-outline
+    - action: navigate
       navigation_path: /isaac-lucas/weather
       name: Weather
       active: true
@@ -387,6 +392,19 @@ views:
               - type: custom:bubble-card
                 card_type: button
                 button_type: custom
+                entity: script.lighting_wind_down
+                name: Wind Down
+                icon: mdi:weather-night
+                button_tap_action: false
+                tap_action:
+                  action: call-service
+                  service: script.turn_on
+                  service_data:
+                    entity_id: script.lighting_wind_down
+                show_state: false
+              - type: custom:bubble-card
+                card_type: button
+                button_type: custom
                 entity: script.bedtime
                 name: Bedtime
                 icon: mdi:bed
@@ -400,15 +418,15 @@ views:
               - type: custom:bubble-card
                 card_type: button
                 button_type: custom
-                entity: scene.master_bedtime
+                entity: script.master_bedtime
                 name: Master Bedtime
                 icon: mdi:bed-king
                 button_tap_action: false
                 tap_action:
                   action: call-service
-                  service: scene.turn_on
+                  service: script.turn_on
                   service_data:
-                    entity_id: scene.master_bedtime
+                    entity_id: script.master_bedtime
                 show_state: false
         view_layout:
           grid-area: lights
@@ -4487,16 +4505,16 @@ views:
             cards:
               - type: custom:bubble-card
                 card_type: button
-                entity: scene.master_bedtime
+                entity: script.master_bedtime
                 show_state: false
                 card_layout: large
                 icon: mdi:sleep
                 name: Master Bedtime
                 tap_action:
                   action: perform-action
-                  perform_action: scene.turn_on
+                  perform_action: script.turn_on
                   target:
-                    entity_id: scene.master_bedtime
+                    entity_id: script.master_bedtime
                 scrolling_effect: false
                 show_icon: true
               - type: custom:bubble-card
@@ -4825,6 +4843,498 @@ views:
                         entity: sensor.front_foyer_diffuser_slot_2_fragrance_remaining
                         theme: optimal_when_high
                         name: Slot 2 Remaining
+  - title: Lighting
+    path: lighting
+    icon: mdi:lightbulb-auto-outline
+    type: custom:grid-layout
+    layout:
+      grid-template-columns: 1fr 1fr 1fr
+      grid-template-rows: auto
+      grid-template-areas: |
+        "status     status     status"
+        "kitchen    great_room solarium"
+        "mudroom    offices    basement"
+        "night      night      exterior"
+      grid-gap: 12px
+      mediaquery:
+        '(max-width: 900px)':
+          grid-template-columns: 100%
+          grid-template-areas: |
+            "status"
+            "kitchen"
+            "great_room"
+            "solarium"
+            "mudroom"
+            "offices"
+            "basement"
+            "night"
+            "exterior"
+    cards:
+      - type: vertical-stack
+        view_layout:
+          grid-area: status
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:lightbulb-auto-outline
+            styles: |
+              ha-card {
+                  color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                  background-color: var(--divider-color) !important;
+              }
+              h4 {
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+            name: Lighting schedule
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-legacy-template-card
+                entity: sensor.lighting_schedule
+                icon: mdi:lightbulb-auto-outline
+                primary: "{{ states(entity) }}"
+                secondary: >-
+                  {{ (state_attr(entity, 'last') or 'Nothing yet today') }}
+                icon_color: "{{ 'disabled' if states(entity) in ['Paused', 'Vacation'] else '#A8813C' }}"
+                tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card {
+                      border: 1px solid var(--divider-color);
+                      --ha-card-border-width: 0;
+                      --mush-card-primary-font-size: 16px;
+                      --mush-card-secondary-font-size: 12px;
+                    }
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                entity: script.lighting_wind_down
+                name: Wind Down
+                icon: mdi:weather-night
+                tap_action:
+                  action: perform-action
+                  perform_action: script.turn_on
+                  target:
+                    entity_id: script.lighting_wind_down
+                show_state: false
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                entity: script.bedtime
+                name: Bed Time
+                icon: mdi:bed
+                tap_action:
+                  action: perform-action
+                  perform_action: script.turn_on
+                  target:
+                    entity_id: script.bedtime
+                show_state: false
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                entity: script.master_bedtime
+                name: Master Bedtime
+                icon: mdi:bed-king
+                tap_action:
+                  action: perform-action
+                  perform_action: script.turn_on
+                  target:
+                    entity_id: script.master_bedtime
+                show_state: false
+              - type: custom:bubble-card
+                card_type: button
+                button_type: switch
+                entity: input_boolean.lighting_schedule_paused
+                name: Pause schedule
+                icon: mdi:pause-circle-outline
+                show_state: true
+      - type: custom:stack-in-card
+        view_layout:
+          grid-area: kitchen
+        card_mod:
+          style: |
+            ha-card {
+              border: 1px solid var(--divider-color);
+              --ha-card-border-width: 0;
+            }
+        cards:
+          - type: custom:mushroom-legacy-template-card
+            entity: light.kitchen
+            icon: mdi:food-fork-drink
+            primary: Kitchen
+            secondary: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('kitchen', {}) %}{{ r.get('stage', '') }}
+            icon_color: "{{ '#A8813C' if is_state(entity, 'on') else 'disabled' }}"
+            tap_action:
+              action: more-info
+            hold_action:
+              action: toggle
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  --mush-card-primary-font-size: 16px;
+                  --mush-card-secondary-font-size: 12px;
+                }
+          - type: markdown
+            content: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('kitchen', {}) %}
+              {%- if r %}
+              {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
+              Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
+              Next: {{ r.next or '—' }}<br>
+              {{ r.last or 'Nothing yet today' }}
+              {%- else %}Waiting for the schedule…{% endif %}
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  border: none;
+                  box-shadow: none;
+                  --ha-card-border-width: 0;
+                }
+                ha-markdown {
+                  padding: 0 16px 14px !important;
+                  font-size: 12px;
+                  line-height: 1.5;
+                  color: var(--secondary-text-color);
+                  font-variant-numeric: tabular-nums;
+                }
+      - type: custom:stack-in-card
+        view_layout:
+          grid-area: great_room
+        card_mod:
+          style: |
+            ha-card {
+              border: 1px solid var(--divider-color);
+              --ha-card-border-width: 0;
+            }
+        cards:
+          - type: custom:mushroom-legacy-template-card
+            entity: light.great_room
+            icon: mdi:sofa
+            primary: Great Room
+            secondary: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('great_room', {}) %}{{ r.get('stage', '') }}
+            icon_color: "{{ '#A8813C' if is_state(entity, 'on') else 'disabled' }}"
+            tap_action:
+              action: more-info
+            hold_action:
+              action: toggle
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  --mush-card-primary-font-size: 16px;
+                  --mush-card-secondary-font-size: 12px;
+                }
+          - type: markdown
+            content: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('great_room', {}) %}
+              {%- if r %}
+              {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
+              Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
+              Next: {{ r.next or '—' }}<br>
+              {{ r.last or 'Nothing yet today' }}
+              {%- else %}Waiting for the schedule…{% endif %}
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  border: none;
+                  box-shadow: none;
+                  --ha-card-border-width: 0;
+                }
+                ha-markdown {
+                  padding: 0 16px 14px !important;
+                  font-size: 12px;
+                  line-height: 1.5;
+                  color: var(--secondary-text-color);
+                  font-variant-numeric: tabular-nums;
+                }
+      - type: custom:stack-in-card
+        view_layout:
+          grid-area: solarium
+        card_mod:
+          style: |
+            ha-card {
+              border: 1px solid var(--divider-color);
+              --ha-card-border-width: 0;
+            }
+        cards:
+          - type: custom:mushroom-legacy-template-card
+            entity: light.solarium
+            icon: mdi:palm-tree
+            primary: Solarium
+            secondary: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('solarium', {}) %}{{ r.get('stage', '') }}
+            icon_color: "{{ '#A8813C' if is_state(entity, 'on') else 'disabled' }}"
+            tap_action:
+              action: more-info
+            hold_action:
+              action: toggle
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  --mush-card-primary-font-size: 16px;
+                  --mush-card-secondary-font-size: 12px;
+                }
+          - type: markdown
+            content: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('solarium', {}) %}
+              {%- if r %}
+              {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
+              Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
+              Next: {{ r.next or '—' }}<br>
+              {{ r.last or 'Nothing yet today' }}
+              {%- else %}Waiting for the schedule…{% endif %}
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  border: none;
+                  box-shadow: none;
+                  --ha-card-border-width: 0;
+                }
+                ha-markdown {
+                  padding: 0 16px 14px !important;
+                  font-size: 12px;
+                  line-height: 1.5;
+                  color: var(--secondary-text-color);
+                  font-variant-numeric: tabular-nums;
+                }
+      - type: custom:stack-in-card
+        view_layout:
+          grid-area: mudroom
+        card_mod:
+          style: |
+            ha-card {
+              border: 1px solid var(--divider-color);
+              --ha-card-border-width: 0;
+            }
+        cards:
+          - type: custom:mushroom-legacy-template-card
+            entity: light.mudroom
+            icon: mdi:washing-machine
+            primary: Mudroom
+            secondary: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('mudroom', {}) %}{{ r.get('stage', '') }}
+            icon_color: "{{ '#A8813C' if is_state(entity, 'on') else 'disabled' }}"
+            tap_action:
+              action: more-info
+            hold_action:
+              action: toggle
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  --mush-card-primary-font-size: 16px;
+                  --mush-card-secondary-font-size: 12px;
+                }
+          - type: markdown
+            content: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('mudroom', {}) %}
+              {%- if r %}
+              {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
+              Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
+              Next: {{ r.next or '—' }}<br>
+              {{ r.last or 'Nothing yet today' }}
+              {%- else %}Waiting for the schedule…{% endif %}
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  border: none;
+                  box-shadow: none;
+                  --ha-card-border-width: 0;
+                }
+                ha-markdown {
+                  padding: 0 16px 14px !important;
+                  font-size: 12px;
+                  line-height: 1.5;
+                  color: var(--secondary-text-color);
+                  font-variant-numeric: tabular-nums;
+                }
+      - type: custom:stack-in-card
+        view_layout:
+          grid-area: offices
+        card_mod:
+          style: |
+            ha-card {
+              border: 1px solid var(--divider-color);
+              --ha-card-border-width: 0;
+            }
+        cards:
+          - type: custom:mushroom-legacy-template-card
+            entity: light.offices
+            icon: mdi:chandelier
+            primary: Foyer & Offices
+            secondary: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('offices', {}) %}{{ r.get('stage', '') }}
+            icon_color: "{{ '#A8813C' if is_state(entity, 'on') else 'disabled' }}"
+            tap_action:
+              action: more-info
+            hold_action:
+              action: toggle
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  --mush-card-primary-font-size: 16px;
+                  --mush-card-secondary-font-size: 12px;
+                }
+          - type: markdown
+            content: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('offices', {}) %}
+              {%- if r %}
+              {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
+              Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
+              Next: {{ r.next or '—' }}<br>
+              {{ r.last or 'Nothing yet today' }}
+              {%- else %}Waiting for the schedule…{% endif %}
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  border: none;
+                  box-shadow: none;
+                  --ha-card-border-width: 0;
+                }
+                ha-markdown {
+                  padding: 0 16px 14px !important;
+                  font-size: 12px;
+                  line-height: 1.5;
+                  color: var(--secondary-text-color);
+                  font-variant-numeric: tabular-nums;
+                }
+      - type: custom:stack-in-card
+        view_layout:
+          grid-area: basement
+        card_mod:
+          style: |
+            ha-card {
+              border: 1px solid var(--divider-color);
+              --ha-card-border-width: 0;
+            }
+        cards:
+          - type: custom:mushroom-legacy-template-card
+            entity: light.basement
+            icon: mdi:hammer-screwdriver
+            primary: Basement
+            secondary: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('basement', {}) %}{{ r.get('stage', '') }}
+            icon_color: "{{ '#A8813C' if is_state(entity, 'on') else 'disabled' }}"
+            tap_action:
+              action: more-info
+            hold_action:
+              action: toggle
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  --mush-card-primary-font-size: 16px;
+                  --mush-card-secondary-font-size: 12px;
+                }
+          - type: markdown
+            content: >-
+              {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('basement', {}) %}
+              {%- if r %}
+              {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
+              Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
+              Next: {{ r.next or '—' }}<br>
+              {{ r.last or 'Nothing yet today' }}
+              {%- else %}Waiting for the schedule…{% endif %}
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  border: none;
+                  box-shadow: none;
+                  --ha-card-border-width: 0;
+                }
+                ha-markdown {
+                  padding: 0 16px 14px !important;
+                  font-size: 12px;
+                  line-height: 1.5;
+                  color: var(--secondary-text-color);
+                  font-variant-numeric: tabular-nums;
+                }
+      - type: markdown
+        view_layout:
+          grid-area: night
+        content: >-
+          {%- set s = 'sensor.lighting_schedule' %}
+          {%- set t = state_attr(s, 'times') or {} %}
+          {%- if t %}
+          **{{ t.lights_out }}** · everything still on switches off — every floor except the master bedroom and bath<br>
+          **{{ t.sweep }}** · the same again{{ ', plus ' ~ (t.sweep_extras | join(', ') | lower) if t.sweep_extras }}<br>
+          **Wind Down** · every light that's on fades off over {{ t.wind_down_minutes }} min<br>
+          Dusk-on starts watching at {{ t.dusk_from }} · outdoor now {{ '{:,}'.format(state_attr(s, 'outdoor') | int(0)) }} lx<br>
+          Last: {{ state_attr(s, 'last') or 'nothing yet today' }}
+          {%- else %}Waiting for the schedule…{% endif %}
+        card_mod:
+          style: |
+            ha-card {
+              border: 1px solid var(--divider-color);
+              --ha-card-border-width: 0;
+            }
+            ha-markdown {
+              font-size: 12px;
+              line-height: 1.6;
+              color: var(--secondary-text-color);
+              font-variant-numeric: tabular-nums;
+            }
+      - type: custom:stack-in-card
+        view_layout:
+          grid-area: exterior
+        card_mod:
+          style: |
+            ha-card {
+              border: 1px solid var(--divider-color);
+              --ha-card-border-width: 0;
+            }
+        cards:
+          - type: custom:mushroom-legacy-template-card
+            entity: light.exterior
+            icon: mdi:pine-tree
+            primary: Exterior
+            secondary: "{{ 'On' if is_state(entity, 'on') else 'Off' }}"
+            icon_color: "{{ '#A8813C' if is_state(entity, 'on') else 'disabled' }}"
+            tap_action:
+              action: more-info
+            hold_action:
+              action: toggle
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  --mush-card-primary-font-size: 16px;
+                  --mush-card-secondary-font-size: 12px;
+                }
+          - type: markdown
+            content: >-
+              {%- set t = state_attr('sensor.lighting_schedule', 'times') or {} %}
+              On at sunset · off at {{ t.exterior_off | default('10:00 pm') }} · every night, vacation too
+            card_mod:
+              style: |
+                ha-card {
+                  background: none;
+                  border: none;
+                  box-shadow: none;
+                  --ha-card-border-width: 0;
+                }
+                ha-markdown {
+                  padding: 0 16px 14px !important;
+                  font-size: 12px;
+                  line-height: 1.5;
+                  color: var(--secondary-text-color);
+                  font-variant-numeric: tabular-nums;
+                }
   - path: weather
     title: Weather
     type: custom:grid-layout
