@@ -71,7 +71,7 @@ template:
           outdoor_below: 10000
           dusk_level: 45
           ramp: 300
-          evening: {school_night: "19:45", weekend: "20:00", level: 10}
+          evening: {school_night: "19:00", weekend: "19:00", level: 10}
           fade_step_ms: 100
         great_room:
           name: Great Room
@@ -82,7 +82,7 @@ template:
           outdoor_below: 10000
           dusk_level: 45
           ramp: 300
-          evening: {school_night: "19:45", weekend: "20:00", level: 15}
+          evening: {school_night: "19:00", weekend: "19:30", level: 15}
           fade_step_ms: 100
         mudroom:
           name: Mudroom
@@ -91,7 +91,7 @@ template:
           outdoor_below: 10000
           dusk_level: 45
           ramp: 300
-          evening: {school_night: "19:45", weekend: "20:00", level: 0}
+          evening: {school_night: "19:30", weekend: "19:30", level: 0}
           fade_step_ms: 100
         offices:
           name: Foyer & Offices
@@ -100,7 +100,7 @@ template:
           outdoor_below: 10000
           dusk_level: 45
           ramp: 300
-          evening: {school_night: "19:00", weekend: "19:30", level: 15}
+          evening: {school_night: "19:30", weekend: "19:30", level: 15}
           fade_step_ms: 100
         solarium:
           name: Solarium
