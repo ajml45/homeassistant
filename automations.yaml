@@ -19,7 +19,10 @@
   triggers:
   - trigger: sun
     event: sunset
-    offset: 0
+    offset:
+      hours: 0
+      minutes: 10
+      seconds: 0
   conditions: []
   actions:
   - target:
@@ -36,29 +39,36 @@
 - id: '1683820642231'
   alias: Blinds - Great Room Open
   description: Opens great room blinds 30 min after sunrise
-  trigger:
-  - platform: sun
-    event: sunrise
-  condition: []
-  action:
-  - service: scene.turn_on
-    target:
+  triggers:
+  - event: sunrise
+    trigger: sun
+    offset:
+      hours: 0
+      minutes: -30
+      seconds: 0
+  conditions: []
+  actions:
+  - target:
       entity_id: scene.open_blinds_great_room
     metadata: {}
+    action: scene.turn_on
   mode: single
 - id: '1683820819229'
   alias: Open Back Blinds Partial
   description: Opens back blinds slightly an hour before sunrise
-  trigger:
-  - platform: sun
-    event: sunrise
-    offset: '-1800'
-  condition: []
-  action:
-  - service: scene.turn_on
-    target:
+  triggers:
+  - event: sunrise
+    offset:
+      hours: -1
+      minutes: 0
+      seconds: 0
+    trigger: sun
+  conditions: []
+  actions:
+  - target:
       entity_id: scene.open_back_blinds_partial
     metadata: {}
+    action: scene.turn_on
   mode: single
 - id: '1684062099631'
   alias: Blinds - Bedroom Open
@@ -89,41 +99,6 @@
     metadata: {}
     action: scene.turn_on
     data: {}
-  mode: single
-- id: '1705439390606'
-  alias: Foyer Offices Light On Weekends
-  description: ''
-  trigger:
-  - platform: sun
-    event: sunset
-    offset: -02:00:00
-  condition:
-  - condition: time
-    weekday:
-    - sun
-    - sat
-  - condition: state
-    entity_id: light.offices
-    state: 'off'
-  action:
-  - service: light.turn_on
-    data:
-      brightness_pct: 1
-    target:
-      entity_id:
-      - light.offices
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 2
-      milliseconds: 0
-  - service: light.turn_on
-    metadata: {}
-    data:
-      brightness_pct: 45
-      transition: 300
-    target:
-      entity_id: light.offices
   mode: single
 - id: '1705508847254'
   alias: Christmas Lights Inside On
@@ -974,7 +949,6 @@
 - id: '00004'
   alias: NFC Emperor
   description: ''
-  mode: single
   triggers:
   - trigger: mqtt
     topic: lego/bracelet/scanned
@@ -985,7 +959,7 @@
     target:
       entity_id: input_text.lego_active_character
     data:
-      value: emperor
+      value: emperor_palpatine
   - action: mqtt.publish
     data:
       topic: lego/pi/play
@@ -1012,6 +986,7 @@
   - action: script.turn_on
     target:
       entity_id: script.lego_return_to_idle
+  mode: single
 - id: '00005'
   alias: NFC C3PO
   description: ''
