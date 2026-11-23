@@ -12,13 +12,13 @@ _HACS repository data not found._
 | Domain | Name | Version |
 |---|---|---|
 | adaptive_lighting | Adaptive Lighting | 1.32.0 |
-| alexa_media | Alexa Media Player | 5.21.0 |
+| alexa_media | Alexa Media Player | 5.22.0 |
 | automate | Automate Pulse Hub v2 | 1.0.1 |
 | eyeonwater | EyeOnWater | 2.7.12 |
 | frigate | Frigate | 5.15.7 |
 | govee | Govee | 2025.1.1 |
 | hubspace | hubspace | 8.3.0 |
-| icloud3 | iCloud3 | 3.7.7 |
+| icloud3 | iCloud3 | 3.8.0 |
 | illuminance | Illuminance | 5.8.1 |
 | lightener | Lightener | v2.4.0 |
 | mail_and_packages | Mail and Packages | 0.6.10 |
