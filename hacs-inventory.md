@@ -12,7 +12,7 @@ _HACS repository data not found._
 | Domain | Name | Version |
 |---|---|---|
 | adaptive_lighting | Adaptive Lighting | 1.32.0 |
-| alexa_media | Alexa Media Player | 5.22.0 |
+| alexa_media | Alexa Media Player | 5.22.1 |
 | automate | Automate Pulse Hub v2 | 1.0.1 |
 | eyeonwater | EyeOnWater | 2.7.12 |
 | frigate | Frigate | 5.15.7 |

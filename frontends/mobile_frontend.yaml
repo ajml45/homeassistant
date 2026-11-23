@@ -88,7 +88,7 @@ views:
                         height: 60px !important;
                         width: 60px;
                     }
-              - name: Bed Time
+              - name: Bedtime
                 type: button
                 entity: script.bedtime
                 show_name: false
@@ -3389,7 +3389,7 @@ views:
               - show_name: true
                 show_icon: true
                 type: button
-                name: Bed Time
+                name: Bedtime
                 icon: mdi:bed
                 tap_action:
                   action: perform-action
@@ -3404,13 +3404,13 @@ views:
               - show_name: true
                 show_icon: true
                 type: button
-                name: Master Bed
-                icon: mdi:bed-king
+                name: Stop fades
+                icon: mdi:stop-circle-outline
                 tap_action:
                   action: perform-action
                   perform_action: script.turn_on
                   target:
-                    entity_id: script.master_bedtime
+                    entity_id: script.lighting_stop_fades
                 card_mod:
                   style: |
                     ha-card {
@@ -3883,9 +3883,13 @@ views:
               {%- set s = 'sensor.lighting_schedule' %}
               {%- set t = state_attr(s, 'times') or {} %}
               {%- if t %}
-              **{{ t.lights_out }}** · everything still on switches off — every floor except the master bedroom and bath<br>
-              **{{ t.sweep }}** · the same again{{ ', plus ' ~ (t.sweep_extras | join(', ') | lower) if t.sweep_extras }}<br>
-              **Wind Down** · every light that's on fades off over {{ t.wind_down_minutes }} min<br>
+              {%- set rm = (state_attr(s, 'rooms') or {}).values() | list %}
+              {%- set glow = rm | rejectattr('night', 'in', ['off', 'left on']) | list %}
+              {%- set offs = rm | selectattr('night', 'eq', 'off') | map(attribute='name') | map('lower') | list %}
+              **{{ t.fade_start }}** · evening fade — rooms that are on ease to their night level over {{ t.evening_fade_minutes }} min<br>
+              **{{ t.bedtime }}** · Bedtime — kids, master bedroom, blinds · {% for r in glow %}{{ r.name | lower }} {{ r.night }}, {% endfor %}{{ offs | join(', ') }} off{{ ' · ran at ' ~ t.bedtime_ran ~ ' tonight' if t.bedtime_ran }}<br>
+              **{{ t.sweep }}** · final sweep — everything still on switches off, every floor except the master bedroom and bath{{ ', plus ' ~ (t.sweep_extras | join(', ') | lower) if t.sweep_extras }}<br>
+              **Wind Down** · the same fade over {{ t.wind_down_minutes }} min, then Bedtime · **Bedtime** · right now<br>
               Dusk-on starts watching at {{ t.dusk_from }} · outdoor now {{ '{:,}'.format(state_attr(s, 'outdoor') | int(0)) }} lx<br>
               Last: {{ state_attr(s, 'last') or 'nothing yet today' }}
               {%- else %}Waiting for the schedule…{% endif %}
