@@ -1,3 +1,6 @@
+# Live copy of the "Mobile" dashboard (/mobile-rooms),
+# exported nightly by git-backup.sh. Edit the dashboard in Home Assistant;
+# changes made here are overwritten.
 kiosk_mode:
   hide_header: true
 views:
@@ -124,9 +127,8 @@ views:
                 cards:
                   - type: custom:mushroom-legacy-template-card
                     primary: Great Room
-                    secondary: >-
-                      {{ states('sensor.kitchen_temperature') | round(0) }}°F |
-                      {{
+                    secondary: |-
+                      {{ states('sensor.kitchen_temperature') | round(0) }}°F | {{
                             states('sensor.kitchen_humidity') | round(0) }}%
                     icon: mdi:sofa
                     entity: light.great_room
@@ -178,9 +180,8 @@ views:
                         chip:
                           type: template
                           icon_color: disabled
-                          icon: >-
-                            {% if state_attr('media_player.great_room_sonos',
-                            'source') == 'TV'  %}
+                          icon: |-
+                            {% if state_attr('media_player.great_room_sonos', 'source') == 'TV'  %}
                               mdi:television-classic
                             {% else %}
                               mdi:music  
@@ -208,32 +209,26 @@ views:
                         chip:
                           type: template
                           entity: climate.kitchen
-                          icon: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               mdi:fire
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               mdi:leaf
                             {% else %}
                               none
                             {% endif %}
-                          icon_color: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon_color: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               blue 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               orange
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               green
                             {% else %}
                               none
@@ -277,9 +272,8 @@ views:
                 cards:
                   - type: custom:mushroom-legacy-template-card
                     primary: Kitchen
-                    secondary: >-
-                      {{ states('sensor.kitchen_temperature') | round(0) }}°F |
-                      {{
+                    secondary: |-
+                      {{ states('sensor.kitchen_temperature') | round(0) }}°F | {{
                             states('sensor.kitchen_humidity') | round(0) }}%
                     icon: mdi:food-fork-drink
                     entity: light.kitchen
@@ -368,32 +362,26 @@ views:
                         chip:
                           type: template
                           entity: climate.kitchen
-                          icon: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               mdi:fire
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               mdi:leaf
                             {% else %}
                               none
                             {% endif %}
-                          icon_color: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon_color: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               blue
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               orange
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               green
                             {% else %}
                               none
@@ -443,9 +431,8 @@ views:
                         cards:
                           - type: custom:mushroom-legacy-template-card
                             primary: Mudroom
-                            secondary: >-
-                              {{ states('sensor.kitchen_temperature') | round(0)
-                              }}°F | {{
+                            secondary: |-
+                              {{ states('sensor.kitchen_temperature') | round(0) }}°F | {{
                                     states('sensor.kitchen_humidity') | round(0) }}%
                             icon: mdi:washing-machine
                             entity: light.mudroom
@@ -456,9 +443,7 @@ views:
                               action: more-info
                             hold_action:
                               action: toggle
-                            icon_color: >-
-                              {{ '#A8813C' if is_state(entity, 'on') else
-                              'disabled' }}
+                            icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
                             fill_container: true
                             layout: horizontal
                             multiline_secondary: false
@@ -514,36 +499,26 @@ views:
                                 chip:
                                   type: template
                                   entity: climate.kitchen
-                                  icon: >-
-                                    {% if state_attr(entity, 'hvac_action') ==
-                                    'cooling' %}
+                                  icon: |-
+                                    {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                                       mdi:air-conditioner 
-                                    {% elif state_attr(entity, 'hvac_action') ==
-                                    'heating'  %}
+                                    {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                                       mdi:fire
-                                    {% elif state_attr(entity, 'fan_mode') ==
-                                    'on' %}
+                                    {% elif state_attr(entity, 'fan_mode') == 'on' %}
                                       mdi:fan
-                                    {% elif state_attr(entity, 'hvac_action') ==
-                                    'idle' and state_attr(entity, 'preset_mode')
-                                    == 'eco' %}
+                                    {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                                       mdi:leaf
                                     {% else %}
                                       none
                                     {% endif %}
-                                  icon_color: >-
-                                    {% if state_attr(entity, 'hvac_action') ==
-                                    'cooling' %}
+                                  icon_color: |-
+                                    {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                                       blue 
-                                    {% elif state_attr(entity, 'hvac_action') ==
-                                    'heating'  %}
+                                    {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                                       orange
-                                    {% elif state_attr(entity, 'fan_mode') ==
-                                    'on' %}
+                                    {% elif state_attr(entity, 'fan_mode') == 'on' %}
                                       light-blue
-                                    {% elif state_attr(entity, 'hvac_action') ==
-                                    'idle' and state_attr(entity, 'preset_mode')
-                                    == 'eco' %}
+                                    {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                                       green
                                     {% else %}
                                       none
@@ -587,9 +562,8 @@ views:
                 cards:
                   - type: custom:mushroom-legacy-template-card
                     primary: Front Foyer Offices
-                    secondary: >-
-                      {{ states('sensor.kitchen_temperature') | round(0) }}°F |
-                      {{
+                    secondary: |-
+                      {{ states('sensor.kitchen_temperature') | round(0) }}°F | {{
                             states('sensor.kitchen_humidity') | round(0) }}%
                     icon: mdi:chandelier
                     entity: light.offices
@@ -666,32 +640,26 @@ views:
                         chip:
                           type: template
                           entity: climate.kitchen
-                          icon: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               mdi:fire
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               mdi:leaf
                             {% else %}
                               none
                             {% endif %}
-                          icon_color: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon_color: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               blue 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               orange
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               green
                             {% else %}
                               none
@@ -741,9 +709,8 @@ views:
                 cards:
                   - type: custom:mushroom-legacy-template-card
                     primary: Master Suite
-                    secondary: >-
-                      {{ states('sensor.kitchen_temperature') | round(0) }}°F |
-                      {{
+                    secondary: |-
+                      {{ states('sensor.kitchen_temperature') | round(0) }}°F | {{
                             states('sensor.kitchen_humidity') | round(0) }}%
                     icon: mdi:bed
                     entity: light.master_bedroom_sconces
@@ -841,32 +808,26 @@ views:
                         chip:
                           type: template
                           entity: climate.kitchen
-                          icon: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               mdi:fire
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               mdi:leaf
                             {% else %}
                               none
                             {% endif %}
-                          icon_color: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon_color: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               blue
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               orange
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               green
                             {% else %}
                               none
@@ -910,9 +871,8 @@ views:
                 cards:
                   - type: custom:mushroom-legacy-template-card
                     primary: Upstairs
-                    secondary: >-
-                      {{ states('sensor.upstairs_temperature') | round(0) }}°F |
-                      {{
+                    secondary: |-
+                      {{ states('sensor.upstairs_temperature') | round(0) }}°F | {{
                             states('sensor.upstairs_humidity') | round(0) }}%
                     icon: mdi:stairs-up
                     entity: light.upstairs_lights
@@ -1026,32 +986,26 @@ views:
                         chip:
                           type: template
                           entity: climate.upstairs
-                          icon: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               mdi:fire
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               mdi:leaf
                             {% else %}
                               none
                             {% endif %}
-                          icon_color: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon_color: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               blue 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               orange
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               green
                             {% else %}
                               none
@@ -1097,9 +1051,7 @@ views:
                 cards:
                   - type: custom:mushroom-legacy-template-card
                     primary: Basement
-                    secondary: >-
-                      {{ states('sensor.hue_motion_sensor_3_temperature') |
-                      round(0) }}°F
+                    secondary: '{{ states(''sensor.hue_motion_sensor_3_temperature'') | round(0) }}°F'
                     icon: mdi:hammer-screwdriver
                     entity: light.basement
                     tap_action:
@@ -1190,32 +1142,26 @@ views:
                         chip:
                           type: template
                           entity: climate.solarium
-                          icon: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               mdi:fire
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               mdi:leaf
                             {% else %}
                               none
                             {% endif %}
-                          icon_color: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon_color: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               blue 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               orange
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               green
                             {% else %}
                               none
@@ -1259,9 +1205,8 @@ views:
                 cards:
                   - type: custom:mushroom-legacy-template-card
                     primary: Solarium
-                    secondary: >-
-                      {{ states('sensor.solarium_temperature') | round(0) }}°F |
-                      {{
+                    secondary: |-
+                      {{ states('sensor.solarium_temperature') | round(0) }}°F | {{
                             states('sensor.solarium_humidity') | round(0) }}%
                     icon: mdi:palm-tree
                     entity: light.solarium
@@ -1412,32 +1357,26 @@ views:
                         chip:
                           type: template
                           entity: climate.solarium
-                          icon: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               mdi:fire
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               mdi:leaf
                             {% else %}
                               none
                             {% endif %}
-                          icon_color: >-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling'
-                            %}
+                          icon_color: |-
+                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
                               blue 
-                            {% elif state_attr(entity, 'hvac_action') ==
-                            'heating'  %}
+                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
                               orange
                             {% elif state_attr(entity, 'fan_mode') == 'on' %}
                               light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle'
-                            and state_attr(entity, 'preset_mode') == 'eco' %}
+                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
                               green
                             {% else %}
                               none
@@ -1483,9 +1422,8 @@ views:
                 cards:
                   - type: custom:mushroom-legacy-template-card
                     primary: Exterior
-                    secondary: >-
-                      {{ states('sensor.openweathermap_temperature') | round(0)
-                      }}°F | {{
+                    secondary: |-
+                      {{ states('sensor.openweathermap_temperature') | round(0) }}°F | {{
                             states('sensor.openweathermap_humidity') | round(0) }}%
                     icon: mdi:pine-tree
                     entity: light.exterior
@@ -3357,10 +3295,9 @@ views:
           - type: custom:mushroom-legacy-template-card
             entity: sensor.lighting_schedule
             icon: mdi:lightbulb-auto-outline
-            primary: "Lighting · {{ states(entity) }}"
-            secondary: >-
-              {{ (state_attr(entity, 'last') or 'Nothing yet today') }}
-            icon_color: "{{ 'disabled' if states(entity) in ['Paused', 'Vacation'] else '#7E6029' }}"
+            primary: Lighting · {{ states(entity) }}
+            secondary: '{{ (state_attr(entity, ''last'') or ''Nothing yet today'') }}'
+            icon_color: '{{ ''disabled'' if states(entity) in [''Paused'', ''Vacation''] else ''#7E6029'' }}'
             tap_action:
               action: more-info
             card_mod:
@@ -3460,8 +3397,7 @@ views:
                 entity: light.kitchen
                 icon: mdi:food-fork-drink
                 primary: Kitchen
-                secondary: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('kitchen', {}) %}{{ r.get('stage', '') }}
+                secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''kitchen'', {}) %}{{ r.get(''stage'', '''') }}'
                 tap_action:
                   action: more-info
                 hold_action:
@@ -3481,14 +3417,7 @@ views:
                     {% endif %}
                     }
               - type: markdown
-                content: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('kitchen', {}) %}
-                  {%- if r %}
-                  {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
-                  Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
-                  Next: {{ r.next or '—' }}<br>
-                  {{ r.last or 'Nothing yet today' }}
-                  {%- else %}Waiting for the schedule…{% endif %}
+                content: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''kitchen'', {}) %} {%- if r %} {{ ''{:,}''.format(r.reading) if r.reading >= 0 else ''—'' }} lx{{ '' outside'' if r.source == ''outdoor'' }} · dark below {{ ''{:,}''.format(r.limit) }}<br> Dusk {{ r.dusk }}{{ '' · evening '' ~ r.evening if r.evening }}<br> Next: {{ r.next or ''—'' }}<br> {{ r.last or ''Nothing yet today'' }} {%- else %}Waiting for the schedule…{% endif %}'
                 card_mod:
                   style: |
                     ha-card {
@@ -3521,8 +3450,7 @@ views:
                 entity: light.great_room
                 icon: mdi:sofa
                 primary: Great Room
-                secondary: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('great_room', {}) %}{{ r.get('stage', '') }}
+                secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''great_room'', {}) %}{{ r.get(''stage'', '''') }}'
                 tap_action:
                   action: more-info
                 hold_action:
@@ -3542,14 +3470,7 @@ views:
                     {% endif %}
                     }
               - type: markdown
-                content: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('great_room', {}) %}
-                  {%- if r %}
-                  {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
-                  Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
-                  Next: {{ r.next or '—' }}<br>
-                  {{ r.last or 'Nothing yet today' }}
-                  {%- else %}Waiting for the schedule…{% endif %}
+                content: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''great_room'', {}) %} {%- if r %} {{ ''{:,}''.format(r.reading) if r.reading >= 0 else ''—'' }} lx{{ '' outside'' if r.source == ''outdoor'' }} · dark below {{ ''{:,}''.format(r.limit) }}<br> Dusk {{ r.dusk }}{{ '' · evening '' ~ r.evening if r.evening }}<br> Next: {{ r.next or ''—'' }}<br> {{ r.last or ''Nothing yet today'' }} {%- else %}Waiting for the schedule…{% endif %}'
                 card_mod:
                   style: |
                     ha-card {
@@ -3582,8 +3503,7 @@ views:
                 entity: light.solarium
                 icon: mdi:palm-tree
                 primary: Solarium
-                secondary: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('solarium', {}) %}{{ r.get('stage', '') }}
+                secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''solarium'', {}) %}{{ r.get(''stage'', '''') }}'
                 tap_action:
                   action: more-info
                 hold_action:
@@ -3603,14 +3523,7 @@ views:
                     {% endif %}
                     }
               - type: markdown
-                content: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('solarium', {}) %}
-                  {%- if r %}
-                  {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
-                  Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
-                  Next: {{ r.next or '—' }}<br>
-                  {{ r.last or 'Nothing yet today' }}
-                  {%- else %}Waiting for the schedule…{% endif %}
+                content: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''solarium'', {}) %} {%- if r %} {{ ''{:,}''.format(r.reading) if r.reading >= 0 else ''—'' }} lx{{ '' outside'' if r.source == ''outdoor'' }} · dark below {{ ''{:,}''.format(r.limit) }}<br> Dusk {{ r.dusk }}{{ '' · evening '' ~ r.evening if r.evening }}<br> Next: {{ r.next or ''—'' }}<br> {{ r.last or ''Nothing yet today'' }} {%- else %}Waiting for the schedule…{% endif %}'
                 card_mod:
                   style: |
                     ha-card {
@@ -3643,8 +3556,7 @@ views:
                 entity: light.mudroom
                 icon: mdi:washing-machine
                 primary: Mudroom
-                secondary: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('mudroom', {}) %}{{ r.get('stage', '') }}
+                secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''mudroom'', {}) %}{{ r.get(''stage'', '''') }}'
                 tap_action:
                   action: more-info
                 hold_action:
@@ -3664,14 +3576,7 @@ views:
                     {% endif %}
                     }
               - type: markdown
-                content: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('mudroom', {}) %}
-                  {%- if r %}
-                  {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
-                  Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
-                  Next: {{ r.next or '—' }}<br>
-                  {{ r.last or 'Nothing yet today' }}
-                  {%- else %}Waiting for the schedule…{% endif %}
+                content: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''mudroom'', {}) %} {%- if r %} {{ ''{:,}''.format(r.reading) if r.reading >= 0 else ''—'' }} lx{{ '' outside'' if r.source == ''outdoor'' }} · dark below {{ ''{:,}''.format(r.limit) }}<br> Dusk {{ r.dusk }}{{ '' · evening '' ~ r.evening if r.evening }}<br> Next: {{ r.next or ''—'' }}<br> {{ r.last or ''Nothing yet today'' }} {%- else %}Waiting for the schedule…{% endif %}'
                 card_mod:
                   style: |
                     ha-card {
@@ -3704,8 +3609,7 @@ views:
                 entity: light.offices
                 icon: mdi:chandelier
                 primary: Foyer & Offices
-                secondary: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('offices', {}) %}{{ r.get('stage', '') }}
+                secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''offices'', {}) %}{{ r.get(''stage'', '''') }}'
                 tap_action:
                   action: more-info
                 hold_action:
@@ -3725,14 +3629,7 @@ views:
                     {% endif %}
                     }
               - type: markdown
-                content: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('offices', {}) %}
-                  {%- if r %}
-                  {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
-                  Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
-                  Next: {{ r.next or '—' }}<br>
-                  {{ r.last or 'Nothing yet today' }}
-                  {%- else %}Waiting for the schedule…{% endif %}
+                content: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''offices'', {}) %} {%- if r %} {{ ''{:,}''.format(r.reading) if r.reading >= 0 else ''—'' }} lx{{ '' outside'' if r.source == ''outdoor'' }} · dark below {{ ''{:,}''.format(r.limit) }}<br> Dusk {{ r.dusk }}{{ '' · evening '' ~ r.evening if r.evening }}<br> Next: {{ r.next or ''—'' }}<br> {{ r.last or ''Nothing yet today'' }} {%- else %}Waiting for the schedule…{% endif %}'
                 card_mod:
                   style: |
                     ha-card {
@@ -3765,8 +3662,7 @@ views:
                 entity: light.basement
                 icon: mdi:hammer-screwdriver
                 primary: Basement
-                secondary: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('basement', {}) %}{{ r.get('stage', '') }}
+                secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''basement'', {}) %}{{ r.get(''stage'', '''') }}'
                 tap_action:
                   action: more-info
                 hold_action:
@@ -3786,14 +3682,7 @@ views:
                     {% endif %}
                     }
               - type: markdown
-                content: >-
-                  {%- set r = (state_attr('sensor.lighting_schedule', 'rooms') or {}).get('basement', {}) %}
-                  {%- if r %}
-                  {{ '{:,}'.format(r.reading) if r.reading >= 0 else '—' }} lx{{ ' outside' if r.source == 'outdoor' }} · dark below {{ '{:,}'.format(r.limit) }}<br>
-                  Dusk {{ r.dusk }}{{ ' · evening ' ~ r.evening if r.evening }}<br>
-                  Next: {{ r.next or '—' }}<br>
-                  {{ r.last or 'Nothing yet today' }}
-                  {%- else %}Waiting for the schedule…{% endif %}
+                content: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''basement'', {}) %} {%- if r %} {{ ''{:,}''.format(r.reading) if r.reading >= 0 else ''—'' }} lx{{ '' outside'' if r.source == ''outdoor'' }} · dark below {{ ''{:,}''.format(r.limit) }}<br> Dusk {{ r.dusk }}{{ '' · evening '' ~ r.evening if r.evening }}<br> Next: {{ r.next or ''—'' }}<br> {{ r.last or ''Nothing yet today'' }} {%- else %}Waiting for the schedule…{% endif %}'
                 card_mod:
                   style: |
                     ha-card {
@@ -3826,8 +3715,7 @@ views:
                 entity: light.exterior
                 icon: mdi:pine-tree
                 primary: Exterior
-                secondary: >-
-                  {{ 'On' if is_state(entity, 'on') else 'Off' }}
+                secondary: '{{ ''On'' if is_state(entity, ''on'') else ''Off'' }}'
                 tap_action:
                   action: more-info
                 hold_action:
@@ -3847,9 +3735,7 @@ views:
                     {% endif %}
                     }
               - type: markdown
-                content: >-
-                  {%- set t = state_attr('sensor.lighting_schedule', 'times') or {} %}
-                  On at sunset · off at {{ t.exterior_off | default('10:00 pm') }} · every night, vacation too
+                content: '{%- set t = state_attr(''sensor.lighting_schedule'', ''times'') or {} %} On at sunset · off at {{ t.exterior_off | default(''10:00 pm'') }} · every night, vacation too'
                 card_mod:
                   style: |
                     ha-card {
@@ -3879,20 +3765,7 @@ views:
                     height: 5px!important;
               }
           - type: markdown
-            content: >-
-              {%- set s = 'sensor.lighting_schedule' %}
-              {%- set t = state_attr(s, 'times') or {} %}
-              {%- if t %}
-              {%- set rm = (state_attr(s, 'rooms') or {}).values() | list %}
-              {%- set glow = rm | rejectattr('night', 'in', ['off', 'left on']) | list %}
-              {%- set offs = rm | selectattr('night', 'eq', 'off') | map(attribute='name') | map('lower') | list %}
-              **{{ t.fade_start }}** · evening fade — rooms that are on ease to their night level over {{ t.evening_fade_minutes }} min<br>
-              **{{ t.bedtime }}** · Bedtime — kids, master bedroom, blinds · {% for r in glow %}{{ r.name | lower }} {{ r.night }}, {% endfor %}{{ offs | join(', ') }} off{{ ' · ran at ' ~ t.bedtime_ran ~ ' tonight' if t.bedtime_ran }}<br>
-              **{{ t.sweep }}** · final sweep — everything still on switches off, every floor except the master bedroom and bath{{ ', plus ' ~ (t.sweep_extras | join(', ') | lower) if t.sweep_extras }}<br>
-              **Wind Down** · the same fade over {{ t.wind_down_minutes }} min, then Bedtime · **Bedtime** · right now<br>
-              Dusk-on starts watching at {{ t.dusk_from }} · outdoor now {{ '{:,}'.format(state_attr(s, 'outdoor') | int(0)) }} lx<br>
-              Last: {{ state_attr(s, 'last') or 'nothing yet today' }}
-              {%- else %}Waiting for the schedule…{% endif %}
+            content: '{%- set s = ''sensor.lighting_schedule'' %} {%- set t = state_attr(s, ''times'') or {} %} {%- if t %} {%- set rm = (state_attr(s, ''rooms'') or {}).values() | list %} {%- set glow = rm | rejectattr(''night'', ''in'', [''off'', ''left on'']) | list %} {%- set offs = rm | selectattr(''night'', ''eq'', ''off'') | map(attribute=''name'') | map(''lower'') | list %} **{{ t.fade_start }}** · evening fade — rooms that are on ease to their night level over {{ t.evening_fade_minutes }} min<br> **{{ t.bedtime }}** · Bedtime — kids, master bedroom, blinds · {% for r in glow %}{{ r.name | lower }} {{ r.night }}, {% endfor %}{{ offs | join('', '') }} off{{ '' · ran at '' ~ t.bedtime_ran ~ '' tonight'' if t.bedtime_ran }}<br> **{{ t.sweep }}** · final sweep — everything still on switches off, every floor except the master bedroom and bath{{ '', plus '' ~ (t.sweep_extras | join('', '') | lower) if t.sweep_extras }}<br> **Wind Down** · the same fade over {{ t.wind_down_minutes }} min, then Bedtime · **Bedtime** · right now<br> Dusk-on starts watching at {{ t.dusk_from }} · outdoor now {{ ''{:,}''.format(state_attr(s, ''outdoor'') | int(0)) }} lx<br> Last: {{ state_attr(s, ''last'') or ''nothing yet today'' }} {%- else %}Waiting for the schedule…{% endif %}'
             card_mod:
               style: |
                 ha-markdown {
@@ -4213,24 +4086,18 @@ views:
                           - type: template
                             icon: mdi:fire
                             icon_color: orange
-                            content: >
-                              {% set val =
-                              states('sensor.kitchen_heat_runtime_yesterday') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.kitchen_heat_runtime_yesterday') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:snowflake
                             icon_color: blue
-                            content: >
-                              {% set val =
-                              states('sensor.kitchen_ac_runtime_yesterday') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.kitchen_ac_runtime_yesterday') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:fan
                             icon_color: grey
-                            content: >
-                              {% set val =
-                              states('sensor.kitchen_fan_runtime_yesterday') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.kitchen_fan_runtime_yesterday') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                   - type: vertical-stack
                     cards:
                       - type: custom:mushroom-title-card
@@ -4241,24 +4108,18 @@ views:
                           - type: template
                             icon: mdi:fire
                             icon_color: orange
-                            content: >
-                              {% set val =
-                              states('sensor.kitchen_heat_runtime_today') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.kitchen_heat_runtime_today') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:snowflake
                             icon_color: blue
-                            content: >
-                              {% set val =
-                              states('sensor.kitchen_ac_runtime_today') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.kitchen_ac_runtime_today') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:fan
                             icon_color: grey
-                            content: >
-                              {% set val =
-                              states('sensor.kitchen_fan_runtime_today') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.kitchen_fan_runtime_today') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
           - type: custom:vertical-stack-in-card
             cards:
               - type: custom:mushroom-climate-card
@@ -4323,24 +4184,18 @@ views:
                           - type: template
                             icon: mdi:fire
                             icon_color: orange
-                            content: >
-                              {% set val =
-                              states('sensor.upstairs_heat_runtime_yesterday') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.upstairs_heat_runtime_yesterday') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:snowflake
                             icon_color: blue
-                            content: >
-                              {% set val =
-                              states('sensor.upstairs_ac_runtime_yesterday') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.upstairs_ac_runtime_yesterday') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:fan
                             icon_color: grey
-                            content: >
-                              {% set val =
-                              states('sensor.upstairs_fan_runtime_yesterday') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.upstairs_fan_runtime_yesterday') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                   - type: vertical-stack
                     cards:
                       - type: custom:mushroom-title-card
@@ -4351,24 +4206,18 @@ views:
                           - type: template
                             icon: mdi:fire
                             icon_color: orange
-                            content: >
-                              {% set val =
-                              states('sensor.upstairs_heat_runtime_today') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.upstairs_heat_runtime_today') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:snowflake
                             icon_color: blue
-                            content: >
-                              {% set val =
-                              states('sensor.upstairs_ac_runtime_today') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.upstairs_ac_runtime_today') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:fan
                             icon_color: grey
-                            content: >
-                              {% set val =
-                              states('sensor.upstairs_fan_runtime_today') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.upstairs_fan_runtime_today') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
           - type: custom:vertical-stack-in-card
             cards:
               - type: custom:mushroom-climate-card
@@ -4442,24 +4291,18 @@ views:
                           - type: template
                             icon: mdi:fire
                             icon_color: orange
-                            content: >
-                              {% set val =
-                              states('sensor.solarium_heat_runtime_yesterday') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.solarium_heat_runtime_yesterday') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:snowflake
                             icon_color: blue
-                            content: >
-                              {% set val =
-                              states('sensor.solarium_ac_runtime_yesterday') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.solarium_ac_runtime_yesterday') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:fan
                             icon_color: grey
-                            content: >
-                              {% set val =
-                              states('sensor.solarium_fan_runtime_yesterday') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.solarium_fan_runtime_yesterday') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                   - type: vertical-stack
                     cards:
                       - type: custom:mushroom-title-card
@@ -4479,24 +4322,18 @@ views:
                           - type: template
                             icon: mdi:fire
                             icon_color: orange
-                            content: >
-                              {% set val =
-                              states('sensor.solarium_heat_runtime_today') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.solarium_heat_runtime_today') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:snowflake
                             icon_color: blue
-                            content: >
-                              {% set val =
-                              states('sensor.solarium_ac_runtime_today') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.solarium_ac_runtime_today') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
                           - type: template
                             icon: mdi:fan
                             icon_color: grey
-                            content: >
-                              {% set val =
-                              states('sensor.solarium_fan_runtime_today') |
-                              float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
+                            content: |
+                              {% set val = states('sensor.solarium_fan_runtime_today') | float(0) %} {{ '{:.1f}'.format(val) ~ ' h' }}
     type: masonry
   - title: Diffusers
     path: diffusers
@@ -4596,15 +4433,14 @@ views:
                           - type: custom:bubble-card
                             card_type: separator
                             name: ''
-                            styles: >
+                            styles: |
                               ha-card { 
                                 color: var(--primary-text-color) !important;
                               } .separator-container div:last-child {
                                 background-color: var(--divider-color) !important;
                               } h4 { } ha-card div div div:nth-child(2) {
                                     height: 5px!important;
-                              } ${card.querySelector('.bubble-name').innerText =
-                              hass.formatEntityState(hass.states['sensor.great_room_diffuser_slot_1_fragrance'])}
+                              } ${card.querySelector('.bubble-name').innerText = hass.formatEntityState(hass.states['sensor.great_room_diffuser_slot_1_fragrance'])}
                             icon: mdi:weather-sunset-up
                           - type: custom:bubble-card
                             card_type: separator
@@ -4689,28 +4525,26 @@ views:
                           - type: custom:bubble-card
                             card_type: separator
                             name: ''
-                            styles: >
+                            styles: |
                               ha-card { 
                                 color: var(--primary-text-color) !important;
                               } .separator-container div:last-child {
                                 background-color: var(--divider-color) !important;
                               } h4 { } ha-card div div div:nth-child(2) {
                                     height: 5px!important;
-                              } ${card.querySelector('.bubble-name').innerText =
-                              hass.formatEntityState(hass.states['sensor.front_foyer_diffuser_slot_1_fragrance'])}
+                              } ${card.querySelector('.bubble-name').innerText = hass.formatEntityState(hass.states['sensor.front_foyer_diffuser_slot_1_fragrance'])}
                             icon: mdi:weather-sunset-up
                           - type: custom:bubble-card
                             card_type: separator
                             name: ''
-                            styles: >
+                            styles: |
                               ha-card { 
                                 color: var(--primary-text-color) !important;
                               } .separator-container div:last-child {
                                 background-color: var(--divider-color) !important;
                               } h4 { } ha-card div div div:nth-child(2) {
                                     height: 5px!important;
-                              } ${card.querySelector('.bubble-name').innerText =
-                              hass.formatEntityState(hass.states['sensor.front_foyer_diffuser_slot_2_fragrance'])}
+                              } ${card.querySelector('.bubble-name').innerText = hass.formatEntityState(hass.states['sensor.front_foyer_diffuser_slot_2_fragrance'])}
                             icon: mdi:sleep
                       - type: horizontal-stack
                         cards:
@@ -5627,26 +5461,16 @@ views:
                           {{states('sensor.speedtest_download')|round(1)}} Mbps
                         secondary: Download
                         icon: mdi:download
-                        icon_color: >-
-                          {% set value = states('sensor.speedtest_download') |
-                          int(default=0) %}
-
+                        icon_color: |-
+                          {% set value = states('sensor.speedtest_download') | int(default=0) %}
                           {% if value < 50 %} red 
-
                           {% elif value < 70 %} deep-orange 
-
                           {% elif value < 80 %} orange 
-
                           {% elif value < 90 %} yellow 
-
                           {% elif value < 100 %} lime 
-
                           {% elif value < 110 %} light-green 
-
                           {% elif value < 120 %} green 
-
                           {% else %} green 
-
                           {% endif %}
                         layout: vertical
                         card_mod:
@@ -5744,26 +5568,16 @@ views:
                           {{states('sensor.speedtest_upload')|round(1)}} Mbps
                         secondary: Upload
                         icon: mdi:upload
-                        icon_color: >-
-                          {% set value = states('sensor.speedtest_upload') |
-                          int(default=0) %}
-
+                        icon_color: |-
+                          {% set value = states('sensor.speedtest_upload') | int(default=0) %}
                           {% if value < 5 %} red 
-
                           {% elif value < 6 %} deep-orange 
-
                           {% elif value < 7 %} orange 
-
                           {% elif value < 10 %} yellow 
-
                           {% elif value < 15 %} lime 
-
                           {% elif value < 20 %} light-green 
-
                           {% elif value < 25 %} green 
-
                           {% else %} green 
-
                           {% endif %}
                         layout: vertical
                         card_mod:
