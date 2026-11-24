@@ -31,6 +31,7 @@ any are missing.
 | Lightener | fredck/lightener | v2.4.0 | v2.4.0 | — |
 | Mail and Packages | moralmunky/Home-Assistant-Mail-And-Packages | 0.6.10 | 0.6.10 | — |
 | Mail and Packages Custom Card | moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card | 0.06 | 0.06 | — |
+| Matic (Unofficial) | — | — | — | — |
 | Mealie Card | domodom30/mealie-card | v4.4.1 | v4.4.1 | — |
 | mini-graph-card | kalkih/mini-graph-card | v0.13.0 | v0.13.0 | — |
 | Mushroom | piitaya/lovelace-mushroom | v5.3.0 | v5.3.0 | — |
@@ -60,6 +61,7 @@ any are missing.
 | illuminance | Illuminance | 5.8.1 |
 | lightener | Lightener | v2.4.0 |
 | mail_and_packages | Mail and Packages | 0.6.10 |
+| matic_robot | Matic (Unofficial) | 0.5.5 |
 | nest_protect | Nest Protect | 0.5.0 |
 | nws_alerts | NWS Alerts | 6.7.3 |
 | pura | Pura | 1.15.1 |

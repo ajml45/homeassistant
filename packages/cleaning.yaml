@@ -1,0 +1,276 @@
+# =============================================================================
+# packages/cleaning.yaml — what the Cleaning page reads (2026-11-24)
+#
+#   Upkeep      a "last done" date per item, days until due, a Done script
+#   Laundry     washer / dryer running, and "wet clothes in the washer"
+#   Diffusers   a flag when the fragrance in use is running low
+#
+# Nothing here switches a device on or off. The Matic gets its own section
+# when it arrives (the unofficial integration brings its own sensors).
+#
+# After installing: set each upkeep date once in Settings → Devices & services
+# → Helpers ("HVAC filters last changed" etc.) to roughly when you last did it.
+# A new date helper starts at today, so until then everything counts from today.
+# =============================================================================
+
+input_datetime:
+  upkeep_hvac_filters:
+    name: HVAC filters last changed
+    has_date: true
+    has_time: false
+    icon: mdi:air-filter
+  upkeep_dryer_vent:
+    name: Dryer vent last cleaned
+    has_date: true
+    has_time: false
+    icon: mdi:tumble-dryer
+  upkeep_washer_tub_clean:
+    name: Washer tub clean last run
+    has_date: true
+    has_time: false
+    icon: mdi:washing-machine
+  upkeep_fridge_water_filter:
+    name: Fridge water filter last changed
+    has_date: true
+    has_time: false
+    icon: mdi:cup-water
+
+script:
+  upkeep_done:
+    alias: Upkeep done
+    description: Marks an upkeep item as done today. The Done buttons on the Cleaning page call this.
+    icon: mdi:check
+    mode: queued
+    fields:
+      item:
+        name: Item
+        required: true
+        example: dryer_vent
+        selector:
+          select:
+            options:
+              - label: HVAC filters
+                value: hvac_filters
+              - label: Dryer vent
+                value: dryer_vent
+              - label: Washer tub clean
+                value: washer_tub_clean
+              - label: Fridge water filter
+                value: fridge_water_filter
+    sequence:
+      - action: input_datetime.set_datetime
+        target:
+          entity_id: "input_datetime.upkeep_{{ item }}"
+        data:
+          date: "{{ now().date() }}"
+
+  laundry_moved:
+    alias: Laundry moved
+    description: Clears "wet clothes in the washer" when the load came out but didn't go in the dryer.
+    icon: mdi:hanger
+    mode: single
+    sequence:
+      - event: laundry_moved
+
+template:
+  # ---------------------------------------------------------------------------
+  # Upkeep — state is days until due: 6 = due in 6 days, 0 = due today,
+  # -5 = five days overdue. The interval is the `every` line in each one.
+  # ---------------------------------------------------------------------------
+  - sensor:
+      - name: Upkeep HVAC filters
+        unique_id: upkeep_hvac_filters
+        default_entity_id: sensor.upkeep_hvac_filters
+        icon: mdi:air-filter
+        availability: "{{ has_value('input_datetime.upkeep_hvac_filters') }}"
+        state: >
+          {% set every = 90 %}
+          {% set last = strptime(states('input_datetime.upkeep_hvac_filters'), '%Y-%m-%d', none) %}
+          {{ (last.date() + timedelta(days=every) - now().date()).days if last else none }}
+
+      - name: Upkeep dryer vent
+        unique_id: upkeep_dryer_vent
+        default_entity_id: sensor.upkeep_dryer_vent
+        icon: mdi:tumble-dryer
+        availability: "{{ has_value('input_datetime.upkeep_dryer_vent') }}"
+        state: >
+          {% set every = 365 %}
+          {% set last = strptime(states('input_datetime.upkeep_dryer_vent'), '%Y-%m-%d', none) %}
+          {{ (last.date() + timedelta(days=every) - now().date()).days if last else none }}
+
+      - name: Upkeep washer tub clean
+        unique_id: upkeep_washer_tub_clean
+        default_entity_id: sensor.upkeep_washer_tub_clean
+        icon: mdi:washing-machine
+        availability: "{{ has_value('input_datetime.upkeep_washer_tub_clean') }}"
+        state: >
+          {% set every = 30 %}
+          {% set last = strptime(states('input_datetime.upkeep_washer_tub_clean'), '%Y-%m-%d', none) %}
+          {{ (last.date() + timedelta(days=every) - now().date()).days if last else none }}
+
+      - name: Upkeep fridge water filter
+        unique_id: upkeep_fridge_water_filter
+        default_entity_id: sensor.upkeep_fridge_water_filter
+        icon: mdi:cup-water
+        availability: "{{ has_value('input_datetime.upkeep_fridge_water_filter') }}"
+        state: >
+          {% set every = 180 %}
+          {% set last = strptime(states('input_datetime.upkeep_fridge_water_filter'), '%Y-%m-%d', none) %}
+          {{ (last.date() + timedelta(days=every) - now().date()).days if last else none }}
+
+      # Diffusers — how full the fragrance in use is (the slot whose name matches
+      # the active fragrance). Unknown when neither slot matches, e.g. switched off.
+      - name: Great room diffuser fill
+        unique_id: great_room_diffuser_fill
+        default_entity_id: sensor.great_room_diffuser_fill
+        unit_of_measurement: "%"
+        icon: mdi:scent
+        state: >
+          {% set d = 'sensor.great_room_diffuser_' %}
+          {% set active = states(d ~ 'active_fragrance') %}
+          {% if active == states(d ~ 'slot_1_fragrance') %}{{ states(d ~ 'slot_1_fragrance_remaining') | float(0) | round(0) | int }}
+          {% elif active == states(d ~ 'slot_2_fragrance') %}{{ states(d ~ 'slot_2_fragrance_remaining') | float(0) | round(0) | int }}
+          {% else %}{{ none }}{% endif %}
+        attributes:
+          fragrance: "{{ states('sensor.great_room_diffuser_active_fragrance') }}"
+
+      - name: Front foyer diffuser fill
+        unique_id: front_foyer_diffuser_fill
+        default_entity_id: sensor.front_foyer_diffuser_fill
+        unit_of_measurement: "%"
+        icon: mdi:scent
+        state: >
+          {% set d = 'sensor.front_foyer_diffuser_' %}
+          {% set active = states(d ~ 'active_fragrance') %}
+          {% if active == states(d ~ 'slot_1_fragrance') %}{{ states(d ~ 'slot_1_fragrance_remaining') | float(0) | round(0) | int }}
+          {% elif active == states(d ~ 'slot_2_fragrance') %}{{ states(d ~ 'slot_2_fragrance_remaining') | float(0) | round(0) | int }}
+          {% else %}{{ none }}{% endif %}
+        attributes:
+          fragrance: "{{ states('sensor.front_foyer_diffuser_active_fragrance') }}"
+
+      # One line for small status cards elsewhere (Living Areas, mudroom pop-ups):
+      # state = what's running; `attention` = what needs you; `level` picks
+      # the icon colour (alert = brick, attention = ochre, running = brass).
+      - name: Cleaning summary
+        unique_id: cleaning_summary
+        default_entity_id: sensor.cleaning_summary
+        icon: mdi:broom
+        state: >
+          {%- set ns = namespace(p=[]) %}
+          {%- if is_state('binary_sensor.washer_running', 'on') %}{% set ns.p = ns.p + ['Washer ' ~ states('sensor.washer_time_display') ~ ' left'] %}{% endif %}
+          {%- if is_state('binary_sensor.dryer_running', 'on') %}{% set ns.p = ns.p + ['Dryer ' ~ states('sensor.dryer_time_display') ~ ' left'] %}{% endif %}
+          {%- for v in ['vacuum.matic', 'vacuum.dusty_jr', 'vacuum.jar_jar'] if is_state(v, 'cleaning') %}{% set ns.p = ns.p + [state_attr(v, 'friendly_name') ~ ' cleaning'] %}{% endfor %}
+          {{- ns.p | join(' · ') if ns.p else 'Nothing running' }}
+        attributes:
+          attention: >
+            {%- set ns = namespace(a=[]) %}
+            {%- for v in ['vacuum.matic', 'vacuum.jar_jar'] if is_state(v, 'error') %}{% set ns.a = ns.a + [state_attr(v, 'friendly_name') ~ ' needs help'] %}{% endfor %}
+            {%- if is_state('binary_sensor.wet_clothes_in_washer', 'on') %}{% set ns.a = ns.a + ['Wet clothes in the washer'] %}{% endif %}
+            {%- if is_state('binary_sensor.jar_jar_bin_full', 'on') %}{% set ns.a = ns.a + ['Jar Jar bin full'] %}{% endif %}
+            {%- if is_state('binary_sensor.diffuser_running_low', 'on') %}{% set ns.a = ns.a + [state_attr('binary_sensor.diffuser_running_low', 'rooms') ~ ' diffuser low'] %}{% endif %}
+            {%- if states('sensor.upkeep_overdue') | int(0) > 0 %}{% set ns.a = ns.a + [state_attr('sensor.upkeep_overdue', 'items') ~ ' due'] %}{% endif %}
+            {{- ns.a | join(' · ') }}
+          level: >
+            {%- if ['vacuum.matic', 'vacuum.jar_jar'] | select('is_state', 'error') | list | count > 0 %}alert
+            {%- elif is_state('binary_sensor.wet_clothes_in_washer', 'on') or is_state('binary_sensor.jar_jar_bin_full', 'on')
+                     or is_state('binary_sensor.diffuser_running_low', 'on') or states('sensor.upkeep_overdue') | int(0) > 0 %}attention
+            {%- elif is_state('binary_sensor.washer_running', 'on') or is_state('binary_sensor.dryer_running', 'on')
+                     or ['vacuum.matic', 'vacuum.dusty_jr', 'vacuum.jar_jar'] | select('is_state', 'cleaning') | list | count > 0 %}running
+            {%- else %}idle{% endif %}
+
+      # How many items are due today or overdue — drives the header chip.
+      - name: Upkeep overdue
+        unique_id: upkeep_overdue
+        default_entity_id: sensor.upkeep_overdue
+        icon: mdi:wrench-clock
+        state: >
+          {{ ['sensor.upkeep_hvac_filters', 'sensor.upkeep_dryer_vent',
+              'sensor.upkeep_washer_tub_clean', 'sensor.upkeep_fridge_water_filter']
+             | map('states') | map('int', 9999) | select('le', 0) | list | count }}
+        attributes:
+          items: >
+            {% set ns = namespace(names=[]) %}
+            {% for e in ['sensor.upkeep_hvac_filters', 'sensor.upkeep_dryer_vent',
+                         'sensor.upkeep_washer_tub_clean', 'sensor.upkeep_fridge_water_filter'] %}
+              {% if states(e) | int(9999) <= 0 %}
+                {% set ns.names = ns.names + [state_attr(e, 'friendly_name') | replace('Upkeep ', '')] %}
+              {% endif %}
+            {% endfor %}
+            {% set s = ns.names | join(', ') %}{{ s[:1] | upper }}{{ s[1:] }}
+
+  # ---------------------------------------------------------------------------
+  # Laundry — "running" means a cycle with time left, not just powered on.
+  # The two-minute delay rides out the gap between the timer reaching 0:00
+  # and the machine reporting it has finished.
+  # ---------------------------------------------------------------------------
+  - binary_sensor:
+      - name: Washer running
+        unique_id: washer_running
+        default_entity_id: binary_sensor.washer_running
+        icon: mdi:washing-machine
+        delay_off: "00:02:00"
+        state: >
+          {% set rs = states('sensor.washer_run_state') %}
+          {% set left = state_attr('sensor.washer', 'remain_time') | string %}
+          {{ rs not in ['-', 'Standby', 'unknown', 'unavailable', 'None', '']
+             and left not in ['0:00:00', '0:00', 'None', ''] }}
+
+      - name: Dryer running
+        unique_id: dryer_running
+        default_entity_id: binary_sensor.dryer_running
+        icon: mdi:tumble-dryer
+        delay_off: "00:02:00"
+        state: >
+          {% set rs = states('sensor.dryer_run_state') %}
+          {% set left = state_attr('sensor.dryer', 'remain_time') | string %}
+          {{ rs not in ['-', 'Standby', 'unknown', 'unavailable', 'None', '']
+             and left not in ['0:00:00', '0:00', 'None', ''] }}
+
+      # Diffusers — on when the fragrance a diffuser is using is at 20% or less.
+      - name: Diffuser running low
+        unique_id: diffuser_running_low
+        default_entity_id: binary_sensor.diffuser_running_low
+        icon: mdi:scent
+        state: >
+          {{ ['sensor.great_room_diffuser_fill', 'sensor.front_foyer_diffuser_fill']
+             | map('states') | select('is_number') | map('float') | select('le', 20) | list | count > 0 }}
+        attributes:
+          rooms: >
+            {% set ns = namespace(low=[]) %}
+            {% for e, name in [('sensor.great_room_diffuser_fill', 'Great room'),
+                               ('sensor.front_foyer_diffuser_fill', 'Front foyer')] %}
+              {% if is_number(states(e)) and states(e) | float <= 20 %}
+                {% set ns.low = ns.low + [name] %}
+              {% endif %}
+            {% endfor %}
+            {{ ns.low | join(', ') }}
+
+  # ---------------------------------------------------------------------------
+  # Wet clothes — on when a wash finishes; off when the dryer starts, another
+  # wash starts, or "Laundry moved" is pressed (clothes hung to dry).
+  # ---------------------------------------------------------------------------
+  - triggers:
+      - trigger: state
+        entity_id: binary_sensor.washer_running
+        from: "on"
+        to: "off"
+        id: done
+      - trigger: state
+        entity_id: binary_sensor.washer_running
+        to: "on"
+        id: clear
+      - trigger: state
+        entity_id: binary_sensor.dryer_running
+        to: "on"
+        id: clear
+      - trigger: event
+        event_type: laundry_moved
+        id: clear
+    binary_sensor:
+      - name: Wet clothes in washer
+        unique_id: wet_clothes_in_washer
+        default_entity_id: binary_sensor.wet_clothes_in_washer
+        icon: mdi:tshirt-crew-outline
+        state: "{{ trigger.id == 'done' }}"
+        attributes:
+          since: "{{ now().isoformat() if trigger.id == 'done' else none }}"
