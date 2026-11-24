@@ -274,7 +274,7 @@ views:
               - calendar.location
               - calendar.holidays_in_united_states
             firstDayOfWeek: 1
-            maxDaysToShow: 7
+            maxDaysToShow: 3
             refreshInterval: 60
             calShowDescription: true
             showLastCalendarWeek: false
@@ -298,7 +298,6 @@ views:
             noEventText: No activities today!
             showRelativeTime: false
             showMultiDay: false
-            cardHeight: 570px
             style: |
               ha-card {
                 border: 1px solid var(--divider-color);
@@ -755,9 +754,6 @@ views:
                 card_type: button
                 entity: script.find_phone_alert_andrew
                 icon: phu:apple-iphone
-              - type: custom:bubble-card
-                card_type: button
-                button_type: name
           - type: vertical-stack
             cards:
               - type: custom:bubble-card
@@ -775,9 +771,6 @@ views:
                 card_type: button
                 entity: script.find_iphone_alert_christina
                 icon: phu:apple-iphone
-              - type: custom:bubble-card
-                card_type: button
-                button_type: name
   - title: Music
     path: music
     icon: mdi:music-note-outline
@@ -976,13 +969,11 @@ views:
       mediaquery:
         '(max-width: 1200px)':
           grid-template-columns: 100%
-          grid-template-rows: auto auto auto auto auto auto
+          grid-template-rows: auto auto auto auto
           grid-template-areas: |
-            "scenes"
+            "rooms"
             "things"
             "blinds"
-            "rooms"
-            "climate"
             "cleaning"
     badges: []
     cards:
@@ -1023,7 +1014,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -1054,7 +1045,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.great_room_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -1080,7 +1071,7 @@ views:
                             state: cleaning
                         chip:
                           type: template
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           icon: mdi:robot-vacuum
                       - type: conditional
                         conditions:
@@ -1088,7 +1079,7 @@ views:
                             state: cleaning
                         chip:
                           type: template
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           icon: mdi:robot-vacuum
                       - type: conditional
                         conditions:
@@ -1172,7 +1163,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -1203,7 +1194,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.kitchen_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -1324,7 +1315,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -1355,7 +1346,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.master_suite_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -1556,7 +1547,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -1587,7 +1578,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.mudroom_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -1601,7 +1592,7 @@ views:
                         chip:
                           type: template
                           icon: mdi:washing-machine
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           content: '{{ states(''sensor.washer_time_display'') }}'
                           tap_action:
                             action: navigate
@@ -1613,7 +1604,7 @@ views:
                         chip:
                           type: template
                           icon: mdi:tumble-dryer
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           content: '{{ states(''sensor.dryer_time_display'') }}'
                           tap_action:
                             action: navigate
@@ -1698,7 +1689,7 @@ views:
               - type: custom:stack-in-card
                 cards:
                   - type: custom:mushroom-legacy-template-card
-                    primary: Front Foyer Offices
+                    primary: Foyer & Offices
                     secondary: |-
                       {{ states('sensor.kitchen_temperature') | round(0) }}°F | {{
                             states('sensor.kitchen_humidity') | round(0) }}%
@@ -1711,7 +1702,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -1742,7 +1733,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.foyer_offices_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -1859,7 +1850,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -1890,7 +1881,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.upstairs_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -2107,7 +2098,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -2138,7 +2129,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.exterior_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -2179,7 +2170,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -2210,7 +2201,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.basement_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -2339,7 +2330,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -2370,7 +2361,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.solarium_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -2633,7 +2624,7 @@ views:
             icon: mdi:broom
             primary: '{{ states(entity) }}'
             secondary: '{{ state_attr(entity, ''attention'') or ''Open the Cleaning page'' }}'
-            icon_color: '{{ {''alert'': ''red'', ''attention'': ''amber'', ''running'': ''#A8813C''}.get(state_attr(entity, ''level''), ''disabled'') }}'
+            icon_color: '{{ {''alert'': ''red'', ''attention'': ''amber'', ''running'': ''accent''}.get(state_attr(entity, ''level''), ''disabled'') }}'
             multiline_secondary: true
             tap_action:
               action: navigate
@@ -2996,7 +2987,7 @@ views:
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#kitchen'
-        name: Kitchen Lights
+        name: Kitchen
         icon: mdi:silverware-fork-knife
         state: light.kitchen
         state_unit: '%'
@@ -3116,7 +3107,7 @@ views:
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#master'
-        name: Master Suite Lights
+        name: Master Suite
         icon: mdi:bed
         state: light.master_bedroom_sconces
         state_unit: '%'
@@ -3230,7 +3221,7 @@ views:
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#foyer'
-        name: Foyer/Offices
+        name: Foyer & Offices
         icon: mdi:chandelier
         state: light.offices
         state_unit: '%'
@@ -3416,8 +3407,6 @@ views:
                       - entity: switch.charlotte_night_light
                         name: Night Light
                     state_color: true
-                  - type: media-control
-                    entity: media_player.andrew_s_2nd_fire
                   - type: custom:bubble-card
                     card_type: separator
                     name: Henry's Room
@@ -3482,7 +3471,7 @@ views:
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#exterior'
-        name: The Grounds
+        name: Exterior
         icon: phu:outside
         state: light.exterior
         state_unit: °F
@@ -3702,7 +3691,7 @@ views:
         hash: '#mudroom'
         state: light.mudroom
         state_unit: '%'
-        name: Laundry Room Lights
+        name: Mudroom
         icon: phu:rooms-laundry-room
         is_sidebar_hidden: false
         margin_top_mobile: 0px
@@ -3719,7 +3708,7 @@ views:
             cards:
               - type: custom:bubble-card
                 card_type: separator
-                name: Laundry Room Lights
+                name: Mudroom Lights
                 styles: |
                   h4 {
                   }
@@ -3767,7 +3756,7 @@ views:
                     icon: mdi:broom
                     primary: '{{ states(entity) }}'
                     secondary: '{{ state_attr(entity, ''attention'') or ''Open the Cleaning page'' }}'
-                    icon_color: '{{ {''alert'': ''red'', ''attention'': ''amber'', ''running'': ''#A8813C''}.get(state_attr(entity, ''level''), ''disabled'') }}'
+                    icon_color: '{{ {''alert'': ''red'', ''attention'': ''amber'', ''running'': ''accent''}.get(state_attr(entity, ''level''), ''disabled'') }}'
                     multiline_secondary: true
                     tap_action:
                       action: navigate
@@ -4004,7 +3993,7 @@ views:
                 icon: mdi:lightbulb-auto-outline
                 primary: '{{ states(entity) }}'
                 secondary: '{{ (state_attr(entity, ''last'') or ''Nothing yet today'') }}'
-                icon_color: '{{ ''disabled'' if states(entity) in [''Paused'', ''Vacation''] else ''#A8813C'' }}'
+                icon_color: '{{ ''disabled'' if states(entity) in [''Paused'', ''Vacation''] else ''accent'' }}'
                 tap_action:
                   action: more-info
                 card_mod:
@@ -4073,7 +4062,7 @@ views:
             icon: mdi:food-fork-drink
             primary: Kitchen
             secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''kitchen'', {}) %}{{ r.get(''stage'', '''') }}'
-            icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+            icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
             tap_action:
               action: more-info
             hold_action:
@@ -4117,7 +4106,7 @@ views:
             icon: mdi:sofa
             primary: Great Room
             secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''great_room'', {}) %}{{ r.get(''stage'', '''') }}'
-            icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+            icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
             tap_action:
               action: more-info
             hold_action:
@@ -4161,7 +4150,7 @@ views:
             icon: mdi:palm-tree
             primary: Solarium
             secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''solarium'', {}) %}{{ r.get(''stage'', '''') }}'
-            icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+            icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
             tap_action:
               action: more-info
             hold_action:
@@ -4205,7 +4194,7 @@ views:
             icon: mdi:washing-machine
             primary: Mudroom
             secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''mudroom'', {}) %}{{ r.get(''stage'', '''') }}'
-            icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+            icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
             tap_action:
               action: more-info
             hold_action:
@@ -4249,7 +4238,7 @@ views:
             icon: mdi:chandelier
             primary: Foyer & Offices
             secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''offices'', {}) %}{{ r.get(''stage'', '''') }}'
-            icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+            icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
             tap_action:
               action: more-info
             hold_action:
@@ -4293,7 +4282,7 @@ views:
             icon: mdi:hammer-screwdriver
             primary: Basement
             secondary: '{%- set r = (state_attr(''sensor.lighting_schedule'', ''rooms'') or {}).get(''basement'', {}) %}{{ r.get(''stage'', '''') }}'
-            icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+            icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
             tap_action:
               action: more-info
             hold_action:
@@ -4353,7 +4342,7 @@ views:
             icon: mdi:pine-tree
             primary: Exterior
             secondary: '{{ ''On'' if is_state(entity, ''on'') else ''Off'' }}'
-            icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+            icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
             tap_action:
               action: more-info
             hold_action:
@@ -4457,7 +4446,7 @@ views:
                 chip:
                   type: template
                   icon: mdi:robot-vacuum
-                  icon_color: '#A8813C'
+                  icon_color: accent
                   content: Matic{{ ' · ' ~ states('sensor.matic_current_area') if has_value('sensor.matic_current_area') }}
                   tap_action:
                     action: more-info
@@ -4470,7 +4459,7 @@ views:
                 chip:
                   type: template
                   icon: mdi:robot-vacuum
-                  icon_color: '#A8813C'
+                  icon_color: accent
                   content: Dusty Jr cleaning
                   tap_action:
                     action: more-info
@@ -4483,7 +4472,7 @@ views:
                 chip:
                   type: template
                   icon: mdi:robot-vacuum-variant
-                  icon_color: '#A8813C'
+                  icon_color: accent
                   content: Jar Jar cleaning upstairs
                   tap_action:
                     action: more-info
@@ -4496,7 +4485,7 @@ views:
                 chip:
                   type: template
                   icon: mdi:washing-machine
-                  icon_color: '#A8813C'
+                  icon_color: accent
                   content: Washer · {{ states('sensor.washer_time_display') }} left
                   tap_action:
                     action: none
@@ -4508,7 +4497,7 @@ views:
                 chip:
                   type: template
                   icon: mdi:tumble-dryer
-                  icon_color: '#A8813C'
+                  icon_color: accent
                   content: Dryer · {{ states('sensor.dryer_time_display') }} left
                   tap_action:
                     action: none
@@ -4624,7 +4613,7 @@ views:
                         text-align: center;
                         border: 1px dashed var(--divider-color);
                         border-radius: 12px;
-                        font-size: 13px;
+                        font-size: 14px;
                         line-height: 1.6;
                         color: var(--secondary-text-color);
                       }
@@ -4647,7 +4636,7 @@ views:
                   icon: mdi:robot-vacuum
                   primary: Matic
                   secondary: '{{ states(''sensor.matic_activity'') }}{{ '' · '' ~ states(''sensor.matic_current_area'') if has_value(''sensor.matic_current_area'') }} · {{ states(''sensor.matic_battery'') | int(0) }}%'
-                  icon_color: '{{ ''red'' if is_state(entity, ''error'') else ''#A8813C'' if is_state(entity, ''cleaning'') else ''disabled'' }}'
+                  icon_color: '{{ ''red'' if is_state(entity, ''error'') else ''accent'' if is_state(entity, ''cleaning'') else ''disabled'' }}'
                   tap_action:
                     action: more-info
                   card_mod:
@@ -4752,7 +4741,7 @@ views:
                 secondary: '{%- if is_state(''binary_sensor.wet_clothes_in_washer'', ''on'') %}Wet clothes in the washer · tap when it''s empty {%- elif is_state(''binary_sensor.washer_running'', ''on'') %}Washer · {{ state_attr(''sensor.washer'', ''current_course'') }} · {{ state_attr(''sensor.washer'', ''water_temp'') }} · {{ state_attr(''sensor.washer'', ''spin_speed'') }} {%- elif is_state(''binary_sensor.dryer_running'', ''on'') %}Dryer · {{ state_attr(''sensor.dryer'', ''current_course'') }} · {{ state_attr(''sensor.dryer'', ''dry_level'') }} {%- else %}Washer and dryer are off{% endif %}'
                 icon_color: |-
                   {{ 'amber' if is_state('binary_sensor.wet_clothes_in_washer', 'on')
-                     else '#A8813C' if is_state('binary_sensor.washer_running', 'on') or is_state('binary_sensor.dryer_running', 'on')
+                     else 'accent' if is_state('binary_sensor.washer_running', 'on') or is_state('binary_sensor.dryer_running', 'on')
                      else 'disabled' }}
                 tap_action:
                   action: perform-action
@@ -4906,7 +4895,7 @@ views:
                 icon_color: |-
                   {{ 'red' if is_state(entity, 'error')
                      else 'amber' if is_state('binary_sensor.jar_jar_bin_full', 'on')
-                     else '#A8813C' if is_state(entity, 'cleaning')
+                     else 'accent' if is_state(entity, 'cleaning')
                      else 'disabled' }}
                 tap_action:
                   action: more-info
@@ -4931,7 +4920,7 @@ views:
                 icon: mdi:robot-mower-outline
                 primary: Mopey
                 secondary: Basement · {{ states(entity) | replace('_', ' ') if states(entity) not in ['unknown', 'unavailable'] else 'not connected yet' }}
-                icon_color: '{{ ''#A8813C'' if is_state(entity, ''cleaning'') else ''disabled'' }}'
+                icon_color: '{{ ''accent'' if is_state(entity, ''cleaning'') else ''disabled'' }}'
                 tap_action:
                   action: more-info
                 card_mod:
@@ -5387,7 +5376,7 @@ views:
           start: hour
         now:
           show: true
-          color: '#d8b14a'
+          color: var(--secondary-text-color)
         header:
           show: true
           title: Next 48 hours
@@ -5409,7 +5398,7 @@ views:
           legend:
             show: false
           grid:
-            borderColor: rgba(255,255,255,0.07)
+            borderColor: rgba(138,141,130,0.35)
             strokeDashArray: 3
           plotOptions:
             bar:
@@ -5431,8 +5420,8 @@ views:
             name: Night
             type: area
             yaxis_id: pop
-            color: '#ffffff'
-            opacity: 0.05
+            color: var(--primary-text-color)
+            opacity: 0.06
             stroke_width: 0
             curve: stepline
             extend_to: false
@@ -5451,7 +5440,7 @@ views:
             name: Rain chance
             type: column
             yaxis_id: pop
-            color: '#5b9bd5'
+            color: var(--light-blue-color)
             opacity: 0.6
             unit: '%'
             extend_to: false
@@ -5462,7 +5451,7 @@ views:
             name: Temperature
             type: line
             yaxis_id: temp
-            color: '#d8b14a'
+            color: var(--deep-orange-color)
             stroke_width: 3
             curve: smooth
             unit: °
@@ -5514,7 +5503,7 @@ views:
               offset: -6h
             now:
               show: true
-              color: '#d8b14a'
+              color: var(--secondary-text-color)
             header:
               show: false
             yaxis:
@@ -5527,7 +5516,7 @@ views:
               legend:
                 show: false
               grid:
-                borderColor: rgba(255,255,255,0.07)
+                borderColor: rgba(138,141,130,0.35)
                 strokeDashArray: 3
               xaxis:
                 labels:
@@ -5541,7 +5530,7 @@ views:
               - entity: sensor.tide
                 name: Tide
                 type: area
-                color: '#5b9bd5'
+                color: var(--light-blue-color)
                 opacity: 0.25
                 stroke_width: 2.5
                 unit: ' ft'
@@ -5575,15 +5564,13 @@ views:
       grid-template-columns: 34% 34% 32%
       grid-template-rows: auto
       grid-template-areas: |
-        "tonight tomorrow list"
-        "tonight week     list"
+        "tonight week list"
       mediaquery:
         '(max-width: 1200px)':
           grid-template-columns: 100%
-          grid-template-rows: auto auto auto auto
+          grid-template-rows: auto auto auto
           grid-template-areas: |
             "tonight"
-            "tomorrow"
             "week"
             "list"
     cards:
@@ -5758,7 +5745,7 @@ views:
               navigation_path: '#recipes'
             rows: '2'
         view_layout:
-          grid-area: tomorrow
+          grid-area: week
       - type: vertical-stack
         cards:
           - type: custom:bubble-card
@@ -5878,6 +5865,8 @@ views:
                   max-height: 240px;
                   overflow-y: auto;
                 }
+        view_layout:
+          grid-area: list
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#recipes'
@@ -6422,11 +6411,11 @@ views:
             series:
               - entity: sensor.speedtest_download
                 name: Download
-                color: '#1F3A5C'
+                color: var(--blue-color)
                 stroke_width: 2
               - entity: sensor.speedtest_upload
                 name: Upload
-                color: '#A8813C'
+                color: var(--deep-orange-color)
                 stroke_width: 2
           - type: custom:apexcharts-card
             graph_span: 5d
@@ -6439,7 +6428,7 @@ views:
             series:
               - entity: sensor.speedtest_download
                 name: Download
-                color: '#1F3A5C'
+                color: var(--blue-color)
                 type: area
                 opacity: 0.15
                 stroke_width: 2
@@ -6448,7 +6437,7 @@ views:
                   duration: 6h
               - entity: sensor.speedtest_upload
                 name: Upload
-                color: '#A8813C'
+                color: var(--deep-orange-color)
                 type: area
                 opacity: 0.15
                 stroke_width: 2
@@ -6464,7 +6453,7 @@ views:
             series:
               - entity: sensor.speedtest_ping
                 name: Ping
-                color: '#5A646B'
+                color: var(--secondary-text-color)
                 stroke_width: 2
   - title: Save
     path: save

@@ -139,7 +139,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -166,7 +166,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.great_room_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -192,7 +192,7 @@ views:
                             state: cleaning
                         chip:
                           type: template
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           icon: mdi:robot-vacuum
                       - type: conditional
                         conditions:
@@ -200,7 +200,7 @@ views:
                             state: cleaning
                         chip:
                           type: template
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           icon: mdi:robot-vacuum
                       - type: conditional
                         conditions:
@@ -266,7 +266,7 @@ views:
                       border: 1px solid var(--divider-color);
                       --ha-card-border-width: 0;
                       --mush-card-primary-font-size: 12px;
-                      --mush-card-secondary-font-size: 9px;
+                      --mush-card-secondary-font-size: 12px;
                     }
               - type: custom:stack-in-card
                 cards:
@@ -284,7 +284,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -317,8 +317,8 @@ views:
                                 --text-color: var(--ha-card-background);
                                 --icon-primary-color: var(--ha-card-background);
                               {% else %}
-                                --text-color: #A8813C;
-                                --icon-primary-color: #A8813C;
+                                --text-color: var(--accent-color);
+                                --icon-primary-color: var(--accent-color);
                               {% endif %}
                               position: absolute;
                               left: 0px;
@@ -419,7 +419,7 @@ views:
                       border: 1px solid var(--divider-color);
                       --ha-card-border-width: 0;
                       --mush-card-primary-font-size: 12px;
-                      --mush-card-secondary-font-size: 9px;
+                      --mush-card-secondary-font-size: 12px;
                     }
           - type: horizontal-stack
             cards:
@@ -443,7 +443,7 @@ views:
                               action: more-info
                             hold_action:
                               action: toggle
-                            icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                            icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                             fill_container: true
                             layout: horizontal
                             multiline_secondary: false
@@ -472,8 +472,8 @@ views:
                                         --text-color: var(--ha-card-background);
                                         --icon-primary-color: var(--ha-card-background);
                                       {% else %}
-                                        --text-color: #A8813C;
-                                        --icon-primary-color: #A8813C;
+                                        --text-color: var(--accent-color);
+                                        --icon-primary-color: var(--accent-color);
                                       {% endif %}
                                       position: absolute;
                                       left: 0px;
@@ -485,7 +485,7 @@ views:
                                 chip:
                                   type: template
                                   icon: mdi:washing-machine
-                                  icon_color: '#A8813C'
+                                  icon_color: accent
                                   content: '{{ states(''sensor.washer_time_display'') }}'
                                   tap_action:
                                     action: navigate
@@ -497,7 +497,7 @@ views:
                                 chip:
                                   type: template
                                   icon: mdi:tumble-dryer
-                                  icon_color: '#A8813C'
+                                  icon_color: accent
                                   content: '{{ states(''sensor.dryer_time_display'') }}'
                                   tap_action:
                                     action: navigate
@@ -577,12 +577,12 @@ views:
                               border: 1px solid var(--divider-color);
                               --ha-card-border-width: 0;
                               --mush-card-primary-font-size: 12px;
-                              --mush-card-secondary-font-size: 9px;
+                              --mush-card-secondary-font-size: 12px;
                             }
               - type: custom:stack-in-card
                 cards:
                   - type: custom:mushroom-legacy-template-card
-                    primary: Front Foyer Offices
+                    primary: Foyer & Offices
                     secondary: |-
                       {{ states('sensor.kitchen_temperature') | round(0) }}°F | {{
                             states('sensor.kitchen_humidity') | round(0) }}%
@@ -595,7 +595,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -624,8 +624,8 @@ views:
                                 --text-color: var(--ha-card-background);
                                 --icon-primary-color: var(--ha-card-background);
                               {% else %}
-                                --text-color: #A8813C;
-                                --icon-primary-color: #A8813C;
+                                --text-color: var(--accent-color);
+                                --icon-primary-color: var(--accent-color);
                               {% endif %}
                               position: absolute;
                               left: 0px;
@@ -718,7 +718,7 @@ views:
                       border: 1px solid var(--divider-color);
                       --ha-card-border-width: 0;
                       --mush-card-primary-font-size: 12px;
-                      --mush-card-secondary-font-size: 9px;
+                      --mush-card-secondary-font-size: 12px;
                     }
                     mushroom-state-info$: |
                       span.primary {
@@ -742,7 +742,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -769,7 +769,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.master_suite_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -886,7 +886,7 @@ views:
                       border: 1px solid var(--divider-color);
                       --ha-card-border-width: 0;
                       --mush-card-primary-font-size: 12px;
-                      --mush-card-secondary-font-size: 9px;
+                      --mush-card-secondary-font-size: 12px;
                     }
               - type: custom:stack-in-card
                 cards:
@@ -904,7 +904,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -931,7 +931,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.upstairs_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -1064,7 +1064,7 @@ views:
                       border: 1px solid var(--divider-color);
                       --ha-card-border-width: 0;
                       --mush-card-primary-font-size: 12px;
-                      --mush-card-secondary-font-size: 9px;
+                      --mush-card-secondary-font-size: 12px;
                     }
           - type: horizontal-stack
             cards:
@@ -1082,7 +1082,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -1109,7 +1109,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.basement_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -1220,7 +1220,7 @@ views:
                       border: 1px solid var(--divider-color);
                       --ha-card-border-width: 0;
                       --mush-card-primary-font-size: 12px;
-                      --mush-card-secondary-font-size: 9px;
+                      --mush-card-secondary-font-size: 12px;
                     }
               - type: custom:stack-in-card
                 cards:
@@ -1238,7 +1238,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -1270,7 +1270,7 @@ views:
                           tap_action:
                             action: more-info
                           entity: sensor.solarium_lights_on
-                          icon_color: '#A8813C'
+                          icon_color: accent
                           card_mod:
                             style: |
                               ha-card {
@@ -1435,7 +1435,7 @@ views:
                       border: 1px solid var(--divider-color);
                       --ha-card-border-width: 0;
                       --mush-card-primary-font-size: 12px;
-                      --mush-card-secondary-font-size: 9px;
+                      --mush-card-secondary-font-size: 12px;
                     }
           - type: horizontal-stack
             cards:
@@ -1455,7 +1455,7 @@ views:
                       action: more-info
                     hold_action:
                       action: toggle
-                    icon_color: '{{ ''#A8813C'' if is_state(entity, ''on'') else ''disabled'' }}'
+                    icon_color: '{{ ''accent'' if is_state(entity, ''on'') else ''disabled'' }}'
                     fill_container: true
                     layout: horizontal
                     multiline_secondary: false
@@ -1484,8 +1484,8 @@ views:
                                 --text-color: var(--ha-card-background);
                                 --icon-primary-color: var(--ha-card-background);
                               {% else %}
-                                --text-color: #A8813C;
-                                --icon-primary-color: #A8813C;
+                                --text-color: var(--accent-color);
+                                --icon-primary-color: var(--accent-color);
                               {% endif %}
                               position: absolute;
                               left: 0px;
@@ -1508,7 +1508,7 @@ views:
                       border: 1px solid var(--divider-color);
                       --ha-card-border-width: 0;
                       --mush-card-primary-font-size: 12px;
-                      --mush-card-secondary-font-size: 9px;
+                      --mush-card-secondary-font-size: 12px;
                     }
               - type: horizontal-stack
                 cards:
@@ -1687,7 +1687,7 @@ views:
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#great_room'
-        name: Great Room Lights
+        name: Great Room
         icon: mdi:sofa
         state: light.great_room
         state_unit: '%'
@@ -1842,7 +1842,7 @@ views:
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#kitchen'
-        name: Kitchen Lights
+        name: Kitchen
         icon: mdi:silverware-fork-knife
         state: light.kitchen
         state_unit: '%'
@@ -1955,7 +1955,7 @@ views:
         hash: '#mudroom'
         state: light.mudroom
         state_unit: '%'
-        name: Laundry Room Lights
+        name: Mudroom
         icon: phu:rooms-laundry-room
         is_sidebar_hidden: false
         margin_top_mobile: -56px
@@ -1973,7 +1973,7 @@ views:
             cards:
               - type: custom:bubble-card
                 card_type: separator
-                name: Laundry Room Lights
+                name: Mudroom Lights
                 styles: |
                   h4 {
                   }
@@ -2014,7 +2014,7 @@ views:
                 icon: mdi:broom
                 primary: '{{ states(entity) }}'
                 secondary: '{{ state_attr(entity, ''attention'') or ''Open the Cleaning page'' }}'
-                icon_color: '{{ {''alert'': ''red'', ''attention'': ''amber'', ''running'': ''#A8813C''}.get(state_attr(entity, ''level''), ''disabled'') }}'
+                icon_color: '{{ {''alert'': ''red'', ''attention'': ''amber'', ''running'': ''accent''}.get(state_attr(entity, ''level''), ''disabled'') }}'
                 multiline_secondary: true
                 tap_action:
                   action: navigate
@@ -2049,7 +2049,7 @@ views:
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#foyer'
-        name: Front Foyer/Offices
+        name: Foyer & Offices
         icon: mdi:chandelier
         state: light.offices
         state_unit: '%'
@@ -2205,7 +2205,7 @@ views:
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#master'
-        name: Master Suite Lights
+        name: Master Suite
         icon: mdi:bed
         state: light.master_bedroom_sconces
         state_unit: '%'
@@ -2365,8 +2365,6 @@ views:
                   - entity: switch.charlotte_night_light
                     name: Night Light
                 state_color: true
-              - type: media-control
-                entity: media_player.andrew_s_2nd_fire
               - type: custom:bubble-card
                 card_type: separator
                 name: Henry's Room
@@ -2821,7 +2819,7 @@ views:
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#exterior'
-        name: The Grounds
+        name: Exterior
         state: light.exterior
         state_unit: '%'
         is_sidebar_hidden: false
@@ -2927,12 +2925,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: custom:bubble-card
             card_type: separator
@@ -3049,12 +3047,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: custom:bubble-card
             card_type: separator
@@ -3132,12 +3130,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: custom:mushroom-legacy-template-card
             entity: sensor.lighting_schedule
@@ -3655,7 +3653,7 @@ views:
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: custom:sonos-card
             sections:
@@ -3755,12 +3753,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: custom:mushroom-chips-card
             chips:
@@ -3798,7 +3796,7 @@ views:
                 chip:
                   type: template
                   icon: mdi:robot-vacuum
-                  icon_color: '#A8813C'
+                  icon_color: accent
                   content: Matic{{ ' · ' ~ states('sensor.matic_current_area') if has_value('sensor.matic_current_area') }}
                   tap_action:
                     action: more-info
@@ -3811,7 +3809,7 @@ views:
                 chip:
                   type: template
                   icon: mdi:robot-vacuum
-                  icon_color: '#A8813C'
+                  icon_color: accent
                   content: Dusty Jr cleaning
                   tap_action:
                     action: more-info
@@ -3824,7 +3822,7 @@ views:
                 chip:
                   type: template
                   icon: mdi:robot-vacuum-variant
-                  icon_color: '#A8813C'
+                  icon_color: accent
                   content: Jar Jar cleaning upstairs
                   tap_action:
                     action: more-info
@@ -3837,7 +3835,7 @@ views:
                 chip:
                   type: template
                   icon: mdi:washing-machine
-                  icon_color: '#A8813C'
+                  icon_color: accent
                   content: Washer · {{ states('sensor.washer_time_display') }} left
                   tap_action:
                     action: none
@@ -3849,7 +3847,7 @@ views:
                 chip:
                   type: template
                   icon: mdi:tumble-dryer
-                  icon_color: '#A8813C'
+                  icon_color: accent
                   content: Dryer · {{ states('sensor.dryer_time_display') }} left
                   tap_action:
                     action: none
@@ -3963,7 +3961,7 @@ views:
                             text-align: center;
                             border: 1px dashed var(--divider-color);
                             border-radius: 12px;
-                            font-size: 13px;
+                            font-size: 14px;
                             line-height: 1.6;
                             color: var(--secondary-text-color);
                           }
@@ -3986,7 +3984,7 @@ views:
                       icon: mdi:robot-vacuum
                       primary: Matic
                       secondary: '{{ states(''sensor.matic_activity'') }}{{ '' · '' ~ states(''sensor.matic_current_area'') if has_value(''sensor.matic_current_area'') }} · {{ states(''sensor.matic_battery'') | int(0) }}%'
-                      icon_color: '{{ ''red'' if is_state(entity, ''error'') else ''#A8813C'' if is_state(entity, ''cleaning'') else ''disabled'' }}'
+                      icon_color: '{{ ''red'' if is_state(entity, ''error'') else ''accent'' if is_state(entity, ''cleaning'') else ''disabled'' }}'
                       tap_action:
                         action: more-info
                       card_mod:
@@ -4087,7 +4085,7 @@ views:
                 secondary: '{%- if is_state(''binary_sensor.wet_clothes_in_washer'', ''on'') %}Wet clothes in the washer · tap when it''s empty {%- elif is_state(''binary_sensor.washer_running'', ''on'') %}Washer · {{ state_attr(''sensor.washer'', ''current_course'') }} · {{ state_attr(''sensor.washer'', ''water_temp'') }} · {{ state_attr(''sensor.washer'', ''spin_speed'') }} {%- elif is_state(''binary_sensor.dryer_running'', ''on'') %}Dryer · {{ state_attr(''sensor.dryer'', ''current_course'') }} · {{ state_attr(''sensor.dryer'', ''dry_level'') }} {%- else %}Washer and dryer are off{% endif %}'
                 icon_color: |-
                   {{ 'amber' if is_state('binary_sensor.wet_clothes_in_washer', 'on')
-                     else '#A8813C' if is_state('binary_sensor.washer_running', 'on') or is_state('binary_sensor.dryer_running', 'on')
+                     else 'accent' if is_state('binary_sensor.washer_running', 'on') or is_state('binary_sensor.dryer_running', 'on')
                      else 'disabled' }}
                 tap_action:
                   action: perform-action
@@ -4241,7 +4239,7 @@ views:
                 icon_color: |-
                   {{ 'red' if is_state(entity, 'error')
                      else 'amber' if is_state('binary_sensor.jar_jar_bin_full', 'on')
-                     else '#A8813C' if is_state(entity, 'cleaning')
+                     else 'accent' if is_state(entity, 'cleaning')
                      else 'disabled' }}
                 tap_action:
                   action: more-info
@@ -4266,7 +4264,7 @@ views:
                 icon: mdi:robot-mower-outline
                 primary: Mopey
                 secondary: Basement · {{ states(entity) | replace('_', ' ') if states(entity) not in ['unknown', 'unavailable'] else 'not connected yet' }}
-                icon_color: '{{ ''#A8813C'' if is_state(entity, ''cleaning'') else ''disabled'' }}'
+                icon_color: '{{ ''accent'' if is_state(entity, ''cleaning'') else ''disabled'' }}'
                 tap_action:
                   action: more-info
                 card_mod:
@@ -4688,12 +4686,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: custom:vertical-stack-in-card
             cards:
@@ -5037,12 +5035,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: custom:bubble-card
             card_type: separator
@@ -5113,97 +5111,106 @@ views:
                 } 
           - type: vertical-stack
             cards:
-              - type: horizontal-stack
-                cards:
-                  - type: custom:bubble-card
-                    card_type: separator
-                    name: Charlotte
-                    styles: |
-                      h4 {
-                      }
+              - type: custom:bubble-card
+                card_type: separator
+                name: Charlotte
+                styles: |
+                  h4 {
+                  }
 
-                      ha-card div div div:nth-child(2) {
-                            height: 5px!important;
-                      }
-                    icon: mdi:looks
-                  - type: custom:bubble-card
-                    card_type: separator
-                    name: Henry
-                    styles: |
-                      h4 {
-                      }
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:looks
+              - type: custom:bubble-card
+                card_type: separator
+                name: Today's Schedule
+                styles: |
+                  h4 {
+                  }
 
-                      ha-card div div div:nth-child(2) {
-                            height: 5px!important;
-                      }
-                    icon: mdi:police-badge-outline
-              - type: horizontal-stack
-                cards:
-                  - type: vertical-stack
-                    cards:
-                      - type: custom:bubble-card
-                        card_type: separator
-                        name: Today's Schedule
-                        styles: |
-                          h4 {
-                          }
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:calendar
+              - type: custom:atomic-calendar-revive
+                enableModeChange: true
+                entities:
+                  - entity: calendar.charlotte_daily_schedule
+                    name: Charlotte daily schedule
+                    maxDaysToShow: 1
+                    startDaysAhead: 0
+                    showDate: false
+                    showMonth: false
+                    showWeekDay: false
+                    dateFormat: dddd, MMMM D
+                    hoursFormat: 12h
+                    showDescription: false
+                    showLocation: false
+                    showCurrentEventLine: true
+                    showProgressBar: false
+                    showNoEventsForToday: true
+                showDeclined: false
+                hideFinishedEvents: false
+                showDate: false
+                compactMode: false
+                showAllDayEvents: false
+                allDayBottom: false
+                offsetHeaderDate: false
+                showDescription: false
+                showMonth: false
+                showDatePerEvent: false
+                showEventDate: false
+              - type: custom:bubble-card
+                card_type: separator
+                name: Henry
+                styles: |
+                  h4 {
+                  }
 
-                          ha-card div div div:nth-child(2) {
-                                height: 5px!important;
-                          }
-                        icon: mdi:calendar
-                      - type: custom:atomic-calendar-revive
-                        enableModeChange: true
-                        entities:
-                          - entity: calendar.charlotte_daily_schedule
-                            name: Charlotte daily schedule
-                            maxDaysToShow: 1
-                            startDaysAhead: 0
-                            showDate: false
-                            showMonth: false
-                            showWeekDay: false
-                            dateFormat: dddd, MMMM D
-                            hoursFormat: 12h
-                            showDescription: false
-                            showLocation: false
-                            showCurrentEventLine: true
-                            showProgressBar: false
-                            showNoEventsForToday: true
-                        showDeclined: false
-                        hideFinishedEvents: false
-                        showDate: false
-                        compactMode: false
-                        showAllDayEvents: false
-                        allDayBottom: false
-                        offsetHeaderDate: false
-                        showDescription: false
-                        showMonth: false
-                        showDatePerEvent: false
-                        showEventDate: false
-                      - type: custom:bubble-card
-                        card_type: separator
-                        name: Today's Lunch
-                        styles: |
-                          h4 {
-                          }
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:police-badge-outline
+              - type: custom:bubble-card
+                card_type: separator
+                name: Today's Schedule
+                styles: |
+                  h4 {
+                  }
 
-                          ha-card div div div:nth-child(2) {
-                                height: 5px!important;
-                          }
-                        icon: mdi:silverware-fork-knife
-                  - type: vertical-stack
-                    cards:
-                      - type: custom:bubble-card
-                        card_type: separator
-                        styles: |
-                          h4 {
-                          }
-
-                          ha-card div div div:nth-child(2) {
-                                height: 5px!important;
-                          }
-                        icon: ''
-                        name: Other Things?
+                  ha-card div div div:nth-child(2) {
+                        height: 5px!important;
+                  }
+                icon: mdi:calendar
+              - type: custom:atomic-calendar-revive
+                enableModeChange: true
+                entities:
+                  - entity: calendar.henry
+                    name: Henry's calendar
+                    maxDaysToShow: 1
+                    startDaysAhead: 0
+                    showDate: false
+                    showMonth: false
+                    showWeekDay: false
+                    dateFormat: dddd, MMMM D
+                    hoursFormat: 12h
+                    showDescription: false
+                    showLocation: false
+                    showCurrentEventLine: true
+                    showProgressBar: false
+                    showNoEventsForToday: true
+                showDeclined: false
+                hideFinishedEvents: false
+                showDate: false
+                compactMode: false
+                showAllDayEvents: false
+                allDayBottom: false
+                offsetHeaderDate: false
+                showDescription: false
+                showMonth: false
+                showDatePerEvent: false
+                showEventDate: false
   - subview: true
     title: Blinds
     path: blinds
@@ -5233,12 +5240,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: custom:bubble-card
             card_type: separator
@@ -5378,12 +5385,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: custom:bubble-card
             card_type: separator
@@ -5470,12 +5477,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: vertical-stack
             cards:
@@ -5513,12 +5520,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
               - show_name: true
                 show_icon: false
@@ -5531,12 +5538,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: custom:bubble-card
             card_type: separator
@@ -5927,12 +5934,12 @@ views:
                 card_mod:
                   style: |
                     :host {
-                      --mdc-icon-size: 24px important!;
+                      --mdc-icon-size: 24px !important;
                       height: 40px;
                     }
                     ha-card {
                       font-size: 14px;
-                      font-weight: bold;
+                      font-weight: 600;
                     }
           - type: custom:bubble-card
             card_type: separator

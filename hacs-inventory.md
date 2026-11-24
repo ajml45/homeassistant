@@ -31,7 +31,7 @@ any are missing.
 | Lightener | fredck/lightener | v2.4.0 | v2.4.0 | — |
 | Mail and Packages | moralmunky/Home-Assistant-Mail-And-Packages | 0.6.10 | 0.6.10 | — |
 | Mail and Packages Custom Card | moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card | 0.06 | 0.06 | — |
-| Matic (Unofficial) | — | — | — | — |
+| Matic (Unofficial) | ProspectOre/matic-home-assistant | v0.5.5 | v0.5.5 | — |
 | Mealie Card | domodom30/mealie-card | v4.4.1 | v4.4.1 | — |
 | mini-graph-card | kalkih/mini-graph-card | v0.13.0 | v0.13.0 | — |
 | Mushroom | piitaya/lovelace-mushroom | v5.3.0 | v5.3.0 | — |

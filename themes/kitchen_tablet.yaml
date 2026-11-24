@@ -180,7 +180,7 @@ kitchen_tablet:
   mush-rgb-warning: "var(--rgb-amber-color)"
   mush-rgb-danger: "var(--rgb-red-color)"
   mush-rgb-state-entity: "var(--rgb-blue-color)"
-  mush-rgb-state-light: "var(--rgb-amber-color)"      # lights are the brass signal
+  mush-rgb-state-light: "var(--rgb-accent-color)"     # lights are the brass signal (amber is ochre = warning)
   mush-rgb-state-switch: "var(--rgb-blue-color)"
   mush-rgb-state-fan: "var(--rgb-cyan-color)"
   mush-rgb-state-alarm-disarmed: "var(--rgb-grey-color)"
