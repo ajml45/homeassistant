@@ -175,13 +175,13 @@ views:
                               } 
                       - type: conditional
                         conditions:
-                          - entity: media_player.great_room_soundbar
+                          - entity: media_player.sonos_great_room_soundbar
                             state: playing
                         chip:
                           type: template
                           icon_color: disabled
                           icon: |-
-                            {% if state_attr('media_player.great_room_sonos', 'source') == 'TV'  %}
+                            {% if state_attr('media_player.sonos_great_room_soundbar', 'source') == 'TV'  %}
                               mdi:television-classic
                             {% else %}
                               mdi:music  
@@ -349,7 +349,7 @@ views:
                                 }
                       - type: conditional
                         conditions:
-                          - entity: media_player.kitchen_sonos
+                          - entity: media_player.sonos_kitchen
                             state: playing
                         chip:
                           type: template
@@ -611,7 +611,7 @@ views:
                             }
                       - type: conditional
                         conditions:
-                          - entity: media_player.office_sonos
+                          - entity: media_player.sonos_office
                             state: playing
                         chip:
                           type: template
@@ -1129,7 +1129,7 @@ views:
                           icon: mdi:glass-wine
                       - type: conditional
                         conditions:
-                          - entity: media_player.basement_sonos
+                          - entity: media_player.sonos_basement
                             state: playing
                         chip:
                           type: template
@@ -1336,7 +1336,7 @@ views:
                                 }
                       - type: conditional
                         conditions:
-                          - entity: switch.fish_lights
+                          - entity: switch.fish_mini_light
                             state: 'on'
                         chip:
                           type: template
@@ -1344,7 +1344,7 @@ views:
                           icon: mdi:fish
                       - type: conditional
                         conditions:
-                          - entity: media_player.solarium_sonos
+                          - entity: media_player.sonos_solarium
                             state: playing
                         chip:
                           type: template
@@ -1469,14 +1469,6 @@ views:
                               position: absolute;
                               left: 0px;
                             }
-                      - type: conditional
-                        conditions:
-                          - entity: binary_sensor.placeholder
-                            state: 'on'
-                        chip:
-                          type: template
-                          icon_color: disabled
-                          icon: mdi:motion-sensor
                     alignment: end
                     card_mod:
                       style: |
@@ -1900,7 +1892,7 @@ views:
                     toggle: true
                     colorize: true
                   - type: custom:slider-entity-row
-                    entity: light.toe_kick
+                    entity: light.under_island
                     toggle: true
                     colorize: true
                 show_header_toggle: false
@@ -2351,10 +2343,6 @@ views:
                     tap_action:
                       action: navigate
                       navigation_path: /mobile-rooms/lighting
-                  - entity: automation.office_noise_on_morning
-                  - entity: automation.office_noise_on_home
-                  - entity: automation.office_noise_off_away
-                  - entity: automation.office_noise_off_night
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#master'
@@ -3105,7 +3093,7 @@ views:
               - type: custom:clock-weather-card
                 entity: weather.openweathermap
                 sun_entity: sun.sun
-                temperature_sensor: sensor.outdoor_temp
+                temperature_sensor: sensor.openweathermap_temperature
                 weather_icon_type: line
                 animated_icon: true
                 forecast_rows: 5
@@ -3226,10 +3214,10 @@ views:
             details: true
             image: false
             gif_sensor: gif
-            updated: sensor.mail_updated
-            usps_mail: sensor.mail_usps_mail
+            updated: sensor.imap_gmail_com_mail_updated
+            usps_mail: sensor.imap_gmail_com_mail_usps_mail
             camera: true
-            camera_entity: camera.mail_usps_camera
+            camera_entity: camera.imap_gmail_com_mail_usps_camera
           - type: custom:bubble-card
             card_type: separator
             icon: mdi:truck-delivery
@@ -3246,15 +3234,15 @@ views:
           - type: custom:mail-and-packages-card
             details: true
             image: false
-            camera_entity: camera.mail_amazon_delivery_camera
-            amazon_packages: sensor.mail_amazon_packages
-            usps_packages: sensor.mail_usps_packages
-            ups_packages: sensor.mail_ups_packages
-            fedex_packages: sensor.mail_fedex_packages
-            updated: sensor.mail_updated
-            packages_in_transit: sensor.mail_usps_delivering
-            packages_delivered: sensor.mail_amazon_packages_delivered
-            deliveries_message: camera.mail_amazon_delivery_camera
+            camera_entity: camera.imap_gmail_com_mail_amazon_delivery_camera
+            amazon_packages: sensor.imap_gmail_com_mail_amazon_packages
+            usps_packages: sensor.imap_gmail_com_mail_usps_packages
+            ups_packages: sensor.imap_gmail_com_mail_ups_packages
+            fedex_packages: sensor.imap_gmail_com_mail_fedex_packages
+            updated: sensor.imap_gmail_com_mail_updated
+            packages_in_transit: sensor.imap_gmail_com_mail_usps_delivering
+            packages_delivered: sensor.imap_gmail_com_mail_amazon_packages_delivered
+            deliveries_message: camera.imap_gmail_com_mail_amazon_delivery_camera
   - title: Lighting
     path: lighting
     icon: mdi:lightbulb-auto-outline
@@ -4622,10 +4610,6 @@ views:
                 image: local/images/other/frontdoor.jpg
               - entity: sensor.andrew_to_berwick
                 image: local/images/other/berwick.jpg
-              - entity: sensor.andrew_to_misspattys
-                image: local/images/other/miss_pattys.JPG
-              - entity: sensor.andrew_to_work
-                image: local/images/other/borthwick.jpg
             columns: 4
             card_mod:
               style: |
@@ -4659,10 +4643,6 @@ views:
                 image: local/images/other/frontdoor.jpg
               - entity: sensor.christina_to_berwick
                 image: local/images/other/berwick.jpg
-              - entity: sensor.christina_to_miss_pattys
-                image: local/images/other/miss_pattys.JPG
-              - entity: sensor.christina_to_boston
-                image: local/images/other/liberty_boston.jpg
             columns: 4
             card_mod:
               style: |
@@ -4700,137 +4680,6 @@ views:
                 cards:
                   - type: vertical-stack
                     cards:
-                      - type: conditional
-                        conditions:
-                          - condition: state
-                            entity: input_boolean.charlotte_wakeup
-                            state: 'on'
-                        card:
-                          show_name: true
-                          show_icon: true
-                          type: button
-                          name: Wake Up
-                          icon: mdi:alarm
-                          tap_action:
-                            action: call-service
-                            service: input_boolean.turn_off
-                            target:
-                              entity_id:
-                                - input_boolean.charlotte_wakeup
-                          card_mod:
-                            style: |
-                              ha-card {
-                                background-color: #FDE2E6;
-                                border: 1px solid var(--primary-text-color);
-                                border-radius: 8px;
-                                color: rebeccapurple;
-                                --paper-item-icon-color: rebeccapurple;
-                                height: 90px!important;
-                              }      
-                      - type: conditional
-                        conditions:
-                          - condition: state
-                            entity: input_boolean.charlotte_breakfast
-                            state: 'on'
-                        card:
-                          show_name: true
-                          show_icon: true
-                          type: button
-                          name: Eat Breakfast
-                          icon: mdi:silverware-fork-knife
-                          tap_action:
-                            action: perform-action
-                            target:
-                              entity_id: input_boolean.charlotte_breakfast
-                            perform_action: input_boolean.turn_off
-                          card_mod:
-                            style: |
-                              ha-card {
-                                background-color: #FDE2E6;
-                                border: 1px solid var(--primary-text-color);
-                                border-radius: 8px;
-                                color: rebeccapurple;
-                                --paper-item-icon-color: rebeccapurple;
-                                height: 90px!important;
-                              }      
-                      - type: conditional
-                        conditions:
-                          - condition: state
-                            entity: input_boolean.charlotte_dressed
-                            state: 'on'
-                        card:
-                          show_name: true
-                          show_icon: true
-                          type: button
-                          name: Get Dressed
-                          icon: mdi:hanger
-                          tap_action:
-                            action: perform-action
-                            target:
-                              entity_id: input_boolean.charlotte_dressed
-                            perform_action: input_boolean.turn_off
-                          card_mod:
-                            style: |
-                              ha-card {
-                                background-color: #FDE2E6;
-                                border: 1px solid var(--primary-text-color);
-                                border-radius: 8px;
-                                color: rebeccapurple;
-                                --paper-item-icon-color: rebeccapurple;
-                                height: 90px!important;
-                              }                
-                      - type: conditional
-                        conditions:
-                          - condition: state
-                            entity: input_boolean.charlotte_brush
-                            state: 'on'
-                        card:
-                          show_name: true
-                          show_icon: true
-                          type: button
-                          name: Brush Teeth
-                          icon: mdi:toothbrush
-                          tap_action:
-                            action: perform-action
-                            target:
-                              entity_id: input_boolean.charlotte_brush
-                            perform_action: input_boolean.turn_off
-                          card_mod:
-                            style: |
-                              ha-card {
-                                background-color: #FDE2E6;
-                                border: 1px solid var(--primary-text-color);
-                                border-radius: 8px;
-                                color: rebeccapurple;
-                                --paper-item-icon-color: rebeccapurple;
-                                height: 90px!important;
-                              }      
-                      - type: conditional
-                        conditions:
-                          - condition: state
-                            entity: input_boolean.charlotte_ballet
-                            state: 'on'
-                        card:
-                          show_name: true
-                          show_icon: true
-                          type: button
-                          name: Ballet Bag
-                          icon: mdi:shoe-ballet
-                          tap_action:
-                            action: perform-action
-                            target:
-                              entity_id: input_boolean.charlotte_ballet
-                            perform_action: input_boolean.turn_off
-                          card_mod:
-                            style: |
-                              ha-card {
-                                background-color: #FDE2E6;
-                                border: 1px solid var(--primary-text-color);
-                                border-radius: 8px;
-                                color: rebeccapurple;
-                                --paper-item-icon-color: rebeccapurple;
-                                height: 90px!important;
-                              }      
                       - type: custom:bubble-card
                         card_type: separator
                         name: Today's Schedule
@@ -4883,113 +4732,6 @@ views:
                         icon: mdi:silverware-fork-knife
                   - type: vertical-stack
                     cards:
-                      - type: conditional
-                        conditions:
-                          - condition: state
-                            entity: input_boolean.henry_wakeup
-                            state: 'on'
-                        card:
-                          show_name: true
-                          show_icon: true
-                          type: button
-                          name: Wake Up
-                          icon: mdi:alarm
-                          tap_action:
-                            action: perform-action
-                            target:
-                              entity_id: input_boolean.henry_wakeup
-                            perform_action: input_boolean.turn_off
-                          card_mod:
-                            style: |
-                              ha-card {
-                                background-color: #ced8df;
-                                border: 1px solid var(--primary-text-color);
-                                border-radius: 8px;
-                                color: var(--primary-text-color);
-                                --paper-item-icon-color: var(--primary-text-color);
-                                height: 90px!important;
-                              }  
-                      - type: conditional
-                        conditions:
-                          - condition: state
-                            entity: input_boolean.henry_breakfast
-                            state: 'on'
-                        card:
-                          show_name: true
-                          show_icon: true
-                          type: button
-                          name: Eat Breakfast
-                          icon: mdi:silverware-fork-knife
-                          tap_action:
-                            action: perform-action
-                            target:
-                              entity_id: input_boolean.henry_breakfast
-                            perform_action: input_boolean.turn_off
-                            data: {}
-                          card_mod:
-                            style: |
-                              ha-card {
-                                background-color: #ced8df;
-                                border: 1px solid var(--primary-text-color);
-                                border-radius: 8px;
-                                color: var(--primary-text-color);
-                                --paper-item-icon-color: var(--primary-text-color);
-                                height: 90px!important;
-                              }  
-                      - type: conditional
-                        conditions:
-                          - condition: state
-                            entity: input_boolean.henry_dressed
-                            state: 'on'
-                        card:
-                          show_name: true
-                          show_icon: true
-                          type: button
-                          name: Get Dressed
-                          icon: mdi:hanger
-                          tap_action:
-                            action: perform-action
-                            target:
-                              entity_id: input_boolean.henry_dressed
-                            perform_action: input_boolean.turn_off
-                            data: {}
-                          card_mod:
-                            style: |
-                              ha-card {
-                                background-color: #ced8df;
-                                border: 1px solid var(--primary-text-color);
-                                border-radius: 8px;
-                                color: var(--primary-text-color);
-                                --paper-item-icon-color: var(--primary-text-color);
-                                height: 90px!important;
-                              }  
-                      - type: conditional
-                        conditions:
-                          - condition: state
-                            entity: input_boolean.henry_brush
-                            state: 'on'
-                        card:
-                          show_name: true
-                          show_icon: true
-                          type: button
-                          name: Brush Teeth
-                          icon: mdi:toothbrush
-                          tap_action:
-                            action: perform-action
-                            target:
-                              entity_id: input_boolean.henry_brush
-                            perform_action: input_boolean.turn_off
-                            data: {}
-                          card_mod:
-                            style: |
-                              ha-card {
-                                background-color: #ced8df;
-                                border: 1px solid var(--primary-text-color);
-                                border-radius: 8px;
-                                color: var(--primary-text-color);
-                                --paper-item-icon-color: var(--primary-text-color);
-                                height: 90px!important;
-                              }  
                       - type: custom:bubble-card
                         card_type: separator
                         styles: |
@@ -5849,12 +5591,6 @@ views:
             show_icon: true
             columns: 4
             entities:
-              - entity: binary_sensor.lego_bracelet_reader_status
-                name: NFC Reader
-                icon: mdi:nfc-tap
-              - entity: binary_sensor.lego_pi_audio_listener
-                name: Pi Audio
-                icon: mdi:speaker
               - entity: media_player.sonos_office
                 name: Sonos
                 icon: mdi:speaker-wireless
@@ -5923,20 +5659,6 @@ views:
               - show_name: true
                 show_icon: true
                 type: button
-                name: Frigate
-                icon: mdi:cctv
-                tap_action:
-                  action: url
-                  url_path: http://192.168.68.100:5000
-                card_mod:
-                  style: |
-                    ha-card {
-                      font-size: 13px;
-                      height: 70px;
-                    }
-              - show_name: true
-                show_icon: true
-                type: button
                 name: GitHub
                 icon: mdi:github
                 tap_action:
@@ -5979,25 +5701,6 @@ views:
             show_header_toggle: false
             entities:
               - entity: input_text.lego_active_character
-          - type: custom:bubble-card
-            card_type: separator
-            icon: mdi:camera
-            styles: |
-              h4 {
-              }
-              .separator-container div:last-child {
-                  background-color: var(--divider-color) !important;
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-            name: Camera
-          - type: picture-entity
-            entity: camera.lego_desk
-            show_name: false
-            show_state: false
-            tap_action:
-              action: more-info
           - type: custom:bubble-card
             card_type: separator
             icon: mdi:gesture-tap
@@ -6054,7 +5757,7 @@ views:
                   action: call-service
                   service: automation.trigger
                   service_data:
-                    entity_id: automation.nfc_darth_vader
+                    entity_id: automation.nfc_darth_vader_breathing
                 card_mod:
                   style: |
                     ha-card {

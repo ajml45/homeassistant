@@ -409,25 +409,3 @@
              'light.exterior_lower_garage_area',
              'light.exterior_upper_garage'
            ] | select('is_state', 'on') | list | count }}
-
-- triggers:
-    - trigger: time_pattern
-      minutes: /30
-    - trigger: homeassistant
-      event: start
-    - trigger: event
-      event_type: event_template_reloaded
-  actions:
-    - action: weather.get_forecasts
-      target:
-        entity_id: weather.nws          # ← your NWS entity
-      data:
-        type: twice_daily
-      response_variable: nws
-  sensor:
-    - name: NWS Forecast
-      unique_id: nws_forecast_twice_daily
-      device_class: timestamp
-      state: "{{ now().isoformat() }}"
-      attributes:
-        forecast: "{{ nws['weather.nws'].forecast[:6] }}"   # ← same entity here

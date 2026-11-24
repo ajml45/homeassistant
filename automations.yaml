@@ -300,31 +300,31 @@
         data: {}
 - id: '1724702037211'
   alias: Fish Lights On
-  description: ''
+  description: Tank lights on at 7:00.
   triggers:
-  - at: 07:00:00
-    trigger: time
+  - trigger: time
+    at: 07:00:00
   conditions: []
   actions:
   - action: switch.turn_on
-    metadata: {}
-    data: {}
     target:
-      entity_id: switch.fish_lights
+      entity_id:
+      - switch.fish_mini_light
+      - switch.fish_air_light
   mode: single
 - id: '1724702174998'
   alias: Fish Lights Off
-  description: ''
+  description: Tank lights off at 20:00.
   triggers:
-  - at: '20:00:00'
-    trigger: time
+  - trigger: time
+    at: '20:00:00'
   conditions: []
   actions:
   - action: switch.turn_off
-    metadata: {}
-    data: {}
     target:
-      entity_id: switch.fish_lights
+      entity_id:
+      - switch.fish_mini_light
+      - switch.fish_air_light
   mode: single
 - id: '1732739136261'
   alias: Christmas Lights Inside Off Away
@@ -701,21 +701,17 @@
   mode: single
 - id: '1750454401501'
   alias: Restart Automate Pulse Integration on Restart
-  description: ''
+  description: Reload the Automate Pulse hub 5 minutes after Home Assistant starts.
   triggers:
   - trigger: homeassistant
     event: start
   conditions: []
   actions:
   - delay:
-      hours: 0
       minutes: 5
-      seconds: 0
-      milliseconds: 0
   - action: homeassistant.reload_config_entry
-    metadata: {}
-    data:
-      entry_id: 9035945b1b95433a92a9688144ad2bcb
+    target:
+      entity_id: cover.back_sliders
   mode: single
 - id: '1753878101803'
   alias: Upstairs Wake Up

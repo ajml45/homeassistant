@@ -159,7 +159,7 @@ script:
         - media_player.andrew_s_echo_show    # Great Room
         - media_player.echo_show             # Kitchen
         - media_player.echo_dot_office       # Office
-        - media_player.echo_dot_charlotte    # Solarium (entity ID is misleading)
+        - media_player.echo_dot_solarium    # Solarium (entity ID is misleading)
 
       # Fully Kiosk name prefixes
       tablets: [kitchen_kitchen_ha_tablet, mudroom_mudroom_ha_tablet]

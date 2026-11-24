@@ -23,7 +23,7 @@ any are missing.
 | Eye On Water | kdeyev/eyeonwater | v2.7.12 | v2.7.12 | — |
 | fold-entity-row | thomasloven/lovelace-fold-entity-row | v.2.3.2 | v.2.3.2 | — |
 | Horizon Card | rejuvenate/lovelace-horizon-card | v1.5.3 | v1.5.3 | — |
-| Hubspace-Homeassistant | jdeath/Hubspace-Homeassistant | v8.3.0 | v8.4.0 | — |
+| Hubspace-Homeassistant | jdeath/Hubspace-Homeassistant | v8.4.0 | v8.4.0 | — |
 | iCloud3 | gcobb321/icloud3 | v3.8.0 | v3.8.0 | — |
 | Illuminance | pnbruckner/ha-illuminance | 5.8.1 | 5.8.1 | — |
 | Kiosk Mode | NemesisRE/kiosk-mode | v16.0.0 | v16.0.0 | — |
@@ -55,13 +55,12 @@ any are missing.
 | alexa_media | Alexa Media Player | 5.22.1 |
 | automate | Automate Pulse Hub v2 | 1.0.1 |
 | eyeonwater | EyeOnWater | 2.7.12 |
-| hubspace | hubspace | 8.3.0 |
+| hubspace | hubspace | 8.4.0 |
 | icloud3 | iCloud3 | 3.8.0 |
 | illuminance | Illuminance | 5.8.1 |
 | lightener | Lightener | v2.4.0 |
 | mail_and_packages | Mail and Packages | 0.6.10 |
 | nest_protect | Nest Protect | 0.5.0 |
-| noaa_tides | NOAA Tides | 0.1.3 |
 | nws_alerts | NWS Alerts | 6.7.3 |
 | pura | Pura | 1.15.1 |
 | smartthinq_sensors | SmartThinQ LGE Sensors | 0.43.0 |
@@ -70,6 +69,7 @@ any are missing.
 
 | Type | URL |
 |---|---|
+| css | /local/7segment.css |
 | module | /local/community/Bubble-Card/bubble-card.js?v=680112919343 |
 | module | /local/community/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card.js?v=240145420006 |
 | module | /local/community/apexcharts-card/apexcharts-card.js?v=331701152223 |

@@ -697,23 +697,23 @@ views:
                 details: true
                 image: false
                 gif_sensor: gif
-                updated: sensor.mail_updated
-                usps_mail: sensor.mail_usps_mail
+                updated: sensor.imap_gmail_com_mail_updated
+                usps_mail: sensor.imap_gmail_com_mail_usps_mail
                 camera: true
-                camera_entity: camera.mail_usps_camera
+                camera_entity: camera.imap_gmail_com_mail_usps_camera
               - type: custom:mail-and-packages-card
                 name: Today's Packages
                 details: true
                 image: false
-                camera_entity: camera.mail_amazon_delivery_camera
-                amazon_packages: sensor.mail_amazon_packages
-                usps_packages: sensor.mail_usps_packages
-                ups_packages: sensor.mail_ups_packages
-                fedex_packages: sensor.mail_fedex_packages
-                updated: sensor.mail_updated
-                packages_in_transit: sensor.mail_usps_delivering
-                packages_delivered: sensor.mail_amazon_packages_delivered
-                deliveries_message: camera.mail_amazon_delivery_camera
+                camera_entity: camera.imap_gmail_com_mail_amazon_delivery_camera
+                amazon_packages: sensor.imap_gmail_com_mail_amazon_packages
+                usps_packages: sensor.imap_gmail_com_mail_usps_packages
+                ups_packages: sensor.imap_gmail_com_mail_ups_packages
+                fedex_packages: sensor.imap_gmail_com_mail_fedex_packages
+                updated: sensor.imap_gmail_com_mail_updated
+                packages_in_transit: sensor.imap_gmail_com_mail_usps_delivering
+                packages_delivered: sensor.imap_gmail_com_mail_amazon_packages_delivered
+                deliveries_message: camera.imap_gmail_com_mail_amazon_delivery_camera
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#phone_locator'
@@ -1058,13 +1058,13 @@ views:
                               } 
                       - type: conditional
                         conditions:
-                          - entity: media_player.great_room_sonos
+                          - entity: media_player.sonos_great_room_soundbar
                             state: playing
                         chip:
                           type: template
                           icon_color: disabled
                           icon: |-
-                            {% if state_attr('media_player.great_room_sonos', 'source') == 'TV'  %}
+                            {% if state_attr('media_player.sonos_great_room_soundbar', 'source') == 'TV'  %}
                               mdi:television-classic
                             {% else %}
                               mdi:music  
@@ -1231,7 +1231,7 @@ views:
                                 }
                       - type: conditional
                         conditions:
-                          - entity: media_player.kitchen_sonos
+                          - entity: media_player.sonos_kitchen
                             state: playing
                         chip:
                           type: template
@@ -1725,7 +1725,7 @@ views:
                               } 
                       - type: conditional
                         conditions:
-                          - entity: media_player.office_sonos
+                          - entity: media_player.sonos_office
                             state: playing
                         chip:
                           type: template
@@ -2225,7 +2225,7 @@ views:
                           icon: mdi:glass-wine
                       - type: conditional
                         conditions:
-                          - entity: media_player.basement_sonos
+                          - entity: media_player.sonos_basement
                             state: playing
                         chip:
                           type: template
@@ -2437,7 +2437,7 @@ views:
                                 }
                       - type: conditional
                         conditions:
-                          - entity: switch.fish_lights
+                          - entity: switch.fish_mini_light
                             state: 'on'
                         chip:
                           type: template
@@ -2445,7 +2445,7 @@ views:
                           icon: mdi:fish
                       - type: conditional
                         conditions:
-                          - entity: media_player.solarium_sonos
+                          - entity: media_player.sonos_solarium
                             state: playing
                         chip:
                           type: template
@@ -2980,14 +2980,14 @@ views:
               - type: vertical-stack
                 cards:
                   - type: media-control
-                    entity: media_player.lg_webos_tv_oled65c7p
+                    entity: media_player.great_room_tv
                     card_mod:
                       style: |
                         ha-card {
                           background: var(--ha-card-background);
                           }
                   - type: media-control
-                    entity: media_player.great_room_sonos
+                    entity: media_player.sonos_great_room_soundbar
                     card_mod:
                       style: |
                         ha-card {
@@ -2995,9 +2995,9 @@ views:
                           }
                   - type: entities
                     entities:
-                      - entity: switch.great_room_speech_enhancement
+                      - entity: switch.sonos_great_room_soundbar_speech_enhancement
                         name: TV Speech Enhancement
-                      - entity: switch.great_room_night_sound
+                      - entity: switch.sonos_great_room_soundbar_night_sound
                         name: TV Night Sound
       - type: custom:bubble-card
         card_type: pop-up
@@ -3205,7 +3205,7 @@ views:
                       }
                     icon: mdi:tablet-cellphone
                   - type: media-control
-                    entity: media_player.solarium_sonos
+                    entity: media_player.sonos_solarium
                     card_mod:
                       style: |
                         ha-card {
@@ -3281,7 +3281,7 @@ views:
                         toggle: true
                         colorize: true
                       - type: custom:slider-entity-row
-                        entity: light.toe_kick
+                        entity: light.under_island
                         toggle: true
                         colorize: true
                     show_header_toggle: false
@@ -3325,7 +3325,7 @@ views:
                       }
                     icon: mdi:tablet-cellphone
                   - type: media-control
-                    entity: media_player.kitchen_sonos
+                    entity: media_player.sonos_kitchen
                     card_mod:
                       style: |
                         ha-card {
@@ -3780,7 +3780,7 @@ views:
                       - type: custom:clock-weather-card
                         entity: weather.openweathermap
                         sun_entity: sun.sun
-                        temperature_sensor: sensor.outdoor_temp
+                        temperature_sensor: sensor.openweathermap_temperature
                         weather_icon_type: line
                         animated_icon: true
                         forecast_rows: 4
@@ -3907,7 +3907,7 @@ views:
                   }
                 icon: mdi:tablet-cellphone
               - type: media-control
-                entity: media_player.basement_sonos
+                entity: media_player.sonos_basement
                 view_layout:
                   grid-area: main6
                 card_mod:
@@ -4169,29 +4169,6 @@ views:
                     height: 5px!important;
               }
             name: Info
-          - type: conditional
-            conditions:
-              - entity: input_boolean.feed_fish_reminder
-                state: 'on'
-            card:
-              type: button
-              name: Feed the Fish
-              icon: mdi:fish
-              tap_action:
-                action: call-service
-                service: input_boolean.turn_off
-                target:
-                  entity_id:
-                    - input_boolean.feed_fish_reminder
-                    - input_boolean.feed_fish_reminder_color_change
-              styles:
-                card:
-                  - background-color: |
-                      [[[
-                        return states['input_boolean.feed_fish_reminder_color_change'].state === 'on' ? 'var(--state-active-color)' : 'default';
-                      ]]]
-                icon:
-                  - color: var(--primary-text-color)
           - type: vertical-stack
             cards:
               - type: conditional
@@ -6142,9 +6119,9 @@ views:
                 icon: mdi:chart-box-outline
                 url: /a0d7b954_glances?disable_km
               - type: weblink
-                name: HACS
+                name: Marketplace
                 icon: mdi:package-variant
-                url: /hacs/entry?disable_km
+                url: /marketplace?disable_km
               - type: weblink
                 name: Grafana
                 icon: mdi:chart-areaspline
