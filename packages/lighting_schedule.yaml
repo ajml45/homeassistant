@@ -1,6 +1,6 @@
 # ═════════════════════════════════════════════════════════════════════════════
 #  LIGHTING SCHEDULE                       /config/packages/lighting_schedule.yaml
-#  v2 · 2026-11-22 · one Bedtime for the whole house
+#  v2.1 · 2026-11-25 · guest mode; the solarium keeps its own fade
 # ═════════════════════════════════════════════════════════════════════════════
 #
 #  WHAT HAPPENS EACH NIGHT
@@ -12,8 +12,9 @@
 #                  counts as dark.
 #    6:45 pm       Kids' bedtime switches (the Kids Bedtime automation, not here).
 #    7:00 pm       Evening fade: every room that's on eases to its night level
-#                  over 30 min (Great Room and Foyer & Offices to 15%; Kitchen,
-#                  Mudroom and Solarium to off; the Basement is left alone).
+#                  over 30 min (Great Room and Foyer & Offices to 15%; Kitchen
+#                  and Mudroom to off; the Basement is left alone). The Solarium
+#                  fades off at this time every night, whatever else happens.
 #    7:30 pm       Bedtime (below), every night, Fri and Sat too.
 #    11:00 pm      Final sweep: every light still on — every floor except the
 #                  master bedroom and bath — switches off, plus the office fan.
@@ -22,14 +23,24 @@
 #  BEDTIME  (script.bedtime — the Bedtime button, and 7:30 pm by itself)
 #    Kids' bedtime switches on · Master Bedtime scene (fan, floor fan, air
 #    purifier, master lights off) · bedroom blinds close · Kitchen and Mudroom
-#    off · Great Room and Foyer & Offices to 15% · Solarium fades off over
-#    15 min. Basement, upstairs hall and upstairs bath are left for 11:00 pm.
+#    off · Great Room and Foyer & Offices to 15%. The Solarium, Basement,
+#    upstairs hall and upstairs bath are left alone (the Solarium has its own
+#    7:00 fade; the rest wait for 11:00 pm).
 #    Once a night: if Bedtime already ran (button or Wind Down), the 7:30 pm
 #    one skips. The button always runs.
 #
 #  OTHER BUTTONS
-#    Wind Down     the evening fade over 15 min instead of 30, then Bedtime.
+#    Wind Down     the evening fade over 15 min instead of 30, main floor only,
+#                  then Bedtime. Pressed while the 7:00 fade is already running,
+#                  it lets that fade carry on and brings Bedtime forward.
 #    Stop fades    stops every fade (and Wind Down's Bedtime) right now.
+#
+#  GUESTS  (input_boolean.guests_present — the Guests toggle)
+#    Dusk-on as usual, but the main floor doesn't fade at 7:00 and Bedtime
+#    doesn't run at 7:30: press Wind Down or Bedtime when the guests leave.
+#    The Solarium still fades at 7:00; the 11:00 pm sweep and the outside
+#    lights are unchanged. Each morning at 9:00, if guest mode has been on
+#    overnight, a phone notification asks whether to turn it off.
 #
 #  LIGHTS SET BY HAND OR BY A SCENE
 #    A room whose lights were changed one by one (Dinner, Cooking, a couple of
@@ -47,7 +58,8 @@
 #
 #  WHERE TO LOOK
 #    Lighting page (tablet and phone) — every room: level, reading vs. its
-#      number, what's next, and the last thing the schedule did.
+#      number, what's next, and the last thing the schedule did. The Tonight
+#      card's text comes from sensor.lighting_schedule (attribute `tonight`).
 #    input_text.lighting_<room> / lighting_house — that last action, one line
 #      each. Every change shows in the Logbook, so the Logbook reads as a diary.
 #    input_datetime.lighting_bedtime_ran — when Bedtime last ran.
@@ -76,7 +88,9 @@ template:
         # ramp          seconds to ramp up from 1% (0 = straight to the level)
         # night         % the room ends the evening at: 0 = off, null = left
         #               alone (the 11:00 pm sweep switches it off)
-        # bedtime_fade  minutes Bedtime takes to fade this room (blank = right away)
+        # own_fade      true = the room fades at the evening fade every night on
+        #               its own: Wind Down and Bedtime leave it alone, and it
+        #               still fades on guest nights
         # fade_step_ms  shortest gap between fade steps (Govee rooms go slow)
         #
         # dark_below / outdoor_below are starting values (2026-11-19): tune
@@ -127,12 +141,12 @@ template:
           light: light.solarium
           floor: Basement Level
           sensor: sensor.hue_motion_sensor_2_illuminance
-          dark_below: 150
+          dark_below: 900
           outdoor_below: 10000
           dusk_level: 70
           ramp: 0
           night: 0
-          bedtime_fade: 15
+          own_fade: true
           fade_step_ms: 60000
         basement:
           name: Basement
@@ -147,6 +161,10 @@ template:
         outdoor_sensor: sensor.illuminance
         pause: input_boolean.lighting_schedule_paused
         bedtime_ran: input_datetime.lighting_bedtime_ran
+        guests: input_boolean.guests_present   # the Guests toggle (Settings and Lighting pages)
+        guest_reminder: "09:00"         # morning check: still on? (phone notification)
+        guest_notify:                   # phone(s) for that check — Developer tools → Actions → "mobile_app"
+          - notify.mobile_app_andrews_phone_2
         dusk_from: "12:00"              # dusk-on never starts before this
         bedtime: "19:30"                # Bedtime runs by itself at this time
         evening_fade_minutes: 30        # the evening fade starts this long before bedtime
@@ -178,11 +196,12 @@ template:
 
     sensor:
       # Live status for the Lighting page. Read-only: it never changes a light.
-      # State: Daytime / Watching for dark / Evening fade / Wind Down / Bedtime /
-      # Lights out / Paused / Vacation.
+      # State: Daytime / Watching for dark / Evening fade / Wind Down / Guests /
+      # Bedtime / Lights out / Paused / Vacation.
       # Attributes: rooms (per-room status), dusk_due (rooms the Dusk-on
       # automation should turn on right now), outdoor (lux), last (house line),
-      # times (the house times, formatted for the page).
+      # times (the house times, formatted for the page), tonight (the Tonight
+      # card's text).
       - name: Lighting schedule
         unique_id: lighting_schedule
         icon: mdi:lightbulb-auto-outline
@@ -194,7 +213,9 @@ template:
           {%- elif is_state(house.pause, 'on') %}Paused
           {%- elif t >= house.sweep or t < '04:00' %}Lights out
           {%- elif is_state('script.lighting_wind_down', 'on') %}Wind Down
-          {%- elif ran or t >= house.bedtime %}Bedtime
+          {%- elif ran %}Bedtime
+          {%- elif is_state(house.guests, 'on') %}Guests
+          {%- elif t >= house.bedtime %}Bedtime
           {%- elif t >= fade_start %}Evening fade
           {%- elif t >= house.dusk_from %}Watching for dark
           {%- else %}Daytime{%- endif %}
@@ -215,7 +236,34 @@ template:
                 'evening_fade_minutes': house.evening_fade_minutes,
                 'wind_down_minutes': house.wind_down_minutes,
                 'bedtime_ran': (ts | timestamp_custom('%-I:%M %p') | lower) if ran else '',
+                'guests': is_state(house.guests, 'on'),
                 'sweep_extras': house.sweep_extras | map('state_attr', 'friendly_name') | reject('none') | list} }}
+          tonight: >-
+            {%- macro hm(x) %}{{ strptime(x, '%H:%M').strftime('%-I:%M %p') | lower }}{% endmacro %}
+            {%- set ts = state_attr(house.bedtime_ran, 'timestamp') | float(0) %}
+            {%- set ran = state_attr(house.bedtime_ran, 'timestamp') | float(0) >= (today_at('04:00') - timedelta(days=1 if now() < today_at('04:00') else 0)).timestamp() %}
+            {%- set guests = is_state(house.guests, 'on') %}
+            {%- set fade_start = (today_at(house.bedtime) - timedelta(minutes=house.evening_fade_minutes | int)).strftime('%H:%M') %}
+            {%- set ns = namespace(glow=[], offs=[], own=[]) %}
+            {%- for k, r in rooms.items() if r.get('night') is not none %}
+              {%- if r.get('own_fade') %}{% set ns.own = ns.own + [r.name | lower] %}
+              {%- elif r.night | int > 0 %}{% set ns.glow = ns.glow + [(r.name | lower) ~ ' ' ~ r.night ~ '%'] %}
+              {%- else %}{% set ns.offs = ns.offs + [r.name | lower] %}{% endif %}
+            {%- endfor %}
+            {%- set levels = (ns.glow + ([ns.offs | join(', ') ~ ' off'] if ns.offs else [])) | join(', ') %}
+            {%- set extras = house.sweep_extras | map('state_attr', 'friendly_name') | reject('none') | map('lower') | list %}
+            {%- set out = states(house.outdoor_sensor) | float(-1) %}
+            {%- set v = states('input_text.lighting_house') %}
+            {%- set last = '' if v in ['unknown', 'unavailable', ''] else (hm(v[11:16]) ~ v[16:]) if v.startswith(now().date() | string) else v %}
+            {%- if guests %}**Guests tonight** · the main floor doesn't fade or go to Bedtime by itself — press Wind Down or Bedtime when they leave<br>{% endif %}
+            {%- if guests %}**{{ hm(fade_start) }}** · only the {{ ns.own | join(', ') }} fades (off over {{ house.evening_fade_minutes }} min)
+            {%- else %}**{{ hm(fade_start) }}** · evening fade — rooms that are on ease to their night level over {{ house.evening_fade_minutes }} min{% endif %}<br>
+            {%- if guests and not ran %}**Bedtime** · when you press it — kids, master bedroom, blinds · {{ levels }}
+            {%- else %}**{{ hm(house.bedtime) }}** · Bedtime — kids, master bedroom, blinds · {{ levels }}{{ ' · ran at ' ~ (ts | timestamp_custom('%-I:%M %p') | lower) ~ ' tonight' if ran }}{% endif %}<br>
+            **{{ hm(house.sweep) }}** · final sweep — everything still on switches off, every floor except the master bedroom and bath{{ ', plus the ' ~ extras | join(', ') if extras }}<br>
+            **Wind Down** · the same fade over {{ house.wind_down_minutes }} min for the main floor, then Bedtime · **Bedtime** · right now<br>
+            Dusk-on starts watching at {{ hm(house.dusk_from) }} · outdoor now {{ '{:,}'.format(out | round(0) | int) if out >= 0 else '—' }} lx<br>
+            Last: {{ last or 'nothing yet today' }}
           dusk_due: >-
             {%- set t = now().strftime('%H:%M') %}
             {%- set today = now().date() | string %}
@@ -249,6 +297,7 @@ template:
             {%- set vacation = is_state('input_select.house_mode', 'Vacation') %}
             {%- set paused = is_state(house.pause, 'on') %}
             {%- set night_time = t >= house.sweep or t < '04:00' %}
+            {%- set guests = is_state(house.guests, 'on') %}
             {%- set ns = namespace(rooms={}) %}
             {%- for k, r in rooms.items() %}
               {%- set on = is_state(r.light, 'on') %}
@@ -257,6 +306,8 @@ template:
               {%- set lvl = (level ~ '%') if level is not none else 'custom' %}
               {%- set nl = r.get('night') %}
               {%- set nl_text = 'left on' if nl is none else (nl ~ '%') if nl | int > 0 else 'off' %}
+              {%- set own = r.get('own_fade', false) %}
+              {%- set hold = guests and not ran and not own %}
               {%- set last = states('input_text.lighting_' ~ k) %}
               {%- set lux = states(r.sensor) | float(-1) if r.get('sensor') else -1 %}
               {%- set src = 'room' if lux >= 0 else 'outdoor' %}
@@ -268,13 +319,17 @@ template:
               {%- elif night_time %}
                 {%- set stage = 'On after the ' ~ hm(house.sweep) ~ ' sweep' if on else 'Off for the night' %}
                 {%- set nxt = 'watching for dark from ' ~ hm(house.dusk_from) %}
-              {%- elif wd %}
+              {%- elif wd and not own %}
                 {%- set stage = ('Wind Down · ' ~ lvl) if on else 'Off' %}
                 {%- set nxt = ('Bedtime at ' ~ wd_end) if not on else ('stays on, off at ' ~ hm(house.sweep)) if nl is none
                               else (nl_text ~ ' by ' ~ wd_end ~ ', then Bedtime') if nl | int > 0 else 'off by ' ~ wd_end %}
-              {%- elif ran or t >= house.bedtime %}
+              {%- elif (ran and not own) or (t >= house.bedtime and not hold) %}
                 {%- set stage = ('Night · ' ~ lvl) if on else 'Off for the night' %}
                 {%- set nxt = ('off at ' ~ hm(house.sweep)) if on else 'stays off tonight' %}
+              {%- elif hold and t >= fade_start %}
+                {%- set stage = ('Guests · ' ~ lvl) if on else 'Off' %}
+                {%- set nxt = '' if not on else ('stays on, off at ' ~ hm(house.sweep)) if nl is none
+                              else 'guests tonight — stays on until Bedtime' %}
               {%- elif t >= fade_start %}
                 {%- set stage = ('Evening fade · ' ~ lvl) if on else 'Off' %}
                 {%- set nxt = '' if not on else ('stays on, off at ' ~ hm(house.sweep)) if nl is none
@@ -285,6 +340,7 @@ template:
               {%- elif on %}
                 {%- set stage = 'On · ' ~ lvl %}
                 {%- set nxt = ('stays on until ' ~ hm(house.sweep)) if nl is none
+                              else 'guests tonight — stays on until Bedtime' if hold
                               else ('fades to ' ~ nl_text ~ ' from ' ~ hm(fade_start)) if nl | int > 0
                               else 'fades off from ' ~ hm(fade_start) %}
               {%- elif last.startswith(today) %}
@@ -299,6 +355,7 @@ template:
                   'stage': stage, 'next': nxt,
                   'dusk': r.dusk_level ~ '%',
                   'night': nl_text,
+                  'own_fade': own,
                   'evening': '' if nl is none else hm(fade_start) ~ ' → ' ~ nl_text,
                   'last': '' if last in ['unknown', 'unavailable', ''] else
                           (hm(last[11:16]) ~ last[16:]) if last.startswith(today) else last}}) %}
@@ -462,11 +519,12 @@ automation:
   # ── Evening fade ─────────────────────────────────────────────────────────────
   # evening_fade_minutes before bedtime (7:00 pm): every room that's on eases
   # to its night level, finishing at bedtime (script.lighting_fade_rooms).
-  # Skips if Bedtime already ran tonight or Wind Down is running.
+  # own_fade rooms (Solarium) always fade here. The rest are left alone on
+  # guest nights, if Bedtime already ran tonight, or while Wind Down runs.
   # (id kept from v1 "Evening dim", so the entity stays automation.lighting_evening_dim)
   - id: lighting_evening_dim
     alias: Lighting – Evening fade
-    description: At 7:00 pm every room that's on eases to its night level by Bedtime at 7:30 pm. See packages/lighting_schedule.yaml.
+    description: At 7:00 pm every room that's on eases to its night level by Bedtime at 7:30 pm (on guest nights, after an early Bedtime or during Wind Down, only the Solarium). See packages/lighting_schedule.yaml.
     mode: single
     trigger_variables: *lighting
     triggers:
@@ -481,22 +539,29 @@ automation:
             state: Vacation
       - condition: template
         value_template: >-
-          {%- set ran = state_attr(house.bedtime_ran, 'timestamp') | float(0) >= (today_at('04:00') - timedelta(days=1 if now() < today_at('04:00') else 0)).timestamp() %}
-          {{ is_state(house.pause, 'off') and not ran and is_state('script.lighting_wind_down', 'off') }}
+          {{ is_state(house.pause, 'off') }}
     actions:
       - variables:
           stamp: "{{ now().strftime('%Y-%m-%d %H:%M') }}"
+          held: >-
+            {%- set ran = state_attr(house.bedtime_ran, 'timestamp') | float(0) >= (today_at('04:00') - timedelta(days=1 if now() < today_at('04:00') else 0)).timestamp() %}
+            {{ 'guests tonight' if is_state(house.guests, 'on') else 'Bedtime already ran' if ran
+               else 'Wind Down is running' if is_state('script.lighting_wind_down', 'on') else '' }}
           keys: >-
-            {{ rooms.items() | rejectattr('1.night', 'none') | selectattr('1.light', 'is_state', 'on')
-               | map(attribute='0') | list }}
+            {%- set ns = namespace(k=[]) %}
+            {%- for k, r in rooms.items() if r.get('night') is not none and is_state(r.light, 'on')
+                  and (held == '' or r.get('own_fade', false)) %}
+              {%- set ns.k = ns.k + [k] %}
+            {%- endfor %}
+            {{ ns.k }}
       - action: input_text.set_value
         target:
           entity_id: input_text.lighting_house
         data:
           value: >-
             {%- set ns = namespace(n=[]) %}{% for k in keys %}{% set ns.n = ns.n + [rooms[k].name] %}{% endfor %}{% set names = ns.n %}
-            {{ stamp }} · Evening fade · {{ (names | join(', ') ~ ' easing to their night levels by '
-               ~ (today_at(house.bedtime).strftime('%-I:%M %p') | lower)) if names else 'nothing was on' }}
+            {%- set by = today_at(house.bedtime).strftime('%-I:%M %p') | lower %}
+            {{ stamp }} · Evening fade · {{ ('main floor left as it is (' ~ held ~ ') · ') if held }}{{ (names | join(', ') ~ (' easing to their night levels by ' if names | count > 1 else ' easing to its night level by ') ~ by) if names else 'nothing else to fade' if held else 'nothing was on' }}
       - if:
           - condition: template
             value_template: "{{ keys | count > 0 }}"
@@ -509,9 +574,10 @@ automation:
 
   # ── Bedtime at 7:30 pm ───────────────────────────────────────────────────────
   # Runs script.bedtime every night at bedtime, unless it already ran tonight.
+  # On guest nights it only writes a line saying it waited.
   - id: lighting_bedtime
     alias: Lighting – Bedtime
-    description: Runs Bedtime at 7:30 pm every night, unless it already ran tonight. See packages/lighting_schedule.yaml.
+    description: Runs Bedtime at 7:30 pm every night, unless it already ran tonight or guests are over. See packages/lighting_schedule.yaml.
     mode: single
     trigger_variables: *lighting
     triggers:
@@ -528,12 +594,22 @@ automation:
           {%- set ran = state_attr(house.bedtime_ran, 'timestamp') | float(0) >= (today_at('04:00') - timedelta(days=1 if now() < today_at('04:00') else 0)).timestamp() %}
           {{ is_state(house.pause, 'off') and not ran }}
     actions:
-      - action: script.turn_on
-        target:
-          entity_id: script.bedtime
-        data:
-          variables:
-            source: scheduled
+      - if:
+          - condition: template
+            value_template: "{{ is_state(house.guests, 'on') }}"
+        then:
+          - action: input_text.set_value
+            target:
+              entity_id: input_text.lighting_house
+            data:
+              value: "{{ now().strftime('%Y-%m-%d %H:%M') }} · Bedtime waited · guests tonight — press Wind Down or Bedtime when they leave"
+        else:
+          - action: script.turn_on
+            target:
+              entity_id: script.bedtime
+            data:
+              variables:
+                source: scheduled
 
   # ── Final sweep at 11:00 pm ──────────────────────────────────────────────────
   # Every light that's on, on the floors in settings, except the skipped areas
@@ -614,6 +690,78 @@ automation:
                             + (extras | map('state_attr', 'friendly_name') | map('lower') | map('regex_replace', '^', 'the ') | list) %}
             {{ stamp }} · Final sweep · {{ 'switched off ' ~ parts | join(' and ') if parts else 'nothing was on' }}
 
+  # ── Guest mode ───────────────────────────────────────────────────────────────
+  # A line in the house log when the Guests toggle changes; each morning at
+  # guest_reminder, if guest mode has been on for 8+ hours, a phone
+  # notification with "Turn off" / "Keep on"; "Turn off" switches it off.
+  # (The toggle's own automation, "House Mode - Update Guest MQTT Tracker",
+  # keeps the house in Home while guests are over.)
+  - id: lighting_guests
+    alias: Lighting – Guest mode
+    description: Logs the Guests toggle, and each morning asks whether guest mode should still be on. See packages/lighting_schedule.yaml.
+    mode: queued
+    trigger_variables: *lighting
+    triggers:
+      - trigger: state
+        entity_id: input_boolean.guests_present   # house.guests in SETTINGS
+        to:
+          - "on"
+          - "off"
+        id: toggled
+      - trigger: template
+        value_template: "{{ now().strftime('%H:%M') == house.guest_reminder }}"
+        id: morning
+      - trigger: event
+        event_type: mobile_app_notification_action
+        event_data:
+          action: LIGHTING_GUESTS_OFF
+        id: answer
+    actions:
+      - variables:
+          stamp: "{{ now().strftime('%Y-%m-%d %H:%M') }}"
+          since: "{{ (expand(house.guests) | first).last_changed | as_local }}"
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: toggled
+            sequence:
+              - action: input_text.set_value
+                target:
+                  entity_id: input_text.lighting_house
+                data:
+                  value: >-
+                    {{ stamp }} · Guests {{ 'on · the main floor waits for Wind Down or Bedtime tonight' if trigger.to_state.state == 'on'
+                       else 'off · back to the normal evening' }}
+          - conditions:
+              - condition: trigger
+                id: morning
+              - condition: template
+                value_template: "{{ is_state(house.guests, 'on') and now() - (since | as_datetime) > timedelta(hours=8) }}"
+            sequence:
+              - repeat:
+                  for_each: "{{ house.guest_notify }}"
+                  sequence:
+                    - action: "{{ repeat.item }}"
+                      data:
+                        title: Guest mode is still on
+                        message: >-
+                          On since {{ (since | as_datetime).strftime('%A') }} {{ (since | as_datetime).strftime('%-I:%M %p') | lower }}. While it's on, the main floor
+                          doesn't fade at 7:00 or go to Bedtime at 7:30 by itself.
+                        data:
+                          tag: lighting-guest-mode
+                          actions:
+                            - action: LIGHTING_GUESTS_OFF
+                              title: Turn off
+                            - action: LIGHTING_GUESTS_KEEP
+                              title: Keep on
+          - conditions:
+              - condition: trigger
+                id: answer
+            sequence:
+              - action: input_boolean.turn_off
+                target:
+                  entity_id: "{{ house.guests }}"
+
   # ── Exterior ─────────────────────────────────────────────────────────────────
   # On at sunset, off at exterior_off. Runs on vacation and when paused.
   - id: lighting_exterior
@@ -641,12 +789,15 @@ automation:
 script:
   # ── Bedtime ──────────────────────────────────────────────────────────────────
   # The Bedtime button, Wind Down's last step, and 7:30 pm by itself.
-  # Stops any fades, then: kids' switches, master bedroom scene and blinds,
-  # every room above its night level goes to it (kitchen and mudroom off,
-  # great room and foyer & offices 15%), the solarium fades off over 15 min.
+  # Kids' switches, master bedroom scene and blinds, and every room above its
+  # night level goes to it (kitchen and mudroom off, great room and foyer &
+  # offices 15%). own_fade rooms (Solarium) are left to their own 7:00 fade.
+  # Running fades aren't stopped: a room fading toward its night level stops
+  # by itself once Bedtime sets it (Ashley's fader cancels when the light no
+  # longer matches), and the Solarium's fade carries on.
   bedtime:
     alias: Bedtime
-    description: Kids' bedtime switches, master bedroom and bedroom blinds; kitchen and mudroom off, Great Room and Foyer & Offices to 15%, Solarium fades off over 15 minutes. Runs by itself at 7:30 pm.
+    description: Kids' bedtime switches, master bedroom and bedroom blinds; kitchen and mudroom off, Great Room and Foyer & Offices to 15%. Runs by itself at 7:30 pm (not on guest nights).
     icon: mdi:bed
     mode: single
     max_exceeded: silent
@@ -664,17 +815,17 @@ script:
       - action: script.turn_off
         target:
           entity_id: >-
-            {{ ['script.lighting_fade_rooms', 'script.light_fader']
+            {{ ['script.lighting_fade_rooms']
                + ([] if source | default('') == 'after Wind Down' else ['script.lighting_wind_down']) }}
       - variables:
           stamp: "{{ now().strftime('%Y-%m-%d %H:%M') }}"
           plan: >-
             {%- set ns = namespace(p=[]) %}
-            {%- for k, r in rooms.items() if r.get('night') is not none and is_state(r.light, 'on') %}
+            {%- for k, r in rooms.items() if r.get('night') is not none and not r.get('own_fade', false) and is_state(r.light, 'on') %}
               {%- set b = state_attr(r.light, 'brightness') %}
               {%- set lvl = (b | int / 2.55) | round(0) | int if b is not none else none %}
               {%- if r.night | int == 0 or lvl is none or lvl > r.night | int + 1 %}
-                {%- set ns.p = ns.p + [{'key': k, 'do': 'fade' if r.get('bedtime_fade') else 'off' if r.night | int == 0 else 'night'}] %}
+                {%- set ns.p = ns.p + [{'key': k, 'do': 'off' if r.night | int == 0 else 'night'}] %}
               {%- endif %}
             {%- endfor %}
             {{ ns.p }}
@@ -685,7 +836,7 @@ script:
         target:
           entity_id: "{{ house.bedtime_scenes }}"
       - repeat:
-          for_each: "{{ plan | rejectattr('do', 'eq', 'fade') | list }}"
+          for_each: "{{ plan }}"
           sequence:
             - variables:
                 r: "{{ rooms[repeat.item.key] }}"
@@ -710,19 +861,6 @@ script:
                 entity_id: "input_text.lighting_{{ repeat.item.key }}"
               data:
                 value: "{{ stamp }} · Bedtime · {{ 'switched off' if repeat.item.do == 'off' else 'down to ' ~ r.night ~ '% for the night' }}"
-      - variables:
-          fading: "{{ plan | selectattr('do', 'eq', 'fade') | map(attribute='key') | list }}"
-      - repeat:
-          for_each: "{{ fading }}"
-          sequence:
-            - action: script.turn_on
-              target:
-                entity_id: script.lighting_fade_rooms
-              data:
-                variables:
-                  room_keys: "{{ [repeat.item] }}"
-                  minutes: "{{ rooms[repeat.item].bedtime_fade }}"
-                  label: Bedtime
       - action: input_text.set_value
         target:
           entity_id: input_text.lighting_house
@@ -731,17 +869,20 @@ script:
             {%- set ns = namespace(p=[]) %}
             {%- for i in plan %}
               {%- set r = rooms[i.key] %}
-              {%- set ns.p = ns.p + [r.name ~ (' off' if i.do == 'off' else ' fading off over ' ~ r.bedtime_fade ~ ' min' if i.do == 'fade' else ' to ' ~ r.night ~ '%')] %}
+              {%- set ns.p = ns.p + [r.name ~ (' off' if i.do == 'off' else ' to ' ~ r.night ~ '%')] %}
             {%- endfor %}
             {{ (stamp ~ ' · Bedtime (' ~ (source | default('button', true)) ~ ') · kids, master bedroom and blinds set for the night · '
                ~ (ns.p | join(', ') if ns.p else 'no other rooms needed changing'))[:255] }}
 
   # ── Wind Down ────────────────────────────────────────────────────────────────
-  # The evening fade, but over wind_down_minutes, then Bedtime. If Bedtime is
-  # run while it's fading, Wind Down stops there.
+  # The evening fade, but over wind_down_minutes and without own_fade rooms
+  # (Solarium), then Bedtime. If the 7:00 fade is already running (not a guest
+  # night), it carries on and Bedtime comes at the end of Wind Down or at
+  # bedtime, whichever is sooner. If Bedtime is run while it's fading, Wind
+  # Down stops there.
   lighting_wind_down:
     alias: Wind Down
-    description: Every room that's on eases to its night level over 15 minutes, then Bedtime.
+    description: Every main-floor room that's on eases to its night level over 15 minutes, then Bedtime. The Solarium keeps its own 7:00 fade.
     icon: mdi:weather-night
     mode: single
     max_exceeded: silent
@@ -750,22 +891,30 @@ script:
       - variables:
           started: "{{ now().timestamp() }}"
           stamp: "{{ now().strftime('%Y-%m-%d %H:%M') }}"
-          ends: "{{ (now() + timedelta(minutes=house.wind_down_minutes | int)).strftime('%-I:%M %p') | lower }}"
+          # the 7:00 evening fade is already fading the main floor
+          in_fade: >-
+            {%- set t = now().strftime('%H:%M') %}
+            {%- set ran = state_attr(house.bedtime_ran, 'timestamp') | float(0) >= (today_at('04:00') - timedelta(days=1 if now() < today_at('04:00') else 0)).timestamp() %}
+            {{ (today_at(house.bedtime) - timedelta(minutes=house.evening_fade_minutes | int)).strftime('%H:%M') <= t < house.bedtime and not ran
+               and is_state(house.guests, 'off') and is_state(house.pause, 'off') }}
+          wait: >-
+            {%- set left = ((today_at(house.bedtime) - now()).total_seconds() / 60) | round(1) %}
+            {{ [house.wind_down_minutes | float, left] | min if in_fade else house.wind_down_minutes | float }}
+          ends: "{{ (now() + timedelta(minutes=wait | float)).strftime('%-I:%M %p') | lower }}"
           keys: >-
-            {{ rooms.items() | rejectattr('1.night', 'none') | selectattr('1.light', 'is_state', 'on')
-               | map(attribute='0') | list }}
-      - action: script.turn_off
-        target:
-          entity_id:
-            - script.lighting_fade_rooms
-            - script.light_fader
+            {%- set ns = namespace(k=[]) %}
+            {%- for k, r in rooms.items() if r.get('night') is not none and not r.get('own_fade', false)
+                  and is_state(r.light, 'on') and not in_fade %}
+              {%- set ns.k = ns.k + [k] %}
+            {%- endfor %}
+            {{ ns.k }}
       - action: input_text.set_value
         target:
           entity_id: input_text.lighting_house
         data:
           value: >-
             {%- set ns = namespace(n=[]) %}{% for k in keys %}{% set ns.n = ns.n + [rooms[k].name] %}{% endfor %}{% set names = ns.n %}
-            {{ stamp }} · Wind Down · {{ (names | join(', ') ~ ' easing to their night levels, ') if names }}Bedtime at {{ ends }}
+            {{ stamp }} · Wind Down · {{ 'the evening fade is already running, ' if in_fade else (names | join(', ') ~ ' easing to their night levels, ') if names }}Bedtime at {{ ends }}
       - if:
           - condition: template
             value_template: "{{ keys | count > 0 }}"
@@ -776,7 +925,7 @@ script:
               minutes: "{{ house.wind_down_minutes }}"
               label: Wind Down
       - delay:
-          minutes: "{{ house.wind_down_minutes }}"
+          minutes: "{{ wait }}"
       - if:
           - condition: template
             value_template: "{{ state_attr(house.bedtime_ran, 'timestamp') | float(0) < started | float(0) }}"

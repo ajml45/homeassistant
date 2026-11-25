@@ -3379,6 +3379,20 @@ views:
                     ha-card {
                         font-size: 12px !important;
                     }
+              - show_name: true
+                show_icon: true
+                show_state: true
+                type: button
+                name: Guests
+                icon: mdi:account-multiple
+                entity: input_boolean.guests_present
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card {
+                        font-size: 12px !important;
+                    }
           - type: custom:bubble-card
             card_type: separator
             name: Rooms
@@ -3777,7 +3791,7 @@ views:
                     height: 5px!important;
               }
           - type: markdown
-            content: '{%- set s = ''sensor.lighting_schedule'' %} {%- set t = state_attr(s, ''times'') or {} %} {%- if t %} {%- set rm = (state_attr(s, ''rooms'') or {}).values() | list %} {%- set glow = rm | rejectattr(''night'', ''in'', [''off'', ''left on'']) | list %} {%- set offs = rm | selectattr(''night'', ''eq'', ''off'') | map(attribute=''name'') | map(''lower'') | list %} **{{ t.fade_start }}** · evening fade — rooms that are on ease to their night level over {{ t.evening_fade_minutes }} min<br> **{{ t.bedtime }}** · Bedtime — kids, master bedroom, blinds · {% for r in glow %}{{ r.name | lower }} {{ r.night }}, {% endfor %}{{ offs | join('', '') }} off{{ '' · ran at '' ~ t.bedtime_ran ~ '' tonight'' if t.bedtime_ran }}<br> **{{ t.sweep }}** · final sweep — everything still on switches off, every floor except the master bedroom and bath{{ '', plus '' ~ (t.sweep_extras | join('', '') | lower) if t.sweep_extras }}<br> **Wind Down** · the same fade over {{ t.wind_down_minutes }} min, then Bedtime · **Bedtime** · right now<br> Dusk-on starts watching at {{ t.dusk_from }} · outdoor now {{ ''{:,}''.format(state_attr(s, ''outdoor'') | int(0)) }} lx<br> Last: {{ state_attr(s, ''last'') or ''nothing yet today'' }} {%- else %}Waiting for the schedule…{% endif %}'
+            content: '{{ state_attr(''sensor.lighting_schedule'', ''tonight'') or ''Waiting for the schedule…'' }}'
             card_mod:
               style: |
                 ha-markdown {
