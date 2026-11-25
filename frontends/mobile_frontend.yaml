@@ -304,25 +304,24 @@ views:
                         }
                   - type: custom:mushroom-chips-card
                     chips:
-                      - type: template
-                        icon: mdi:lightbulb
-                        content: '{{ states("sensor.kitchen_lights_on") }}'
-                        tap_action:
-                          action: more-info
-                        entity: sensor.kitchen_lights_on
-                        card_mod:
-                          style: |
-                            ha-card {
-                              {% if states("sensor.kitchen_lights_on") == '0' %}
-                                --text-color: var(--ha-card-background);
-                                --icon-primary-color: var(--ha-card-background);
-                              {% else %}
-                                --text-color: var(--accent-color);
-                                --icon-primary-color: var(--accent-color);
-                              {% endif %}
-                              position: absolute;
-                              left: 0px;
-                            }
+                      - type: conditional
+                        conditions:
+                          - entity: sensor.kitchen_lights_on
+                            state_not: '0'
+                        chip:
+                          type: template
+                          icon: mdi:lightbulb
+                          content: '{{ states("sensor.kitchen_lights_on") }}'
+                          tap_action:
+                            action: more-info
+                          entity: sensor.kitchen_lights_on
+                          icon_color: accent
+                          card_mod:
+                            style: |
+                              ha-card {
+                                position: absolute;
+                                left: 0px;
+                              }
                       - type: conditional
                         conditions:
                           - entity: binary_sensor.hue_motion_sensor_1_motion
@@ -459,25 +458,24 @@ views:
                                 }
                           - type: custom:mushroom-chips-card
                             chips:
-                              - type: template
-                                icon: mdi:lightbulb
-                                content: '{{ states("sensor.mudroom_lights_on") }}'
-                                tap_action:
-                                  action: more-info
-                                entity: sensor.mudroom_lights_on
-                                card_mod:
-                                  style: |
-                                    ha-card {
-                                      {% if states("sensor.mudroom_lights_on") == '0' %}
-                                        --text-color: var(--ha-card-background);
-                                        --icon-primary-color: var(--ha-card-background);
-                                      {% else %}
-                                        --text-color: var(--accent-color);
-                                        --icon-primary-color: var(--accent-color);
-                                      {% endif %}
-                                      position: absolute;
-                                      left: 0px;
-                                    }
+                              - type: conditional
+                                conditions:
+                                  - entity: sensor.mudroom_lights_on
+                                    state_not: '0'
+                                chip:
+                                  type: template
+                                  icon: mdi:lightbulb
+                                  content: '{{ states("sensor.mudroom_lights_on") }}'
+                                  tap_action:
+                                    action: more-info
+                                  entity: sensor.mudroom_lights_on
+                                  icon_color: accent
+                                  card_mod:
+                                    style: |
+                                      ha-card {
+                                        position: absolute;
+                                        left: 0px;
+                                      }
                               - type: conditional
                                 conditions:
                                   - entity: binary_sensor.washer_running
@@ -611,25 +609,24 @@ views:
                         }
                   - type: custom:mushroom-chips-card
                     chips:
-                      - type: template
-                        icon: mdi:lightbulb
-                        content: '{{ states("sensor.foyer_offices_lights_on") }}'
-                        tap_action:
-                          action: more-info
-                        entity: sensor.foyer_offices_lights_on
-                        card_mod:
-                          style: |
-                            ha-card {
-                              {% if states("sensor.foyer_offices_lights_on") == '0' %}
-                                --text-color: var(--ha-card-background);
-                                --icon-primary-color: var(--ha-card-background);
-                              {% else %}
-                                --text-color: var(--accent-color);
-                                --icon-primary-color: var(--accent-color);
-                              {% endif %}
-                              position: absolute;
-                              left: 0px;
-                            }
+                      - type: conditional
+                        conditions:
+                          - entity: sensor.foyer_offices_lights_on
+                            state_not: '0'
+                        chip:
+                          type: template
+                          icon: mdi:lightbulb
+                          content: '{{ states("sensor.foyer_offices_lights_on") }}'
+                          tap_action:
+                            action: more-info
+                          entity: sensor.foyer_offices_lights_on
+                          icon_color: accent
+                          card_mod:
+                            style: |
+                              ha-card {
+                                position: absolute;
+                                left: 0px;
+                              }
                       - type: conditional
                         conditions:
                           - entity: media_player.sonos_office
@@ -1471,25 +1468,24 @@ views:
                         }
                   - type: custom:mushroom-chips-card
                     chips:
-                      - type: template
-                        icon: mdi:lightbulb
-                        content: '{{ states("sensor.exterior_lights_on") }}'
-                        tap_action:
-                          action: more-info
-                        entity: sensor.exterior_lights_on
-                        card_mod:
-                          style: |
-                            ha-card {
-                              {% if states("sensor.exterior_lights_on") == '0' %}
-                                --text-color: var(--ha-card-background);
-                                --icon-primary-color: var(--ha-card-background);
-                              {% else %}
-                                --text-color: var(--accent-color);
-                                --icon-primary-color: var(--accent-color);
-                              {% endif %}
-                              position: absolute;
-                              left: 0px;
-                            }
+                      - type: conditional
+                        conditions:
+                          - entity: sensor.exterior_lights_on
+                            state_not: '0'
+                        chip:
+                          type: template
+                          icon: mdi:lightbulb
+                          content: '{{ states("sensor.exterior_lights_on") }}'
+                          tap_action:
+                            action: more-info
+                          entity: sensor.exterior_lights_on
+                          icon_color: accent
+                          card_mod:
+                            style: |
+                              ha-card {
+                                position: absolute;
+                                left: 0px;
+                              }
                     alignment: end
                     card_mod:
                       style: |
@@ -2947,77 +2943,248 @@ views:
               }
           - type: vertical-stack
             cards:
+              - type: conditional
+                conditions:
+                  - condition: numeric_state
+                    entity: sensor.nws_alerts
+                    above: 0
+                card:
+                  type: custom:weather-alerts-card
+                  entity: sensor.nws_alerts
               - type: custom:clock-weather-card
                 entity: weather.openweathermap
-                sun_entity: sun.sun
-                temperature_sensor: sensor.openweathermap_temperature
-                weather_icon_type: line
-                animated_icon: true
-                forecast_rows: 5
-                locale: en-US
-                time_format: 12
-                date_pattern: DDDD
-                hide_today_section: false
-                hide_forecast_section: false
-                hide_clock: true
-                hide_date: true
-                hourly_forecast: false
-                show_humidity: true
-                view_layout:
-                  grid-area: forecast
-                style: |
-                  ha-card {
-                    border: 1px solid var(--divider-color);
-                    border-radius: 12px;
-                    color: var(--primary-text-color) !important;
-                    background: var(--ha-card-background);
-                    --secondary-background-color: var(--divider-color);
-                  } 
-              - type: custom:horizon-card
-                moon: true
-                refresh_period: 60
-                fields:
-                  sunrise: true
-                  sunset: true
-                  dawn: true
-                  noon: true
-                  dusk: true
-                  azimuth: false
-                  sun_azimuth: false
-                  moon_azimuth: false
-                  elevation: false
-                  sun_elevation: false
-                  moon_elevation: false
-                  moonrise: true
-                  moonset: true
-                  moon_phase: true
-                southern_flip: false
-                language: en
-                time_format: language
-                number_format: language
-                view_layout:
-                  grid-area: horizon
-                style: |
-                  ha-card {
-                    background: var(--ha-card-background);
-                  }
-              - type: entities
-                view_layout:
-                  grid-area: air_quality
-                entities:
-                  - entity: sensor.u_s_air_pollution_level
-                  - entity: sensor.u_s_air_quality_index
-                  - entity: sensor.u_s_main_pollutant
-                title: Air Quality
-                footer:
-                  type: graph
-                  entity: sensor.u_s_air_quality_index
-                  detail: 2
-                  hours_to_show: 24
-                style: |
-                  ha-card {
-                    background: var(--ha-card-background);
-                  }
+                weather_icon_type: fill
+                tap_action:
+                  action: none
+                sections:
+                  header:
+                    weather_icon_size: 5rem
+                    rows:
+                      - font_size: 3.5rem
+                        segments:
+                          - type: weather
+                            attribute: temperature
+                            unit: °
+                      - font_size: 1.15rem
+                        segments:
+                          - type: weather
+                      - font_size: 1rem
+                        segments:
+                          - type: text
+                            text: Feels
+                          - type: weather
+                            attribute: apparent_temperature
+                            unit: °
+                      - font_size: 1rem
+                        segments:
+                          - type: icon
+                            icon: mdi:weather-windy
+                          - type: template
+                            template: '{% set w = ''weather.openweathermap'' %}{% set b = state_attr(w,''wind_bearing'') | float(0) %}{% set s = state_attr(w,''wind_speed'') | float(0) | round(0) | int %}{% set g = state_attr(w,''wind_gust_speed'') | float(0) | round(0) | int %}{{ [''N'',''NE'',''E'',''SE'',''S'',''SW'',''W'',''NW''][((b / 45) | round(0) | int) % 8] }} {{ s }}{{ ''–'' ~ g if g > s else '''' }} mph'
+                      - font_size: 1rem
+                        segments:
+                          - type: icon
+                            icon: mdi:water-percent
+                          - type: weather
+                            attribute: humidity
+                          - type: template
+                            template: '{% set u = state_attr(''weather.openweathermap'',''uv_index'') %}{% if u is not number %}{% set u = states(''sensor.openweathermap_uv_index'') | float(none) %}{% endif %}{{ ''· UV '' ~ (u | round(0) | int) if u is number else '''' }}'
+                      - font_size: 1rem
+                        segments:
+                          - type: icon
+                            icon: mdi:leaf
+                          - type: template
+                            template: '{{ states(''sensor.u_s_air_pollution_level'') | replace(''_'','' '') | title }} ({{ states(''sensor.u_s_air_quality_index'') }})'
+                    weather_icon_type: fill
+                  forecast_strip:
+                    hide: true
+                  forecast_list:
+                    weather_entity: weather.kpsm
+                    count: 7
+                    row_height: 40px
+                    weather_icon_type: fill
+              - type: custom:apexcharts-card
+                graph_span: 48h
+                span:
+                  start: hour
+                now:
+                  show: true
+                  color: var(--secondary-text-color)
+                header:
+                  show: true
+                  title: Next 48 hours
+                  show_states: false
+                yaxis:
+                  - id: temp
+                    decimals: 0
+                    min: '|-3|'
+                    max: '|+3|'
+                    apex_config:
+                      tickAmount: 4
+                  - id: pop
+                    show: false
+                    min: 0
+                    max: 100
+                apex_config:
+                  chart:
+                    height: 180
+                  legend:
+                    show: false
+                  grid:
+                    borderColor: rgba(138,141,130,0.35)
+                    strokeDashArray: 3
+                  plotOptions:
+                    bar:
+                      columnWidth: 70%
+                      borderRadius: 2
+                  xaxis:
+                    labels:
+                      datetimeFormatter:
+                        hour: h tt
+                        day: ddd
+                  tooltip:
+                    enabledOnSeries:
+                      - 1
+                      - 2
+                    x:
+                      format: ddd h tt
+                series:
+                  - entity: sensor.weather_hourly_48h
+                    name: Night
+                    type: area
+                    yaxis_id: pop
+                    color: var(--primary-text-color)
+                    opacity: 0.06
+                    stroke_width: 0
+                    curve: stepline
+                    extend_to: false
+                    show:
+                      in_header: false
+                      legend_value: false
+                    data_generator: |
+                      return (entity.attributes.forecast || []).map(f => {
+                        const d = new Date(f.t);
+                        const night = (f.day === null || f.day === undefined)
+                          ? (d.getHours() < 7 || d.getHours() >= 18)
+                          : !f.day;
+                        return [d.getTime(), night ? 100 : null];
+                      });
+                  - entity: sensor.weather_hourly_48h
+                    name: Rain chance
+                    type: column
+                    yaxis_id: pop
+                    color: var(--light-blue-color)
+                    opacity: 0.6
+                    unit: '%'
+                    extend_to: false
+                    data_generator: |
+                      return (entity.attributes.forecast || [])
+                        .map(f => [new Date(f.t).getTime(), f.pop || 0]);
+                  - entity: sensor.weather_hourly_48h
+                    name: Temperature
+                    type: line
+                    yaxis_id: temp
+                    color: var(--deep-orange-color)
+                    stroke_width: 3
+                    curve: smooth
+                    unit: °
+                    extend_to: false
+                    data_generator: |
+                      return (entity.attributes.forecast || [])
+                        .map(f => [new Date(f.t).getTime(), f.temp]);
+              - type: custom:weather-radar-card
+                map_style: Auto
+                zoom_level: 8
+                square_map: true
+                static_map: false
+                show_marker: true
+                show_playback: true
+                show_scale: false
+                show_zoom: false
+                show_range: false
+                show_recenter: false
+                extra_labels: false
+                markers:
+                  - entity: zone.home
+              - type: vertical-stack
+                cards:
+                  - type: tile
+                    entity: sensor.tide
+                    name: Tides
+                    icon: mdi:waves
+                    state_content:
+                      - station
+                      - state
+                      - summary
+                    tap_action:
+                      action: perform-action
+                      perform_action: input_select.select_next
+                      target:
+                        entity_id: input_select.weather_tide_station
+                    icon_tap_action:
+                      action: perform-action
+                      perform_action: input_select.select_next
+                      target:
+                        entity_id: input_select.weather_tide_station
+                  - type: custom:apexcharts-card
+                    graph_span: 30h
+                    span:
+                      start: hour
+                      offset: -6h
+                    now:
+                      show: true
+                      color: var(--secondary-text-color)
+                    header:
+                      show: false
+                    yaxis:
+                      - decimals: 0
+                        apex_config:
+                          tickAmount: 3
+                    apex_config:
+                      chart:
+                        height: 160
+                      legend:
+                        show: false
+                      grid:
+                        borderColor: rgba(138,141,130,0.35)
+                        strokeDashArray: 3
+                      xaxis:
+                        labels:
+                          datetimeFormatter:
+                            hour: h tt
+                            day: ddd
+                      tooltip:
+                        x:
+                          format: ddd h:mm tt
+                    series:
+                      - entity: sensor.tide
+                        name: Tide
+                        type: area
+                        color: var(--light-blue-color)
+                        opacity: 0.25
+                        stroke_width: 2.5
+                        unit: ' ft'
+                        extend_to: false
+                        show:
+                          in_header: false
+                        data_generator: |
+                          // smooth cosine curve between NOAA high/low points
+                          const p = entity.attributes.chart || [];
+                          const out = [];
+                          for (let i = 0; i < p.length - 1; i++) {
+                            const a = p[i], b = p[i + 1];
+                            for (let s = 0; s < 12; s++) {
+                              const f = s / 12;
+                              out.push([
+                                (a.ts + (b.ts - a.ts) * f) * 1000,
+                                a.v + (b.v - a.v) * (1 - Math.cos(Math.PI * f)) / 2
+                              ]);
+                            }
+                          }
+                          if (p.length) out.push([p[p.length - 1].ts * 1000, p[p.length - 1].v]);
+                          return out;
+                  - type: markdown
+                    content: '{% set ph = states(''sensor.moon_phase'') %} <ha-icon icon="mdi:weather-sunset-up"></ha-icon> {{ as_timestamp(state_attr(''sun.sun'',''next_rising'')) | timestamp_custom(''%-I:%M %p'') }} &nbsp;&nbsp;&nbsp; <ha-icon icon="mdi:weather-sunset-down"></ha-icon> {{ as_timestamp(state_attr(''sun.sun'',''next_setting'')) | timestamp_custom(''%-I:%M %p'') }} &nbsp;&nbsp;&nbsp; <ha-icon icon="mdi:moon-{{ ph | replace(''_moon'','''') | replace(''_'',''-'') }}"></ha-icon> {{ ph | replace(''_'','' '') | capitalize }}'
   - title: Mail
     path: mail
     icon: mdi:mail

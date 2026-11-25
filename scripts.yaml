@@ -1636,24 +1636,8 @@ trivia_victory:
     data:
       volume_level: 0.5
     action: media_player.volume_set
-  - target:
-      entity_id: media_player.sonos_office
-    data:
-      message: "Mission complete, Commander. This session, the Rebellion gained {{
-        states('input_number.rebellion_session_score') | int }} points, and the Empire
-        gained {{ states('input_number.empire_session_score') | int }} points. Overall,
-        the Rebellion has {{ states('input_number.rebellion_score') | int }} victories,
-        and the Empire has {{ states('input_number.empire_score') | int }} victories.
-        {% if states('input_number.rebellion_score') | int > states('input_number.empire_score')
-        | int %}\n  The Rebellion leads the galaxy. May the Force be with you.\n{%
-        elif states('input_number.empire_score') | int > states('input_number.rebellion_score')
-        | int %}\n  The Empire grows stronger. Train harder, young Jedi.\n{% else
-        %}\n  The galaxy hangs in balance. Every answer matters.\n{% endif %}\n"
-      options:
-        voice: GuyNeural
-    action: tts.cloud_say
   - delay:
-      seconds: 12
+      seconds: 10
   - target:
       entity_id: light.office_closet_rope_light
     data:

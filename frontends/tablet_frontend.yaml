@@ -137,8 +137,10 @@ sidebar:
                 background: var(--primary-text-color);
                 opacity: 0;
             }
-        - show_name: false
+        - show_name: true
           show_icon: true
+          name: All off
+          icon_height: 28px
           type: button
           entity: scene.off
           tap_action:
@@ -154,6 +156,8 @@ sidebar:
                 border-radius: 12px;
                 color: #EFEEE5;
                 --paper-item-icon-color: #EFEEE5;
+                --state-icon-color: #EFEEE5;
+                font-weight: 500;
               }
 views:
   - path: home
@@ -165,15 +169,13 @@ views:
       grid-template-areas: |
         "weather lights lights"
         "weather sonos calendar"
-        "family sonos calendar"
       mediaquery:
         '(max-width: 1200px)':
           grid-template-columns: 100%
-          grid-template-rows: auto auto auto auto auto
+          grid-template-rows: auto auto auto auto
           grid-template-areas: |
             "lights"
             "weather"
-            "family"
             "sonos"
             "calendar"
     icon: mdi:home
@@ -233,13 +235,89 @@ views:
                         template: '{{ states(''sensor.u_s_air_pollution_level'') | replace(''_'','' '') | title }} ({{ states(''sensor.u_s_air_quality_index'') }})'
                 weather_icon_type: fill
               forecast_strip:
+                weather_entity: weather.kpsm
                 time_pattern: h a
                 weather_icon_type: fill
                 count: 5
               forecast_list:
+                weather_entity: weather.kpsm
                 row_height: 32px
                 weather_icon_type: fill
             weather_icon_type: fill
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:hockey-sticks
+            name: Andrew
+            styles: |
+              ha-card { 
+                  color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                  background-color: var(--divider-color) !important;
+              }
+              h4 {
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+          - type: glance
+            show_name: false
+            show_icon: true
+            show_state: true
+            entities:
+              - entity: person.andrew
+                tap_action:
+                  action: navigate
+                  navigation_path: '#phone_locator'
+              - entity: sensor.andrews_phone_battery_level_2
+              - entity: sensor.andrews_phone_steps_2
+            columns: 3
+            card_mod:
+              style: |
+                ha-card {
+                  border: 1px solid var(--divider-color);
+                  border-radius: 12px;
+                } 
+                .entities.no-header {
+                  padding-top: 0px !important;
+                }
+          - type: custom:bubble-card
+            card_type: separator
+            icon: mdi:horse-human
+            name: Christina
+            styles: |
+              ha-card { 
+                  color: var(--primary-text-color) !important;
+              }
+              .separator-container div:last-child {
+                  background-color: var(--divider-color) !important;
+              }
+              h4 {
+              }
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+          - show_name: false
+            show_icon: true
+            show_state: true
+            type: glance
+            entities:
+              - entity: person.christina
+                tap_action:
+                  action: navigate
+                  navigation_path: '#phone_locator'
+              - entity: sensor.christina_s_iphone_battery_level
+              - entity: sensor.christina_s_iphone_steps
+            columns: 3
+            card_mod:
+              style: |
+                ha-card {
+                  border: 1px solid var(--divider-color);
+                  border-radius: 12px;
+                } 
+                .entities.no-header {
+                  padding-top: 0px !important;
+                }
         view_layout:
           grid-area: weather
       - type: vertical-stack
@@ -417,6 +495,8 @@ views:
                   service_data:
                     entity_id: script.bedtime
                 show_state: false
+              - type: custom:bubble-card
+                card_type: empty-column
         view_layout:
           grid-area: lights
       - type: vertical-stack
@@ -455,7 +535,7 @@ views:
             baseFontSize: 1.1
             heightPercentage: auto
             dynamicVolumeSlider: true
-            footerHeight: 5
+            footerHeight: 3.5
             sectionButtonIcons:
               player: mdi:play-circle-outline
             player:
@@ -515,104 +595,24 @@ views:
                     volume: 25
           - type: horizontal-stack
             cards:
-              - show_name: true
-                show_icon: true
-                type: button
-                name: Music Controls
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                name: Music
                 icon: mdi:tune-vertical
                 tap_action:
                   action: navigate
                   navigation_path: /isaac-lucas/music
-              - type: button
-                show_name: true
-                show_icon: true
-                name: Find Music
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                name: Find music
                 icon: mdi:magnify
                 tap_action:
                   action: navigate
                   navigation_path: '#music_browse'
         view_layout:
           grid-area: sonos
-      - type: vertical-stack
-        cards:
-          - type: custom:bubble-card
-            card_type: separator
-            icon: mdi:hockey-sticks
-            name: Andrew
-            styles: |
-              ha-card { 
-                  color: var(--primary-text-color) !important;
-              }
-              .separator-container div:last-child {
-                  background-color: var(--divider-color) !important;
-              }
-              h4 {
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-          - type: glance
-            show_name: false
-            show_icon: true
-            show_state: true
-            entities:
-              - entity: person.andrew
-                tap_action:
-                  action: navigate
-                  navigation_path: '#phone_locator'
-              - entity: sensor.andrew_from_home
-                image: local/images/other/frontdoor.jpg
-              - entity: sensor.andrews_phone_battery_level_2
-              - entity: sensor.andrews_phone_steps_2
-            columns: 4
-            card_mod:
-              style: |
-                ha-card {
-                  border: 1px solid var(--divider-color);
-                  border-radius: 12px;
-                } 
-                .entities.no-header {
-                  padding-top: 0px !important;
-                }
-          - type: custom:bubble-card
-            card_type: separator
-            icon: mdi:horse-human
-            name: Christina
-            styles: |
-              ha-card { 
-                  color: var(--primary-text-color) !important;
-              }
-              .separator-container div:last-child {
-                  background-color: var(--divider-color) !important;
-              }
-              h4 {
-              }
-              ha-card div div div:nth-child(2) {
-                    height: 5px!important;
-              }
-          - show_name: false
-            show_icon: true
-            show_state: true
-            type: glance
-            entities:
-              - entity: person.christina
-                tap_action:
-                  action: navigate
-                  navigation_path: '#phone_locator'
-              - entity: sensor.christina_to_home
-                image: local/images/other/frontdoor.jpg
-              - entity: sensor.christina_s_iphone_battery_level
-              - entity: sensor.christina_s_iphone_steps
-            columns: 4
-            card_mod:
-              style: |
-                ha-card {
-                  border: 1px solid var(--divider-color);
-                  border-radius: 12px;
-                } 
-                .entities.no-header {
-                  padding-top: 0px !important;
-                }
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#music_browse'
@@ -1479,14 +1479,17 @@ views:
                     card_mod:
                       style: |
                         ha-card {
-                            background:
-                              {% if state_attr('climate.kitchen', 'hvac_action') == 'cooling' %}
-                              linear-gradient(45deg, rgba(31,58,92,1), rgba(169,192,212,1))
-                              {% elif state_attr('climate.kitchen', 'hvac_action') == 'heating' %}
-                              linear-gradient(45deg, rgba(158,64,52,1), rgba(181,121,63,1))
-                              {% elif state_attr('climate.kitchen', 'preset_mode') == 'eco' %}
-                              linear-gradient(45deg, rgba(76,98,73,1), rgba(133,166,131,1)) 
-                              {% endif %};
+                          {% set a = state_attr('climate.kitchen', 'hvac_action') %}
+                          {% if a == 'heating' %}
+                            background: rgba(var(--rgb-red-color), 0.10);
+                            box-shadow: inset 4px 0 0 var(--red-color) !important;
+                          {% elif a == 'cooling' %}
+                            background: rgba(var(--rgb-light-blue-color), 0.10);
+                            box-shadow: inset 4px 0 0 var(--light-blue-color) !important;
+                          {% elif state_attr('climate.kitchen', 'preset_mode') == 'eco' %}
+                            background: rgba(var(--rgb-green-color), 0.10);
+                            box-shadow: inset 4px 0 0 var(--green-color) !important;
+                          {% endif %}
                         }
                   - type: custom:mini-graph-card
                     entities:
@@ -2030,14 +2033,17 @@ views:
                     card_mod:
                       style: |
                         ha-card {
-                            background:
-                              {% if state_attr('climate.upstairs', 'hvac_action') == 'cooling' %}
-                              linear-gradient(45deg, rgba(31,58,92,1), rgba(169,192,212,1))
-                              {% elif state_attr('climate.upstairs', 'hvac_action') == 'heating' %}
-                              linear-gradient(45deg, rgba(158,64,52,1), rgba(181,121,63,1))
-                              {% elif state_attr('climate.upstairs', 'preset_mode') == 'eco' %}
-                              linear-gradient(45deg, rgba(76,98,73,1), rgba(133,166,131,1)) 
-                              {% endif %};
+                          {% set a = state_attr('climate.upstairs', 'hvac_action') %}
+                          {% if a == 'heating' %}
+                            background: rgba(var(--rgb-red-color), 0.10);
+                            box-shadow: inset 4px 0 0 var(--red-color) !important;
+                          {% elif a == 'cooling' %}
+                            background: rgba(var(--rgb-light-blue-color), 0.10);
+                            box-shadow: inset 4px 0 0 var(--light-blue-color) !important;
+                          {% elif state_attr('climate.upstairs', 'preset_mode') == 'eco' %}
+                            background: rgba(var(--rgb-green-color), 0.10);
+                            box-shadow: inset 4px 0 0 var(--green-color) !important;
+                          {% endif %}
                         }
                   - type: custom:mini-graph-card
                     entities:
@@ -2548,14 +2554,17 @@ views:
                     card_mod:
                       style: |
                         ha-card {
-                            background:
-                              {% if state_attr('climate.solarium', 'hvac_action') == 'cooling' %}
-                              linear-gradient(45deg, rgba(31,58,92,1), rgba(169,192,212,1))
-                              {% elif state_attr('climate.solarium', 'hvac_action') == 'heating' %}
-                              linear-gradient(45deg, rgba(158,64,52,1), rgba(181,121,63,1))
-                              {% elif state_attr('climate.solarium', 'preset_mode') == 'eco' %}
-                              linear-gradient(45deg, rgba(76,98,73,1), rgba(133,166,131,1)) 
-                              {% endif %};
+                          {% set a = state_attr('climate.solarium', 'hvac_action') %}
+                          {% if a == 'heating' %}
+                            background: rgba(var(--rgb-red-color), 0.10);
+                            box-shadow: inset 4px 0 0 var(--red-color) !important;
+                          {% elif a == 'cooling' %}
+                            background: rgba(var(--rgb-light-blue-color), 0.10);
+                            box-shadow: inset 4px 0 0 var(--light-blue-color) !important;
+                          {% elif state_attr('climate.solarium', 'preset_mode') == 'eco' %}
+                            background: rgba(var(--rgb-green-color), 0.10);
+                            box-shadow: inset 4px 0 0 var(--green-color) !important;
+                          {% endif %}
                         }
                   - type: custom:mini-graph-card
                     entities:
@@ -3551,18 +3560,50 @@ views:
                       - type: custom:clock-weather-card
                         entity: weather.openweathermap
                         sun_entity: sun.sun
-                        temperature_sensor: sensor.openweathermap_temperature
-                        weather_icon_type: line
-                        animated_icon: true
-                        forecast_rows: 4
                         locale: en-US
-                        time_format: 12
-                        date_pattern: DDDD
-                        hide_today_section: false
-                        hide_forecast_section: false
-                        hide_clock: true
-                        hide_date: true
-                        hourly_forecast: false
+                        weather_icon_type: line
+                        tap_action:
+                          action: none
+                        sections:
+                          header:
+                            weather_icon_size: 5rem
+                            rows:
+                              - font_size: 3.5rem
+                                segments:
+                                  - type: weather
+                                    attribute: temperature
+                                    unit: °
+                              - font_size: 1.15rem
+                                segments:
+                                  - type: weather
+                              - font_size: 1rem
+                                segments:
+                                  - type: text
+                                    text: Feels
+                                  - type: weather
+                                    attribute: apparent_temperature
+                                    unit: °
+                              - font_size: 1rem
+                                segments:
+                                  - type: icon
+                                    icon: mdi:weather-windy
+                                  - type: template
+                                    template: '{% set w = ''weather.openweathermap'' %}{% set b = state_attr(w,''wind_bearing'') | float(0) %}{% set s = state_attr(w,''wind_speed'') | float(0) | round(0) | int %}{% set g = state_attr(w,''wind_gust_speed'') | float(0) | round(0) | int %}{{ [''N'',''NE'',''E'',''SE'',''S'',''SW'',''W'',''NW''][((b / 45) | round(0) | int) % 8] }} {{ s }}{{ ''–'' ~ g if g > s else '''' }} mph'
+                              - font_size: 1rem
+                                segments:
+                                  - type: icon
+                                    icon: mdi:water-percent
+                                  - type: weather
+                                    attribute: humidity
+                                  - type: template
+                                    template: '{% set u = state_attr(''weather.openweathermap'',''uv_index'') %}{% if u is not number %}{% set u = states(''sensor.openweathermap_uv_index'') | float(none) %}{% endif %}{{ ''· UV '' ~ (u | round(0) | int) if u is number else '''' }}'
+                          forecast_strip:
+                            weather_entity: weather.kpsm
+                            count: 6
+                            time_pattern: h a
+                          forecast_list:
+                            weather_entity: weather.kpsm
+                            count: 4
                         style: |
                           ha-card {
                             border: 1px solid var(--divider-color);
@@ -5320,18 +5361,20 @@ views:
           action: none
         sections:
           header:
-            weather_icon_size: 8rem
+            weather_icon_size: 5.5rem
             rows:
-              - font_size: 5rem
+              - font_size: 4.5rem
                 segments:
                   - type: weather
                     attribute: temperature
                     unit: °
-              - font_size: 1.4rem
+              - font_size: 1.25rem
                 segments:
                   - type: weather
+              - font_size: 1rem
+                segments:
                   - type: text
-                    text: · Feels
+                    text: Feels
                   - type: weather
                     attribute: apparent_temperature
                     unit: °
@@ -5340,18 +5383,15 @@ views:
                   - type: icon
                     icon: mdi:weather-windy
                   - type: template
-                    template: '{% set w = ''weather.openweathermap'' %} {% set b = state_attr(w,''wind_bearing'') | float(0) %} {{ [''N'',''NE'',''E'',''SE'',''S'',''SW'',''W'',''NW''][((b / 45) | round(0) | int) % 8] }} {{ state_attr(w,''wind_speed'') | float(0) | round(0) | int }} mph {%- set g = state_attr(w,''wind_gust_speed'') %} {%- if g %} · gusts {{ g | float(0) | round(0) | int }}{% endif %}'
+                    template: '{% set w = ''weather.openweathermap'' %}{% set b = state_attr(w,''wind_bearing'') | float(0) %}{% set s = state_attr(w,''wind_speed'') | float(0) | round(0) | int %}{% set g = state_attr(w,''wind_gust_speed'') | float(0) | round(0) | int %}{{ [''N'',''NE'',''E'',''SE'',''S'',''SW'',''W'',''NW''][((b / 45) | round(0) | int) % 8] }} {{ s }}{{ ''–'' ~ g if g > s else '''' }} mph'
               - font_size: 1rem
                 segments:
                   - type: icon
                     icon: mdi:water-percent
                   - type: weather
                     attribute: humidity
-                  - type: icon
-                    icon: mdi:sun-wireless
-                  - type: weather
-                    attribute: uv_index
-                    unit: ' UV'
+                  - type: template
+                    template: '{% set u = state_attr(''weather.openweathermap'',''uv_index'') %}{% if u is not number %}{% set u = states(''sensor.openweathermap_uv_index'') | float(none) %}{% endif %}{{ ''· UV '' ~ (u | round(0) | int) if u is number else '''' }}'
               - font_size: 1rem
                 segments:
                   - type: icon
@@ -5482,6 +5522,7 @@ views:
           - type: tile
             entity: sensor.tide
             name: Tides
+            icon: mdi:waves
             state_content:
               - station
               - state
@@ -5561,18 +5602,23 @@ views:
     type: custom:grid-layout
     badges: []
     layout:
-      grid-template-columns: 34% 34% 32%
-      grid-template-rows: auto
+      grid-template-columns: 1fr 1fr 1fr
+      grid-template-rows: auto auto
+      grid-gap: 12px
       grid-template-areas: |
-        "tonight week list"
+        "tonight tomorrow week"
+        "market  amazon   bjs"
       mediaquery:
         '(max-width: 1200px)':
           grid-template-columns: 100%
-          grid-template-rows: auto auto auto
+          grid-template-rows: auto
           grid-template-areas: |
             "tonight"
+            "tomorrow"
             "week"
-            "list"
+            "market"
+            "amazon"
+            "bjs"
     cards:
       - type: vertical-stack
         cards:
@@ -5621,6 +5667,10 @@ views:
                 .recipe-link {
                   text-transform: none !important;
                 }
+        view_layout:
+          grid-area: tonight
+      - type: vertical-stack
+        cards:
           - type: custom:bubble-card
             card_type: separator
             icon: mdi:weather-sunset-up
@@ -5667,7 +5717,7 @@ views:
                   text-transform: none !important;
                 }
         view_layout:
-          grid-area: tonight
+          grid-area: tomorrow
       - type: vertical-stack
         cards:
           - type: custom:bubble-card
@@ -5707,7 +5757,6 @@ views:
             disableEventLink: true
             disableLocationLink: true
             noEventText: Nothing planned yet
-            cardHeight: 420px
             style: |
               ha-card {
                 border: 1px solid var(--divider-color);
@@ -5715,20 +5764,8 @@ views:
                 background: var(--ha-card-background);
               }
           - type: custom:bubble-card
-            card_type: separator
-            styles: |
-              ha-card {
-                color: var(--primary-text-color) !important;
-              }
-              .separator-container div:last-child {
-                background-color: var(--divider-color) !important;
-              }
-              ha-card div div div:nth-child(2) {
-                height: 5px!important;
-              }
-          - type: custom:bubble-card
             card_type: button
-            button_type: custom
+            button_type: name
             entity: sensor.mealie_recipes
             name: Find a recipe
             icon: mdi:book-open-page-variant-outline
@@ -5743,7 +5780,6 @@ views:
             tap_action:
               action: navigate
               navigation_path: '#recipes'
-            rows: '2'
         view_layout:
           grid-area: week
       - type: vertical-stack
@@ -5778,6 +5814,7 @@ views:
           - type: todo-list
             entity: todo.mealie_market_basket
             display_order: none
+            hide_completed: true
             card_mod:
               style: |
                 ha-card {
@@ -5785,9 +5822,13 @@ views:
                   border-left: 4px solid #D23429;
                   border-radius: 12px;
                   box-shadow: none;
-                  max-height: 300px;
+                  max-height: 320px;
                   overflow-y: auto;
                 }
+        view_layout:
+          grid-area: market
+      - type: vertical-stack
+        cards:
           - type: custom:bubble-card
             card_type: separator
             icon: mdi:package-variant-closed
@@ -5815,6 +5856,7 @@ views:
           - type: todo-list
             entity: todo.mealie_amazon
             display_order: none
+            hide_completed: true
             card_mod:
               style: |
                 ha-card {
@@ -5822,9 +5864,13 @@ views:
                   border-left: 4px solid #146EB4;
                   border-radius: 12px;
                   box-shadow: none;
-                  max-height: 240px;
+                  max-height: 320px;
                   overflow-y: auto;
                 }
+        view_layout:
+          grid-area: amazon
+      - type: vertical-stack
+        cards:
           - type: custom:bubble-card
             card_type: separator
             icon: mdi:store-outline
@@ -5855,6 +5901,7 @@ views:
           - type: todo-list
             entity: todo.mealie_bjs
             display_order: none
+            hide_completed: true
             card_mod:
               style: |
                 ha-card {
@@ -5862,11 +5909,11 @@ views:
                   border-left: 4px solid #B82038;
                   border-radius: 12px;
                   box-shadow: none;
-                  max-height: 240px;
+                  max-height: 320px;
                   overflow-y: auto;
                 }
         view_layout:
-          grid-area: list
+          grid-area: bjs
       - type: custom:bubble-card
         card_type: pop-up
         hash: '#recipes'

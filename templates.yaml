@@ -203,7 +203,9 @@
       unit_of_measurement: "°F"
       device_class: temperature
       state_class: measurement
-      state: "{{ state_attr('climate.kitchen', 'temperature') }}"
+      # heat/cool mode has no single set point: plot the heating one
+      state: "{{ state_attr('climate.kitchen', 'temperature') or state_attr('climate.kitchen', 'target_temp_low') }}"
+      availability: "{{ (state_attr('climate.kitchen', 'temperature') or state_attr('climate.kitchen', 'target_temp_low')) is number }}"
 
     - name: "Solarium Set Temperature Line"
       unique_id: solarium_set_temperature_line
@@ -211,7 +213,9 @@
       unit_of_measurement: "°F"
       device_class: temperature
       state_class: measurement
-      state: "{{ state_attr('climate.solarium', 'temperature') }}"
+      # heat/cool mode has no single set point: plot the heating one
+      state: "{{ state_attr('climate.solarium', 'temperature') or state_attr('climate.solarium', 'target_temp_low') }}"
+      availability: "{{ (state_attr('climate.solarium', 'temperature') or state_attr('climate.solarium', 'target_temp_low')) is number }}"
 
     - name: "Upstairs Set Temperature Line"
       unique_id: upstairs_set_temperature_line
@@ -219,7 +223,9 @@
       unit_of_measurement: "°F"
       device_class: temperature
       state_class: measurement
-      state: "{{ state_attr('climate.upstairs', 'temperature') }}"
+      # heat/cool mode has no single set point: plot the heating one
+      state: "{{ state_attr('climate.upstairs', 'temperature') or state_attr('climate.upstairs', 'target_temp_low') }}"
+      availability: "{{ (state_attr('climate.upstairs', 'temperature') or state_attr('climate.upstairs', 'target_temp_low')) is number }}"
 
     - name: Kitchen Tablet Memory Free
       unique_id: kitchen_tablet_memory_free_pct
