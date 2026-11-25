@@ -128,7 +128,7 @@ views:
                   - type: custom:mushroom-legacy-template-card
                     primary: Great Room
                     secondary: |-
-                      {{ states('sensor.kitchen_temperature') | round(0) }}°F | {{
+                      {{ states('sensor.hue_motion_sensor_3_temperature') | round(0) }}°F | {{
                             states('sensor.kitchen_humidity') | round(0) }}%
                     icon: mdi:sofa
                     entity: light.great_room
@@ -168,86 +168,76 @@ views:
                           entity: sensor.great_room_lights_on
                           icon_color: accent
                           card_mod:
-                            style: |
+                            style: |-
                               ha-card {
                                 position: absolute;
                                 left: 0px;
-                              } 
+                                --text-color: var(--accent-color);
+                                color: var(--accent-color);
+                              }
+                      - type: conditional
+                        conditions:
+                          - entity: media_player.google_tv_great_room
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:television
+                          icon_color: purple
+                          entity: media_player.google_tv_great_room
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: media_player.sonos_great_room_soundbar
                             state: playing
+                          - entity: media_player.google_tv_great_room
+                            state_not: 'on'
                         chip:
                           type: template
-                          icon_color: disabled
-                          icon: |-
-                            {% if state_attr('media_player.sonos_great_room_soundbar', 'source') == 'TV'  %}
-                              mdi:television-classic
-                            {% else %}
-                              mdi:music  
-                            {% endif %}
+                          icon: mdi:music
+                          icon_color: purple
+                          entity: media_player.sonos_great_room_soundbar
+                          tap_action:
+                            action: more-info
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hue_motion_sensor_3_motion
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:motion-sensor
+                          entity: binary_sensor.hue_motion_sensor_3_motion
+                          tap_action:
+                            action: more-info
+                          card_mod:
+                            style: |-
+                              ha-card {
+                                --color: var(--secondary-text-color);
+                                --icon-color: var(--secondary-text-color);
+                                color: var(--secondary-text-color);
+                              }
                       - type: conditional
                         conditions:
                           - entity: vacuum.matic
                             state: cleaning
                         chip:
                           type: template
-                          icon_color: accent
                           icon: mdi:robot-vacuum
+                          icon_color: green
+                          entity: vacuum.matic
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: vacuum.dusty_jr
                             state: cleaning
                         chip:
                           type: template
-                          icon_color: accent
                           icon: mdi:robot-vacuum
-                      - type: conditional
-                        conditions:
-                          - entity: climate.kitchen
-                            state_not: 'off'
-                        chip:
-                          type: template
-                          entity: climate.kitchen
-                          icon: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              mdi:fire
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              mdi:leaf
-                            {% else %}
-                              none
-                            {% endif %}
-                          icon_color: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              blue 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              orange
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              green
-                            {% else %}
-                              none
-                            {% endif %} 
-                          card_mod:
-                            style: |
-                              @keyframes rotation {
-                                0% {
-                                  transform: rotate(0deg);
-                                }
-                                100% {
-                                  transform: rotate(360deg);
-                                }
-                              }
-                              ha-card {
-                                {% if is_state('climate.kitchen', 'fan_only') %}
-                                  animation: rotation 2s linear infinite;
-                                {% endif %}
-                              }
+                          icon_color: green
+                          entity: vacuum.dusty_jr
+                          tap_action:
+                            action: more-info
                     alignment: end
                     card_mod:
                       style: |
@@ -317,89 +307,105 @@ views:
                           entity: sensor.kitchen_lights_on
                           icon_color: accent
                           card_mod:
-                            style: |
+                            style: |-
                               ha-card {
                                 position: absolute;
                                 left: 0px;
+                                --text-color: var(--accent-color);
+                                color: var(--accent-color);
                               }
                       - type: conditional
                         conditions:
-                          - entity: binary_sensor.hue_motion_sensor_1_motion
+                          - entity: media_player.google_tv_kitchen
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: disabled
-                          icon: mdi:motion-sensor
-                          card_mod:
-                            style:
-                              mushroom-shape-icon$: |
-                                ha-icon {
-                                  --icon-animation: clip 2s linear infinite;
-                                }
-                                @keyframes clip {
-                                  50% { clip-path: polygon(0 0, 55% 0, 100% 100%, 0 100%); }
-                                }
-                                .shape {
-                                  --shape-animation: motion 2s linear infinite;
-                                }
-                                @keyframes motion {
-                                  0%, 100% { --shape-color: rgba(var(--rgb-blue-color), 0.3); }
-                                  50% { --shape-color: rgba(var(--rgb-blue-color), 0.2); }
-                                }
+                          icon: mdi:television
+                          icon_color: purple
+                          entity: media_player.google_tv_kitchen
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: media_player.sonos_kitchen
                             state: playing
                         chip:
                           type: template
-                          icon_color: disabled
                           icon: mdi:music
+                          icon_color: purple
+                          entity: media_player.sonos_kitchen
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
-                          - entity: climate.kitchen
-                            state_not: 'off'
+                          - entity: binary_sensor.hue_motion_sensor_1_motion
+                            state: 'on'
                         chip:
                           type: template
-                          entity: climate.kitchen
-                          icon: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              mdi:fire
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              mdi:leaf
-                            {% else %}
-                              none
-                            {% endif %}
-                          icon_color: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              blue
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              orange
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              green
-                            {% else %}
-                              none
-                            {% endif %} 
+                          icon: mdi:motion-sensor
+                          entity: binary_sensor.hue_motion_sensor_1_motion
+                          tap_action:
+                            action: more-info
                           card_mod:
-                            style: |
-                              @keyframes rotation {
-                                0% {
-                                  transform: rotate(0deg);
-                                }
-                                100% {
-                                  transform: rotate(360deg);
-                                }
-                              }
+                            style: |-
                               ha-card {
-                                {% if is_state('climate.kitchen', 'fan_only') %}
-                                  animation: rotation 2s linear infinite;
-                                {% endif %}
+                                --color: var(--secondary-text-color);
+                                --icon-color: var(--secondary-text-color);
+                                color: var(--secondary-text-color);
                               }
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hvac_kitchen_heating_on
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:fire
+                          icon_color: deep-orange
+                          entity: climate.kitchen
+                          tap_action:
+                            action: more-info
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hvac_kitchen_ac_on
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:air-conditioner
+                          icon_color: blue
+                          entity: climate.kitchen
+                          tap_action:
+                            action: more-info
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hvac_kitchen_fan_on
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:fan
+                          icon_color: light-blue
+                          entity: climate.kitchen
+                          tap_action:
+                            action: more-info
+                          card_mod:
+                            style: |-
+                              ha-card {
+                                animation: rotation 5s linear infinite;
+                              }
+                              @keyframes rotation {
+                                0% { transform: rotate(0deg); }
+                                100% { transform: rotate(360deg); }
+                              }
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hvac_kitchen_eco_mode
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:leaf
+                          icon_color: green
+                          entity: climate.kitchen
+                          tap_action:
+                            action: more-info
                     alignment: end
                     card_mod:
                       style: |
@@ -471,10 +477,12 @@ views:
                                   entity: sensor.mudroom_lights_on
                                   icon_color: accent
                                   card_mod:
-                                    style: |
+                                    style: |-
                                       ha-card {
                                         position: absolute;
                                         left: 0px;
+                                        --text-color: var(--accent-color);
+                                        color: var(--accent-color);
                                       }
                               - type: conditional
                                 conditions:
@@ -483,7 +491,7 @@ views:
                                 chip:
                                   type: template
                                   icon: mdi:washing-machine
-                                  icon_color: accent
+                                  icon_color: green
                                   content: '{{ states(''sensor.washer_time_display'') }}'
                                   tap_action:
                                     action: navigate
@@ -495,7 +503,7 @@ views:
                                 chip:
                                   type: template
                                   icon: mdi:tumble-dryer
-                                  icon_color: accent
+                                  icon_color: green
                                   content: '{{ states(''sensor.dryer_time_display'') }}'
                                   tap_action:
                                     action: navigate
@@ -511,52 +519,6 @@ views:
                                   tap_action:
                                     action: navigate
                                     navigation_path: /mobile-rooms/cleaning
-                              - type: conditional
-                                conditions:
-                                  - entity: climate.kitchen
-                                    state_not: 'off'
-                                chip:
-                                  type: template
-                                  entity: climate.kitchen
-                                  icon: |-
-                                    {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                                      mdi:air-conditioner 
-                                    {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                                      mdi:fire
-                                    {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                                      mdi:fan
-                                    {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                                      mdi:leaf
-                                    {% else %}
-                                      none
-                                    {% endif %}
-                                  icon_color: |-
-                                    {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                                      blue 
-                                    {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                                      orange
-                                    {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                                      light-blue
-                                    {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                                      green
-                                    {% else %}
-                                      none
-                                    {% endif %} 
-                                  card_mod:
-                                    style: |
-                                      @keyframes rotation {
-                                        0% {
-                                          transform: rotate(0deg);
-                                        }
-                                        100% {
-                                          transform: rotate(360deg);
-                                        }
-                                      }
-                                      ha-card {
-                                        {% if is_state('climate.kitchen', 'fan_only') %}
-                                          animation: rotation 2s linear infinite;
-                                        {% endif %}
-                                      }
                             alignment: end
                             card_mod:
                               style: |
@@ -622,81 +584,74 @@ views:
                           entity: sensor.foyer_offices_lights_on
                           icon_color: accent
                           card_mod:
-                            style: |
+                            style: |-
                               ha-card {
                                 position: absolute;
                                 left: 0px;
+                                --text-color: var(--accent-color);
+                                color: var(--accent-color);
                               }
+                      - type: conditional
+                        conditions:
+                          - entity: media_player.google_tv_office
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:television
+                          icon_color: purple
+                          entity: media_player.google_tv_office
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: media_player.sonos_office
                             state: playing
                         chip:
                           type: template
-                          icon_color: disabled
                           icon: mdi:music
+                          icon_color: purple
+                          entity: media_player.sonos_office
+                          tap_action:
+                            action: more-info
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.office_occupancy
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:motion-sensor
+                          entity: binary_sensor.office_occupancy
+                          tap_action:
+                            action: more-info
+                          card_mod:
+                            style: |-
+                              ha-card {
+                                --color: var(--secondary-text-color);
+                                --icon-color: var(--secondary-text-color);
+                                color: var(--secondary-text-color);
+                              }
                       - type: conditional
                         conditions:
                           - entity: switch.office_noise_machine
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: disabled
                           icon: mdi:headphones
+                          icon_color: light-blue
+                          entity: switch.office_noise_machine
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: switch.office_fan
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: disabled
                           icon: phu:pedastal-fan
-                      - type: conditional
-                        conditions:
-                          - entity: climate.kitchen
-                            state_not: 'off'
-                        chip:
-                          type: template
-                          entity: climate.kitchen
-                          icon: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              mdi:fire
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              mdi:leaf
-                            {% else %}
-                              none
-                            {% endif %}
-                          icon_color: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              blue 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              orange
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              green
-                            {% else %}
-                              none
-                            {% endif %}    
-                          card_mod:
-                            style: |
-                              @keyframes rotation {
-                                0% {
-                                  transform: rotate(0deg);
-                                }
-                                100% {
-                                  transform: rotate(360deg);
-                                }
-                              }
-                              ha-card {
-                                {% if is_state('climate.kitchen', 'fan_only') %}
-                                  animation: rotation 2s linear infinite;
-                                {% endif %}
-                              }
+                          icon_color: light-blue
+                          entity: switch.office_fan
+                          tap_action:
+                            action: more-info
                     alignment: end
                     card_mod:
                       style: |
@@ -768,40 +723,43 @@ views:
                           entity: sensor.master_suite_lights_on
                           icon_color: accent
                           card_mod:
-                            style: |
+                            style: |-
                               ha-card {
                                 position: absolute;
                                 left: 0px;
-                              } 
+                                --text-color: var(--accent-color);
+                                color: var(--accent-color);
+                              }
                       - type: conditional
                         conditions:
-                          - entity: media_player.tv_samsung_led46
+                          - entity: media_player.google_tv_master_bedroom
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: disabled
-                          icon: mdi:television-classic
+                          icon: mdi:television
+                          icon_color: purple
+                          entity: media_player.google_tv_master_bedroom
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: fan.master_bedroom_ceiling_fan
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: light-blue
                           icon: mdi:fan
+                          icon_color: light-blue
+                          entity: fan.master_bedroom_ceiling_fan
+                          tap_action:
+                            action: more-info
                           card_mod:
-                            style: |
-                              @keyframes rotation {
-                                0% {
-                                  transform: rotate(0deg);
-                                }
-                                100% {
-                                  transform: rotate(360deg);
-                                }
-                              }
+                            style: |-
                               ha-card {
-                                animation: rotation linear infinite;
-                                animation-duration: 5s;
+                                animation: rotation 5s linear infinite;
+                              }
+                              @keyframes rotation {
+                                0% { transform: rotate(0deg); }
+                                100% { transform: rotate(360deg); }
                               }
                       - type: conditional
                         conditions:
@@ -809,62 +767,22 @@ views:
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: light-blue
                           icon: mdi:sleep
+                          icon_color: light-blue
+                          entity: switch.master_bedroom_noise_machine
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: switch.air_purifier
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: light-blue
                           icon: mdi:air-filter
-                      - type: conditional
-                        conditions:
-                          - entity: climate.kitchen
-                            state_not: 'off'
-                        chip:
-                          type: template
-                          entity: climate.kitchen
-                          icon: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              mdi:fire
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              mdi:leaf
-                            {% else %}
-                              none
-                            {% endif %}
-                          icon_color: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              blue
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              orange
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              green
-                            {% else %}
-                              none
-                            {% endif %}  
-                          card_mod:
-                            style: |
-                              @keyframes rotation {
-                                0% {
-                                  transform: rotate(0deg);
-                                }
-                                100% {
-                                  transform: rotate(360deg);
-                                }
-                              }
-                              ha-card {
-                                {% if is_state('climate.kitchen', 'fan_only') %}
-                                  animation: rotation 2s linear infinite;
-                                {% endif %}
-                              }
+                          icon_color: light-blue
+                          entity: switch.air_purifier
+                          tap_action:
+                            action: more-info
                     alignment: end
                     card_mod:
                       style: |
@@ -930,40 +848,47 @@ views:
                           entity: sensor.upstairs_lights_on
                           icon_color: accent
                           card_mod:
-                            style: |
+                            style: |-
                               ha-card {
                                 position: absolute;
                                 left: 0px;
-                              } 
+                                --text-color: var(--accent-color);
+                                color: var(--accent-color);
+                              }
                       - type: conditional
                         conditions:
-                          - entity: media_player.guest_room_tv
+                          - entity: media_player.google_tv_guest_bedroom
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: disabled
-                          icon: mdi:television-classic
+                          icon: mdi:television
+                          icon_color: purple
+                          entity: media_player.google_tv_guest_bedroom
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: switch.charlotte_fan
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: '#FDE2E6'
                           icon: mdi:fan
+                          entity: switch.charlotte_fan
+                          tap_action:
+                            action: more-info
                           card_mod:
-                            style: |
-                              @keyframes rotation {
-                                0% {
-                                  transform: rotate(0deg);
-                                }
-                                100% {
-                                  transform: rotate(360deg);
-                                }
+                            style: |-
+                              ha-card {
+                                --color: var(--person-charlotte-color, #FDE2E6);
+                                --icon-color: var(--person-charlotte-color, #FDE2E6);
+                                color: var(--person-charlotte-color, #FDE2E6);
                               }
                               ha-card {
-                                animation: rotation linear infinite;
-                                animation-duration: 5s;
+                                animation: rotation 5s linear infinite;
+                              }
+                              @keyframes rotation {
+                                0% { transform: rotate(0deg); }
+                                100% { transform: rotate(360deg); }
                               }
                       - type: conditional
                         conditions:
@@ -971,78 +896,132 @@ views:
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: '#FDE2E6'
                           icon: mdi:sleep
+                          entity: switch.charlotte_noise_machine
+                          tap_action:
+                            action: more-info
+                          card_mod:
+                            style: |-
+                              ha-card {
+                                --color: var(--person-charlotte-color, #FDE2E6);
+                                --icon-color: var(--person-charlotte-color, #FDE2E6);
+                                color: var(--person-charlotte-color, #FDE2E6);
+                              }
                       - type: conditional
                         conditions:
                           - entity: switch.charlotte_night_light
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: '#FDE2E6'
                           icon: mdi:weather-night
+                          entity: switch.charlotte_night_light
+                          tap_action:
+                            action: more-info
+                          card_mod:
+                            style: |-
+                              ha-card {
+                                --color: var(--person-charlotte-color, #FDE2E6);
+                                --icon-color: var(--person-charlotte-color, #FDE2E6);
+                                color: var(--person-charlotte-color, #FDE2E6);
+                              }
                       - type: conditional
                         conditions:
                           - entity: switch.henry_noise_machine
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: '#CED8DF'
                           icon: mdi:sleep
+                          entity: switch.henry_noise_machine
+                          tap_action:
+                            action: more-info
+                          card_mod:
+                            style: |-
+                              ha-card {
+                                --color: var(--person-henry-color, #CED8DF);
+                                --icon-color: var(--person-henry-color, #CED8DF);
+                                color: var(--person-henry-color, #CED8DF);
+                              }
                       - type: conditional
                         conditions:
                           - entity: switch.henry_night_light
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: '#CED8DF'
                           icon: mdi:weather-night
+                          entity: switch.henry_night_light
+                          tap_action:
+                            action: more-info
+                          card_mod:
+                            style: |-
+                              ha-card {
+                                --color: var(--person-henry-color, #CED8DF);
+                                --icon-color: var(--person-henry-color, #CED8DF);
+                                color: var(--person-henry-color, #CED8DF);
+                              }
                       - type: conditional
                         conditions:
-                          - entity: climate.upstairs
-                            state_not: 'off'
+                          - entity: vacuum.jar_jar
+                            state: cleaning
                         chip:
                           type: template
+                          icon: mdi:robot-vacuum
+                          icon_color: green
+                          entity: vacuum.jar_jar
+                          tap_action:
+                            action: more-info
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hvac_upstairs_heating_on
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:fire
+                          icon_color: deep-orange
                           entity: climate.upstairs
-                          icon: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              mdi:fire
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              mdi:leaf
-                            {% else %}
-                              none
-                            {% endif %}
-                          icon_color: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              blue 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              orange
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              green
-                            {% else %}
-                              none
-                            {% endif %}    
+                          tap_action:
+                            action: more-info
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hvac_upstairs_ac_on
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:air-conditioner
+                          icon_color: blue
+                          entity: climate.upstairs
+                          tap_action:
+                            action: more-info
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hvac_upstairs_fan_on
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:fan
+                          icon_color: light-blue
+                          entity: climate.upstairs
+                          tap_action:
+                            action: more-info
                           card_mod:
-                            style: |
-                              @keyframes rotation {
-                                0% {
-                                  transform: rotate(0deg);
-                                }
-                                100% {
-                                  transform: rotate(360deg);
-                                }
-                              }
+                            style: |-
                               ha-card {
-                                {% if is_state('climate.upstairs', 'fan_only') %}
-                                  animation: rotation 2s linear infinite;
-                                {% endif %}
+                                animation: rotation 5s linear infinite;
                               }
+                              @keyframes rotation {
+                                0% { transform: rotate(0deg); }
+                                100% { transform: rotate(360deg); }
+                              }
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hvac_upstairs_eco_mode
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:leaf
+                          icon_color: green
+                          entity: climate.upstairs
+                          tap_action:
+                            action: more-info
                     alignment: end
                     card_mod:
                       style: |
@@ -1069,7 +1048,7 @@ views:
                 cards:
                   - type: custom:mushroom-legacy-template-card
                     primary: Basement
-                    secondary: '{{ states(''sensor.hue_motion_sensor_3_temperature'') | round(0) }}°F'
+                    secondary: '{% set t = states(''sensor.wine_cellar_temperature'') %}{{ (t | float | round(0) | int) ~ ''°F'' if is_number(t) else '''' }}'
                     icon: mdi:hammer-screwdriver
                     entity: light.basement
                     tap_action:
@@ -1108,97 +1087,63 @@ views:
                           entity: sensor.basement_lights_on
                           icon_color: accent
                           card_mod:
-                            style: |
+                            style: |-
                               ha-card {
                                 position: absolute;
                                 left: 0px;
-                              } 
+                                --text-color: var(--accent-color);
+                                color: var(--accent-color);
+                              }
                       - type: conditional
                         conditions:
-                          - entity: binary_sensor.hue_motion_sensor_3_motion
+                          - entity: media_player.google_tv_basement
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: disabled
-                          icon: mdi:motion-sensor
-                          card_mod:
-                            style:
-                              mushroom-shape-icon$: |
-                                ha-icon {
-                                  --icon-animation: clip 2s linear infinite;
-                                }
-                                @keyframes clip {
-                                  50% { clip-path: polygon(0 0, 55% 0, 100% 100%, 0 100%); }
-                                }
-                                .shape {
-                                  --shape-animation: motion 2s linear infinite;
-                                }
-                                @keyframes motion {
-                                  0%, 100% { --shape-color: rgba(var(--rgb-blue-color), 0.3); }
-                                  50% { --shape-color: rgba(var(--rgb-blue-color), 0.2); }
-                                }
-                      - type: conditional
-                        conditions:
-                          - entity: binary_sensor.wine_cellar_occupancy
-                            state: 'on'
-                        chip:
-                          type: template
+                          icon: mdi:television
                           icon_color: purple
-                          icon: mdi:glass-wine
+                          entity: media_player.google_tv_basement
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: media_player.sonos_basement
                             state: playing
                         chip:
                           type: template
-                          icon_color: disabled
                           icon: mdi:music
+                          icon_color: purple
+                          entity: media_player.sonos_basement
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
-                          - entity: climate.solarium
-                            state_not: 'off'
+                          - entity: binary_sensor.wine_cellar_occupancy
+                            state: 'on'
                         chip:
                           type: template
-                          entity: climate.solarium
-                          icon: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              mdi:fire
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              mdi:leaf
-                            {% else %}
-                              none
-                            {% endif %}
-                          icon_color: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              blue 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              orange
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              green
-                            {% else %}
-                              none
-                            {% endif %}   
+                          icon: mdi:glass-wine
+                          entity: binary_sensor.wine_cellar_occupancy
+                          tap_action:
+                            action: more-info
                           card_mod:
-                            style: |
-                              @keyframes rotation {
-                                0% {
-                                  transform: rotate(0deg);
-                                }
-                                100% {
-                                  transform: rotate(360deg);
-                                }
-                              }
+                            style: |-
                               ha-card {
-                                {% if is_state('climate.solarium', 'fan_only') %}
-                                  animation: rotation 2s linear infinite;
-                                {% endif %}
+                                --color: var(--secondary-text-color);
+                                --icon-color: var(--secondary-text-color);
+                                color: var(--secondary-text-color);
                               }
+                      - type: conditional
+                        conditions:
+                          - entity: vacuum.mopey
+                            state: cleaning
+                        chip:
+                          type: template
+                          icon: mdi:robot-vacuum
+                          icon_color: green
+                          entity: vacuum.mopey
+                          tap_action:
+                            action: more-info
                     alignment: end
                     card_mod:
                       style: |
@@ -1269,68 +1214,76 @@ views:
                           entity: sensor.solarium_lights_on
                           icon_color: accent
                           card_mod:
-                            style: |
+                            style: |-
                               ha-card {
                                 position: absolute;
                                 left: 0px;
-                              } 
+                                --text-color: var(--accent-color);
+                                color: var(--accent-color);
+                              }
+                      - type: conditional
+                        conditions:
+                          - entity: media_player.sonos_solarium
+                            state: playing
+                        chip:
+                          type: template
+                          icon: mdi:music
+                          icon_color: purple
+                          entity: media_player.sonos_solarium
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: binary_sensor.hue_motion_sensor_2_motion
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: disabled
                           icon: mdi:motion-sensor
+                          entity: binary_sensor.hue_motion_sensor_2_motion
+                          tap_action:
+                            action: more-info
                           card_mod:
-                            style:
-                              mushroom-shape-icon$: |
-                                ha-icon {
-                                  --icon-animation: clip 2s linear infinite;
-                                }
-                                @keyframes clip {
-                                  50% { clip-path: polygon(0 0, 55% 0, 100% 100%, 0 100%); }
-                                }
-                                .shape {
-                                  --shape-animation: motion 2s linear infinite;
-                                }
-                                @keyframes motion {
-                                  0%, 100% { --shape-color: rgba(var(--rgb-blue-color), 0.3); }
-                                  50% { --shape-color: rgba(var(--rgb-blue-color), 0.2); }
-                                }
-                      - type: template
-                        icon: mdi:pool-thermometer
-                        tap_action:
-                          action: more-info
-                        entity: sensor.pool_temperature
-                        icon_color: |-
-                          {% set temp = states(entity) %}
-                          {% if temp == 'unavailable' %}
-                            slategray  
-                          {% else %}
-                            {% set temp_num = temp | int(default=-1) %}
-                            {% if temp_num < 70 %}
-                              navy
-                            {% elif temp_num < 80 %}
-                              blue
-                            {% elif temp_num < 89 %}
-                              yellow
-                            {% elif temp_num < 93 %}
-                              orange
-                            {% elif temp_num >= 93 %}
-                              red
-                            {% else %}
-                              green  
-                            {% endif %}
-                          {% endif %}
+                            style: |-
+                              ha-card {
+                                --color: var(--secondary-text-color);
+                                --icon-color: var(--secondary-text-color);
+                                color: var(--secondary-text-color);
+                              }
+                      - type: conditional
+                        conditions:
+                          - entity: sensor.pool_temperature
+                            state_not: unavailable
+                          - entity: sensor.pool_temperature
+                            state_not: unknown
+                        chip:
+                          type: template
+                          icon: mdi:pool-thermometer
+                          icon_color: '{% set t = states(''sensor.pool_temperature'') | float(0) %}{{ ''blue'' if t < 70 else ''light-blue'' if t < 80 else ''amber'' if t < 89 else ''deep-orange'' if t < 93 else ''red'' }}'
+                          entity: sensor.pool_temperature
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: switch.pool_heater
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: red
                           icon: mdi:heat-wave
+                          icon_color: deep-orange
+                          entity: switch.pool_heater
+                          tap_action:
+                            action: more-info
+                      - type: conditional
+                        conditions:
+                          - entity: switch.pool_lights
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:pool
+                          icon_color: light-blue
+                          entity: switch.pool_lights
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: switch.lion_fountain
@@ -1339,81 +1292,73 @@ views:
                           type: template
                           icon: mdi:fountain
                           icon_color: light-blue
-                          card_mod:
-                            style:
-                              mushroom-shape-icon$: |
-                                ha-icon {
-                                  --icon-animation: fountain 1.5s ease infinite;
-                                }
-                                @keyframes fountain {
-                                  0%, 100 { clip-path: polygon(0 100%, 0 0, 100% 0, 100% 100%); }
-                                  50% { clip-path: polygon(0 100%, 0 47%, 100% 47%, 100% 100%); }
-                                  60% { clip-path: polygon(0 100%, 100% 100%, 100% 37%, 79% 36%, 71% 21%, 56% 25%, 44% 25%, 31% 20%, 20% 36%, 0 36%); }
-                                  70% { clip-path: polygon(0 100%, 100% 100%, 100% 36%, 79% 36%, 71% 22%, 81% 1%, 24% 0, 31% 21%, 20% 36%, 0 36%); }
-                                  80% { clip-path: polygon(0 100%, 100% 100%, 100% 36%, 79% 36%, 76% 28%, 100% 0, 0 0, 23% 28%, 20% 36%, 0 36%); }
-                                }
+                          entity: switch.lion_fountain
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
                           - entity: switch.fish_mini_light
                             state: 'on'
                         chip:
                           type: template
-                          icon_color: orange
                           icon: mdi:fish
+                          icon_color: light-blue
+                          entity: switch.fish_mini_light
+                          tap_action:
+                            action: more-info
                       - type: conditional
                         conditions:
-                          - entity: media_player.sonos_solarium
-                            state: playing
+                          - entity: binary_sensor.hvac_solarium_heating_on
+                            state: 'on'
                         chip:
                           type: template
-                          icon_color: disabled
-                          icon: mdi:music
-                      - type: conditional
-                        conditions:
-                          - entity: climate.solarium
-                            state_not: 'off'
-                        chip:
-                          type: template
+                          icon: mdi:fire
+                          icon_color: deep-orange
                           entity: climate.solarium
-                          icon: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              mdi:air-conditioner 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              mdi:fire
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              mdi:fan
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              mdi:leaf
-                            {% else %}
-                              none
-                            {% endif %}
-                          icon_color: |-
-                            {% if state_attr(entity, 'hvac_action') == 'cooling' %}
-                              blue 
-                            {% elif state_attr(entity, 'hvac_action') == 'heating'  %}
-                              orange
-                            {% elif state_attr(entity, 'fan_mode') == 'on' %}
-                              light-blue
-                            {% elif state_attr(entity, 'hvac_action') == 'idle' and state_attr(entity, 'preset_mode') == 'eco' %}
-                              green
-                            {% else %}
-                              none
-                            {% endif %} 
+                          tap_action:
+                            action: more-info
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hvac_solarium_ac_on
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:air-conditioner
+                          icon_color: blue
+                          entity: climate.solarium
+                          tap_action:
+                            action: more-info
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hvac_solarium_fan_on
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:fan
+                          icon_color: light-blue
+                          entity: climate.solarium
+                          tap_action:
+                            action: more-info
                           card_mod:
-                            style: |
-                              @keyframes rotation {
-                                0% {
-                                  transform: rotate(0deg);
-                                }
-                                100% {
-                                  transform: rotate(360deg);
-                                }
-                              }
+                            style: |-
                               ha-card {
-                                {% if is_state('climate.solarium', 'fan_only') %}
-                                  animation: rotation 2s linear infinite;
-                                {% endif %}
+                                animation: rotation 5s linear infinite;
                               }
+                              @keyframes rotation {
+                                0% { transform: rotate(0deg); }
+                                100% { transform: rotate(360deg); }
+                              }
+                      - type: conditional
+                        conditions:
+                          - entity: binary_sensor.hvac_solarium_eco_mode
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:leaf
+                          icon_color: green
+                          entity: climate.solarium
+                          tap_action:
+                            action: more-info
                     alignment: end
                     card_mod:
                       style: |
@@ -1481,11 +1426,24 @@ views:
                           entity: sensor.exterior_lights_on
                           icon_color: accent
                           card_mod:
-                            style: |
+                            style: |-
                               ha-card {
                                 position: absolute;
                                 left: 0px;
+                                --text-color: var(--accent-color);
+                                color: var(--accent-color);
                               }
+                      - type: conditional
+                        conditions:
+                          - entity: switch.christmas_lights_outside
+                            state: 'on'
+                        chip:
+                          type: template
+                          icon: mdi:pine-tree
+                          icon_color: red
+                          entity: switch.christmas_lights_outside
+                          tap_action:
+                            action: more-info
                     alignment: end
                     card_mod:
                       style: |
@@ -1776,10 +1734,23 @@ views:
                   - entity: light.great_room_bar_cabinet_lights
                     icon: mdi:glass-cocktail
                     name: Bar Cabinet
+                  - type: custom:slider-entity-row
+                    entity: light.soundbar_shelf_light
+                    name: Soundbar Shelf
+                    toggle: true
+                    colorize: true
                   - type: divider
                   - entity: cover.back_sliders
                   - entity: cover.side_slider
                 state_color: true
+              - type: glance
+                entities:
+                  - entity: sensor.hue_motion_sensor_3_temperature
+                    name: Temp
+                  - entity: sensor.hue_motion_sensor_3_illuminance
+                    name: Illuminance
+                  - entity: binary_sensor.hue_motion_sensor_3_motion
+                    name: Motion
               - type: custom:bubble-card
                 card_type: separator
                 name: Media
@@ -1795,13 +1766,6 @@ views:
                 icon: mdi:multimedia
               - type: media-control
                 entity: media_player.google_tv_great_room
-              - type: custom:mushroom-light-card
-                entity: light.soundbar_shelf_light
-                use_light_color: true
-                show_brightness_control: true
-                show_color_temp_control: true
-                show_color_control: true
-                collapsible_controls: true
               - type: entities
                 entities:
                   - entity: select.sonos_great_room_soundbar_speech_enhancement
@@ -2139,6 +2103,11 @@ views:
                     entity: light.office_ceiling_light
                     name: Ceiling Light
                     toggle: true
+                  - type: custom:slider-entity-row
+                    entity: light.office_closet_rope_light
+                    name: Rope Light
+                    toggle: true
+                    colorize: true
                   - entity: switch.office_noise_machine
                     name: Bookshelf Noise Machine
                     icon: mdi:bookshelf
@@ -2503,14 +2472,6 @@ views:
                   - entity: light.solarium_sconces
                   - entity: light.basement_sitting_area_spot_lights
                 show_header_toggle: false
-              - type: glance
-                entities:
-                  - entity: sensor.hue_motion_sensor_3_temperature
-                    name: Temperature
-                  - entity: sensor.hue_motion_sensor_3_illuminance
-                    name: Illuminance
-                  - entity: binary_sensor.hue_motion_sensor_3_motion
-                    name: Motion
               - type: custom:bubble-card
                 card_type: separator
                 name: Wine Cellar
@@ -2620,11 +2581,6 @@ views:
                   - type: custom:slider-entity-row
                     entity: light.solarium_spot_lights
                     name: Fountain Spots
-                    toggle: true
-                    colorize: true
-                  - type: custom:slider-entity-row
-                    entity: light.office_closet_rope_light
-                    name: Rope Light
                     toggle: true
                     colorize: true
                   - type: custom:fold-entity-row

@@ -518,7 +518,6 @@
   icon: mdi:home-account
 - id: office_watch_tv
   name: Office Watch TV
-  icon: mdi:television-classic
   entities:
     switch.office_fan: 'on'
     switch.office_noise_machine: 'off'
@@ -528,6 +527,8 @@
       volume_level: 0.1
     light.offices: 'off'
     light.office: 'off'
+    light.office_closet_rope_light: 'off'
+  icon: mdi:television-classic
 - id: great_room_watch_tv
   name: Great Room Watch TV
   icon: mdi:television-classic

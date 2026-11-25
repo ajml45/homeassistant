@@ -356,6 +356,15 @@ mudroom_tablet:
       rgb-disabled-color: "185, 187, 177"
       rgb-state-default-color: "138, 106, 46"
 
+      # ── Person colours ──
+      # Charlotte #FDE2E6 and Henry #CED8DF are sanctioned identity colours, but
+      # both vanish on a light card (1.2:1 and 1.0:1). By day they step down to
+      # the same hues at chip-icon strength; at dusk they are the exact hex.
+      person-charlotte-color: "#96505E"
+      rgb-person-charlotte-color: "150, 80, 94"
+      person-henry-color: "#54687A"
+      rgb-person-henry-color: "84, 104, 122"
+
       # ── Semantic ──
       error-color: "#9E4034"
       warning-color: "#C08A2E"
@@ -561,6 +570,12 @@ mudroom_tablet:
       rgb-white-color: "239, 238, 229"
       rgb-disabled-color: "110, 114, 104"
       rgb-state-default-color: "196, 160, 82"
+
+      # ── Person colours ── the sanctioned hex, unchanged at dusk.
+      person-charlotte-color: "#FDE2E6"
+      rgb-person-charlotte-color: "253, 226, 230"
+      person-henry-color: "#CED8DF"
+      rgb-person-henry-color: "206, 216, 223"
 
       # ── Semantic ──
       error-color: "#D0736A"
