@@ -1249,24 +1249,24 @@ views:
                                 --icon-color: var(--secondary-text-color);
                                 color: var(--secondary-text-color);
                               }
-                                            - type: template
-                                        entity: input_boolean.pool_guard
-                                        icon: '{{ ''mdi:shield-lock'' if is_state(''input_boolean.pool_guard'', ''on'') else ''mdi:shield-off-outline'' }}'
-                                        icon_color: '{{ ''red'' if is_state(''script.pool_guard_breach'', ''on'') else ''amber'' if is_state(''script.pool_guard_run'', ''on'') else ''light-blue'' if is_state(''input_boolean.pool_guard'', ''on'') else ''disabled'' }}'
-                                        tap_action:
-                                          action: toggle
-                                        hold_action:
-                                          action: more-info
-                                        card_mod:
-                                          style: |-
-                                            ha-card {
-                                              {% if is_state('script.pool_guard_breach', 'on') %}
-                                              animation: pool-guard-pulse 1s ease-in-out infinite;
-                                              {% endif %}
-                                            }
-                                            @keyframes pool-guard-pulse {
-                                              50% { opacity: 0.35; }
-                                            }
+                      - type: template
+                        entity: input_boolean.pool_guard
+                        icon: '{{ ''mdi:shield-lock'' if is_state(''input_boolean.pool_guard'', ''on'') else ''mdi:shield-off-outline'' }}'
+                        icon_color: '{{ ''red'' if is_state(''script.pool_guard_breach'', ''on'') else ''amber'' if is_state(''script.pool_guard_run'', ''on'') else ''light-blue'' if is_state(''input_boolean.pool_guard'', ''on'') else ''disabled'' }}'
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        card_mod:
+                          style: |-
+                            ha-card {
+                              {% if is_state('script.pool_guard_breach', 'on') %}
+                              animation: pool-guard-pulse 1s ease-in-out infinite;
+                              {% endif %}
+                            }
+                            @keyframes pool-guard-pulse {
+                              50% { opacity: 0.35; }
+                            }
                       - type: conditional
                         conditions:
                           - entity: sensor.pool_temperature
@@ -4175,6 +4175,11 @@ views:
                       cards:
                         - type: custom:bubble-card
                           card_type: button
+                          styles: |
+                            .bubble-name {
+                              font-size: 14px;
+                              font-weight: 500;
+                            }
                           button_type: name
                           entity: button.matic_intelligent_clean
                           name: Longest waiting
@@ -4187,6 +4192,11 @@ views:
                               entity_id: button.matic_intelligent_clean
                         - type: custom:bubble-card
                           card_type: button
+                          styles: |
+                            .bubble-name {
+                              font-size: 14px;
+                              font-weight: 500;
+                            }
                           button_type: name
                           entity: vacuum.matic
                           name: Pause
@@ -4199,6 +4209,11 @@ views:
                               entity_id: vacuum.matic
                         - type: custom:bubble-card
                           card_type: button
+                          styles: |
+                            .bubble-name {
+                              font-size: 14px;
+                              font-weight: 500;
+                            }
                           button_type: name
                           entity: vacuum.matic
                           name: Dock
@@ -5321,6 +5336,14 @@ views:
                 showMonth: false
                 showDatePerEvent: false
                 showEventDate: false
+                card_mod:
+                  style: |
+                    ha-card {
+                      font-size: 14px;
+                    }
+                    .event-title {
+                      font-weight: 500;
+                    }
               - type: custom:bubble-card
                 card_type: separator
                 name: Henry
@@ -5371,6 +5394,14 @@ views:
                 showMonth: false
                 showDatePerEvent: false
                 showEventDate: false
+                card_mod:
+                  style: |
+                    ha-card {
+                      font-size: 14px;
+                    }
+                    .event-title {
+                      font-weight: 500;
+                    }
   - subview: true
     title: Blinds
     path: blinds
@@ -5601,12 +5632,17 @@ views:
             showRelativeTime: false
             showMultiDay: false
             cardHeight: 600px
-            style: |
-              ha-card {
-                border: 1px solid var(--divider-color);
-                border-radius: 12px;
-                background: var(--ha-card-background);
-              } 
+            card_mod:
+              style: |
+                ha-card {
+                  font-size: 14px;
+                  border: 1px solid var(--divider-color);
+                  border-radius: 12px;
+                  background: var(--ha-card-background);
+                }
+                .event-title {
+                  font-weight: 500;
+                }
     type: masonry
   - subview: true
     title: Observability
