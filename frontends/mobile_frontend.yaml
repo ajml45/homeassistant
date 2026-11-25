@@ -5243,9 +5243,9 @@ views:
             entities:
               - entity: person.andrew
                 hold_action: none
-              - entity: sensor.andrews_phone_battery_level_2
-              - entity: sensor.andrews_phone_distance_2
-              - entity: sensor.andrews_phone_steps_2
+              - entity: sensor.andrews_phone_battery_level
+              - entity: sensor.andrews_phone_distance
+              - entity: sensor.andrews_phone_steps
               - entity: sensor.andrew_from_home
                 image: local/images/other/frontdoor.jpg
               - entity: sensor.andrew_to_berwick

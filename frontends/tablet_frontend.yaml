@@ -269,8 +269,8 @@ views:
                 tap_action:
                   action: navigate
                   navigation_path: '#phone_locator'
-              - entity: sensor.andrews_phone_battery_level_2
-              - entity: sensor.andrews_phone_steps_2
+              - entity: sensor.andrews_phone_battery_level
+              - entity: sensor.andrews_phone_steps
             columns: 3
             card_mod:
               style: |

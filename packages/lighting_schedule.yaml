@@ -141,7 +141,7 @@ template:
           light: light.solarium
           floor: Basement Level
           sensor: sensor.hue_motion_sensor_2_illuminance
-          dark_below: 900
+          dark_below: 250
           outdoor_below: 10000
           dusk_level: 70
           ramp: 0
@@ -164,7 +164,7 @@ template:
         guests: input_boolean.guests_present   # the Guests toggle (Settings and Lighting pages)
         guest_reminder: "09:00"         # morning check: still on? (phone notification)
         guest_notify:                   # phone(s) for that check — Developer tools → Actions → "mobile_app"
-          - notify.mobile_app_andrews_phone_2
+          - notify.mobile_app_andrews_phone
         dusk_from: "12:00"              # dusk-on never starts before this
         bedtime: "19:30"                # Bedtime runs by itself at this time
         evening_fade_minutes: 30        # the evening fade starts this long before bedtime
