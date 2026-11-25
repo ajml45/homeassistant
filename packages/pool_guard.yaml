@@ -1,0 +1,564 @@
+# =====================================================================
+#  POOL GUARD  —  /config/packages/pool_guard.yaml
+#  v1 · 2026-11-25
+#
+#  Keeps the kids away from the pool door. Arm it with the Pool Guard
+#  toggle (input_boolean.pool_guard — the shield chip on the Solarium
+#  room card). The solarium motion sensor
+#  (binary_sensor.hue_motion_sensor_2_motion) is pointed at the door.
+#
+#  WHAT HAPPENS
+#    1. Motion at the door → WARNING (solarium + basement Sonos):
+#         polite chime, then the pool, very politely: "…Please rethink
+#         what you are doing."
+#    2. When the warning ends, the culprit has stay_limit s to walk away.
+#         still moving at the door              → BREACH
+#         walks away, back within watch_window  → BREACH
+#         walks away and stays away             → THANK-YOU
+#           ("Thank you for making the correct choice!…")
+#    3. BREACH (~20 s, then every light goes back the way it was)
+#         Solarium     strips pulse red; pool + sitting-area bulbs drop to
+#                      a dim warm glow (they can't do red) so the red reads
+#                      and the pool is never dark. Siren → the pool snaps →
+#                      Imperial pool security. (solarium + basement Sonos)
+#         Kitchen      under-island strip pulses red, pendants and sconces
+#                      blink. Alert tone → the pool tattles. (kitchen Sonos)
+#         Great room   cans pulse red in a checkerboard, Hue lamps and the
+#                      soundbar strip go red. After the kitchen line: alert
+#                      tone → security calls the parental units.
+#         Phone        push to notify_targets.
+#    4. Cooldown, then it's watching again.
+#
+#  ALSO
+#    · Phone push if Pool Guard is on and the motion sensor is offline
+#      (for 5 min, or already offline when you turn Pool Guard on).
+#    · Turning Pool Guard off mid-breach stops it and puts the lights back.
+#    · A breach during the solarium's 7:00 pm fade stops that fade (same as
+#      touching a light by hand); the lights still go back afterwards.
+#
+#  TEST from Settings → Automations & scenes → Scripts. These play even
+#  when Pool Guard is off:
+#    script.pool_guard_warning · script.pool_guard_thanks ·
+#    script.pool_guard_breach (sends the phone push too)
+#  The first run of each also caches its voice lines, so real alerts start
+#  faster. If a line doesn't play, its voice name is the likely culprit:
+#  check the voice list under Media → Text-to-speech → Home Assistant
+#  Cloud, or set voice_pool / voice_security to "" for the default voice.
+#
+#  Media lives in /config/www/pool_guard/ (served at /local/pool_guard/):
+#    chime.mp3, thanks.mp3, siren.mp3, alert.mp3
+# =====================================================================
+
+input_boolean:
+  pool_guard:
+    name: Pool Guard
+    icon: mdi:shield-lock
+
+script:
+  # -------------------------------------------------------------------
+  #  RUN: one warning → watch → breach-or-thanks → cooldown cycle.
+  #  Started by the motion automation; ignores motion while it runs.
+  # -------------------------------------------------------------------
+  pool_guard_run:
+    alias: "Pool Guard – run"
+    icon: mdi:shield-lock
+    mode: single
+    max_exceeded: silent
+    variables: &pool_guard_config
+      # ===================== TUNABLES =====================
+      motion: binary_sensor.hue_motion_sensor_2_motion   # also named in the automations' triggers below
+      stay_limit: 15          # s after the warning ends to stop moving at the door. The Hue sensor
+                              # keeps reporting motion for several seconds (often ~10) after movement
+                              # stops, so keep this a few seconds above that.
+      watch_window: 20        # s after the door goes quiet: motion again → breach, otherwise thank-you
+      cooldown_after_thanks: 30   # s before motion can start a new cycle
+      cooldown_after_breach: 60
+      show_length: 20         # s of breach lights; the restore starts restore_gap s later
+      restore_gap: 1.5        # ≥0.9 s after the last Govee command
+      verify_after: [4, 4]    # extra restore passes, s apart (catch dropped Govee/Hue commands)
+      cancel_settle: 2.5      # s between neutral and snapshot when cancelled (Govee budget)
+      parents_at: 0.5         # s after the solarium starts: kitchen + great room lights and voices
+
+      notify_targets:
+        - notify.mobile_app_andrews_phone
+        # - notify.mobile_app_christina_s_iphone
+      push_level: time-sensitive   # passive | active | time-sensitive | critical (critical rings through silent mode)
+
+      # ---- audio ----
+      volume_day:   {pool: 45, breach: 60, parents: 55}   # Sonos 0–100
+      volume_night: {pool: 30, breach: 45, parents: 40}   # 20:00–07:00
+      tts_engine: tts.home_assistant_cloud
+      tts_language: en-US
+      voice_pool: "JennyNeural||customerservice"   # the very polite pool
+      voice_security: "GuyNeural||shouting"        # Imperial pool security
+      wps: 2.5                # words per second the voices speak (sets the gap before the next clip)
+      tts_lead: 1.0           # s for a voice line to be made and start on Sonos
+      clip_lead: 0.6          # s for an mp3 to start on Sonos
+      base_url: "http://192.168.68.21:8123/local/pool_guard"
+      media_version: 1        # bump after replacing the mp3s (cache-buster)
+
+      sonos_pool: [media_player.sonos_solarium, media_player.sonos_basement]
+      sonos_kitchen: media_player.sonos_kitchen
+      sonos_great_room: media_player.sonos_great_room_soundbar
+
+      # ---- what gets said ----
+      # Each zone plays its clips in order. {file, secs} = an mp3 in base_url;
+      # {say, voice} = a Cloud TTS line, voice = pool | security.
+      warning_clips:
+        - {file: chime.mp3, secs: 1.75}
+        - say: "Hi there! This is the pool. I'm closed right now. Please rethink what you are doing. Thank you!"
+          voice: pool
+      thanks_clips:
+        - {file: thanks.mp3, secs: 1.55}
+        - say: "Thank you for making the correct choice! The pool appreciates you. Have a dry day!"
+          voice: pool
+      breach_pool_clips:        # solarium + basement
+        - {file: siren.mp3, secs: 3.85}
+        - say: "Okay. You did not rethink it."
+          voice: pool
+        - say: "Alert! Alert! Unauthorized younglings in the pool sector! Lockdown initiated! Parental units have been dispatched!"
+          voice: security
+        - {file: siren.mp3, secs: 3.85}
+      breach_kitchen_clips:
+        - {file: alert.mp3, secs: 1.65}
+        - say: "Hi, grown-ups! It's the pool. Someone is at my door. I won't say who... but it's who you think."
+          voice: pool
+      breach_great_room_clips:  # starts when the kitchen line ends, so the two don't talk over each other
+        - {file: alert.mp3, secs: 1.65}
+        - say: "Attention, parental units! The pool perimeter has been breached. This is not a drill!"
+          voice: security
+
+      # ---- breach lights: individual lights only (never Lightener rooms or groups) ----
+      d_red_hi: &pg_red_hi {rgb_color: [255, 0, 0], brightness: 255}
+      d_red_lo: &pg_red_lo {rgb_color: [255, 0, 0], brightness: 30}
+      d_white_hi: &pg_white_hi {color_temp_kelvin: 2700, brightness: 255}
+      d_white_lo: &pg_white_lo {color_temp_kelvin: 2700, brightness: 12}
+      d_end: &pg_end {color_temp_kelvin: 2700, brightness: 180}   # last state = what lights that were off remember
+      solarium_white_level: &pg_sol_level 20                      # pool + sitting-area bulbs during the breach (0–255)
+
+      sol_strips_a: &pg_sol_a [light.solarium_path_lights, light.stair_path_lights, light.solarium_couch]
+      sol_strips_b: &pg_sol_b [light.slider_path_lights, light.solarium_spot_lights]
+      sol_white: &pg_sol_white
+        [light.pool_area_left_1, light.pool_area_left_2, light.pool_area_left_3, light.pool_area_left_4,
+         light.pool_area_right_1, light.pool_area_right_2, light.pool_area_right_3, light.pool_area_right_4,
+         light.sitting_area_left_1, light.sitting_area_left_2, light.sitting_area_left_3, light.sitting_area_left_4,
+         light.sitting_area_right_1, light.sitting_area_right_2, light.sitting_area_right_3, light.sitting_area_right_4]
+      gr_cans_a: &pg_cans_a     # checkerboard: (row + column) even
+        [light.back_can_left, light.back_can_right, light.middle_can_middle, light.front_can_left, light.front_can_right]
+      gr_cans_b: &pg_cans_b
+        [light.back_can_middle, light.middle_can_left, light.middle_can_right, light.front_can_middle]
+      gr_hue: &pg_hue
+        [light.great_room_back_lamp, light.left_couch_lamp, light.right_couch_lamp, light.great_room_front_lamp]
+      gr_strip: &pg_gr_strip [light.soundbar_shelf_light]
+      k_strip: &pg_k_strip [light.under_island]
+      k_ct_a: &pg_kct_a [light.island_pendant_left, light.island_pendant_right]
+      k_ct_b: &pg_kct_b
+        [light.sink_sconce_left, light.sink_sconce_right, light.stove_sconce_left, light.stove_sconce_right]
+
+      # Pulse tracks: sets a and b swap between `hi` and `lo` every `period` s
+      # from `start` until 1 s before show_length, then both go to d_end.
+      pulse_solarium:       # Govee — ≥0.9 s between commands per strip
+        {start: 0.0, period: 1.25, hi: *pg_red_hi, lo: *pg_red_lo, a: *pg_sol_a, b: *pg_sol_b}
+      pulse_gr_cans:        # WiZ RGB
+        {start: 0.5, period: 0.6, hi: *pg_red_hi, lo: *pg_red_lo, a: *pg_cans_a, b: *pg_cans_b}
+      pulse_kitchen_strip:  # Govee
+        {start: 0.5, period: 1.25, hi: *pg_red_hi, lo: *pg_red_lo, a: *pg_k_strip, b: []}
+      pulse_kitchen_ct:     # WiZ tunable white (no red): pendants and sconces take turns
+        {start: 0.5, period: 0.6, hi: *pg_white_hi, lo: *pg_white_lo, a: *pg_kct_a, b: *pg_kct_b}
+
+      # One-off steps. t = s after t0, or "end" (= show_length).
+      steps_once:           # WiZ CT + a Govee one-off
+        - {t: 0.0,   entities: *pg_sol_white, data: {color_temp_kelvin: 2200, brightness: *pg_sol_level}}
+        - {t: 0.5,   entities: *pg_gr_strip,  data: *pg_red_hi}
+        - {t: "end", entities: *pg_sol_white, data: *pg_end}
+        - {t: "end", entities: *pg_gr_strip,  data: *pg_end}
+      steps_hue:            # Hue — fades only, ≥0.45 s between commands per lamp
+        - {t: 0.5,   entities: *pg_hue, data: {rgb_color: [255, 0, 0], brightness: 255, transition: 1}}
+        - {t: "end", entities: *pg_hue, data: {color_temp_kelvin: 2700, brightness: 180, transition: 1}}
+
+      # Everything the breach touches (snapshot before, restore after)
+      snapshot_entities: >-
+        {{ sol_strips_a + sol_strips_b + sol_white + gr_cans_a + gr_cans_b
+           + gr_hue + gr_strip + k_strip + k_ct_a + k_ct_b }}
+      # ============================================================
+
+    sequence:
+      - action: script.pool_guard_warning
+
+      # Give them stay_limit s after the warning to walk away
+      - wait_template: "{{ not is_state(motion, 'on') }}"
+        timeout:
+          seconds: "{{ stay_limit }}"
+        continue_on_timeout: true
+      - if:
+          - "{{ not wait.completed }}"
+        then:
+          - action: script.pool_guard_breach
+            data:
+              reason: "Someone kept going at the pool door after the warning."
+          - delay:
+              seconds: "{{ cooldown_after_breach }}"
+          - stop: "Breach: kept going after the warning"
+
+      # They walked away. Do they come back?
+      - wait_template: "{{ is_state(motion, 'on') }}"
+        timeout:
+          seconds: "{{ watch_window }}"
+        continue_on_timeout: true
+      - if:
+          - "{{ wait.completed }}"
+        then:
+          - action: script.pool_guard_breach
+            data:
+              reason: "Someone came back to the pool door after the warning."
+          - delay:
+              seconds: "{{ cooldown_after_breach }}"
+        else:
+          - action: script.pool_guard_thanks
+          - delay:
+              seconds: "{{ cooldown_after_thanks }}"
+
+  # -------------------------------------------------------------------
+  #  STAGES (each can be run by hand to test)
+  # -------------------------------------------------------------------
+  pool_guard_warning:
+    alias: "Pool Guard – warning"
+    icon: mdi:hand-back-left
+    mode: single
+    max_exceeded: silent
+    variables: *pool_guard_config
+    sequence:
+      - action: script.pool_guard_say
+        data:
+          speakers: "{{ sonos_pool }}"
+          clips: "{{ warning_clips }}"
+          level: "{{ (volume_night if (now().hour >= 20 or now().hour < 7) else volume_day).pool }}"
+
+  pool_guard_thanks:
+    alias: "Pool Guard – thank you"
+    icon: mdi:emoticon-happy-outline
+    mode: single
+    max_exceeded: silent
+    variables: *pool_guard_config
+    sequence:
+      - action: script.pool_guard_say
+        data:
+          speakers: "{{ sonos_pool }}"
+          clips: "{{ thanks_clips }}"
+          level: "{{ (volume_night if (now().hour >= 20 or now().hour < 7) else volume_day).pool }}"
+
+  pool_guard_breach:
+    alias: "Pool Guard – breach"
+    icon: mdi:alarm-light
+    mode: single
+    max_exceeded: silent
+    fields:
+      reason:
+        description: "First line of the phone push"
+        example: "Someone kept going at the pool door after the warning."
+    variables: *pool_guard_config
+    sequence:
+      # 1. Snapshot every light the breach touches
+      - action: scene.create
+        data:
+          scene_id: pool_guard_snapshot
+          snapshot_entities: "{{ snapshot_entities }}"
+
+      # 2. One clock for everything (lights start as the siren starts)
+      - variables:
+          t0: "{{ now().timestamp() + clip_lead }}"
+          vol: "{{ volume_night if (now().hour >= 20 or now().hour < 7) else volume_day }}"
+
+      - parallel:
+          # ---- phone ----
+          - sequence:
+              - repeat:
+                  for_each: "{{ notify_targets }}"
+                  sequence:
+                    - action: "{{ repeat.item }}"
+                      data:
+                        title: "Pool Guard 🚨"
+                        message: "{{ reason | default('This is a test run.') }} Parental units, report to the solarium."
+                        data: >-
+                          {{ {'push': {'sound': {'name': 'default', 'critical': 1, 'volume': 1.0}}}
+                             if push_level == 'critical'
+                             else {'push': {'interruption-level': push_level}} }}
+                      continue_on_error: true
+
+          # ---- solarium + basement audio ----
+          - sequence:
+              - action: script.pool_guard_say
+                data:
+                  speakers: "{{ sonos_pool }}"
+                  clips: "{{ breach_pool_clips }}"
+                  level: "{{ vol.breach }}"
+
+          # ---- kitchen, then great room ----
+          - sequence:
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + parents_at - clip_lead - now().timestamp()) * 1000) | int] | max }}"
+              - action: script.pool_guard_say
+                data:
+                  speakers: "{{ [sonos_kitchen] }}"
+                  clips: "{{ breach_kitchen_clips }}"
+                  level: "{{ vol.parents }}"
+              - action: script.pool_guard_say
+                data:
+                  speakers: "{{ [sonos_great_room] }}"
+                  clips: "{{ breach_great_room_clips }}"
+                  level: "{{ vol.parents }}"
+
+          # ---- light pulse tracks (same runner, different settings) ----
+          - sequence:
+              - variables:
+                  p: "{{ pulse_solarium }}"
+              - &pg_pulse_runner
+                sequence:
+                  - repeat:
+                      for_each: "{{ range(((show_length - 1.0 - p.start) / p.period) | int + 1) | list }}"
+                      sequence:
+                        - delay:
+                            milliseconds: "{{ [0, ((t0 + p.start + repeat.item * p.period - now().timestamp()) * 1000) | int] | max }}"
+                        - parallel:
+                            - action: light.turn_on
+                              target:
+                                entity_id: "{{ p.a }}"
+                              data: "{{ p.hi if repeat.item is even else p.lo }}"
+                              continue_on_error: true
+                            - if:
+                                - "{{ p.b | count > 0 }}"
+                              then:
+                                - action: light.turn_on
+                                  target:
+                                    entity_id: "{{ p.b }}"
+                                  data: "{{ p.lo if repeat.item is even else p.hi }}"
+                                  continue_on_error: true
+                  - delay:
+                      milliseconds: "{{ [0, ((t0 + show_length - now().timestamp()) * 1000) | int] | max }}"
+                  - action: light.turn_on
+                    target:
+                      entity_id: "{{ p.a + p.b }}"
+                    data: "{{ d_end }}"
+                    continue_on_error: true
+          - sequence:
+              - variables:
+                  p: "{{ pulse_gr_cans }}"
+              - *pg_pulse_runner
+          - sequence:
+              - variables:
+                  p: "{{ pulse_kitchen_strip }}"
+              - *pg_pulse_runner
+          - sequence:
+              - variables:
+                  p: "{{ pulse_kitchen_ct }}"
+              - *pg_pulse_runner
+
+          # ---- one-off steps ----
+          - sequence:
+              - variables:
+                  steps: "{{ steps_once }}"
+              - &pg_step_runner
+                repeat:
+                  for_each: "{{ steps }}"
+                  sequence:
+                    - variables:
+                        at: "{{ show_length if repeat.item.t == 'end' else repeat.item.t }}"
+                    - delay:
+                        milliseconds: "{{ [0, ((t0 + at - now().timestamp()) * 1000) | int] | max }}"
+                    - action: light.turn_on
+                      target:
+                        entity_id: "{{ repeat.item.entities }}"
+                      data: "{{ repeat.item.data }}"
+                      continue_on_error: true
+          - sequence:
+              - variables:
+                  steps: "{{ steps_hue }}"
+              - *pg_step_runner
+
+          # ---- hand off to restore (doesn't wait for the voices to finish) ----
+          - sequence:
+              - delay:
+                  milliseconds: "{{ [0, ((t0 + show_length + restore_gap - now().timestamp()) * 1000) | int] | max }}"
+              - action: script.turn_on
+                target:
+                  entity_id: script.pool_guard_restore
+                data:
+                  variables:
+                    cancelled: false
+
+  # -------------------------------------------------------------------
+  #  SAY: play clips in order on some Sonos speakers (announce: plays
+  #  over whatever's on, then the music carries on at its own volume)
+  # -------------------------------------------------------------------
+  pool_guard_say:
+    alias: "Pool Guard – say"
+    icon: mdi:bullhorn
+    mode: parallel
+    max: 10
+    fields:
+      speakers:
+        description: "Sonos media players"
+      clips:
+        description: "List of {file, secs} or {say, voice}"
+      level:
+        description: "Sonos volume 0–100"
+    variables: *pool_guard_config
+    sequence:
+      - repeat:
+          for_each: "{{ clips }}"
+          sequence:
+            - variables:
+                clip: "{{ repeat.item }}"
+                started: "{{ now().timestamp() }}"
+                voice: "{{ {'pool': voice_pool, 'security': voice_security}.get(clip.voice | default(''), '') }}"
+                url: >-
+                  {%- if clip.file is defined -%}
+                    {{ base_url }}/{{ clip.file }}?v={{ media_version }}
+                  {%- else -%}
+                    media-source://tts/{{ tts_engine }}?message={{ clip.say | urlencode }}&language={{ tts_language }}&cache=true
+                    {%- if voice %}&voice={{ voice | urlencode }}{% endif -%}
+                  {%- endif -%}
+                secs: >-
+                  {{ (clip.secs + clip_lead) if clip.file is defined
+                     else ((clip.say.split() | count) / wps + tts_lead) }}
+            - action: media_player.play_media
+              target:
+                entity_id: "{{ speakers }}"
+              data:
+                media_content_id: "{{ url }}"
+                media_content_type: music
+                announce: true
+                extra:
+                  volume: "{{ level | int }}"
+              continue_on_error: true
+            - delay:
+                milliseconds: "{{ [0, ((started + secs - now().timestamp()) * 1000) | int] | max }}"
+
+  # -------------------------------------------------------------------
+  #  RESTORE (end of the breach, or Pool Guard turned off mid-breach)
+  # -------------------------------------------------------------------
+  pool_guard_restore:
+    alias: "Pool Guard – restore lights"
+    icon: mdi:restore
+    mode: single
+    max_exceeded: silent
+    fields:
+      cancelled:
+        description: "True when the breach was cut short (lights get warm white first)"
+        example: false
+    variables: *pool_guard_config
+    sequence:
+      - if:
+          - "{{ cancelled | default(false) | bool }}"
+        then:
+          - delay:
+              seconds: 1     # let an in-flight Govee command land
+          - action: light.turn_on
+            target:
+              entity_id: "{{ snapshot_entities }}"
+            data: "{{ d_end }}"
+            continue_on_error: true
+          - delay:
+              seconds: "{{ cancel_settle }}"
+      - action: scene.turn_on
+        target:
+          entity_id: scene.pool_guard_snapshot
+        data:
+          transition: 1
+        continue_on_error: true
+      - repeat:
+          for_each: "{{ verify_after }}"
+          sequence:
+            - delay:
+                seconds: "{{ repeat.item }}"
+            - action: scene.turn_on
+              target:
+                entity_id: scene.pool_guard_snapshot
+              continue_on_error: true
+
+automation:
+  # Motion at the pool door while Pool Guard is on → start a cycle
+  - id: pool_guard_motion
+    alias: "Pool Guard – motion at the pool door"
+    description: "Starts the warning → breach/thank-you cycle. See packages/pool_guard.yaml."
+    mode: single
+    max_exceeded: silent
+    triggers:
+      - trigger: state
+        entity_id: binary_sensor.hue_motion_sensor_2_motion
+        from: "off"
+        to: "on"
+    conditions:
+      - condition: state
+        entity_id: input_boolean.pool_guard
+        state: "on"
+    actions:
+      - action: script.turn_on
+        target:
+          entity_id: script.pool_guard_run
+
+  # Turned off → stop everything; put the lights back if a breach was running
+  - id: pool_guard_off
+    alias: "Pool Guard – turned off"
+    description: "Stops Pool Guard mid-cycle and restores the lights if a breach was running. See packages/pool_guard.yaml."
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_boolean.pool_guard
+        from: "on"
+        to: "off"
+    actions:
+      - variables:
+          breach_running: "{{ is_state('script.pool_guard_breach', 'on') }}"
+      - action: script.turn_off
+        target:
+          entity_id:
+            - script.pool_guard_run
+            - script.pool_guard_breach
+            - script.pool_guard_warning
+            - script.pool_guard_thanks
+            - script.pool_guard_say
+      - if:
+          - "{{ breach_running }}"
+        then:
+          - action: script.turn_on
+            target:
+              entity_id: script.pool_guard_restore
+            data:
+              variables:
+                cancelled: true
+
+  # On, but the sensor can't see the door → tell the phones
+  - id: pool_guard_sensor_offline
+    alias: "Pool Guard – motion sensor offline"
+    description: "Phone push when Pool Guard is on and the solarium motion sensor is offline. See packages/pool_guard.yaml."
+    mode: single
+    variables: *pool_guard_config
+    triggers:
+      - trigger: state
+        entity_id: binary_sensor.hue_motion_sensor_2_motion
+        to: ["unavailable", "unknown"]
+        for:
+          minutes: 5
+      - trigger: state
+        entity_id: input_boolean.pool_guard
+        to: "on"
+    conditions:
+      - condition: state
+        entity_id: input_boolean.pool_guard
+        state: "on"
+      - condition: state
+        entity_id: binary_sensor.hue_motion_sensor_2_motion
+        state: ["unavailable", "unknown"]
+    actions:
+      - repeat:
+          for_each: "{{ notify_targets }}"
+          sequence:
+            - action: "{{ repeat.item }}"
+              data:
+                title: "Pool Guard ⚠️"
+                message: "Pool Guard is on, but the solarium motion sensor is offline, so it can't see the pool door."
+                data:
+                  push:
+                    interruption-level: time-sensitive
+              continue_on_error: true

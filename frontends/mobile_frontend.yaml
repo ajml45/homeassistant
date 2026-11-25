@@ -1249,6 +1249,24 @@ views:
                                 --icon-color: var(--secondary-text-color);
                                 color: var(--secondary-text-color);
                               }
+                                            - type: template
+                                        entity: input_boolean.pool_guard
+                                        icon: '{{ ''mdi:shield-lock'' if is_state(''input_boolean.pool_guard'', ''on'') else ''mdi:shield-off-outline'' }}'
+                                        icon_color: '{{ ''red'' if is_state(''script.pool_guard_breach'', ''on'') else ''amber'' if is_state(''script.pool_guard_run'', ''on'') else ''light-blue'' if is_state(''input_boolean.pool_guard'', ''on'') else ''disabled'' }}'
+                                        tap_action:
+                                          action: toggle
+                                        hold_action:
+                                          action: more-info
+                                        card_mod:
+                                          style: |-
+                                            ha-card {
+                                              {% if is_state('script.pool_guard_breach', 'on') %}
+                                              animation: pool-guard-pulse 1s ease-in-out infinite;
+                                              {% endif %}
+                                            }
+                                            @keyframes pool-guard-pulse {
+                                              50% { opacity: 0.35; }
+                                            }
                       - type: conditional
                         conditions:
                           - entity: sensor.pool_temperature
