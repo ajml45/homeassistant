@@ -40,12 +40,6 @@ sidebar:
        flex: 1 1 auto !important;
        min-width: 0;
      }
-    .sidebarMenu li {
-       font-weight: 500 !important;
-     }
-    h1.digitalClock, h2.date {
-       font-weight: 400 !important;
-     }
   sidebarMenu:
     - action: navigate
       navigation_path: /isaac-lucas/home
