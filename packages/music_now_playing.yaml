@@ -1,0 +1,170 @@
+# =====================================================================
+#  MUSIC NOW PLAYING  —  /config/packages/music_now_playing.yaml
+#  v1 · 2026-11-26
+#
+#  What the Music area on the tablet Home screen and the top of the
+#  phone Music page follow: the Sonos group that is playing music.
+#
+#  RULES
+#    · Music only. A speaker on its TV input (source "TV" — the Great
+#      Room and Office soundbars while their TVs are on) never counts.
+#    · One entry per group: only a group's leader (first in
+#      group_members) is looked at, so "Everywhere" is one entry.
+#    · Playing beats paused. If two groups are playing, the one that
+#      started most recently wins; the rest are listed in `others`.
+#    · A paused group stays up for 30 minutes so it can be resumed.
+#    · Nothing playing → state "none"; favorites then play on the Kitchen.
+#
+#  ENTITIES
+#    sensor.music_now_playing    state = the leader's entity_id, or "none"
+#        members       every speaker in the group (leader first)
+#        rooms         their room names, same order
+#        group_name    "Kitchen", or "Kitchen + 3" for a group
+#        group_volume  0–1, the rooms' average
+#        others        room names of any other groups playing music
+#        target        where a favorite tapped on Home plays
+#        target_name   its name, for the "Plays on …" label
+#    media_player.now_playing    follows the sensor. Play / pause / next
+#        go to the group; its volume moves the whole group through
+#        script.music_group_volume.
+#    script.music_group_volume   scales every room so the group's average
+#        lands on the new level (like the Sonos app's group volume).
+#
+#  Room names live in `names` below — add a speaker there and in the two
+#  speaker lists if one is ever added.
+# =====================================================================
+
+template:
+  - triggers:
+      - trigger: state
+        entity_id: &music_speakers
+          - media_player.sonos_great_room_soundbar
+          - media_player.sonos_kitchen
+          - media_player.sonos_office
+          - media_player.sonos_solarium
+          - media_player.sonos_basement
+          - media_player.sonos_workshop
+          - media_player.sonos_garage
+      # once a minute, so a paused group drops off after 30 minutes
+      - trigger: time_pattern
+        minutes: /1
+      - trigger: homeassistant
+        event: start
+      - trigger: event
+        event_type: event_template_reloaded
+    actions:
+      - variables:
+          np: >-
+            {%- set names = {
+                 'media_player.sonos_great_room_soundbar': 'Great Room',
+                 'media_player.sonos_kitchen': 'Kitchen',
+                 'media_player.sonos_office': 'Office',
+                 'media_player.sonos_solarium': 'Solarium',
+                 'media_player.sonos_basement': 'Basement',
+                 'media_player.sonos_workshop': 'Workshop',
+                 'media_player.sonos_garage': 'Garage'} %}
+            {%- set fallback = 'media_player.sonos_kitchen' %}
+            {%- set ns = namespace(play=[], paused=[], rooms=[], vol=0, others=[]) %}
+            {%- for s in expand(names | list) if s.state in ['playing', 'paused'] %}
+              {%- set e = s.entity_id %}
+              {%- set g = s.attributes.group_members or [e] %}
+              {%- set tv = s.attributes.source == 'TV' or s.attributes.media_title == 'TV' %}
+              {%- if g[0] == e and not tv %}
+                {%- set item = {'e': e, 'g': g | select('in', names) | list, 't': as_timestamp(s.last_changed)} %}
+                {%- if s.state == 'playing' %}
+                  {%- set ns.play = ns.play + [item] %}
+                {%- elif now() - s.last_changed < timedelta(minutes=30) %}
+                  {%- set ns.paused = ns.paused + [item] %}
+                {%- endif %}
+              {%- endif %}
+            {%- endfor %}
+            {%- set ranked = (ns.play | sort(attribute='t', reverse=true) | list)
+                           + (ns.paused | sort(attribute='t', reverse=true) | list) %}
+            {%- set lead = ranked[0] if ranked else none %}
+            {%- set members = (lead.g or [lead.e]) if lead else [] %}
+            {%- for m in members %}
+              {%- set ns.rooms = ns.rooms + [names[m]] %}
+              {%- set ns.vol = ns.vol + (state_attr(m, 'volume_level') | float(0)) %}
+            {%- endfor %}
+            {%- for o in ns.play if lead and o.e != lead.e %}
+              {%- set ns.others = ns.others + [names[o.e]] %}
+            {%- endfor %}
+            {%- set gname = '' if not lead
+                 else ns.rooms[0] ~ (' + ' ~ (ns.rooms | count - 1) if ns.rooms | count > 1 else '') %}
+            {{ {'lead': lead.e if lead else 'none',
+                'members': members,
+                'rooms': ns.rooms,
+                'group_name': gname,
+                'group_volume': ((ns.vol / (members | count)) | round(2)) if members else 0,
+                'others': ns.others,
+                'target': lead.e if lead else fallback,
+                'target_name': gname if lead else names[fallback]} }}
+    sensor:
+      - name: Music now playing
+        unique_id: music_now_playing
+        default_entity_id: sensor.music_now_playing
+        icon: mdi:music
+        state: "{{ np.lead }}"
+        attributes:
+          members: "{{ np.members }}"
+          rooms: "{{ np.rooms }}"
+          group_name: "{{ np.group_name }}"
+          group_volume: "{{ np.group_volume }}"
+          others: "{{ np.others }}"
+          target: "{{ np.target }}"
+          target_name: "{{ np.target_name }}"
+
+media_player:
+  - platform: universal
+    name: Now playing
+    unique_id: music_now_playing_player
+    children: *music_speakers
+    # "none" isn't an entity, so with nothing playing the player has no
+    # child and reports off — it never falls back to a soundbar on TV.
+    active_child_template: "{{ states('sensor.music_now_playing') }}"
+    state_template: >-
+      {%- set e = states('sensor.music_now_playing') %}
+      {{ states(e) if e.startswith('media_player.') else 'off' }}
+    attributes:
+      volume_level: sensor.music_now_playing|group_volume
+    commands:
+      volume_set:
+        action: script.music_group_volume
+        data:
+          level: "{{ volume_level }}"
+
+script:
+  music_group_volume:
+    alias: Music – set group volume
+    description: >-
+      Scales every room in the now-playing group so their average lands on
+      `level` (0–1). Used by media_player.now_playing's volume slider. See
+      packages/music_now_playing.yaml.
+    icon: mdi:volume-medium
+    mode: restart
+    fields:
+      level:
+        name: Level
+        description: Target group volume, 0–1.
+        required: true
+        selector:
+          number:
+            min: 0
+            max: 1
+            step: 0.01
+    sequence:
+      - variables:
+          members: "{{ state_attr('sensor.music_now_playing', 'members') or [] }}"
+          avg: "{{ state_attr('sensor.music_now_playing', 'group_volume') | float(0) }}"
+          goal: "{{ [[level | float(0), 0] | max, 1] | min }}"
+      - repeat:
+          for_each: "{{ members }}"
+          sequence:
+            - action: media_player.volume_set
+              target:
+                entity_id: "{{ repeat.item }}"
+              data:
+                volume_level: >-
+                  {%- set cur = state_attr(repeat.item, 'volume_level') | float(0) %}
+                  {%- set v = goal if avg < 0.005 else cur * goal / avg %}
+                  {{ [[v, 0] | max, 1] | min | round(2) }}

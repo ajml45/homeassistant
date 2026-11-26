@@ -9,7 +9,7 @@ any are missing.
 | Name | Repository | Installed | Latest | Note |
 |---|---|---|---|---|
 | Adaptive Lighting | basnijholt/adaptive-lighting | v1.32.0 | v1.32.0 | — |
-| Alexa Media Player | alandtse/alexa_media_player | v5.22.1 | v5.22.1 | — |
+| Alexa Media Player | alandtse/alexa_media_player | v5.22.1 | v5.23.0 | — |
 | apexcharts-card | RomRider/apexcharts-card | v2.2.3 | v2.2.3 | — |
 | Atomic Calendar Revive | totaldebug/atomic-calendar-revive | v10.3.1 | v10.3.1 | — |
 | auto-entities | thomasloven/lovelace-auto-entities | v1.16.1 | v1.16.1 | — |

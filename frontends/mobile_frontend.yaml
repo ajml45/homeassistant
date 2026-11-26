@@ -3,6 +3,262 @@
 # changes made here are overwritten.
 kiosk_mode:
   hide_header: true
+button_card_templates:
+  music_base:
+    show_icon: false
+    show_name: false
+    show_state: false
+    show_label: false
+    tap_action:
+      action: none
+    hold_action:
+      action: none
+    double_tap_action:
+      action: none
+    styles:
+      card:
+        - background: none
+        - box-shadow: none
+        - border: none
+        - border-radius: 0
+        - padding: 0
+        - overflow: visible
+        - font-family: var(--ha-font-family-body)
+  music_icon_button:
+    template: music_base
+    show_icon: true
+    size: 26px
+    styles:
+      card:
+        - width: 44px
+        - height: 44px
+        - border-radius: 50%
+      icon:
+        - color: var(--primary-text-color)
+  music_now:
+    template: music_base
+    entity: media_player.now_playing
+    triggers_update:
+      - sensor.music_now_playing
+    custom_fields:
+      art: |
+        [[[
+          const p = entity?.attributes?.entity_picture;
+          const bg = p ? `url('${p}') center / cover no-repeat` : 'var(--secondary-background-color)';
+          const icon = p ? '' : '<ha-icon icon="mdi:music" style="--mdc-icon-size: 22px; color: var(--secondary-text-color)"></ha-icon>';
+          return `<div style="width: 56px; height: 56px; border-radius: 8px; background: ${bg}; display: flex; align-items: center; justify-content: center">${icon}</div>`;
+        ]]]
+      title: '[[[ return entity?.attributes?.media_title || "" ]]]'
+      sub: |
+        [[[
+          const a = entity?.attributes || {};
+          return a.media_artist || a.media_channel || a.media_album_name || '';
+        ]]]
+      rooms:
+        card:
+          type: custom:button-card
+          template: music_base
+          entity: sensor.music_now_playing
+          show_name: true
+          name: |
+            [[[
+              const a = entity?.attributes || {};
+              const more = (a.members || []).length > 1;
+              return `${a.group_name || ''}${more ? '<ha-icon icon="mdi:chevron-down" style="--mdc-icon-size: 16px; margin-left: 2px"></ha-icon>' : ''}`;
+            ]]]
+          tap_action:
+            action: '[[[ return (entity?.attributes?.members || []).length > 1 ? "navigate" : "none" ]]]'
+            navigation_path: '#music_rooms'
+          styles:
+            card:
+              - width: auto
+            name:
+              - font-size: 12px
+              - font-weight: 500
+              - color: var(--primary-color)
+              - display: flex
+              - align-items: center
+              - justify-self: start
+      pp:
+        card:
+          type: custom:button-card
+          template: music_icon_button
+          entity: media_player.now_playing
+          icon: '[[[ return entity?.state === "playing" ? "mdi:pause" : "mdi:play" ]]]'
+          tap_action:
+            action: perform-action
+            perform_action: media_player.media_play_pause
+            target:
+              entity_id: media_player.now_playing
+      nx:
+        card:
+          type: custom:button-card
+          template: music_icon_button
+          entity: media_player.now_playing
+          icon: mdi:skip-next
+          tap_action:
+            action: perform-action
+            perform_action: media_player.media_next_track
+            target:
+              entity_id: media_player.now_playing
+    styles:
+      card:
+        - padding: 12px 12px 4px
+      grid:
+        - grid-template-areas: '"art title pp nx" "art sub pp nx" "art rooms pp nx"'
+        - grid-template-columns: 56px minmax(0, 1fr) 44px 44px
+        - grid-template-rows: auto auto auto
+        - column-gap: 12px
+        - align-items: center
+      custom_fields:
+        title:
+          - justify-self: start
+          - max-width: 100%
+          - overflow: hidden
+          - text-overflow: ellipsis
+          - white-space: nowrap
+          - font-size: 14px
+          - font-weight: 500
+          - color: var(--primary-text-color)
+        sub:
+          - justify-self: start
+          - max-width: 100%
+          - overflow: hidden
+          - text-overflow: ellipsis
+          - white-space: nowrap
+          - font-size: 12px
+          - color: var(--secondary-text-color)
+        rooms:
+          - justify-self: start
+  music_empty:
+    template: music_base
+    entity: sensor.music_now_playing
+    custom_fields:
+      art: |
+        [[[ return '<div style="width: 56px; height: 56px; border-radius: 8px; background: var(--secondary-background-color); display: flex; align-items: center; justify-content: center"><ha-icon icon="mdi:music" style="--mdc-icon-size: 22px; color: var(--secondary-text-color)"></ha-icon></div>'; ]]]
+      title: Nothing playing
+      sub: Pick a favorite to start
+    styles:
+      card:
+        - padding: 12px 12px 4px
+      grid:
+        - grid-template-areas: '"art title" "art sub"'
+        - grid-template-columns: 56px minmax(0, 1fr)
+        - column-gap: 12px
+        - align-items: center
+      custom_fields:
+        title:
+          - justify-self: start
+          - align-self: end
+          - font-size: 14px
+          - font-weight: 500
+          - color: var(--primary-text-color)
+        sub:
+          - justify-self: start
+          - align-self: start
+          - font-size: 12px
+          - color: var(--secondary-text-color)
+  music_hint:
+    template: music_base
+    entity: sensor.music_now_playing
+    variables:
+      path: ''
+    show_name: true
+    name: |
+      [[[
+        const o = entity?.attributes?.others || [];
+        if (!o.length) return '';
+        const t = o.length === 1 ? `${o[0]} is playing something else` : `${o.length} other rooms are playing`;
+        return variables.path ? `${t}<ha-icon icon="mdi:chevron-right" style="--mdc-icon-size: 16px"></ha-icon>` : t;
+      ]]]
+    tap_action:
+      action: '[[[ return variables.path ? "navigate" : "none" ]]]'
+      navigation_path: '[[[ return variables.path ]]]'
+    styles:
+      card:
+        - display: '[[[ return (entity?.attributes?.others || []).length ? "block" : "none" ]]]'
+        - padding: 0 12px 4px
+      name:
+        - font-size: 12px
+        - color: var(--secondary-text-color)
+        - display: flex
+        - align-items: center
+        - justify-self: start
+  music_fav_head:
+    template: music_base
+    entity: sensor.music_now_playing
+    triggers_update:
+      - sensor.sonos_favorites
+    custom_fields:
+      l: Favorites
+      r: '[[[ return `Plays on ${entity?.attributes?.target_name || "Kitchen"}` ]]]'
+    styles:
+      card:
+        - display: '[[[ return Object.keys(states["sensor.sonos_favorites"]?.attributes?.items || {}).length ? "block" : "none" ]]]'
+        - padding: 12px 12px 8px
+      grid:
+        - grid-template-areas: '"l r"'
+        - grid-template-columns: auto minmax(0, 1fr)
+        - column-gap: 8px
+      custom_fields:
+        l:
+          - justify-self: start
+          - font-size: 12px
+          - color: var(--secondary-text-color)
+        r:
+          - justify-self: end
+          - max-width: 100%
+          - overflow: hidden
+          - text-overflow: ellipsis
+          - white-space: nowrap
+          - font-size: 12px
+          - color: var(--secondary-text-color)
+  music_fav:
+    template: music_base
+    entity: sensor.sonos_favorites
+    triggers_update:
+      - sensor.music_now_playing
+    variables:
+      i: 0
+      tint: var(--cyan-color)
+    custom_fields:
+      tile: |
+        [[[ return `<div style="aspect-ratio: 1 / 1; width: 100%; border-radius: 8px; background: ${variables.tint}; display: flex; align-items: center; justify-content: center"><ha-icon icon="mdi:playlist-music" style="--mdc-icon-size: 22px; color: var(--text-primary-color)"></ha-icon></div>`; ]]]
+      nm: |
+        [[[
+          const it = Object.entries(entity?.attributes?.items || {});
+          return it[variables.i] ? it[variables.i][1] : '';
+        ]]]
+    tap_action:
+      action: perform-action
+      perform_action: media_player.play_media
+      target:
+        entity_id: '[[[ return states["sensor.music_now_playing"]?.attributes?.target || "media_player.sonos_kitchen"; ]]]'
+      data:
+        media_content_type: favorite_item_id
+        media_content_id: |
+          [[[
+            const it = Object.entries(entity?.attributes?.items || {});
+            return it[variables.i] ? it[variables.i][0] : '';
+          ]]]
+    styles:
+      card:
+        - display: '[[[ return Object.keys(entity?.attributes?.items || {}).length > variables.i ? "block" : "none" ]]]'
+      grid:
+        - grid-template-areas: '"tile" "nm"'
+        - grid-template-columns: minmax(0, 1fr)
+        - row-gap: 4px
+      custom_fields:
+        tile:
+          - width: 100%
+        nm:
+          - justify-self: start
+          - max-width: 100%
+          - overflow: hidden
+          - text-overflow: ellipsis
+          - white-space: nowrap
+          - font-size: 12px
+          - color: var(--primary-text-color)
 views:
   - title: Home
     cards:
@@ -1252,7 +1508,7 @@ views:
                       - type: template
                         entity: input_boolean.pool_guard
                         icon: '{{ ''mdi:shield-lock'' if is_state(''input_boolean.pool_guard'', ''on'') else ''mdi:shield-off-outline'' }}'
-                        icon_color: '{{ ''red'' if is_state(''script.pool_guard_alarm'', ''on'') else ''amber'' if is_state(''script.pool_guard_run'', ''on'') else ''light-blue'' if is_state(''input_boolean.pool_guard'', ''on'') else ''disabled'' }}'
+                        icon_color: '{{ ''red'' if is_state(''script.pool_guard_breach'', ''on'') else ''amber'' if is_state(''script.pool_guard_run'', ''on'') else ''light-blue'' if is_state(''input_boolean.pool_guard'', ''on'') else ''disabled'' }}'
                         tap_action:
                           action: toggle
                         hold_action:
@@ -1260,7 +1516,7 @@ views:
                         card_mod:
                           style: |-
                             ha-card {
-                              {% if is_state('script.pool_guard_alarm', 'on') %}
+                              {% if is_state('script.pool_guard_breach', 'on') %}
                               animation: pool-guard-pulse 1s ease-in-out infinite;
                               {% endif %}
                             }
@@ -1782,14 +2038,33 @@ views:
                         height: 5px!important;
                   }
                 icon: mdi:multimedia
-              - type: media-control
+              - type: custom:bubble-card
+                card_type: media-player
                 entity: media_player.google_tv_great_room
+                name: TV
+                show_state: true
+                styles: |
+                  .bubble-name {
+                    font-size: 14px;
+                    font-weight: 500;
+                  }
+              - type: custom:bubble-card
+                card_type: media-player
+                entity: media_player.sonos_great_room_soundbar
+                name: Soundbar
+                show_state: true
+                max_volume: 40
+                styles: |
+                  .bubble-name {
+                    font-size: 14px;
+                    font-weight: 500;
+                  }
               - type: entities
                 entities:
                   - entity: select.sonos_great_room_soundbar_speech_enhancement
-                    name: 'TV Speech Enhancement '
+                    name: Speech enhancement
                   - entity: switch.sonos_great_room_soundbar_night_sound
-                    name: TV Night Sound
+                    name: Night sound
               - type: vertical-stack
                 cards:
                   - type: custom:bubble-card
@@ -2240,8 +2515,16 @@ views:
                         name: Open Blinds
                       - entity: scene.close_blinds_bedroom
                         name: Close Blinds
-              - type: media-control
+              - type: custom:bubble-card
+                card_type: media-player
                 entity: media_player.tv_samsung_led46
+                name: TV
+                show_state: true
+                styles: |
+                  .bubble-name {
+                    font-size: 14px;
+                    font-weight: 500;
+                  }
               - type: custom:bubble-card
                 card_type: separator
                 styles: |
@@ -2386,8 +2669,16 @@ views:
                         height: 5px!important;
                   }
                 icon: mdi:bed
-              - type: media-control
-                entity: media_player.guest_room_tv
+              - type: custom:bubble-card
+                card_type: media-player
+                entity: media_player.google_tv_guest_bedroom
+                name: Guest room TV
+                show_state: true
+                styles: |
+                  .bubble-name {
+                    font-size: 14px;
+                    font-weight: 500;
+                  }
               - type: thermostat
                 entity: climate.upstairs
                 features:
@@ -3810,22 +4101,84 @@ views:
                       font-size: 14px;
                       font-weight: 600;
                     }
+          - type: custom:stack-in-card
+            cards:
+              - type: conditional
+                conditions:
+                  - condition: state
+                    entity: sensor.music_now_playing
+                    state_not: none
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: custom:button-card
+                      template: music_now
+                    - type: custom:bubble-card
+                      card_type: button
+                      button_type: slider
+                      entity: media_player.now_playing
+                      name: Volume
+                      icon: mdi:volume-medium
+                      max_volume: 40
+                      styles: |
+                        .bubble-name {
+                          font-size: 14px;
+                          font-weight: 500;
+                        }
+                    - type: custom:button-card
+                      template: music_hint
+                      variables:
+                        path: ''
+              - type: conditional
+                conditions:
+                  - condition: state
+                    entity: sensor.music_now_playing
+                    state: none
+                card:
+                  type: custom:button-card
+                  template: music_empty
+              - type: custom:button-card
+                template: music_fav_head
+              - type: grid
+                columns: 4
+                square: false
+                cards:
+                  - type: custom:button-card
+                    template: music_fav
+                    variables:
+                      i: 0
+                      tint: var(--cyan-color)
+                  - type: custom:button-card
+                    template: music_fav
+                    variables:
+                      i: 1
+                      tint: var(--orange-color)
+                  - type: custom:button-card
+                    template: music_fav
+                    variables:
+                      i: 2
+                      tint: var(--teal-color)
+                  - type: custom:button-card
+                    template: music_fav
+                    variables:
+                      i: 3
+                      tint: var(--pink-color)
           - type: custom:sonos-card
             sections:
+              - groups
               - player
               - volumes
-              - groups
               - grouping
               - media browser
               - queue
             entities:
-              - media_player.sonos_great_room_soundbar
               - media_player.sonos_kitchen
-              - media_player.sonos_office
               - media_player.sonos_solarium
               - media_player.sonos_basement
               - media_player.sonos_workshop
               - media_player.sonos_garage
+              - media_player.sonos_great_room_soundbar
+              - media_player.sonos_office
             entityNameRegexToReplace: '^Sonos '
             entityNameReplacement: ''
             heightPercentage: 115
@@ -3883,6 +4236,56 @@ views:
                 - Nest
               favorites:
                 sortByType: true
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: '#music_rooms'
+        name: Rooms playing
+        icon: mdi:speaker-multiple
+        is_sidebar_hidden: false
+        margin_top_mobile: -56px
+        back_open: true
+        auto_close: '120000'
+        bg_opacity: 85
+        bg_blur: 100
+        shadow_opacity: '20'
+        margin: 8px
+        card_layout: normal
+        button_type: name
+        slider_fill_orientation: left
+        slider_value_position: right
+        light_slider_type: brightness
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            name: Volume by room
+            icon: mdi:speaker-multiple
+            styles: |
+              ha-card div div div:nth-child(2) {
+                    height: 5px!important;
+              }
+          - type: custom:auto-entities
+            show_empty: false
+            card:
+              type: vertical-stack
+            card_param: cards
+            filter:
+              template: |-
+                {%- set names = {
+                     'media_player.sonos_great_room_soundbar': 'Great Room',
+                     'media_player.sonos_kitchen': 'Kitchen',
+                     'media_player.sonos_office': 'Office',
+                     'media_player.sonos_solarium': 'Solarium',
+                     'media_player.sonos_basement': 'Basement',
+                     'media_player.sonos_workshop': 'Workshop',
+                     'media_player.sonos_garage': 'Garage'} %}
+                {%- set ns = namespace(cards=[]) %}
+                {%- for e in state_attr('sensor.music_now_playing', 'members') or [] %}
+                  {%- set ns.cards = ns.cards + [{
+                       'type': 'custom:bubble-card', 'card_type': 'button', 'button_type': 'slider',
+                       'entity': e, 'name': names.get(e, e), 'icon': 'mdi:speaker', 'max_volume': 40,
+                       'styles': '.bubble-name { font-size: 14px; font-weight: 500; }'}] %}
+                {%- endfor %}
+                {{ ns.cards }}
   - title: Cleaning
     path: cleaning
     icon: mdi:broom
