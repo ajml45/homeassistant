@@ -9,7 +9,7 @@ any are missing.
 | Name | Repository | Installed | Latest | Note |
 |---|---|---|---|---|
 | Adaptive Lighting | basnijholt/adaptive-lighting | v1.32.0 | v1.32.0 | — |
-| Alexa Media Player | alandtse/alexa_media_player | v5.22.1 | v5.23.0 | — |
+| Alexa Media Player | alandtse/alexa_media_player | v5.23.0 | v5.23.0 | — |
 | apexcharts-card | RomRider/apexcharts-card | v2.2.3 | v2.2.3 | — |
 | Atomic Calendar Revive | totaldebug/atomic-calendar-revive | v10.3.1 | v10.3.1 | — |
 | auto-entities | thomasloven/lovelace-auto-entities | v1.16.1 | v1.16.1 | — |
@@ -42,7 +42,7 @@ any are missing.
 | Sidebar Card | DBuit/sidebar-card | 0.1.9.9 | 0.1.9.9 | — |
 | slider-entity-row | thomasloven/lovelace-slider-entity-row | v17.5.0 | v17.5.0 | — |
 | SmartThinQ LGE Sensors | ollo69/ha-smartthinq-sensors | v0.43.0 | v0.43.0 | — |
-| Sonos Card | punxaphil/custom-sonos-card | v10.10.3 | v10.10.3 | — |
+| Sonos Card | punxaphil/custom-sonos-card | v10.10.3 | v10.11.0 | — |
 | Stack In Card | custom-cards/stack-in-card | 0.2.0 | 0.2.0 | — |
 | Vertical Stack In Card | ofekashery/vertical-stack-in-card | v1.1.4 | v1.1.4 | — |
 | Weather Alerts Card | seevee/weather_alerts_card | v3.11.0 | v3.11.0 | — |
@@ -53,7 +53,7 @@ any are missing.
 | Domain | Name | Version |
 |---|---|---|
 | adaptive_lighting | Adaptive Lighting | 1.32.0 |
-| alexa_media | Alexa Media Player | 5.22.1 |
+| alexa_media | Alexa Media Player | 5.23.0 |
 | automate | Automate Pulse Hub v2 | 1.0.1 |
 | eyeonwater | EyeOnWater | 2.7.12 |
 | hubspace | hubspace | 8.4.0 |
