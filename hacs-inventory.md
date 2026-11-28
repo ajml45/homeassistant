@@ -42,10 +42,10 @@ any are missing.
 | Sidebar Card | DBuit/sidebar-card | 0.1.9.9 | 0.1.9.9 | — |
 | slider-entity-row | thomasloven/lovelace-slider-entity-row | v17.5.0 | v17.5.0 | — |
 | SmartThinQ LGE Sensors | ollo69/ha-smartthinq-sensors | v0.43.0 | v0.43.0 | — |
-| Sonos Card | punxaphil/custom-sonos-card | v10.10.3 | v10.11.0 | — |
+| Sonos Card | punxaphil/custom-sonos-card | v10.11.0 | v10.11.0 | — |
 | Stack In Card | custom-cards/stack-in-card | 0.2.0 | 0.2.0 | — |
 | Vertical Stack In Card | ofekashery/vertical-stack-in-card | v1.1.4 | v1.1.4 | — |
-| Weather Alerts Card | seevee/weather_alerts_card | v3.11.0 | v3.11.0 | — |
+| Weather Alerts Card | seevee/weather_alerts_card | v3.11.0 | v3.12.0 | — |
 | Weather Radar Card | jpettitt/weather-radar-card | v4.0.0 | v4.0.0 | — |
 
 ## custom_components on disk
@@ -78,7 +78,7 @@ any are missing.
 | module | /local/community/atomic-calendar-revive/atomic-calendar-revive.js?v=2465497471031 |
 | module | /local/community/button-card/button-card.js?v=146194325701 |
 | module | /local/community/clock-weather-card/clock-weather-card.js?v=522634019310 |
-| module | /local/community/custom-sonos-card/custom-sonos-card.js?v=449416816-v10.10.3 |
+| module | /local/community/custom-sonos-card/custom-sonos-card.js?v=449416816-v10.11.0 |
 | module | /local/community/lovelace-auto-entities/auto-entities.js?v=1677445841161 |
 | module | /local/community/lovelace-card-mod/card-mod.js?v=190927524421 |
 | module | /local/community/lovelace-entity-progress-card/entity-progress-card.js?v=908868522-1.6.4 |
